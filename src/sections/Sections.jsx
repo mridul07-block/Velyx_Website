@@ -89,26 +89,28 @@ function VizGraph() {
 
 export function Marquee() {
   const items = [
-    { name: "Northwind", glyph: "◆" },
-    { name: "Halcyon AI", glyph: "◐" },
-    { name: "Foundry/06", glyph: "▲" },
-    { name: "Sable Health", glyph: "✦" },
-    { name: "Meridian", glyph: "◯" },
-    { name: "Quartzline", glyph: "▣" },
-    { name: "Lumen Robotics", glyph: "✧" },
-    { name: "Atlas Capital", glyph: "◈" },
-    { name: "Ferrous", glyph: "▼" },
-    { name: "Polaris OS", glyph: "★" },
+    "Overshoot",
+    "GetCredentialingDone",
+    "NarayanKripa",
+    "Bytecitadel",
+    "Estatico",
+    "SacredBasil",
+    "GreenWrenchSolutions",
+    "Atharv",
+    "SkipIt",
+    "ArtifyCheck",
+    "Forze",
+    "SharkQueen",
+    "PrevaAi"
   ];
   const doubled = [...items, ...items];
   return (
     <section className="marquee" aria-label="Trusted by">
       <div className="marquee__label">TRUSTED BY FOUNDERS BUILDING THE NEXT DECADE</div>
       <div className="marquee__track">
-        {doubled.map((it, i) => (
+        {doubled.map((name, i) => (
           <div className="marquee__item" key={i}>
-            <span className="glyph">{it.glyph}</span>
-            <span>{it.name}</span>
+            <span>{name}</span>
           </div>
         ))}
       </div>

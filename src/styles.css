@@ -78,7 +78,8 @@ body::before {
   .hero__inner, 
   .ship__inner, 
   .page-hero,
-  .scroll-scene__topbar {
+  .scroll-scene__topbar,
+  .results .result:first-child {
     padding-left: clamp(140px, 12vw, 200px) !important;
   }
 }
@@ -1547,8 +1548,8 @@ section {
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 40px;
+  grid-template-columns: 1.2fr 0.85fr;
+  gap: 80px;
   width: 100%;
   max-width: var(--container);
   margin: 0 auto;

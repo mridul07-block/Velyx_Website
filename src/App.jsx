@@ -1,5 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Preloader from "./components/Preloader";
 
@@ -21,6 +21,15 @@ function PageFallback() {
   );
 }
 
+// Scroll to top on every route change
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
+
 export default function App() {
   const [loading, setLoading] = useState(true);
 
@@ -38,6 +47,7 @@ export default function App() {
         {loading && <Preloader onComplete={() => setLoading(false)} />}
       </AnimatePresence>
       <BrowserRouter>
+        <ScrollToTop />
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/"             element={<Home />} />

@@ -208,19 +208,12 @@ export default function Hero() {
       <HeroCanvas />
       <div className="hero__veil" />
 
-      <div className="hero__rail">
-        <span>VLX</span>
-        <span>v 2.6 · '26</span>
-        <div className="scan" />
-        <span>0°/360°</span>
-        <span>LIVE RENDER</span>
-        <span>NODE · 01 / 8</span>
-      </div>
+
 
       <div className="hero__cards">
         <div className="float-card fc-1">
           <div className="label">AGENTS ONLINE</div>
-          <div className="value">42 <span className="accent">↑ 12</span></div>
+          <div className="value">20 <span className="accent">↑ 12</span></div>
         </div>
         <div className="float-card fc-2">
           <div className="label">THROUGHPUT GAIN</div>
@@ -270,8 +263,8 @@ export default function Hero() {
       </div>
 
       <div className="hero__ticker">
-        <div className="stat"><span className="live" /> <span>LIVE · 42 AGENTS DEPLOYED</span></div>
-        <div className="stat"><span>SHIPPED <strong>184</strong> SYSTEMS</span></div>
+        <div className="stat"><span className="live" /> <span>LIVE · 20 AGENTS DEPLOYED</span></div>
+        <div className="stat"><span>SHIPPED <strong>100</strong> SYSTEMS</span></div>
         <div className="stat"><span>AVG. <strong>11.4×</strong> THROUGHPUT GAIN</span></div>
         <div className="stat"><span>BLR / SF / REMOTE</span></div>
         <div className="stat"><span>v2.6.0 · MAY '26</span></div>

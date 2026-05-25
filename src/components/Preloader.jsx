@@ -325,7 +325,7 @@ function TelemetryPanel({ show, isMobile }) {
           ↑ orchestrator fleet online
         </div>
         <div style={{ fontFamily: "var(--font-mono,monospace)", fontSize: 11, color: "#e8850a" }}>
-          ↳ p95 {(0.8 + (tick % 5) * 0.04).toFixed(2)}s · 184 actions
+          ↳ p95 {(0.8 + (tick % 5) * 0.04).toFixed(2)}s · 100 actions
         </div>
       </div>
     </motion.div>
@@ -335,8 +335,8 @@ function TelemetryPanel({ show, isMobile }) {
 /* ─── BOTTOM STATUS STRIP ─────────────────────────────────────────────────────── */
 function StatusStrip({ pct, isMobile }) {
   const items = [
-    `LIVE · ${Math.floor(42 * pct / 100)} AGENTS DEPLOYED`,
-    "SHIPPED  184  SYSTEMS",
+    `LIVE · ${Math.floor(20 * pct / 100)} AGENTS DEPLOYED`,
+    "SHIPPED  100  SYSTEMS",
     "AVG.  11.4×  THROUGHPUT",
     "BLR / SF / REMOTE",
     "vlx.kernel · 2.6.0",
