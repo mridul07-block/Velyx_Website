@@ -6,8 +6,14 @@ export default function CineFooter() {
     <footer className="footer-pro" data-screen-label="12 Footer">
       <div className="footer-pro__grid">
         <div>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16, fontSize: 22, fontWeight: 500, letterSpacing: "-0.02em" }}>
-            <BrandMark size={26} /> Velyx Labs
+          <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 16 }}>
+            <img src="https://res.cloudinary.com/dmhabztbf/image/upload/v1779688104/ChatGPT_Image_May_25__2026__11_15_18_AM-removebg-preview_hy48ex.png" alt="Velyx Labs Icon" style={{ height: 50, width: 50, objectFit: "contain" }} />
+            <div style={{ width: 1, height: 38, background: "linear-gradient(to bottom, transparent, rgba(240,146,15,0.7), transparent)" }} />
+            <div style={{ display: "flex", alignItems: "baseline", fontSize: 26, letterSpacing: "-0.01em" }}>
+              <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, color: "var(--fg, #f6f1e7)" }}>vely</span>
+              <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, color: "#f0920f" }}>x</span>
+              <span style={{ fontFamily: "var(--font-sans, sans-serif)", fontWeight: 400, color: "var(--fg, #f6f1e7)", marginLeft: 6 }}>labs</span>
+            </div>
           </div>
           <p style={{ fontSize: 14.5, color: "var(--fg-dim)", maxWidth: "36ch", lineHeight: 1.55, marginBottom: 24 }}>
             We partner with founders to engineer compounding operating leverage —
