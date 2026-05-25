@@ -147,24 +147,160 @@ function ContactPage() {
             </div>
 
             {sent ? (
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.92, y: 30 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 style={{
-                  padding: "60px 36px", border: "1px solid var(--accent)",
-                  borderRadius: 18, background: "oklch(0.78 0.16 65 / 0.06)",
+                  position: "relative",
+                  padding: "72px 44px 56px",
+                  borderRadius: 22,
+                  background: "linear-gradient(160deg, oklch(0.16 0.02 60 / 0.9), oklch(0.12 0.015 55 / 0.95))",
+                  backdropFilter: "blur(24px) saturate(150%)",
+                  WebkitBackdropFilter: "blur(24px) saturate(150%)",
+                  border: "1px solid oklch(0.78 0.16 65 / 0.15)",
                   textAlign: "center",
+                  overflow: "hidden",
+                  boxShadow: "0 40px 100px -30px oklch(0.78 0.16 65 / 0.15), inset 0 1px 0 oklch(1 0 0 / 0.04)",
                 }}
               >
-                <div style={{ fontSize: 40, marginBottom: 16, color: "var(--accent)" }}>✓</div>
-                <h3 style={{ fontSize: 28, letterSpacing: "-0.025em", fontWeight: 500, marginBottom: 12 }}>
-                  Brief received.
-                </h3>
-                <p style={{ fontSize: 15, color: "var(--fg-dim)", maxWidth: "38ch", margin: "0 auto", lineHeight: 1.55 }}>
-                  You'll hear from us within one business day. In the meantime —
-                  we'd love to know what you're reading. <a href="#" style={{ color: "var(--accent)" }}>Our thesis ↗</a>
-                </p>
+                {/* Ambient glow */}
+                <div style={{
+                  position: "absolute", top: "25%", left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  width: 280, height: 280, borderRadius: "50%",
+                  background: "radial-gradient(circle, oklch(0.78 0.16 65 / 0.12) 0%, transparent 70%)",
+                  filter: "blur(50px)", pointerEvents: "none",
+                }} />
+                {/* Corner accent line */}
+                <div style={{
+                  position: "absolute", top: 0, left: 0, right: 0, height: 1,
+                  background: "linear-gradient(90deg, transparent, oklch(0.78 0.16 65 / 0.3), transparent)",
+                }} />
+
+                {/* Floating particles */}
+                {[
+                  { top: "10%", left: "12%", s: 3, d: 0 },
+                  { top: "18%", right: "15%", s: 2, d: 0.4 },
+                  { bottom: "22%", left: "10%", s: 2.5, d: 0.8 },
+                  { bottom: "12%", right: "12%", s: 2, d: 0.3 },
+                  { top: "50%", left: "6%", s: 1.5, d: 1.0 },
+                  { top: "38%", right: "8%", s: 2, d: 0.6 },
+                ].map((dot, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: [0, 0.5, 0.2], scale: 1 }}
+                    transition={{ duration: 2.5, delay: 0.6 + dot.d, repeat: Infinity, repeatType: "reverse" }}
+                    style={{
+                      position: "absolute", top: dot.top, left: dot.left, right: dot.right, bottom: dot.bottom,
+                      width: dot.s, height: dot.s, borderRadius: "50%",
+                      background: "var(--accent)", pointerEvents: "none",
+                    }}
+                  />
+                ))}
+
+                {/* Animated checkmark icon */}
+                <motion.div
+                  initial={{ scale: 0, rotate: -20 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 12, delay: 0.2 }}
+                  style={{
+                    position: "relative", width: 76, height: 76,
+                    margin: "0 auto 28px", borderRadius: 22,
+                    background: "linear-gradient(135deg, oklch(0.78 0.16 65), oklch(0.62 0.18 50))",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    boxShadow: "0 16px 50px -10px oklch(0.78 0.16 65 / 0.45), 0 0 0 1px oklch(0.78 0.16 65 / 0.25)",
+                  }}
+                >
+                  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#14110a" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M5 12l5 5L19 7" />
+                  </svg>
+                </motion.div>
+
+                {/* Status badge */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4, duration: 0.5 }}
+                  style={{
+                    display: "inline-flex", alignItems: "center", gap: 8,
+                    padding: "7px 18px", borderRadius: 100,
+                    background: "oklch(0.78 0.16 65 / 0.08)",
+                    border: "1px solid oklch(0.78 0.16 65 / 0.18)",
+                    fontFamily: "var(--font-mono)", fontSize: 10.5,
+                    letterSpacing: "0.1em", color: "var(--accent)",
+                    textTransform: "uppercase", marginBottom: 28,
+                  }}
+                >
+                  <span style={{
+                    width: 6, height: 6, borderRadius: "50%",
+                    background: "var(--accent-2)",
+                    boxShadow: "0 0 10px var(--accent-2)",
+                    animation: "pulse 2s infinite",
+                  }} />
+                  TRANSMISSION RECEIVED
+                </motion.div>
+
+                {/* Title */}
+                <motion.h3
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5, duration: 0.6 }}
+                  style={{
+                    fontSize: "clamp(28px, 4vw, 36px)", letterSpacing: "-0.03em",
+                    fontWeight: 500, marginBottom: 16, position: "relative",
+                  }}
+                >
+                  Brief{" "}
+                  <span style={{
+                    fontFamily: "var(--font-serif)", fontStyle: "italic",
+                    color: "var(--accent)", fontWeight: 400,
+                  }}>received.</span>
+                </motion.h3>
+
+                {/* Description */}
+                <motion.p
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6, duration: 0.6 }}
+                  style={{
+                    fontSize: 15, color: "var(--fg-dim)", maxWidth: "40ch",
+                    margin: "0 auto 36px", lineHeight: 1.65, position: "relative",
+                  }}
+                >
+                  You'll hear from us within one business day. We read every brief carefully — expect a thoughtful response, not a template.
+                </motion.p>
+
+                {/* Stats row */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8, duration: 0.6 }}
+                  style={{
+                    display: "flex", justifyContent: "center", gap: 48,
+                    paddingTop: 28,
+                    borderTop: "1px solid oklch(0.78 0.16 65 / 0.1)",
+                    position: "relative",
+                  }}
+                >
+                  {[
+                    { v: "<24h", l: "RESPONSE TIME" },
+                    { v: "100%", l: "REPLY RATE" },
+                    { v: "3", l: "SEATS LEFT" },
+                  ].map((s) => (
+                    <div key={s.l} style={{ textAlign: "center" }}>
+                      <div style={{
+                        fontSize: 24, fontWeight: 500, letterSpacing: "-0.02em",
+                        color: "var(--fg)", fontFeatureSettings: '"tnum"',
+                      }}>{s.v}</div>
+                      <div style={{
+                        fontFamily: "var(--font-mono)", fontSize: 9,
+                        letterSpacing: "0.1em", color: "var(--fg-mute)", marginTop: 4,
+                      }}>{s.l}</div>
+                    </div>
+                  ))}
+                </motion.div>
               </motion.div>
             ) : (
               <form className="contact-form" onSubmit={submit}>
