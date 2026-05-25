@@ -10,23 +10,23 @@ import { motion, AnimatePresence } from "framer-motion";
 const T = {
   ignition: 0.20,   // grain + grid bleed in
   coreForm: 0.55,   // hex core assembles
-  velyx:    1.30,   // "Velyx" rises
-  labs:     1.62,   // "Labs" follows
-  systems:  2.15,   // panels + telemetry stream in
-  resolve:  4.70,   // settles to 100%
-  exit:     5.55,   // curtain lift
+  velyx: 1.30,   // "Velyx" rises
+  labs: 1.62,   // "Labs" follows
+  systems: 2.15,   // panels + telemetry stream in
+  resolve: 4.70,   // settles to 100%
+  exit: 5.55,   // curtain lift
 };
 
 const BOOT_LOG = [
-  { at: 0,    pct: 0,   text: "vlx.kernel · v2.6.0" },
-  { at: 430,  pct: 9,   text: "mounting agent mesh" },
-  { at: 800,  pct: 22,  text: "calibrating eval harness" },
-  { at: 1180, pct: 35,  text: "linking inference layer" },
-  { at: 1560, pct: 49,  text: "hydrating knowledge graph" },
-  { at: 1980, pct: 64,  text: "spawning orchestrator fleet" },
-  { at: 2440, pct: 78,  text: "routing live workflows" },
-  { at: 2900, pct: 89,  text: "verifying guardrails" },
-  { at: 3360, pct: 96,  text: "warming render nodes" },
+  { at: 0, pct: 0, text: "vlx.kernel · v2.6.0" },
+  { at: 430, pct: 9, text: "mounting agent mesh" },
+  { at: 800, pct: 22, text: "calibrating eval harness" },
+  { at: 1180, pct: 35, text: "linking inference layer" },
+  { at: 1560, pct: 49, text: "hydrating knowledge graph" },
+  { at: 1980, pct: 64, text: "spawning orchestrator fleet" },
+  { at: 2440, pct: 78, text: "routing live workflows" },
+  { at: 2900, pct: 89, text: "verifying guardrails" },
+  { at: 3360, pct: 96, text: "warming render nodes" },
   { at: 3780, pct: 100, text: "all systems operational" },
 ];
 
@@ -244,10 +244,10 @@ function LiveClock() {
 
 /* ─── AGENT TELEMETRY PANEL ──────────────────────────────────────────────────── */
 const AGENTS = [
-  { id: "sales/qualify",  base: 14, live: true  },
-  { id: "ops/invoicing",  base: 8,  live: true  },
-  { id: "research/intel", base: 0,  live: false },
-  { id: "finance/recon",  base: 3,  live: true  },
+  { id: "sales/qualify", base: 14, live: true },
+  { id: "ops/invoicing", base: 8, live: true },
+  { id: "research/intel", base: 0, live: false },
+  { id: "finance/recon", base: 3, live: true },
 ];
 
 function TelemetryPanel({ show, isMobile }) {
@@ -389,12 +389,12 @@ export default function Preloader({ onComplete }) {
   const { width } = useWindowSize();
   const isMobile = width <= 768;
 
-  const [pct, setPct]       = useState(0);
-  const [log, setLog]       = useState(BOOT_LOG[0].text);
+  const [pct, setPct] = useState(0);
+  const [log, setLog] = useState(BOOT_LOG[0].text);
   const [cursor, setCursor] = useState(true);
-  const [phase, setPhase]   = useState(0);
-  const [done, setDone]     = useState(false);
-  const [flash, setFlash]   = useState(false);
+  const [phase, setPhase] = useState(0);
+  const [done, setDone] = useState(false);
+  const [flash, setFlash] = useState(false);
 
   useEffect(() => {
     const id = setInterval(() => setCursor(c => !c), 500);
@@ -557,11 +557,11 @@ export default function Preloader({ onComplete }) {
               position: "absolute", top: 30, left: "clamp(24px,5vw,72px)", zIndex: 12,
               display: "flex", alignItems: "center", gap: 11,
             }}>
-            <svg width="20" height="20" viewBox="0 0 22 22" fill="none">
-              <polygon points="11,1.5 20,6.5 20,16.5 11,21.5 2,16.5 2,6.5"
-                stroke="rgba(255,255,255,0.5)" strokeWidth="1" fill="none" />
-              <circle cx="11" cy="12" r="2.1" fill="#e8850a" />
-            </svg>
+            <img
+              src="https://res.cloudinary.com/dmhabztbf/image/upload/v1779688104/ChatGPT_Image_May_25__2026__11_15_18_AM-removebg-preview_hy48ex.png"
+              alt="VelyxLabs"
+              style={{ width: 44, height: 44, objectFit: "contain" }}
+            />
             <span style={{
               fontFamily: "var(--font-mono,monospace)", fontSize: 10,
               letterSpacing: "0.14em", textTransform: "uppercase",
@@ -582,9 +582,24 @@ export default function Preloader({ onComplete }) {
             textAlign: isMobile ? "center" : "left",
           }}>
 
-            {/* core sigil */}
+            {/* core sigil — VelyxLabs logo */}
             <div style={{ marginBottom: 20, marginLeft: isMobile ? 0 : -6, display: "flex", justifyContent: isMobile ? "center" : "flex-start" }}>
-              <CoreSigil />
+              <motion.div
+                initial={{ opacity: 0, scale: 0.68 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1], delay: T.coreForm }}
+                style={{ filter: "drop-shadow(0 0 26px rgba(232,133,10,0.35))" }}
+              >
+                <img
+                  src="https://res.cloudinary.com/dmhabztbf/image/upload/v1779688104/ChatGPT_Image_May_25__2026__11_15_18_AM-removebg-preview_hy48ex.png"
+                  alt="VelyxLabs Logo"
+                  style={{
+                    width: isMobile ? 120 : 160,
+                    height: isMobile ? 120 : 160,
+                    objectFit: "contain",
+                  }}
+                />
+              </motion.div>
             </div>
 
             {/* eyebrow */}
