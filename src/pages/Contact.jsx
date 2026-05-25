@@ -255,19 +255,15 @@ function ContactPage() {
             <div style={{ marginTop: 32 }}>
               <div className="row">
                 <div className="l">EMAIL</div>
-                <div className="v"><a href="mailto:hi@velyx.com">hi@velyx.com</a></div>
+                <div className="v"><a href="mailto:velyxlabs@gmail.com">velyxlabs@gmail.com</a></div>
               </div>
               <div className="row">
-                <div className="l">PRESS</div>
-                <div className="v"><a href="mailto:press@velyx.com">press@velyx.com</a></div>
+                <div className="l">ATHARV MAIL</div>
+                <div className="v"><a href="mailto:atharv@velyxlabs.in">atharv@velyxlabs.in</a></div>
               </div>
               <div className="row">
-                <div className="l">PARTNERSHIPS</div>
-                <div className="v"><a href="mailto:partners@velyx.com">partners@velyx.com</a></div>
-              </div>
-              <div className="row">
-                <div className="l">CAREERS</div>
-                <div className="v"><a href="mailto:join@velyx.com">join@velyx.com</a> — we're hiring 2 senior engineers</div>
+                <div className="l">MRIDUL MAIL</div>
+                <div className="v"><a href="mailto:mridul@velyxlabs.in">Mridul@velyxlabs.in</a></div>
               </div>
             </div>
 
