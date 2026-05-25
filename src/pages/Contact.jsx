@@ -248,9 +248,9 @@ function ContactPage() {
             <h3>Skip the form.</h3>
             <p>If you'd rather just book a 30-minute call, here's our partner calendar. We keep two slots open every week for first conversations.</p>
 
-            <a href="#" className="btn btn--ghost" style={{ alignSelf: "flex-start" }}>
-              Open calendar <span className="arr">↗</span>
-            </a>
+            <button data-cal-namespace="30min" data-cal-link="velyx-labs/30min" data-cal-config='{"layout":"month_view"}' className="btn btn--ghost" style={{ alignSelf: "flex-start" }}>
+              Book a call <span className="arr">↗</span>
+            </button>
 
             <div style={{ marginTop: 32 }}>
               <div className="row">
@@ -273,8 +273,8 @@ function ContactPage() {
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
                 <div>
-                  <div style={{ fontSize: 16, fontWeight: 500, marginBottom: 4 }}>Bangalore</div>
-                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--fg-mute)", lineHeight: 1.6 }}>HQ · 12.97°N<br />Indiranagar, BLR</div>
+                  <div style={{ fontSize: 16, fontWeight: 500, marginBottom: 4 }}>Pune</div>
+                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--fg-mute)", lineHeight: 1.6 }}>HQ · 18.52°N<br />Pune, PNQ</div>
                 </div>
                 <div>
                   <div style={{ fontSize: 16, fontWeight: 500, marginBottom: 4 }}>San Francisco</div>

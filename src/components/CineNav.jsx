@@ -65,12 +65,12 @@ export default function CineNav({ active }) {
         <div className="nav__meta">
           <span className="nav__time">
             <span className="pulse" />
-            {time} BLR
+            {time} PNQ
           </span>
-          <Link to="/contact" className="nav__cta">
+          <button data-cal-namespace="30min" data-cal-link="velyx-labs/30min" data-cal-config='{"layout":"month_view"}' className="nav__cta">
             <span className="dot" />
             Book a call
-          </Link>
+          </button>
           <button 
             className={`nav__hamburger ${mobileMenuOpen ? "open" : ""}`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -125,9 +125,9 @@ export default function CineNav({ active }) {
                   <a href="#">X / Twitter</a>
                   <a href="#">LinkedIn</a>
                 </div>
-                <Link to="/contact" className="btn btn--primary" onClick={() => setMobileMenuOpen(false)}>
+                <button data-cal-namespace="30min" data-cal-link="velyx-labs/30min" data-cal-config='{"layout":"month_view"}' className="btn btn--primary" onClick={() => setMobileMenuOpen(false)}>
                   Book a strategy call <span className="arr">↗</span>
-                </Link>
+                </button>
               </motion.div>
             </div>
           </motion.div>

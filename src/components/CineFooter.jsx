@@ -29,7 +29,7 @@ export default function CineFooter() {
           </form>
 
           <div className="footer-pro__locations">
-            <div><strong>BANGALORE</strong><span>HQ · 12.97°N</span></div>
+            <div><strong>PUNE</strong><span>HQ · 18.52°N</span></div>
             <div><strong>SAN FRANCISCO</strong><span>SAT · 37.77°N</span></div>
             <div><strong>REMOTE</strong><span>EVERYWHERE</span></div>
           </div>

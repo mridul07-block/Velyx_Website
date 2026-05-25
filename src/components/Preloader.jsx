@@ -237,7 +237,7 @@ function LiveClock() {
       <span style={{
         fontFamily: "var(--font-mono,'JetBrains Mono',monospace)",
         fontSize: 10, letterSpacing: "0.13em", color: "rgba(255,255,255,0.32)",
-      }}>{t} BLR</span>
+      }}>{t} PNQ</span>
     </motion.div>
   );
 }
@@ -338,7 +338,7 @@ function StatusStrip({ pct, isMobile }) {
     `LIVE · ${Math.floor(20 * pct / 100)} AGENTS DEPLOYED`,
     "SHIPPED  100  SYSTEMS",
     "AVG.  11.4×  THROUGHPUT",
-    "BLR / SF / REMOTE",
+    "PNQ / SF / REMOTE",
     "vlx.kernel · 2.6.0",
   ];
   return (

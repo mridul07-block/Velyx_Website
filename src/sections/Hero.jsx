@@ -266,7 +266,7 @@ export default function Hero() {
         <div className="stat"><span className="live" /> <span>LIVE · 20 AGENTS DEPLOYED</span></div>
         <div className="stat"><span>SHIPPED <strong>100</strong> SYSTEMS</span></div>
         <div className="stat"><span>AVG. <strong>11.4×</strong> THROUGHPUT GAIN</span></div>
-        <div className="stat"><span>BLR / SF / REMOTE</span></div>
+        <div className="stat"><span>PNQ / SF / REMOTE</span></div>
         <div className="stat"><span>v2.6.0 · MAY '26</span></div>
       </div>
     </section>
