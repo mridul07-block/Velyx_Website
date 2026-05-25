@@ -41,10 +41,10 @@ export default function CineNav({ active }) {
   return (
     <>
       <nav className={`nav ${scrolled ? "scrolled" : ""}`}>
-        <Link to="/" className="nav__brand" style={{ display: "flex", alignItems: "center", gap: 16, textDecoration: "none" }}>
-          <img src="https://res.cloudinary.com/dmhabztbf/image/upload/v1779688104/ChatGPT_Image_May_25__2026__11_15_18_AM-removebg-preview_hy48ex.png" alt="Velyx Labs Icon" style={{ height: 52, width: 52, objectFit: "contain" }} />
+        <Link to="/" className="nav__brand" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
+          <img src="https://res.cloudinary.com/dmhabztbf/image/upload/v1779688104/ChatGPT_Image_May_25__2026__11_15_18_AM-removebg-preview_hy48ex.png" alt="Velyx Labs Icon" style={{ height: 52, width: 52, objectFit: "contain", marginRight: 2 }} />
           <div style={{ width: 1, height: 38, background: "linear-gradient(to bottom, transparent, rgba(240,146,15,0.7), transparent)" }} />
-          <div style={{ display: "flex", alignItems: "baseline", fontSize: 26, letterSpacing: "-0.01em" }}>
+          <div style={{ display: "flex", alignItems: "baseline", fontSize: 26, letterSpacing: "-0.01em", marginLeft: 14 }}>
             <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, color: "var(--fg, #f6f1e7)" }}>vely</span>
             <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, color: "#f0920f" }}>x</span>
             <span style={{ fontFamily: "var(--font-sans, sans-serif)", fontWeight: 400, color: "var(--fg, #f6f1e7)", marginLeft: 6 }}>labs</span>
