@@ -63,7 +63,7 @@ export default function CineFooter() {
             <li><a href="#" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>LinkedIn</a></li>
             <li><a href="#" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>GitHub</a></li>
             <li><a href="#" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>Substack</a></li>
-            <li><a href="mailto:hi@velyx.com" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>hi@velyx.com</a></li>
+            <li><a href="mailto:velyxlabs@gmail.com" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>velyxlabs@gmail.com</a></li>
           </ul>
         </div>
       </div>
