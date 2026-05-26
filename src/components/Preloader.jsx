@@ -52,7 +52,7 @@ function StellarField({ intensity }) {
     resize();
     window.addEventListener("resize", resize);
 
-    const COUNT = 130;
+    const COUNT = W < 400 ? 60 : 130;
     const pts = Array.from({ length: COUNT }, () => ({
       x: Math.random() * W, y: Math.random() * H,
       r: Math.random() * 1.3 + 0.25,
@@ -227,8 +227,8 @@ function LiveClock() {
       initial={{ opacity: 0 }} animate={{ opacity: 1 }}
       transition={{ duration: 0.7, delay: T.systems }}
       style={{
-        position: "absolute", top: 30, right: "clamp(24px,5vw,72px)", zIndex: 12,
-        display: "flex", alignItems: "center", gap: 8,
+        position: "absolute", top: "clamp(12px, 3vh, 30px)", right: "clamp(12px,4vw,72px)", zIndex: 12,
+        display: "flex", alignItems: "center", gap: 6,
       }}>
       <span style={{
         width: 6, height: 6, borderRadius: "50%", background: "#e8850a",
@@ -236,7 +236,7 @@ function LiveClock() {
       }} />
       <span style={{
         fontFamily: "var(--font-mono,'JetBrains Mono',monospace)",
-        fontSize: 10, letterSpacing: "0.13em", color: "rgba(255,255,255,0.32)",
+        fontSize: "clamp(8px, 2.2vw, 10px)", letterSpacing: "0.13em", color: "rgba(255,255,255,0.32)",
       }}>{t} PNQ</span>
     </motion.div>
   );
@@ -250,7 +250,7 @@ const AGENTS = [
   { id: "finance/recon", base: 3, live: true },
 ];
 
-function TelemetryPanel({ show, isMobile }) {
+function TelemetryPanel({ show, isMobile, isSmall }) {
   const [tick, setTick] = useState(0);
   useEffect(() => {
     const id = setInterval(() => setTick(n => n + 1), 1500);
@@ -259,7 +259,8 @@ function TelemetryPanel({ show, isMobile }) {
 
   const mobileStyle = isMobile ? {
     position: "relative", top: "auto", right: "auto", transform: "none",
-    margin: "40px auto 0", width: "min(90%, 320px)",
+    margin: isSmall ? "24px auto 0" : "40px auto 0",
+    width: isSmall ? "min(92%, 280px)" : "min(90%, 320px)",
   } : {
     position: "absolute", top: "50%", right: "clamp(24px,5vw,72px)", transform: "translateY(-50%)",
     width: 320,
@@ -276,7 +277,7 @@ function TelemetryPanel({ show, isMobile }) {
         ...mobileStyle, zIndex: 11,
         background: "linear-gradient(180deg, rgba(28,21,11,0.84), rgba(16,12,5,0.84))",
         border: "1px solid rgba(255,150,30,0.17)", borderRadius: 8,
-        padding: isMobile ? "20px 24px" : "24px 28px", backdropFilter: "blur(14px)",
+        padding: isSmall ? "14px 16px" : isMobile ? "20px 24px" : "24px 28px", backdropFilter: "blur(14px)",
         boxShadow: "0 26px 64px rgba(0,0,0,0.55)",
       }}>
       <div style={{
@@ -290,17 +291,17 @@ function TelemetryPanel({ show, isMobile }) {
           ))}
         </span>
         <span style={{
-          fontFamily: "var(--font-mono,monospace)", fontSize: 11,
+          fontFamily: "var(--font-mono,monospace)", fontSize: isSmall ? 9 : 11,
           letterSpacing: "0.07em", color: "rgba(255,255,255,0.34)",
         }}>vlx://agents/control-room</span>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px 20px", marginBottom: 18 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: isSmall ? "10px 12px" : "16px 20px", marginBottom: isSmall ? 12 : 18 }}>
         {AGENTS.map((a, i) => (
           <div key={a.id}>
             <div style={{
-              fontFamily: "var(--font-mono,monospace)", fontSize: 12,
-              color: "#e8850a", letterSpacing: "0.03em", marginBottom: 6,
+              fontFamily: "var(--font-mono,monospace)", fontSize: isSmall ? 10 : 12,
+              color: "#e8850a", letterSpacing: "0.03em", marginBottom: isSmall ? 3 : 6,
             }}>{a.id}</div>
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
               <span style={{
@@ -310,7 +311,7 @@ function TelemetryPanel({ show, isMobile }) {
                 animation: a.live ? `vlxBeat 1.7s ease-in-out ${i * 0.28}s infinite` : "none",
               }} />
               <span style={{
-                fontFamily: "var(--font-mono,monospace)", fontSize: 11,
+                fontFamily: "var(--font-mono,monospace)", fontSize: isSmall ? 9 : 11,
                 color: "rgba(255,255,255,0.3)", letterSpacing: "0.04em",
               }}>
                 {a.live ? "running" : "queued"} · {a.base + (a.live && tick % 4 === i ? 1 : 0)}
@@ -321,10 +322,10 @@ function TelemetryPanel({ show, isMobile }) {
       </div>
 
       <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: 14 }}>
-        <div style={{ fontFamily: "var(--font-mono,monospace)", fontSize: 11, color: "rgba(255,255,255,0.22)", marginBottom: 6 }}>
+        <div style={{ fontFamily: "var(--font-mono,monospace)", fontSize: isSmall ? 9 : 11, color: "rgba(255,255,255,0.22)", marginBottom: isSmall ? 3 : 6 }}>
           ↑ orchestrator fleet online
         </div>
-        <div style={{ fontFamily: "var(--font-mono,monospace)", fontSize: 11, color: "#e8850a" }}>
+        <div style={{ fontFamily: "var(--font-mono,monospace)", fontSize: isSmall ? 9 : 11, color: "#e8850a" }}>
           ↳ p95 {(0.8 + (tick % 5) * 0.04).toFixed(2)}s · 100 actions
         </div>
       </div>
@@ -333,7 +334,7 @@ function TelemetryPanel({ show, isMobile }) {
 }
 
 /* ─── BOTTOM STATUS STRIP ─────────────────────────────────────────────────────── */
-function StatusStrip({ pct, isMobile }) {
+function StatusStrip({ pct, isMobile, isSmall }) {
   const items = [
     `LIVE · ${Math.floor(20 * pct / 100)} AGENTS DEPLOYED`,
     "SHIPPED  100  SYSTEMS",
@@ -348,16 +349,16 @@ function StatusStrip({ pct, isMobile }) {
       style={{
         position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 11,
         borderTop: "1px solid rgba(255,255,255,0.07)",
-        padding: isMobile ? "11px 24px" : "11px clamp(24px,5vw,72px)",
+        padding: isSmall ? "8px 12px" : isMobile ? "11px 24px" : "11px clamp(24px,5vw,72px)",
         display: "flex", justifyContent: isMobile ? "center" : "space-between", alignItems: "center",
-        gap: isMobile ? 12 : 24, flexWrap: "wrap",
+        gap: isSmall ? 6 : isMobile ? 12 : 24, flexWrap: "wrap",
         background: "linear-gradient(180deg, transparent, rgba(8,6,0,0.6))",
         backdropFilter: "blur(8px)",
       }}>
       {items.map((it, i) => (
         <span key={i} style={{
-          fontFamily: "var(--font-mono,monospace)", fontSize: isMobile ? 8 : 9,
-          letterSpacing: "0.15em", textTransform: "uppercase", whiteSpace: "nowrap",
+          fontFamily: "var(--font-mono,monospace)", fontSize: isSmall ? 6.5 : isMobile ? 8 : 9,
+          letterSpacing: isSmall ? "0.08em" : "0.15em", textTransform: "uppercase", whiteSpace: "nowrap",
           color: i === 0 ? "rgba(232,133,10,0.78)" : "rgba(255,255,255,0.17)",
           display: isMobile && i !== 0 && i !== items.length - 1 ? "none" : "block",
         }}>{it}</span>
@@ -386,8 +387,10 @@ function useWindowSize() {
    MAIN PRELOADER
    ════════════════════════════════════════════════════════════════════════════ */
 export default function Preloader({ onComplete }) {
-  const { width } = useWindowSize();
+  const { width, height } = useWindowSize();
   const isMobile = width <= 768;
+  const isSmall = width <= 400;
+  const isShortScreen = height <= 700;
 
   const [pct, setPct] = useState(0);
   const [log, setLog] = useState(BOOT_LOG[0].text);
@@ -441,10 +444,13 @@ export default function Preloader({ onComplete }) {
           }}
           style={{
             position: "fixed", inset: 0, zIndex: 9999,
-            background: "var(--bg, #080600)", overflow: "hidden",
+            background: "var(--bg, #080600)",
+            overflow: isMobile ? "auto" : "hidden",
             display: "flex", flexDirection: "column",
-            justifyContent: "center",
+            justifyContent: isMobile ? "flex-start" : "center",
             alignItems: isMobile ? "center" : "flex-start",
+            paddingTop: isMobile ? "max(env(safe-area-inset-top, 0px), 60px)" : 0,
+            paddingBottom: isMobile ? "max(env(safe-area-inset-bottom, 0px), 50px)" : 0,
           }}>
 
           {/* ── keyframes ── */}
@@ -554,16 +560,16 @@ export default function Preloader({ onComplete }) {
             initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: T.systems }}
             style={{
-              position: "absolute", top: 30, left: "clamp(24px,5vw,72px)", zIndex: 12,
-              display: "flex", alignItems: "center", gap: 11,
+              position: "absolute", top: "clamp(12px, 3vh, 30px)", left: "clamp(12px,4vw,72px)", zIndex: 12,
+              display: "flex", alignItems: "center", gap: isSmall ? 6 : 11,
             }}>
             <img
               src="https://res.cloudinary.com/dmhabztbf/image/upload/v1779688104/ChatGPT_Image_May_25__2026__11_15_18_AM-removebg-preview_hy48ex.png"
               alt="VelyxLabs"
-              style={{ width: 44, height: 44, objectFit: "contain" }}
+              style={{ width: isSmall ? 28 : 44, height: isSmall ? 28 : 44, objectFit: "contain" }}
             />
             <span style={{
-              fontFamily: "var(--font-mono,monospace)", fontSize: 10,
+              fontFamily: "var(--font-mono,monospace)", fontSize: isSmall ? 7.5 : 10,
               letterSpacing: "0.14em", textTransform: "uppercase",
               color: "rgba(255,255,255,0.24)",
             }}>VLX · KERNEL 2.6.0</span>
@@ -574,8 +580,8 @@ export default function Preloader({ onComplete }) {
           {/* ════ CENTER STAGE ════ */}
           <div style={{
             position: "relative", zIndex: 12, width: "100%",
-            paddingLeft: isMobile ? "24px" : "clamp(24px,8vw,120px)",
-            paddingRight: isMobile ? "24px" : "clamp(24px,8vw,60px)",
+            paddingLeft: isSmall ? "14px" : isMobile ? "24px" : "clamp(24px,8vw,120px)",
+            paddingRight: isSmall ? "14px" : isMobile ? "24px" : "clamp(24px,8vw,60px)",
             maxWidth: 820,
             display: "flex", flexDirection: "column",
             alignItems: isMobile ? "center" : "flex-start",
@@ -583,7 +589,7 @@ export default function Preloader({ onComplete }) {
           }}>
 
             {/* core sigil — VelyxLabs logo */}
-            <div style={{ marginBottom: 20, marginLeft: isMobile ? 0 : -6, display: "flex", justifyContent: isMobile ? "center" : "flex-start" }}>
+            <div style={{ marginBottom: isShortScreen ? 10 : 20, marginLeft: isMobile ? 0 : -6, display: "flex", justifyContent: isMobile ? "center" : "flex-start" }}>
               <motion.div
                 initial={{ opacity: 0, scale: 0.68 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -594,8 +600,8 @@ export default function Preloader({ onComplete }) {
                   src="https://res.cloudinary.com/dmhabztbf/image/upload/v1779688104/ChatGPT_Image_May_25__2026__11_15_18_AM-removebg-preview_hy48ex.png"
                   alt="VelyxLabs Logo"
                   style={{
-                    width: isMobile ? 120 : 160,
-                    height: isMobile ? 120 : 160,
+                    width: isSmall ? 80 : isMobile ? 120 : 160,
+                    height: isSmall ? 80 : isMobile ? 120 : 160,
                     objectFit: "contain",
                   }}
                 />
@@ -607,9 +613,9 @@ export default function Preloader({ onComplete }) {
               initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: T.velyx - 0.15 }}
               style={{
-                display: "flex", alignItems: "center", gap: 11, marginBottom: 22,
-                fontFamily: "var(--font-mono,monospace)", fontSize: 10,
-                letterSpacing: "0.24em", textTransform: "uppercase",
+                display: "flex", alignItems: "center", gap: isSmall ? 7 : 11, marginBottom: isShortScreen ? 12 : 22,
+                fontFamily: "var(--font-mono,monospace)", fontSize: isSmall ? 8 : 10,
+                letterSpacing: isSmall ? "0.16em" : "0.24em", textTransform: "uppercase",
                 color: "rgba(255,255,255,0.32)",
                 justifyContent: isMobile ? "center" : "flex-start",
               }}>
@@ -628,7 +634,7 @@ export default function Preloader({ onComplete }) {
             {/* ══ WORDMARK · VelyxLabs — single line, two textures ══ */}
             <h1 style={{
               margin: 0, padding: 0, lineHeight: 0.92,
-              fontSize: isMobile ? "clamp(2.8rem, 11vw, 4.2rem)" : "clamp(3.4rem, 10.5vw, 8.8rem)",
+              fontSize: isSmall ? "clamp(2rem, 12vw, 3rem)" : isMobile ? "clamp(2.8rem, 11vw, 4.2rem)" : "clamp(3.4rem, 10.5vw, 8.8rem)",
               letterSpacing: "-0.045em",
               display: "flex", alignItems: "baseline", flexWrap: "nowrap",
               whiteSpace: "nowrap",
@@ -676,8 +682,8 @@ export default function Preloader({ onComplete }) {
               initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
               transition={{ duration: 0.95, ease: [0.76, 0, 0.24, 1], delay: T.labs + 0.4 }}
               style={{
-                height: 1.5, width: "min(360px, 82%)", transformOrigin: isMobile ? "center" : "left",
-                margin: isMobile ? "22px auto 18px" : "22px 0 18px",
+                height: 1.5, width: isSmall ? "min(260px, 85%)" : "min(360px, 82%)", transformOrigin: isMobile ? "center" : "left",
+                margin: isShortScreen ? "12px auto 10px" : isMobile ? "22px auto 18px" : "22px 0 18px",
                 background: isMobile ? "linear-gradient(90deg, rgba(232,133,10,0.04) 0%, #f0920f 50%, rgba(232,133,10,0.04) 100%)" : "linear-gradient(90deg, #f0920f 0%, #e8850a 40%, rgba(232,133,10,0.04) 100%)",
               }} />
 
@@ -686,9 +692,9 @@ export default function Preloader({ onComplete }) {
               initial={{ opacity: 0 }} animate={{ opacity: 1 }}
               transition={{ duration: 0.9, delay: T.labs + 0.6 }}
               style={{
-                margin: isMobile ? "0 auto" : 0, maxWidth: 440,
+                margin: isMobile ? "0 auto" : 0, maxWidth: isSmall ? 280 : 440,
                 fontFamily: "var(--font-mono,monospace)",
-                fontSize: 11.5, letterSpacing: "0.07em", lineHeight: 1.7,
+                fontSize: isSmall ? 10 : 11.5, letterSpacing: "0.07em", lineHeight: 1.7,
                 color: "rgba(255,255,255,0.36)",
               }}>
               Operating at the speed of intelligence.
@@ -698,12 +704,12 @@ export default function Preloader({ onComplete }) {
             <motion.div
               initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: T.systems }}
-              style={{ width: "min(440px, 92%)", marginTop: 46, marginInline: isMobile ? "auto" : "0" }}>
+              style={{ width: isSmall ? "min(280px, 94%)" : "min(440px, 92%)", marginTop: isShortScreen ? 20 : isSmall ? 28 : 46, marginInline: isMobile ? "auto" : "0" }}>
 
               {/* streaming log */}
               <div style={{
-                fontFamily: "var(--font-mono,monospace)", fontSize: 11.5,
-                letterSpacing: "0.05em", marginBottom: 14, minHeight: 16,
+                fontFamily: "var(--font-mono,monospace)", fontSize: isSmall ? 9.5 : 11.5,
+                letterSpacing: "0.05em", marginBottom: isSmall ? 10 : 14, minHeight: 16,
                 display: "flex", alignItems: "center", gap: 7,
                 justifyContent: isMobile ? "center" : "flex-start",
                 color: "#f0920f",
@@ -747,8 +753,8 @@ export default function Preloader({ onComplete }) {
                 marginTop: 13,
               }}>
                 <span style={{
-                  fontFamily: "var(--font-mono,monospace)", fontSize: 9,
-                  letterSpacing: "0.16em", textTransform: "uppercase",
+                  fontFamily: "var(--font-mono,monospace)", fontSize: isSmall ? 7.5 : 9,
+                  letterSpacing: isSmall ? "0.1em" : "0.16em", textTransform: "uppercase",
                   color: "rgba(255,255,255,0.22)",
                 }}>
                   {pct === 100 ? "boot complete" : "system loading"}
@@ -764,7 +770,7 @@ export default function Preloader({ onComplete }) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.25 }}
                     style={{
-                      fontSize: 24, fontWeight: 500,
+                      fontSize: isSmall ? 18 : 24, fontWeight: 500,
                       color: pct === 100 ? "#ffae3e" : "var(--fg,#f6f1e7)",
                     }}>{pct}</motion.span>
                   <span style={{ fontSize: 12, color: "rgba(255,255,255,0.32)" }}>%</span>
@@ -774,8 +780,8 @@ export default function Preloader({ onComplete }) {
           </div>
 
           {/* ════ telemetry ════ */}
-          <TelemetryPanel show={phase >= 3} isMobile={isMobile} />
-          <StatusStrip pct={pct} isMobile={isMobile} />
+          <TelemetryPanel show={phase >= 3} isMobile={isMobile} isSmall={isSmall} />
+          <StatusStrip pct={pct} isMobile={isMobile} isSmall={isSmall} />
 
         </motion.div>
       )}
