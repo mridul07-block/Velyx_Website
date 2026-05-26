@@ -25,7 +25,8 @@ function ShipParticles({ progressRef }) {
     renderer.setClearColor(0x000000, 0);
     mount.appendChild(renderer.domElement);
 
-    const COUNT = 2200;
+    const isMobile = mount.clientWidth < 768;
+    const COUNT = isMobile ? 800 : 2200;
 
     // Five target shapes â€” one per ship phase
     // 0: Agentic   â€” clustered nodes (8 clusters)
@@ -332,7 +333,7 @@ function MockAgents() {
         <span className="dot" /><span className="dot" /><span className="dot" />
         <span className="title">vlx://agents/control-room</span>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "clamp(6px, 2vw, 12px)" }}>
         {[
           { name: "sales/qualify", status: "running", calls: 14, c: "var(--accent-2)" },
           { name: "ops/invoicing", status: "running", calls: 8, c: "var(--accent-2)" },
@@ -340,24 +341,24 @@ function MockAgents() {
           { name: "finance/recon", status: "running", calls: 3, c: "var(--accent-2)" },
         ].map((a) => (
           <div key={a.name} style={{
-            border: "1px solid var(--line-soft)", borderRadius: 10, padding: "12px 14px",
+            border: "1px solid var(--line-soft)", borderRadius: "clamp(6px, 2vw, 10px)", padding: "clamp(8px, 2.5vw, 12px) clamp(10px, 2.5vw, 14px)",
             background: "oklch(0.12 0.012 60)",
           }}>
-            <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--accent)", marginBottom: 6 }}>{a.name}</div>
-            <div style={{ display: "flex", alignItems: "center", gap: 6, fontFamily: "var(--font-mono)", fontSize: 10.5, color: "var(--fg-mute)" }}>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: "clamp(9px, 2.5vw, 11px)", color: "var(--accent)", marginBottom: 4 }}>{a.name}</div>
+            <div style={{ display: "flex", alignItems: "center", gap: 5, fontFamily: "var(--font-mono)", fontSize: "clamp(8.5px, 2.3vw, 10.5px)", color: "var(--fg-mute)" }}>
               <span style={{ width: 6, height: 6, background: a.c, borderRadius: "50%", boxShadow: `0 0 8px ${a.c}` }} />
               {a.status} Â· {a.calls} active
             </div>
           </div>
         ))}
       </div>
-      <div style={{ marginTop: 18, padding: 12, background: "oklch(0.12 0.012 60)", border: "1px solid var(--line-soft)", borderRadius: 10, fontFamily: "var(--font-mono)", fontSize: 11, lineHeight: 1.7 }}>
+      <div style={{ marginTop: "clamp(10px, 3vw, 18px)", padding: "clamp(8px, 2.5vw, 12px)", background: "oklch(0.12 0.012 60)", border: "1px solid var(--line-soft)", borderRadius: "clamp(6px, 2vw, 10px)", fontFamily: "var(--font-mono)", fontSize: "clamp(9px, 2.5vw, 11px)", lineHeight: 1.7 }}>
         <div style={{ color: "var(--fg-mute)" }}>â†’ Inbound lead: Acme Corp, $40k ARR potential</div>
         <div style={{ color: "var(--accent-2)" }}>âœ“ Qualified Â· routed to founder Â· 0.8s</div>
         <div style={{ color: "var(--fg-mute)" }}>â†’ Invoice #4421 disputed by vendor</div>
         <div style={{ color: "var(--accent-2)" }}>âœ“ Researched contract Â· drafted response</div>
       </div>
-      <div style={{ marginTop: 14, display: "flex", justifyContent: "space-between", fontFamily: "var(--font-mono)", fontSize: 10.5, color: "var(--fg-mute)" }}>
+      <div style={{ marginTop: "clamp(8px, 2.5vw, 14px)", display: "flex", justifyContent: "space-between", fontFamily: "var(--font-mono)", fontSize: "clamp(8px, 2.2vw, 10.5px)", color: "var(--fg-mute)" }}>
         <span>184 ACTIONS TODAY</span>
         <span>P95 1.2s</span>
         <span>$0.04 / ACTION</span>
@@ -392,15 +393,15 @@ function MockSaas() {
             Watch demo
           </div>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginTop: 18, paddingTop: 18, borderTop: "1px solid var(--line-soft)" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginTop: "clamp(10px, 3vw, 18px)", paddingTop: "clamp(10px, 3vw, 18px)", borderTop: "1px solid var(--line-soft)" }}>
           {[
             { v: "146", l: "BETA USERS" },
             { v: "$4.2K", l: "MRR" },
             { v: "38", l: "DAYS TO LIVE" },
           ].map((m) => (
             <div key={m.l}>
-              <div style={{ fontSize: 22, letterSpacing: "-0.02em", fontWeight: 500 }}>{m.v}</div>
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "var(--fg-mute)", letterSpacing: ".06em", marginTop: 2 }}>{m.l}</div>
+              <div style={{ fontSize: "clamp(16px, 4.5vw, 22px)", letterSpacing: "-0.02em", fontWeight: 500 }}>{m.v}</div>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: "clamp(8px, 2.2vw, 10px)", color: "var(--fg-mute)", letterSpacing: ".06em", marginTop: 2 }}>{m.l}</div>
             </div>
           ))}
         </div>
@@ -454,7 +455,7 @@ function MockWorkflow() {
         <span className="dot" /><span className="dot" /><span className="dot" />
         <span className="title">workflow Â· invoice-to-ledger</span>
       </div>
-      <svg viewBox="0 0 400 320" style={{ width: "100%", height: 280 }}>
+      <svg viewBox="0 0 400 320" style={{ width: "100%", height: "auto", maxHeight: 280 }}>
         <defs>
           <linearGradient id="wfFlow" x1="0" x2="1">
             <stop offset="0%" stopColor="oklch(0.78 0.16 65)" stopOpacity="0" />
@@ -499,7 +500,7 @@ function MockWorkflow() {
           </g>
         ))}
       </svg>
-      <div style={{ display: "flex", justifyContent: "space-between", fontFamily: "var(--font-mono)", fontSize: 10.5, color: "var(--fg-mute)", paddingTop: 12, borderTop: "1px solid var(--line-soft)" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", fontFamily: "var(--font-mono)", fontSize: "clamp(8px, 2.2vw, 10.5px)", color: "var(--fg-mute)", paddingTop: 12, borderTop: "1px solid var(--line-soft)" }}>
         <span>7 NODES</span>
         <span>RUNS 412Ã—/DAY</span>
         <span><span style={{ color: "var(--accent-2)" }}>â— </span>HEALTHY</span>
@@ -529,18 +530,18 @@ function MockStrategy() {
           };
           return (
             <div key={i} style={{
-              display: "grid", gridTemplateColumns: "44px 1fr auto", gap: 14, alignItems: "center",
-              padding: "12px 14px", border: "1px solid var(--line-soft)", borderRadius: 10,
+              display: "grid", gridTemplateColumns: "36px 1fr auto", gap: "clamp(8px, 2.5vw, 14px)", alignItems: "center",
+              padding: "clamp(8px, 2.5vw, 12px) clamp(10px, 2.5vw, 14px)", border: "1px solid var(--line-soft)", borderRadius: "clamp(6px, 2vw, 10px)",
               background: row.c === "now" ? "oklch(0.78 0.16 65 / 0.06)" : "oklch(0.12 0.012 60)",
             }}>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: colors[row.c], letterSpacing: ".04em" }}>{row.q}</span>
-              <span style={{ fontSize: 13, color: "var(--fg)" }}>{row.t}</span>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: colors[row.c], textTransform: "uppercase", letterSpacing: ".06em" }}>{row.c}</span>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "clamp(10px, 2.8vw, 12px)", color: colors[row.c], letterSpacing: ".04em" }}>{row.q}</span>
+              <span style={{ fontSize: "clamp(11px, 3vw, 13px)", color: "var(--fg)" }}>{row.t}</span>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "clamp(8px, 2.2vw, 10px)", color: colors[row.c], textTransform: "uppercase", letterSpacing: ".06em" }}>{row.c}</span>
             </div>
           );
         })}
       </div>
-      <div style={{ marginTop: 18, padding: 14, border: "1px dashed var(--line)", borderRadius: 10, fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--fg-dim)", lineHeight: 1.5 }}>
+      <div style={{ marginTop: "clamp(10px, 3vw, 18px)", padding: "clamp(10px, 2.5vw, 14px)", border: "1px dashed var(--line)", borderRadius: "clamp(6px, 2vw, 10px)", fontFamily: "var(--font-mono)", fontSize: "clamp(9px, 2.5vw, 11px)", color: "var(--fg-dim)", lineHeight: 1.5 }}>
         <div style={{ color: "var(--accent)", marginBottom: 6, letterSpacing: ".04em" }}>NORTH STAR</div>
         Founder operates two layers above the work.<br />
         Team of 8 ships like a team of 40.
