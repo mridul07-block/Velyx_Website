@@ -42,12 +42,34 @@ export default function CineNav({ active }) {
     <>
       <nav className={`nav ${scrolled ? "scrolled" : ""}`}>
         <Link to="/" className="nav__brand" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
-          <img src="https://res.cloudinary.com/dmhabztbf/image/upload/v1779688104/ChatGPT_Image_May_25__2026__11_15_18_AM-removebg-preview_hy48ex.png" alt="Velyx Labs Icon" style={{ height: 52, width: 52, objectFit: "contain", marginRight: 2 }} />
-          <div style={{ width: 1, height: 38, background: "linear-gradient(to bottom, transparent, rgba(240,146,15,0.7), transparent)" }} />
-          <div style={{ display: "flex", alignItems: "baseline", fontSize: 26, letterSpacing: "-0.01em", marginLeft: 14 }}>
+          <img 
+            src="https://res.cloudinary.com/dmhabztbf/image/upload/v1779688104/ChatGPT_Image_May_25__2026__11_15_18_AM-removebg-preview_hy48ex.png" 
+            alt="Velyx Labs Icon" 
+            style={{ 
+              height: "clamp(32px, 10vw, 52px)", 
+              width: "clamp(32px, 10vw, 52px)", 
+              objectFit: "contain", 
+              marginRight: 2,
+              flexShrink: 0,
+            }} 
+          />
+          <div style={{ 
+            width: 1, 
+            height: "clamp(24px, 7vw, 38px)", 
+            background: "linear-gradient(to bottom, transparent, rgba(240,146,15,0.7), transparent)",
+            flexShrink: 0,
+          }} />
+          <div style={{ 
+            display: "flex", 
+            alignItems: "baseline", 
+            fontSize: "clamp(18px, 5.5vw, 26px)", 
+            letterSpacing: "-0.01em", 
+            marginLeft: "clamp(8px, 2.5vw, 14px)",
+            whiteSpace: "nowrap",
+          }}>
             <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, color: "var(--fg, #f6f1e7)" }}>vely</span>
             <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, color: "#f0920f" }}>x</span>
-            <span style={{ fontFamily: "var(--font-sans, sans-serif)", fontWeight: 400, color: "var(--fg, #f6f1e7)", marginLeft: 6 }}>labs</span>
+            <span style={{ fontFamily: "var(--font-sans, sans-serif)", fontWeight: 400, color: "var(--fg, #f6f1e7)", marginLeft: "clamp(3px, 1vw, 6px)" }}>labs</span>
           </div>
         </Link>
         <div className="nav__links">
