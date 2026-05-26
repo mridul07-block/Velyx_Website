@@ -890,10 +890,12 @@ section {
   background: var(--bg-1);
   border: 1px solid var(--line-soft);
   border-radius: var(--radius-lg);
-  padding: 30px;
+  padding: clamp(20px, 5vw, 30px);
   position: relative;
   overflow: hidden;
   transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
+  display: flex;
+  flex-direction: column;
 }
 
 .cap:hover {
@@ -906,30 +908,31 @@ section {
 .cap--sm { grid-column: span 4; min-height: 260px; }
 
 @media (max-width: 900px) {
-  .cap--lg, .cap--md, .cap--sm { grid-column: span 12; }
+  .cap--lg, .cap--md, .cap--sm { grid-column: span 12; min-height: auto; }
 }
 
 .cap__kicker {
   font-family: var(--font-mono);
-  font-size: 11.5px;
+  font-size: clamp(10px, 2.5vw, 11.5px);
   letter-spacing: 0.08em;
   color: var(--accent);
   text-transform: uppercase;
-  margin-bottom: 14px;
+  margin-bottom: clamp(10px, 3vw, 14px);
 }
 
 .cap__title {
-  font-size: 24px;
+  font-size: clamp(20px, 5vw, 24px);
   letter-spacing: -0.02em;
   margin-bottom: 12px;
   line-height: 1.15;
 }
 
 .cap__desc {
-  font-size: 14.5px;
+  font-size: clamp(13.5px, 3.5vw, 14.5px);
   color: var(--fg-dim);
   line-height: 1.55;
   max-width: 42ch;
+  margin-bottom: auto; /* Pushes content below it to the bottom if there is space */
 }
 
 .cap__viz {
@@ -945,14 +948,24 @@ section {
   border: 1px solid var(--line-soft);
   border-radius: 10px;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: clamp(10px, 2.5vw, 12px);
   line-height: 1.6;
-  padding: 14px 16px;
+  padding: clamp(10px, 3vw, 14px) clamp(12px, 3.5vw, 16px);
   color: var(--fg-dim);
   overflow: hidden;
   position: absolute;
   right: 24px; bottom: 24px; left: 24px;
   max-height: 200px;
+}
+
+@media (max-width: 900px) {
+  .terminal {
+    position: relative;
+    right: auto; bottom: auto; left: auto;
+    margin-top: 24px;
+    max-height: none;
+    width: 100%;
+  }
 }
 
 .terminal .prompt { color: var(--accent); }
@@ -965,14 +978,15 @@ section {
   align-items: baseline;
   gap: 8px;
   margin-top: 14px;
+  flex-wrap: wrap;
 }
 .metric-row .big {
-  font-size: clamp(40px, 5vw, 72px);
+  font-size: clamp(32px, 8vw, 72px);
   letter-spacing: -0.04em;
   line-height: 1;
   font-weight: 500;
 }
-.metric-row .unit { color: var(--fg-mute); font-family: var(--font-mono); font-size: 14px; }
+.metric-row .unit { color: var(--fg-mute); font-family: var(--font-mono); font-size: clamp(12px, 3vw, 14px); }
 
 /* ============================================
    RESULTS (case studies)
@@ -1075,19 +1089,22 @@ section {
 .process {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: clamp(12px, 3vw, 16px);
 }
 
-@media (max-width: 900px) { .process { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 540px) { .process { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { 
+  .process { grid-template-columns: repeat(2, 1fr); } 
+  .step { min-height: auto; }
+}
+@media (max-width: 540px) { .process { grid-template-columns: 1fr; gap: 12px; } }
 
 .step {
   border: 1px solid var(--line-soft);
   border-radius: var(--radius);
-  padding: 28px 24px;
+  padding: clamp(20px, 5vw, 28px) clamp(16px, 5vw, 24px);
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: clamp(10px, 3vw, 14px);
   min-height: 280px;
   transition: all 0.3s var(--ease);
   background: var(--bg);
@@ -1100,20 +1117,20 @@ section {
 
 .step__num {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: clamp(10px, 2.5vw, 12px);
   color: var(--accent);
   letter-spacing: 0.08em;
 }
 
 .step__title {
-  font-size: 22px;
+  font-size: clamp(18px, 5vw, 22px);
   letter-spacing: -0.02em;
   font-weight: 500;
   line-height: 1.15;
 }
 
 .step__desc {
-  font-size: 14px;
+  font-size: clamp(13.5px, 3.5vw, 14px);
   color: var(--fg-dim);
   line-height: 1.55;
   margin-top: auto;
@@ -1124,8 +1141,8 @@ section {
    ============================================ */
 
 .cta {
-  margin-block: clamp(80px, 12vw, 160px);
-  padding: clamp(60px, 10vw, 130px) clamp(28px, 6vw, 80px);
+  margin-block: clamp(60px, 10vw, 160px);
+  padding: clamp(40px, 8vw, 130px) clamp(20px, 5vw, 80px);
   border-radius: clamp(20px, 3vw, 40px);
   position: relative;
   overflow: hidden;
@@ -1145,11 +1162,16 @@ section {
   z-index: 1;
   display: grid;
   grid-template-columns: 1.4fr 1fr;
-  gap: 60px;
+  gap: clamp(32px, 6vw, 60px);
   align-items: end;
 }
 
-@media (max-width: 900px) { .cta__inner { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { 
+  .cta__inner { 
+    grid-template-columns: 1fr; 
+    align-items: start; 
+  } 
+}
 
 .cta__title {
   font-size: clamp(40px, 5.6vw, 88px);
@@ -1173,7 +1195,7 @@ section {
 }
 
 .cta__copy {
-  font-size: 16px;
+  font-size: clamp(14px, 3.5vw, 16px);
   color: var(--fg-dim);
   line-height: 1.5;
   max-width: 42ch;
@@ -2180,27 +2202,34 @@ section {
 
 .footer-pro__bottom {
   max-width: var(--container);
-  margin: 60px auto 0;
-  padding-top: 28px;
+  margin: clamp(40px, 8vw, 60px) auto 0;
+  padding-top: clamp(20px, 4vw, 28px);
   border-top: 1px solid var(--line-soft);
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: clamp(9px, 2.5vw, 11px);
   color: var(--fg-mute);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: clamp(12px, 3vw, 16px);
 }
 @media (max-width: 768px) {
-  .footer-pro__bottom { flex-direction: column; align-items: flex-start; gap: 24px; }
+  .footer-pro__bottom { 
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center; 
+    gap: 16px; 
+  }
 }
 
 .footer-pro__bottom .links {
   display: flex;
-  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(16px, 4vw, 24px);
 }
 
 .footer-pro__bottom a:hover { color: var(--fg); }
