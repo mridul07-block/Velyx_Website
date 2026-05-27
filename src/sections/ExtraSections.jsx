@@ -35,22 +35,22 @@ export function StatsBar() {
 export function TestimonialsPreview() {
   const items = [
     {
-      q: "Velyx didn't sell us AI. They rebuilt our operating system. We're now doing the work of 12 with 4.",
-      name: "Priya Anand",
-      role: "FOUNDER · NORTHWIND",
-      avatar: "PA",
+      q: "Velyx Labs built a complete, production-ready web application for us from the ground up. Their engineering velocity and attention to detail transformed our vision into reality.",
+      name: "Prasannata",
+      role: "FOUNDER · OVERSHOOT NEWSLETTER",
+      avatar: "P",
     },
     {
-      q: "They shipped our SaaS MVP in 38 days. Paying customers in 60. I've never seen velocity like this from an agency.",
-      name: "Marcus Reeves",
-      role: "CEO · SABLE HEALTH",
-      avatar: "MR",
+      q: "They didn't just build our complete e-commerce brand; they conducted a deep audit of our business operations. The strategic insights and execution were unparalleled.",
+      name: "Dr. Parita",
+      role: "FOUNDER · SACRED BASIL",
+      avatar: "DP",
     },
     {
-      q: "The agents Velyx built run the GTM motion now. I review escalations for 20 minutes a day and ship product.",
-      name: "Ananya Iyer",
-      role: "FOUNDER · HALCYON AI",
-      avatar: "AI",
+      q: "Velyx delivered a robust, AI-integrated web application that immediately scaled our operations. They are true partners who deeply care about our business outcomes.",
+      name: "Nishant",
+      role: "FOUNDER · NARYANKRIPA",
+      avatar: "N",
     },
   ];
   return (
