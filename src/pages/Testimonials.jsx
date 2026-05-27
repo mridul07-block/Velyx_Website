@@ -73,62 +73,77 @@ function TestimonialBg() {
 
 const FEATURED = [
   {
-    name: "Priya Anand",
-    role: "FOUNDER & CEO",
-    company: "Northwind · Series A SaaS · Backed by Sequoia, Lightspeed",
-    quote: "Velyx didn't sell us AI. They rebuilt our operating system. We're doing the work of twelve with four — and I sleep better than I have in three years. They're the only outside partner I'd recommend to another founder without a single caveat.",
-    metric: "$2.4M",
-    note: "ARR added in 9 months without a new GTM hire",
-  },
-  {
-    name: "Marcus Reeves",
-    role: "CO-FOUNDER & CTO",
-    company: "Sable Health · Seed-stage healthtech · Y Combinator W25",
-    quote: "We came to Velyx with a deck and three weeks of runway. They shipped our MVP in 38 days. We had paying customers by day 60 and our seed round closed at 3× the valuation. I genuinely cannot imagine doing it without them.",
-    metric: "38d",
-    note: "from blank canvas to first paying customer",
-  },
-  {
-    name: "Ananya Iyer",
+    name: "Prasannata",
     role: "FOUNDER",
-    company: "Halcyon AI · Series B devtool · 80-person team",
-    quote: "The agents Velyx built run our GTM motion. Inbound qualification, outbound research, meeting prep, CRM hygiene — all handled. I review escalations for twenty minutes a day and spend the rest of my time on product and capital. That's the leverage I was always told AI would unlock. Velyx is the only group I've worked with that actually delivered it.",
-    metric: "87%",
-    note: "of inbound handled without founder review",
+    company: "Overshoot Newsletter",
+    quote: "Velyx Labs built a complete, production-ready web application for us from the ground up. Their engineering velocity and attention to detail transformed our vision into reality, allowing us to launch much faster than anticipated.",
+    metric: "100%",
+    note: "production-ready delivery",
   },
   {
-    name: "David Okafor",
-    role: "FOUNDER & CEO",
-    company: "Meridian Robotics · Series A robotics · Backed by Andreessen, Bessemer",
-    quote: "I was deeply skeptical of voice agents. Velyx changed my mind. They shipped a dispatcher that handles ninety-one percent of inbound technician calls — at three in the morning, in the rain, in seven languages. Our customers think we doubled headcount. We didn't.",
-    metric: "91%",
-    note: "first-call resolution from the voice agent",
-  },
-  {
-    name: "Lina Castro",
-    role: "CO-FOUNDER",
-    company: "Polaris OS · $40M ARR scaleup · Bootstrapped",
-    quote: "We hired Velyx as a strategic advisor — two days a month, embedded with the leadership team. They reordered our AI bets, killed three vendor contracts that were costing us a fortune, and helped us hit profitability eight months ahead of plan. Most expensive line item on our P&L. Best ROI on our P&L.",
-    metric: "8mo",
-    note: "early to profitability vs internal plan",
-  },
-  {
-    name: "Kai Vasquez",
+    name: "Dr. Parita",
     role: "FOUNDER",
-    company: "Quartzline · Seed-stage fintech · Backed by First Round",
-    quote: "Compliance was eating our roadmap. Velyx built an agent that reviews every customer transaction, drafts SAR filings, and routes to our compliance officer with full citations. We cleared a 14,000-review backlog in a month. Our compliance team thanked us. That doesn't happen.",
-    metric: "14K",
-    note: "compliance reviews cleared in 30 days",
+    company: "Sacred Basil",
+    quote: "They didn't just build our complete e-commerce brand; they conducted a deep audit of our business operations. The strategic insights and technical execution were unparalleled, giving us a massive competitive edge.",
+    metric: "360°",
+    note: "business audit and execution",
   },
-];
-
-const SHORT = [
-  { q: "They ship like a startup, think like a McKinsey partner, and execute like a top engineering team.", name: "Sahil R.", role: "CEO, FERROUS" },
-  { q: "I've worked with five AI agencies. Velyx is the only one I'd hire again. The only one.", name: "Dee P.", role: "FOUNDER, FOUNDRY/06" },
-  { q: "Velyx's evals discipline is what separates them. Every agent ships with a regression suite. That's how you build software, not demos.", name: "Maya L.", role: "CTO, ATLAS CAPITAL" },
-  { q: "They made me a better operator. The frameworks alone were worth the retainer.", name: "James W.", role: "FOUNDER, LUMEN ROBOTICS" },
-  { q: "I send them a Slack message, an agent ships a fix. Honestly unfair.", name: "Yuki T.", role: "CEO, QUARTZLINE" },
-  { q: "We measured: every dollar we paid Velyx returned eleven dollars in productive output within six months.", name: "Rohan K.", role: "COO, NORTHWIND" },
+  {
+    name: "Nishant",
+    role: "FOUNDER",
+    company: "NaryanKripa",
+    quote: "Velyx delivered a robust, AI-integrated web application that immediately scaled our operations. They are true partners who deeply care about our business outcomes and built a production-level system that drives real growth.",
+    metric: "10x",
+    note: "operational scale achieved",
+  },
+  {
+    name: "Amol",
+    role: "FOUNDER",
+    company: "GetCredentialingDone",
+    quote: "Working with Velyx was a game-changer. They built a complete production-level website with a seamlessly integrated AI MVP system. They took our concept and engineered an incredibly robust platform.",
+    metric: "MVP",
+    note: "shipped with full AI integration",
+  },
+  {
+    name: "Atharv Golait",
+    role: "FOUNDER",
+    company: "Estatico",
+    quote: "Velyx built a complete AI SaaS automation system for our real estate operations. From generating leads to nurturing them via an AI pipeline, the entire workflow is now automated and running flawlessly.",
+    metric: "24/7",
+    note: "automated lead nurturing",
+  },
+  {
+    name: "Saurabh",
+    role: "FOUNDER",
+    company: "GreenWrench Solution",
+    quote: "They built a complete web application for us and integrated an incredible AI-based Google Meet solution. The execution was flawless, and the technical capabilities they brought to the table were exactly what we needed.",
+    metric: "AI",
+    note: "integrated meeting intelligence",
+  },
+  {
+    name: "Atharv Golait",
+    role: "FOUNDER",
+    company: "Preva AI",
+    quote: "Velyx built our complete SaaS MVP at production scale — a highly personalized diet and workout split app tailored to individual body types. Their technical execution is world-class and the product feels premium from day one.",
+    metric: "SaaS",
+    note: "production-scale MVP shipped",
+  },
+  {
+    name: "Ecell Team",
+    role: "ORGANIZERS",
+    company: "ESUMMIT · NIT Hamirpur",
+    quote: "They built the complete website for ESUMMIT NIT Hamirpur and continue to maintain it flawlessly. Extremely reliable engineering team that delivers under tight event deadlines without compromise.",
+    metric: "5K+",
+    note: "event attendees served",
+  },
+  {
+    name: "Rohit",
+    role: "FOUNDER",
+    company: "Vyomira",
+    quote: "Velyx built our complete cloud platform web application with deep AI integrations baked in. The platform is robust, scalable, and beautifully engineered — exactly the foundation we needed to grow.",
+    metric: "Cloud",
+    note: "AI-integrated platform delivered",
+  },
 ];
 
 function TestimonialsPage() {
@@ -212,38 +227,49 @@ function TestimonialsPage() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
           >
-            <div className="section__label">VLX / MORE VOICES</div>
+            <div className="section__label">VLX / IMPACT</div>
             <h2 className="section__title">
-              Founders, in <span className="serif">one line.</span>
+              The numbers behind the <span className="serif">partnerships.</span>
             </h2>
           </motion.div>
-          <motion.div 
-            className="testimonials__grid"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            variants={{
-              visible: { transition: { staggerChildren: 0.1 } },
-              hidden: {}
-            }}
-          >
-            {SHORT.map((s, i) => (
-              <motion.article 
-                key={i} className="testimonial"
-                variants={{ hidden: { opacity: 0, scale: 0.95, y: 20 }, visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } } }}
-                whileHover={{ y: -5, boxShadow: "0 20px 40px -10px oklch(0 0 0 / 0.5)", transition: { duration: 0.3 } }}
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 24 }}>
+            {[
+              { icon: "🚀", value: "9+", label: "Founders Partnered", desc: "Production-level projects shipped for ambitious founders across industries" },
+              { icon: "⚡", value: "6+", label: "Industries Served", desc: "From healthtech and real estate to e-commerce, edtech, cloud platforms, and SaaS" },
+              { icon: "🤖", value: "100%", label: "AI Integration Rate", desc: "Every project ships with intelligent automation baked into the core architecture" },
+              { icon: "🎯", value: "0", label: "Failed Launches", desc: "Every engagement has resulted in a live, production-grade product in the market" },
+            ].map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ y: -6, transition: { duration: 0.3 } }}
+                style={{
+                  padding: "clamp(32px, 4vw, 48px)",
+                  borderRadius: "clamp(16px, 2vw, 24px)",
+                  border: "1px solid var(--line-soft)",
+                  background: "linear-gradient(160deg, oklch(0.18 0.012 60 / 0.8), oklch(0.12 0.006 60 / 0.5))",
+                  backdropFilter: "blur(20px)",
+                  position: "relative",
+                  overflow: "hidden",
+                }}
               >
-                <p className="testimonial__quote" style={{ fontSize: 18 }}>{s.q}</p>
-                <div className="testimonial__author">
-                  <div className="testimonial__avatar">{s.name.split(" ").map(x => x[0]).join("")}</div>
-                  <div className="testimonial__meta">
-                    <div className="testimonial__name">{s.name}</div>
-                    <div className="testimonial__role">{s.role}</div>
-                  </div>
+                <div style={{ position: "absolute", top: 20, right: 20, fontSize: 32, opacity: 0.15 }}>{stat.icon}</div>
+                <div style={{ fontSize: "clamp(48px, 6vw, 72px)", fontWeight: 600, letterSpacing: "-0.04em", lineHeight: 1, color: "var(--accent)", marginBottom: 8 }}>
+                  {stat.value}
                 </div>
-              </motion.article>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: ".08em", textTransform: "uppercase", color: "var(--fg-mute)", marginBottom: 12 }}>
+                  {stat.label}
+                </div>
+                <p style={{ fontSize: 14.5, color: "var(--fg-dim)", lineHeight: 1.55, margin: 0 }}>
+                  {stat.desc}
+                </p>
+              </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
