@@ -59,10 +59,9 @@ export default function CineFooter() {
         <div>
           <h4 style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: ".08em", color: "var(--fg-mute)", textTransform: "uppercase", marginBottom: 18 }}>Elsewhere</h4>
           <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 10 }}>
-            <li><a href="#" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>X / Twitter</a></li>
-            <li><a href="#" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>LinkedIn</a></li>
-            <li><a href="#" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>GitHub</a></li>
-            <li><a href="#" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>Substack</a></li>
+            <li><a href="https://x.com/VelyxLabs" target="_blank" rel="noopener noreferrer" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>X / Twitter</a></li>
+            <li><a href="https://www.linkedin.com/company/velyx-labs/" target="_blank" rel="noopener noreferrer" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>LinkedIn</a></li>
+            <li><a href="https://github.com/ATHARVISM2804" target="_blank" rel="noopener noreferrer" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>GitHub</a></li>
             <li><a href="mailto:velyxlabs@gmail.com" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>velyxlabs@gmail.com</a></li>
           </ul>
         </div>
