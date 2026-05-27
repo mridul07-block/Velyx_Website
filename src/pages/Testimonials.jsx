@@ -233,40 +233,144 @@ function TestimonialsPage() {
             </h2>
           </motion.div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 24 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 28 }}>
             {[
-              { icon: "🚀", value: "9+", label: "Founders Partnered", desc: "Production-level projects shipped for ambitious founders across industries" },
-              { icon: "⚡", value: "6+", label: "Industries Served", desc: "From healthtech and real estate to e-commerce, edtech, cloud platforms, and SaaS" },
-              { icon: "🤖", value: "100%", label: "AI Integration Rate", desc: "Every project ships with intelligent automation baked into the core architecture" },
-              { icon: "🎯", value: "0", label: "Failed Launches", desc: "Every engagement has resulted in a live, production-grade product in the market" },
+              { value: "9+", label: "Founders Partnered", desc: "Production-level projects shipped for ambitious founders across industries", accent: "60" },
+              { value: "6+", label: "Industries Served", desc: "From healthtech and real estate to e-commerce, edtech, cloud platforms, and SaaS", accent: "45" },
+              { value: "100%", label: "AI Integration Rate", desc: "Every project ships with intelligent automation baked into the core architecture", accent: "30" },
+              { value: "0", label: "Failed Launches", desc: "Every engagement has resulted in a live, production-grade product in the market", accent: "75" },
             ].map((stat, i) => (
               <motion.div
                 key={stat.label}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                whileHover={{ y: -6, transition: { duration: 0.3 } }}
+                initial={{ opacity: 0, y: 50, scale: 0.92 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.8, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ 
+                  y: -10, 
+                  scale: 1.03,
+                  transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] } 
+                }}
                 style={{
-                  padding: "clamp(32px, 4vw, 48px)",
-                  borderRadius: "clamp(16px, 2vw, 24px)",
-                  border: "1px solid var(--line-soft)",
-                  background: "linear-gradient(160deg, oklch(0.18 0.012 60 / 0.8), oklch(0.12 0.006 60 / 0.5))",
-                  backdropFilter: "blur(20px)",
+                  padding: "clamp(36px, 4vw, 52px)",
+                  borderRadius: "clamp(18px, 2.5vw, 28px)",
+                  border: "1px solid transparent",
+                  background: `linear-gradient(oklch(0.11 0.005 60), oklch(0.11 0.005 60)) padding-box, linear-gradient(135deg, oklch(0.65 0.15 ${stat.accent} / 0.4), transparent 50%, oklch(0.65 0.15 ${stat.accent} / 0.15)) border-box`,
                   position: "relative",
                   overflow: "hidden",
+                  cursor: "default",
                 }}
               >
-                <div style={{ position: "absolute", top: 20, right: 20, fontSize: 32, opacity: 0.15 }}>{stat.icon}</div>
-                <div style={{ fontSize: "clamp(48px, 6vw, 72px)", fontWeight: 600, letterSpacing: "-0.04em", lineHeight: 1, color: "var(--accent)", marginBottom: 8 }}>
+                {/* Animated gradient orb */}
+                <div style={{
+                  position: "absolute",
+                  top: "-40%",
+                  right: "-30%",
+                  width: "200px",
+                  height: "200px",
+                  borderRadius: "50%",
+                  background: `radial-gradient(circle, oklch(0.65 0.15 ${stat.accent} / 0.08), transparent 70%)`,
+                  filter: "blur(40px)",
+                  animation: `pulse-glow ${3 + i * 0.5}s ease-in-out infinite alternate`,
+                  pointerEvents: "none",
+                }} />
+
+                {/* Bottom shimmer line */}
+                <div style={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  height: "2px",
+                  background: `linear-gradient(90deg, transparent, oklch(0.75 0.15 ${stat.accent} / 0.6), transparent)`,
+                  animation: `shimmer-slide ${2.5 + i * 0.3}s ease-in-out infinite`,
+                  pointerEvents: "none",
+                }} />
+
+                {/* Number index */}
+                <div style={{
+                  position: "absolute",
+                  top: 18,
+                  right: 22,
+                  fontFamily: "var(--font-mono)",
+                  fontSize: 11,
+                  letterSpacing: ".1em",
+                  color: "var(--fg-mute)",
+                  opacity: 0.4,
+                }}>
+                  {String(i + 1).padStart(2, "0")}
+                </div>
+
+                {/* Value */}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: i * 0.15 + 0.3, ease: [0.16, 1, 0.3, 1] }}
+                  style={{
+                    fontSize: "clamp(52px, 7vw, 80px)",
+                    fontWeight: 700,
+                    letterSpacing: "-0.045em",
+                    lineHeight: 1,
+                    background: `linear-gradient(135deg, var(--accent), oklch(0.85 0.12 ${stat.accent}))`,
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    marginBottom: 10,
+                    position: "relative",
+                    zIndex: 1,
+                  }}
+                >
                   {stat.value}
-                </div>
-                <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: ".08em", textTransform: "uppercase", color: "var(--fg-mute)", marginBottom: 12 }}>
+                </motion.div>
+
+                {/* Label */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.15 + 0.45 }}
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: 11,
+                    letterSpacing: ".1em",
+                    textTransform: "uppercase",
+                    color: "var(--fg-mute)",
+                    marginBottom: 14,
+                    position: "relative",
+                    zIndex: 1,
+                  }}
+                >
                   {stat.label}
-                </div>
-                <p style={{ fontSize: 14.5, color: "var(--fg-dim)", lineHeight: 1.55, margin: 0 }}>
+                </motion.div>
+
+                {/* Separator */}
+                <div style={{
+                  width: 36,
+                  height: 1,
+                  background: `linear-gradient(90deg, oklch(0.65 0.15 ${stat.accent} / 0.6), transparent)`,
+                  marginBottom: 14,
+                  position: "relative",
+                  zIndex: 1,
+                }} />
+
+                {/* Description */}
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.15 + 0.55 }}
+                  style={{
+                    fontSize: 14,
+                    color: "var(--fg-dim)",
+                    lineHeight: 1.6,
+                    margin: 0,
+                    position: "relative",
+                    zIndex: 1,
+                  }}
+                >
                   {stat.desc}
-                </p>
+                </motion.p>
               </motion.div>
             ))}
           </div>
