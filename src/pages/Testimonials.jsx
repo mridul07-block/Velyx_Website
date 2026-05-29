@@ -112,14 +112,7 @@ const FEATURED = [
     metric: "24/7",
     note: "automated lead nurturing",
   },
-  {
-    name: "Saurabh",
-    role: "FOUNDER",
-    company: "GreenWrench Solution",
-    quote: "They built a complete web application for us and integrated an incredible AI-based Google Meet solution. The execution was flawless, and the technical capabilities they brought to the table were exactly what we needed.",
-    metric: "AI",
-    note: "integrated meeting intelligence",
-  },
+
   {
     name: "Atharv Golait",
     role: "FOUNDER",
@@ -136,14 +129,7 @@ const FEATURED = [
     metric: "5K+",
     note: "event attendees served",
   },
-  {
-    name: "Rohit",
-    role: "FOUNDER",
-    company: "Vyomira",
-    quote: "Velyx built our complete cloud platform web application with deep AI integrations baked in. The platform is robust, scalable, and beautifully engineered — exactly the foundation we needed to grow.",
-    metric: "Cloud",
-    note: "AI-integrated platform delivered",
-  },
+
 ];
 
 function TestimonialsPage() {

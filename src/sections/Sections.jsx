@@ -95,7 +95,6 @@ export function Marquee() {
     "Bytecitadel",
     "Estatico",
     "SacredBasil",
-    "GreenWrenchSolutions",
     "Atharv",
     "SkipIt",
     "ArtifyCheck",
