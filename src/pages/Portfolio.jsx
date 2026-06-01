@@ -105,36 +105,6 @@ const PROJECTS = [
     viz: "saas",
   },
   {
-    id: "halcyon",
-    name: "Halcyon AI",
-    cat: "Internal Copilot",
-    year: "2026",
-    title: "A finance copilot for a Series B founder.",
-    desc: "Trained on the company's entire ledger, vendor contracts, and three years of board materials. The CEO uses it for monthly variance reviews — and it's caught $340K in billing errors.",
-    metrics: [["$340K", "errors caught"], ["4hr→8min", "monthly close"], ["100%", "audit trail"]],
-    viz: "copilot",
-  },
-  {
-    id: "meridian",
-    name: "Meridian Robotics",
-    cat: "Custom Workflow",
-    year: "2025",
-    title: "Voice-ops dispatcher for field service.",
-    desc: "Inbound voice agent triages calls from field technicians, opens tickets, queries the parts database, and dispatches the next move — replacing a 24/7 dispatch desk.",
-    metrics: [["24/7", "coverage"], ["$180K", "annual savings"], ["91%", "first-call resolution"]],
-    viz: "workflow",
-  },
-  {
-    id: "polaris",
-    name: "Polaris OS",
-    cat: "AI Strategy",
-    year: "2025",
-    title: "12-month AI roadmap for a $40M ARR scaleup.",
-    desc: "Embedded with the founding team for two days a month. Reordered their AI bets, killed three vendor contracts, and shipped four internal copilots. Hit profitability eight months early.",
-    metrics: [["3", "vendors fired"], ["4", "copilots shipped"], ["8mo", "early to profit"]],
-    viz: "strategy",
-  },
-  {
     id: "quartzline",
     name: "Quartzline",
     cat: "Agentic Systems",
@@ -316,7 +286,7 @@ function PfCard({ p }) {
 
 function PortfolioPage() {
   const [filter, setFilter] = useState("All");
-  const cats = ["All", "Agentic Systems", "SaaS MVP", "Internal Copilot", "Custom Workflow", "AI Strategy"];
+  const cats = ["All", "Agentic Systems", "SaaS MVP", "Web Application"];
   const list = filter === "All" ? PROJECTS : PROJECTS.filter((p) => p.cat === filter);
 
   return (
@@ -345,7 +315,7 @@ function PortfolioPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
             >
-              Six engagements.<br /><span className="serif">One pattern.</span>
+              Three engagements.<br /><span className="serif">One pattern.</span>
             </motion.h1>
           </div>
           <motion.p
