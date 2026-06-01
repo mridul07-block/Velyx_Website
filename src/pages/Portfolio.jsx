@@ -85,6 +85,76 @@ function PortfolioBg() {
 
 const PROJECTS = [
   {
+    id: "bytecitadel",
+    name: "ByteCitadel",
+    cat: "Web Application",
+    year: "2026",
+    title: "AI & ML Solutions Platform",
+    desc: "Transforming businesses with cutting-edge AI and machine learning solutions. Based in India, serving the world.",
+    image: "https://res.cloudinary.com/dmhabztbf/image/upload/v1780326044/Screenshot_2026-06-01_202946_un8s63.png",
+    liveUrl: "https://bytecitadel.vercel.app/",
+  },
+  {
+    id: "overshoot",
+    name: "Overshoot",
+    cat: "Web Application",
+    year: "2026",
+    title: "The Business of Entertainment",
+    desc: "A community about the business of everything that entertains you. Strategy rooms, balance sheets, and power plays behind the content you binge, the games you play, and the culture you live in. Bi-monthly. Sharp. No fluff.",
+    image: "https://res.cloudinary.com/dmhabztbf/image/upload/v1780326351/Screenshot_2026-06-01_203530_vqqrpl.png",
+    liveUrl: "https://www.overshoot.in/",
+  },
+  {
+    id: "narayankripa",
+    name: "Narayan Kripa",
+    cat: "Web Application",
+    year: "2026",
+    title: "Experience Divine Puja",
+    desc: "Join live pujas performed by verified pandits at India's most revered temples — from the comfort of your home.",
+    image: "https://res.cloudinary.com/dmhabztbf/image/upload/v1780326748/Screenshot_2026-06-01_204139_x0fzay.png",
+    liveUrl: "https://www.narayankripa.in/",
+  },
+  {
+    id: "theberrycoworks",
+    name: "TheBerryCoworks",
+    cat: "Web Application",
+    year: "2026",
+    title: "Delhi Coworking Space",
+    desc: "Premium coworking spaces in Delhi designed for modern professionals and startups — flexible plans, vibrant community, and world-class amenities.",
+    image: "https://res.cloudinary.com/dmhabztbf/image/upload/v1780327245/Screenshot_2026-06-01_204747_gzdl2w.png",
+    liveUrl: "https://theberry.vercel.app/",
+  },
+  {
+    id: "azuregrand",
+    name: "Azure Grand Resort",
+    cat: "Web Application",
+    year: "2026",
+    title: "Luxury Resort & Spa",
+    desc: "Experience unparalleled luxury at Azure Grand Resort & Spa. Nestled along pristine coastlines, our five-star resort offers world-class dining, rejuvenating spa treatments, and breathtaking ocean views.",
+    image: "https://res.cloudinary.com/dmhabztbf/image/upload/v1780327813/Screenshot_2026-06-01_205549_k5tzyb.png",
+    liveUrl: "https://grand-azure-resort.vercel.app/",
+  },
+  {
+    id: "getcredentialing",
+    name: "GetCredentialingDone",
+    cat: "Web Application",
+    year: "2026",
+    title: "Insurance Credentialing Services",
+    desc: "Fast & easy insurance credentialing services — streamlining the process so healthcare providers can focus on what matters most: patient care.",
+    image: "https://res.cloudinary.com/dmhabztbf/image/upload/v1780327961/Screenshot_2026-06-01_210115_zffetj.png",
+    liveUrl: "https://getcredentialingdone.com/",
+  },
+  {
+    id: "esummit",
+    name: "E-Summit 2026",
+    cat: "Web Application",
+    year: "2026",
+    title: "E-Cell NIT Hamirpur",
+    desc: "E-Summit 2026 is the flagship annual entrepreneurship event organized by E-Cell NIT Hamirpur. One of the most anticipated events in the North Indian startup ecosystem, bringing together visionaries, innovators, and future leaders.",
+    image: "https://res.cloudinary.com/dmhabztbf/image/upload/v1780328069/ecell_q5alca.png",
+    liveUrl: "https://esummit.nith.ac.in/",
+  },
+  {
     id: "northwind",
     name: "Northwind",
     cat: "Agentic Systems",
@@ -251,6 +321,37 @@ function VizStrategy() {
 
 const VIZ = { agents: VizAgents, saas: VizSaas, copilot: VizCopilot, workflow: VizWorkflow, strategy: VizStrategy };
 
+function WebCard({ p }) {
+  return (
+    <motion.article
+      className="pf-card pf-card--web"
+      layout
+      initial={{ opacity: 0, scale: 0.95, y: 30 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95, y: 20 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      whileHover={{ y: -8, boxShadow: "0 30px 80px -20px oklch(0 0 0 / 0.6)", transition: { duration: 0.3 } }}
+    >
+      <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="pf-card__img-link">
+        <div className="pf-card__viz pf-card__viz--img">
+          <img src={p.image} alt={p.name} loading="lazy" />
+          <div className="pf-card__img-overlay">
+            <span className="pf-card__visit">Visit Live Site <span className="arr">↗</span></span>
+          </div>
+        </div>
+      </a>
+      <div className="pf-card__body">
+        <div className="pf-card__kicker">
+          <span>{p.name}</span>
+          <span className="yr">{p.cat}</span>
+        </div>
+        <h3 className="pf-card__title">{p.title}</h3>
+        <p className="pf-card__desc">{p.desc}</p>
+      </div>
+    </motion.article>
+  );
+}
+
 function PfCard({ p }) {
   const V = VIZ[p.viz];
   return (
@@ -286,7 +387,7 @@ function PfCard({ p }) {
 
 function PortfolioPage() {
   const [filter, setFilter] = useState("All");
-  const cats = ["All", "Agentic Systems", "SaaS MVP", "Web Application"];
+  const cats = ["All", "Web Application", "Agentic Systems", "SaaS MVP"];
   const list = filter === "All" ? PROJECTS : PROJECTS.filter((p) => p.cat === filter);
 
   return (
@@ -315,7 +416,7 @@ function PortfolioPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
             >
-              Three engagements.<br /><span className="serif">One pattern.</span>
+              Ten engagements.<br /><span className="serif">One pattern.</span>
             </motion.h1>
           </div>
           <motion.p
@@ -361,7 +462,7 @@ function PortfolioPage() {
 
         <motion.div layout className="portfolio">
           <AnimatePresence mode="popLayout">
-            {list.map((p) => <PfCard key={p.id} p={p} />)}
+            {list.map((p) => p.image ? <WebCard key={p.id} p={p} /> : <PfCard key={p.id} p={p} />)}
           </AnimatePresence>
         </motion.div>
       </div>
