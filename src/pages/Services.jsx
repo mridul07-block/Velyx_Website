@@ -132,7 +132,7 @@ export default function Services() {
       <ProgressUpdater />
       <CineNav active="services" />
 
-      <section className="page-hero" data-screen-label="01 Services Hero">
+      <section className="page-hero" data-screen-label="01 Systems Hero">
         <ServiceBg />
         <div className="page-hero__bg" />
         <div className="page-hero__bg-grid" style={{ animation: "grid-drift 40s linear infinite", opacity: 0.5 }} />
@@ -144,7 +144,7 @@ export default function Services() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
             >
-              <span>VELYX LABS</span> <span style={{ color: "var(--fg-mute)" }}>/</span> SERVICES
+              <span>VELYX LABS</span> <span style={{ color: "var(--fg-mute)" }}>/</span> SYSTEMS
             </motion.div>
             <motion.h1
               className="page-hero__title"

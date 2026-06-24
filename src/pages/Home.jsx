@@ -10,7 +10,7 @@ import { StatsBar, TestimonialsPreview, FAQ } from "../sections/ExtraSections";
 
 const sections = [
   { id: "hero", label: "Hero" },
-  { id: "work", label: "Services" },
+  { id: "work", label: "Systems" },
   { id: "ship", label: "What we ship" },
   { id: "capabilities", label: "Capabilities" },
   { id: "stats", label: "Numbers" },

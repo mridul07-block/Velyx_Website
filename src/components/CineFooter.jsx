@@ -38,7 +38,7 @@ export default function CineFooter() {
         <div>
           <h4 style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: ".08em", color: "var(--fg-mute)", textTransform: "uppercase", marginBottom: 18 }}>Studio</h4>
           <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 10 }}>
-            <li><Link to="/services" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>Services</Link></li>
+            <li><Link to="/services" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>Systems</Link></li>
             <li><Link to="/portfolio" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>Portfolio</Link></li>
             <li><Link to="/testimonials" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>Testimonials</Link></li>
             <li><Link to="/contact" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>Contact</Link></li>

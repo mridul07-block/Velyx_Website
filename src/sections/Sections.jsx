@@ -119,10 +119,10 @@ export function Marquee() {
 
 export function Pillars() {
   return (
-    <section className="section" id="work" data-screen-label="03 Services">
+    <section className="section" id="work" data-screen-label="03 Systems">
       <div className="container">
         <Reveal className="section__head">
-          <div className="section__label">VLX / SERVICES</div>
+          <div className="section__label">VLX / SYSTEMS</div>
           <h2 className="section__title">
             We build three things — <span className="serif">obsessively well.</span>
           </h2>
