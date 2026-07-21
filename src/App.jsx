@@ -8,6 +8,8 @@ import Preloader from "./components/Preloader";
 const Home        = lazy(() => import("./pages/Home"));
 const Services    = lazy(() => import("./pages/Services"));
 const Portfolio   = lazy(() => import("./pages/Portfolio"));
+const CaseStudies = lazy(() => import("./pages/CaseStudies"));
+const CaseStudyDetail = lazy(() => import("./pages/CaseStudyDetail"));
 const Testimonials = lazy(() => import("./pages/Testimonials"));
 const Contact     = lazy(() => import("./pages/Contact"));
 
@@ -62,6 +64,8 @@ export default function App() {
             <Route path="/"             element={<Home />} />
             <Route path="/services"     element={<Services />} />
             <Route path="/portfolio"    element={<Portfolio />} />
+            <Route path="/case-studies" element={<CaseStudies />} />
+            <Route path="/case-studies/:slug" element={<CaseStudyDetail />} />
             <Route path="/testimonials" element={<Testimonials />} />
             <Route path="/contact"      element={<Contact />} />
           </Routes>

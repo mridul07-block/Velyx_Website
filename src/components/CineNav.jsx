@@ -34,6 +34,7 @@ export default function CineNav({ active }) {
     { id: "home", label: "Home", to: "/" },
     { id: "services", label: "Services", to: "/services" },
     { id: "portfolio", label: "Portfolio", to: "/portfolio" },
+    { id: "case-studies", label: "Case Studies", to: "/case-studies" },
     { id: "testimonials", label: "Testimonials", to: "/testimonials" },
     { id: "contact", label: "Contact", to: "/contact" },
   ];
