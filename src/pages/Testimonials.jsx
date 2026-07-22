@@ -6,6 +6,7 @@ import CineNav from '../components/CineNav';
 import CineFooter from '../components/CineFooter';
 import CustomCursor from '../components/CustomCursor';
 import ProgressUpdater from '../components/ProgressUpdater';
+import { ENGAGEMENTS } from '../data/testimonials';
 
 function TestimonialBg() {
   const ref = useRef(null);
@@ -72,6 +73,14 @@ function TestimonialBg() {
 }
 
 const FEATURED = [
+  ...ENGAGEMENTS.map((e) => ({
+    name: e.name,
+    role: e.rel,
+    company: e.meta,
+    quote: e.d,
+    metric: e.metric,
+    note: e.note,
+  })),
   {
     name: "Prasannata",
     role: "FOUNDER",
@@ -176,7 +185,7 @@ function TestimonialsPage() {
       </section>
 
       <div className="container">
-        {FEATURED.map((f, i) => (
+        {FEATURED.map((f) => (
           <motion.div 
             className="tm-feature" key={f.name}
             initial={{ opacity: 0, y: 60 }}
@@ -188,14 +197,12 @@ function TestimonialsPage() {
               <div className="name">{f.name}</div>
               <div className="role">{f.role}</div>
               <div className="company">{f.company}</div>
-              <div className="tm-feature__metric">
-                <span className="big">{f.metric.includes("$") || f.metric.includes("%") ? (
-                  <>{f.metric}</>
-                ) : (
-                  <>{f.metric}</>
-                )}</span>
-                <span className="note">{f.note}</span>
-              </div>
+              {f.metric && (
+                <div className="tm-feature__metric">
+                  <span className="big">{f.metric}</span>
+                  <span className="note">{f.note}</span>
+                </div>
+              )}
             </div>
             <div>
               <blockquote className="tm-feature__quote">{f.quote}</blockquote>
@@ -364,7 +371,7 @@ function TestimonialsPage() {
       </section>
 
       <section className="container" style={{ paddingBlock: "clamp(60px, 9vw, 120px)" }}>
-        <motion.div 
+        <motion.div
           style={{
             textAlign: "center",
             padding: "clamp(60px, 9vw, 120px) clamp(28px, 6vw, 80px)",

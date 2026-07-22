@@ -409,8 +409,8 @@ function ContactPage() {
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
                 <div>
-                  <div style={{ fontSize: 16, fontWeight: 500, marginBottom: 4 }}>Pune</div>
-                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--fg-mute)", lineHeight: 1.6 }}>HQ · 18.52°N<br />Pune, PNQ</div>
+                  <div style={{ fontSize: 16, fontWeight: 500, marginBottom: 4 }}>Bangalore</div>
+                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--fg-mute)", lineHeight: 1.6 }}>HQ · 12.97°N<br />Bangalore, BLR</div>
                 </div>
                 <div>
                   <div style={{ fontSize: 16, fontWeight: 500, marginBottom: 4 }}>San Francisco</div>

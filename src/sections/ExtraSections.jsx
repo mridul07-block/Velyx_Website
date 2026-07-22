@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Reveal from "../components/Reveal";
+import { RING_ITEMS } from "../data/testimonials";
 
 export function StatsBar() {
   const stats = [
@@ -32,27 +33,113 @@ export function StatsBar() {
   );
 }
 
+/* ------------------------------------------------------------------
+   TESTIMONIALS — revolving 3D ring
+   Cards orbit the vertical axis of the page. Two kinds ride the same
+   ring: client quotes, and engagement cards describing the work.
+------------------------------------------------------------------ */
+
+function RingCard({ t }) {
+  const isQuote = t.kind === "quote";
+  return (
+    <article className={`vt-card ${isQuote ? "vt-card--quote" : "vt-card--work"}`}>
+      <span className="vt-card__tag">{isQuote ? "Testimonial" : "Engagement"}</span>
+
+      <div className="vt-card__head">
+        <div className="vt-card__avatar">{t.avatar}</div>
+        <div className="vt-card__id">
+          <div className="vt-card__name">{t.name}</div>
+          <div className="vt-card__role">{isQuote ? t.role : t.meta}</div>
+        </div>
+      </div>
+
+      {isQuote ? (
+        <p className="vt-card__quote">{t.q}</p>
+      ) : (
+        <>
+          <p className="vt-card__desc">{t.d}</p>
+          <div className="vt-card__rel">{t.rel}</div>
+        </>
+      )}
+    </article>
+  );
+}
+
+const SPIN_DEG_PER_SEC = 9;
+
 export function TestimonialsPreview() {
-  const items = [
-    {
-      q: "Velyx Labs built a complete, production-ready web application for us from the ground up. Their engineering velocity and attention to detail transformed our vision into reality.",
-      name: "Prasannata",
-      role: "FOUNDER · OVERSHOOT NEWSLETTER",
-      avatar: "P",
-    },
-    {
-      q: "They didn't just build our complete e-commerce brand; they conducted a deep audit of our business operations. The strategic insights and execution were unparalleled.",
-      name: "Dr. Parita",
-      role: "FOUNDER · SACRED BASIL",
-      avatar: "DP",
-    },
-    {
-      q: "Velyx delivered a robust, AI-integrated web application that immediately scaled our operations. They are true partners who deeply care about our business outcomes.",
-      name: "Nishant",
-      role: "FOUNDER · NARYANKRIPA",
-      avatar: "N",
-    },
-  ];
+  const [hovered, setHovered] = useState(false);
+  const [radius, setRadius] = useState(430);
+
+  const ringRef = useRef(null);
+  const cardRefs = useRef([]);
+  const rot = useRef(0);      // current angle
+  const target = useRef(0);   // where we're easing toward
+  const frozenRef = useRef(false);
+  const drag = useRef(null);
+
+  const slots = RING_ITEMS.length < 5 ? [...RING_ITEMS, ...RING_ITEMS] : RING_ITEMS;
+  const n = slots.length;
+  const step = 360 / n;
+
+  useEffect(() => { frozenRef.current = hovered; }, [hovered]);
+
+  // Radius scales with card width so cards never intersect
+  useEffect(() => {
+    const measure = () => {
+      const w = Math.min(360, Math.max(268, window.innerWidth * 0.26));
+      const min = (w / 2) / Math.tan(Math.PI / n);
+      setRadius(Math.round(Math.max(min * 1.5, w * 1.38)));
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [n]);
+
+  // Drive the orbit; write straight to the DOM so we don't re-render per frame
+  useEffect(() => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let raf;
+    let last = performance.now();
+
+    const tick = (now) => {
+      const dt = Math.min((now - last) / 1000, 0.05);
+      last = now;
+
+      if (!frozenRef.current && !reduce) target.current -= SPIN_DEG_PER_SEC * dt;
+      rot.current += (target.current - rot.current) * Math.min(1, dt * 5);
+
+      if (ringRef.current) {
+        ringRef.current.style.transform = `translateZ(-${radius}px) rotateY(${rot.current}deg)`;
+      }
+      // Fade cards as they swing behind the axis
+      cardRefs.current.forEach((el, i) => {
+        if (!el) return;
+        const a = ((i * step + rot.current) % 360 + 360) % 360;
+        const facing = (Math.cos((a * Math.PI) / 180) + 1) / 2; // 1 = front, 0 = back
+        el.style.opacity = (0.08 + 0.92 * Math.pow(facing, 1.6)).toFixed(3);
+        el.style.pointerEvents = facing > 0.55 ? "auto" : "none";
+      });
+
+      raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [radius, step]);
+
+  const nudge = (dir) => { target.current += dir * step; };
+
+  const onPointerDown = (e) => {
+    drag.current = { x: e.clientX, start: target.current };
+    e.currentTarget.setPointerCapture?.(e.pointerId);
+  };
+  const onPointerMove = (e) => {
+    if (!drag.current) return;
+    target.current = drag.current.start + (e.clientX - drag.current.x) * 0.28;
+  };
+  const onPointerUp = () => { drag.current = null; };
+
   return (
     <section className="section" id="testimonials" data-screen-label="07 Testimonials">
       <div className="container">
@@ -62,25 +149,46 @@ export function TestimonialsPreview() {
             Operators we've worked with — <span className="serif">unfiltered.</span>
           </h2>
         </Reveal>
-        <Reveal className="testimonials__grid">
-          {items.map((t) => (
-            <article key={t.name} className="testimonial">
-              <p className="testimonial__quote">{t.q}</p>
-              <div className="testimonial__author">
-                <div className="testimonial__avatar">{t.avatar}</div>
-                <div className="testimonial__meta">
-                  <div className="testimonial__name">{t.name}</div>
-                  <div className="testimonial__role">{t.role}</div>
-                </div>
+      </div>
+
+      <div
+        className={`vt3d ${hovered ? "is-frozen" : ""}`}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => { setHovered(false); drag.current = null; }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+      >
+        <div className="vt3d__stage">
+          <div className="vt3d__ring" ref={ringRef}>
+            {slots.map((t, i) => (
+              <div
+                key={`${t.name}-${i}`}
+                className="vt3d__slot"
+                ref={(el) => (cardRefs.current[i] = el)}
+                style={{ transform: `rotateY(${i * step}deg) translateZ(${radius}px)` }}
+              >
+                <RingCard t={t} />
               </div>
-            </article>
-          ))}
-        </Reveal>
-        <div style={{ display: "flex", justifyContent: "center", marginTop: 40 }}>
-          <Link to="/testimonials" className="btn btn--ghost">
-            Read all testimonials <span className="arr">→</span>
-          </Link>
+            ))}
+          </div>
         </div>
+
+        <div className="vt3d__floor" aria-hidden="true" />
+
+        <button className="vt3d__arrow vt3d__arrow--l" onClick={() => nudge(-1)} aria-label="Previous">←</button>
+        <button className="vt3d__arrow vt3d__arrow--r" onClick={() => nudge(1)} aria-label="Next">→</button>
+      </div>
+
+      <div className="container vt3d__foot">
+        <span className="vt3d__hint">
+          <span className="dot" />
+          {hovered ? "Paused — take your time" : "Hover to pause · drag to spin"}
+        </span>
+        <Link to="/testimonials" className="btn btn--ghost">
+          Read all testimonials <span className="arr">→</span>
+        </Link>
       </div>
     </section>
   );

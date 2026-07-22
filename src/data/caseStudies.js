@@ -76,7 +76,7 @@ export const CASE_STUDIES = [
     },
     flow: ["PORTAL LEAD", "QUALIFY", "MATCH", "BOOK VISIT", "AGENT CRM"],
     example: {
-      client: "A Pune-based brokerage — 22 agents, luxury + mid-segment resale",
+      client: "A Bangalore-based brokerage — 22 agents, luxury + mid-segment resale",
       context:
         "They were the classic case: strong ad budget, strong inventory, and a sales floor that simply could not physically answer 400 leads a month at the speed the market demanded. Two agents were doing nothing but manually calling new leads — and still missing most of them.",
       before: [

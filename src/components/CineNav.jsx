@@ -88,7 +88,7 @@ export default function CineNav({ active }) {
         <div className="nav__meta">
           <span className="nav__time">
             <span className="pulse" />
-            {time} PNQ
+            {time} BLR
           </span>
           <button data-cal-namespace="30min" data-cal-link="velyx-labs/30min" data-cal-config='{"layout":"month_view"}' className="nav__cta">
             <span className="dot" />
@@ -144,7 +144,7 @@ export default function CineNav({ active }) {
                 transition={{ delay: 0.6, duration: 0.5 }}
               >
                 <div className="contact-info">
-                  <a href="mailto:hi@velyx.com">hi@velyx.com</a>
+                  <a href="mailto:velyxlabs@gmail.com">velyxlabs@gmail.com</a>
                   <a href="#">X / Twitter</a>
                   <a href="#">LinkedIn</a>
                 </div>

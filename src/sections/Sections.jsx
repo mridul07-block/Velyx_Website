@@ -1,4 +1,93 @@
+import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import Reveal from "../components/Reveal";
+import { motion } from "framer-motion";
+
+/* ------------------------------------------------------------------
+   Process stage glyphs — one animated mark per move
+------------------------------------------------------------------ */
+const A = "oklch(0.78 0.16 65)";
+const A2 = "oklch(0.92 0.18 110)";
+const DIM = "oklch(0.38 0.01 60)";
+
+/* 01 Diagnose — a scan sweeping a grid of workflows */
+function GlyphScan() {
+  const dots = [];
+  for (let r = 0; r < 3; r++) for (let c = 0; c < 7; c++) dots.push([14 + c * 15, 18 + r * 17, c]);
+  return (
+    <svg viewBox="0 0 120 72" width="100%" height="100%">
+      {dots.map(([x, y, c], i) => (
+        <circle key={i} cx={x} cy={y} r="2.4" fill={DIM}>
+          <animate attributeName="fill" values={`${DIM};${A};${DIM}`} dur="3.6s" begin={`${c * 0.18}s`} repeatCount="indefinite" />
+          <animate attributeName="r" values="2.4;3.4;2.4" dur="3.6s" begin={`${c * 0.18}s`} repeatCount="indefinite" />
+        </circle>
+      ))}
+      <line y1="8" y2="64" stroke={A2} strokeWidth="1.2" opacity="0.8">
+        <animate attributeName="x1" values="10;114;10" dur="3.6s" repeatCount="indefinite" />
+        <animate attributeName="x2" values="10;114;10" dur="3.6s" repeatCount="indefinite" />
+      </line>
+    </svg>
+  );
+}
+
+/* 02 Design — an architecture drawing itself in */
+function GlyphBlueprint() {
+  return (
+    <svg viewBox="0 0 120 72" width="100%" height="100%">
+      <g stroke={A} strokeWidth="1" fill="none" opacity="0.75">
+        <path d="M26 36 H58 M58 36 V16 H92 M58 36 V56 H92" strokeDasharray="120" strokeDashoffset="120">
+          <animate attributeName="stroke-dashoffset" values="120;0;0;120" dur="4s" repeatCount="indefinite" />
+        </path>
+      </g>
+      <rect x="8" y="27" width="20" height="18" rx="4" fill="oklch(0.17 0.012 60)" stroke={A} strokeWidth="1.2" />
+      {[[92, 8], [92, 48]].map(([x, y], i) => (
+        <rect key={i} x={x} y={y} width="20" height="17" rx="4" fill="oklch(0.17 0.012 60)" stroke={A2} strokeWidth="1.2" opacity="0">
+          <animate attributeName="opacity" values="0;0;1;1;0" dur="4s" begin={`${i * 0.25}s`} repeatCount="indefinite" />
+        </rect>
+      ))}
+      <circle cx="58" cy="36" r="3.5" fill={A} />
+    </svg>
+  );
+}
+
+/* 03 Deploy — a build moving into a live environment */
+function GlyphDeploy() {
+  return (
+    <svg viewBox="0 0 120 72" width="100%" height="100%">
+      <line x1="10" y1="36" x2="86" y2="36" stroke={DIM} strokeWidth="1" strokeDasharray="4 5" />
+      <rect x="84" y="20" width="28" height="32" rx="6" fill="oklch(0.78 0.16 65 / 0.1)" stroke={A} strokeWidth="1.2" />
+      <circle cx="98" cy="30" r="3" fill={A2}>
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite" />
+      </circle>
+      <text x="98" y="45" textAnchor="middle" fill={A} fontFamily="Geist Mono" fontSize="7" letterSpacing="0.08em">LIVE</text>
+      {[0, 1].map((i) => (
+        <rect key={i} x="6" y="30" width="13" height="12" rx="3" fill={A2}>
+          <animateMotion dur="2.6s" begin={`${i * 1.3}s`} repeatCount="indefinite" path="M0,0 L74,0" />
+          <animate attributeName="opacity" values="0;1;1;0" dur="2.6s" begin={`${i * 1.3}s`} repeatCount="indefinite" />
+        </rect>
+      ))}
+    </svg>
+  );
+}
+
+/* 04 Compound — leverage stacking quarter over quarter */
+function GlyphCompound() {
+  const bars = [[18, 16], [42, 26], [66, 40], [90, 56]];
+  return (
+    <svg viewBox="0 0 120 72" width="100%" height="100%">
+      <line x1="8" y1="62" x2="112" y2="62" stroke={DIM} strokeWidth="1" />
+      {bars.map(([x, h], i) => (
+        <rect key={i} x={x} y={62 - h} width="14" height={h} rx="3" fill={i === bars.length - 1 ? A : "oklch(0.78 0.16 65 / 0.35)"}>
+          <animate attributeName="height" values={`0;${h};${h}`} dur="3.2s" begin={`${i * 0.22}s`} repeatCount="indefinite" />
+          <animate attributeName="y" values={`62;${62 - h};${62 - h}`} dur="3.2s" begin={`${i * 0.22}s`} repeatCount="indefinite" />
+        </rect>
+      ))}
+      <path d="M25 46 L49 36 L73 22 L97 6" stroke={A2} strokeWidth="1.4" fill="none" strokeDasharray="110" strokeDashoffset="110">
+        <animate attributeName="stroke-dashoffset" values="110;0;0" dur="3.2s" repeatCount="indefinite" />
+      </path>
+    </svg>
+  );
+}
 
 /* Pillar visualizations — small animated SVGs */
 function VizAgents() {
@@ -89,29 +178,36 @@ function VizGraph() {
 
 export function Marquee() {
   const items = [
+    "Getlandy AI",
+    "Scanva & Co",
     "Overshoot",
+    "ByteCitadel",
+    "Sacred Basil",
     "GetCredentialingDone",
     "NarayanKripa",
-    "Bytecitadel",
+    "EavesDrop",
+    "Nexolve Technologies",
+    "Orange Production Bangalore",
     "Estatico",
-    "SacredBasil",
-    "Atharv",
-    "SkipIt",
-    "ArtifyCheck",
-    "Forze",
-    "SharkQueen",
-    "PrevaAi"
   ];
   const doubled = [...items, ...items];
   return (
     <section className="marquee" aria-label="Trusted by">
-      <div className="marquee__label">TRUSTED BY FOUNDERS BUILDING THE NEXT DECADE</div>
-      <div className="marquee__track">
-        {doubled.map((name, i) => (
-          <div className="marquee__item" key={i}>
-            <span>{name}</span>
-          </div>
-        ))}
+      <div className="marquee__label">
+        <span className="rule" />
+        TRUSTED BY FOUNDERS BUILDING THE NEXT DECADE
+        <span className="rule" />
+      </div>
+      <div className="marquee__viewport">
+        <div className="marquee__track">
+          {doubled.map((name, i) => (
+            <div className="marquee__item" key={i}>
+              <span className="marquee__dot" />
+              <span className="marquee__name">{name}</span>
+            </div>
+          ))}
+        </div>
+        <div className="marquee__sweep" aria-hidden="true" />
       </div>
     </section>
   );
@@ -317,10 +413,26 @@ export function Manifesto() {
 
 export function Process() {
   const steps = [
-    { n: "01", t: "Diagnose", d: "Two weeks shadowing your operation. We map every workflow, identify the highest-leverage targets, and quantify what 'good' looks like." },
-    { n: "02", t: "Design", d: "An agent architecture tailored to your data and decisions — with eval criteria written before a single line of code." },
-    { n: "03", t: "Deploy", d: "We ship the first agent into production in under 30 days. Real users, real workload, observable from day one." },
-    { n: "04", t: "Compound", d: "Monthly evaluation cycles. New agents added to the system. Your operating leverage grows quarter over quarter." },
+    {
+      n: "01", t: "Diagnose", meta: "Weeks 1–2", G: GlyphScan,
+      d: "Two weeks shadowing your operation. We map every workflow, identify the highest-leverage targets, and quantify what 'good' looks like.",
+      out: "A ranked map of what's automatable — and a baseline to measure against.",
+    },
+    {
+      n: "02", t: "Design", meta: "Weeks 3–4", G: GlyphBlueprint,
+      d: "An agent architecture tailored to your data and decisions — with eval criteria written before a single line of code.",
+      out: "An architecture and success criteria you sign off on before we build.",
+    },
+    {
+      n: "03", t: "Deploy", meta: "Under 30 days", G: GlyphDeploy,
+      d: "We ship the first agent into production in under 30 days. Real users, real workload, observable from day one.",
+      out: "Your first agent live in production, with every action traceable.",
+    },
+    {
+      n: "04", t: "Compound", meta: "Ongoing", G: GlyphCompound,
+      d: "Monthly evaluation cycles. New agents added to the system. Your operating leverage grows quarter over quarter.",
+      out: "New capability every cycle — leverage that compounds instead of plateauing.",
+    },
   ];
   return (
     <section className="section" id="process" data-screen-label="08 Process">
@@ -331,40 +443,143 @@ export function Process() {
             From first call to compounding — <span className="serif">four moves.</span>
           </h2>
         </Reveal>
-        <Reveal className="process">
-          {steps.map((s) => (
-            <div className="step" key={s.n}>
-              <div className="step__num">{s.n}</div>
-              <h3 className="step__title">{s.t}</h3>
-              <p className="step__desc">{s.d}</p>
+
+        <div className="proc">
+          {/* connector rail — the signal running through the pipeline */}
+          <div className="proc__rail" aria-hidden="true">
+            <div className="proc__rail-line">
+              <span className="proc__rail-pulse" />
             </div>
-          ))}
-        </Reveal>
+            {steps.map((s, i) => (
+              <motion.span
+                key={s.n}
+                className="proc__node"
+                initial={{ scale: 0, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, delay: i * 0.13, ease: [0.16, 1, 0.3, 1] }}
+              />
+            ))}
+          </div>
+
+          <div className="proc__grid">
+            {steps.map((s, i) => (
+              <motion.article
+                className="proc__card"
+                key={s.n}
+                initial={{ opacity: 0, y: 34 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.65, delay: i * 0.13, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <span className="proc__ghost">{s.n}</span>
+                <div className="proc__glyph"><s.G /></div>
+                <div className="proc__meta">
+                  <span className="proc__num">{s.n}</span>
+                  <span className="proc__dur">{s.meta}</span>
+                </div>
+                <h3 className="proc__title">{s.t}</h3>
+                <p className="proc__desc">{s.d}</p>
+                <div className="proc__out">
+                  <span className="arrow">→</span>
+                  <span>{s.out}</span>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
 }
 
+const CONTACT_EMAIL = "velyxlabs@gmail.com";
+
 export function Cta() {
+  const panelRef = useRef(null);
+  const [copied, setCopied] = useState(false);
+  const [time, setTime] = useState("");
+
+  // Live local time — same clock the nav shows
+  useEffect(() => {
+    const tick = () => {
+      const d = new Date();
+      const pad = (x) => String(x).padStart(2, "0");
+      setTime(`${pad(d.getHours())}:${pad(d.getMinutes())}`);
+    };
+    tick();
+    const id = setInterval(tick, 30000);
+    return () => clearInterval(id);
+  }, []);
+
+  // Spotlight follows the cursor across the panel
+  const onMove = (e) => {
+    const el = panelRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    el.style.setProperty("--mx", `${e.clientX - r.left}px`);
+    el.style.setProperty("--my", `${e.clientY - r.top}px`);
+  };
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(CONTACT_EMAIL);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1900);
+    } catch {
+      window.location.href = `mailto:${CONTACT_EMAIL}`;
+    }
+  };
+
   return (
     <section className="container" id="contact" data-screen-label="09 CTA">
-      <Reveal className="cta">
-        <div className="cta__inner">
-          <h2 className="cta__title">
-            Let's build your <span className="serif">unfair</span> operating leverage.
-          </h2>
-          <div className="cta__right">
-            <p className="cta__copy">
-              We take on a handful of founders each quarter. If you're scaling fast and want to do it
-              without scaling headcount, let's talk.
-            </p>
-            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-              <a href="mailto:hi@velyx.com" className="btn btn--primary">
-                Book a strategy call <span className="arr">↗</span>
-              </a>
-              <a href="#" className="btn btn--ghost">
-                Read our thesis <span className="arr">→</span>
-              </a>
+      <Reveal>
+        <div className="cta" ref={panelRef} onPointerMove={onMove}>
+          <div className="cta__spot" aria-hidden="true" />
+          <div className="cta__grid" aria-hidden="true" />
+
+          <div className="cta__inner">
+            <div className="cta__left">
+              <div className="cta__status">
+                <span className="pip" />
+                Bangalore, India
+                <span className="sep">·</span>
+                {time} local
+              </div>
+              <h2 className="cta__title">
+                Let's build your <span className="serif">unfair</span> operating leverage.
+              </h2>
+            </div>
+
+            <div className="cta__right">
+              <p className="cta__copy">
+                We take on a handful of founders each quarter. If you're scaling fast and want to do
+                it without scaling headcount, let's talk.
+              </p>
+
+              <div className="cta__actions">
+                <button
+                  data-cal-namespace="30min"
+                  data-cal-link="velyx-labs/30min"
+                  data-cal-config='{"layout":"month_view"}'
+                  className="btn btn--primary"
+                >
+                  Book a strategy call <span className="arr">↗</span>
+                </button>
+                <Link to="/case-studies" className="btn btn--ghost">
+                  See case studies <span className="arr">→</span>
+                </Link>
+              </div>
+
+              <button
+                className={`cta__mail ${copied ? "is-copied" : ""}`}
+                onClick={copyEmail}
+                aria-label={`Copy email address ${CONTACT_EMAIL}`}
+              >
+                <span className="k">Or email us</span>
+                <span className="v">{CONTACT_EMAIL}</span>
+                <span className="act">{copied ? "Copied ✓" : "Copy"}</span>
+              </button>
             </div>
           </div>
         </div>

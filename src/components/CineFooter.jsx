@@ -29,7 +29,7 @@ export default function CineFooter() {
           </form>
 
           <div className="footer-pro__locations">
-            <div><strong>PUNE</strong><span>HQ · 18.52°N</span></div>
+            <div><strong>BANGALORE</strong><span>HQ · 12.97°N</span></div>
             <div><strong>SAN FRANCISCO</strong><span>SAT · 37.77°N</span></div>
             <div><strong>REMOTE</strong><span>EVERYWHERE</span></div>
           </div>
@@ -51,6 +51,8 @@ export default function CineFooter() {
           <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 10 }}>
             <li><Link to="/services#agents" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>Agentic systems</Link></li>
             <li><Link to="/services#saas" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>SaaS MVPs</Link></li>
+            <li><Link to="/services#web" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>Website development</Link></li>
+            <li><Link to="/services#apps" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>Mobile app development</Link></li>
             <li><Link to="/services#copilots" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>Internal copilots</Link></li>
             <li><Link to="/services#workflows" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>Custom workflows</Link></li>
             <li><Link to="/services#strategy" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>AI strategy</Link></li>
