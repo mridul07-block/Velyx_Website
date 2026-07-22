@@ -8,6 +8,7 @@ import CustomCursor from "../components/CustomCursor";
 import ProgressUpdater from "../components/ProgressUpdater";
 import { CASE_STUDIES } from "../data/caseStudies";
 import { CASE_VIZ } from "../components/caseVizMap";
+import IndustryIcon from "../components/IndustryIcon";
 
 /* ------------------------------------------------------------------
    Hero background — torus knot lattice + drifting particles
@@ -120,13 +121,16 @@ function CaseCard({ c, i }) {
         <div className="cs-card__viz">
           <V />
           <div className="cs-card__num">{c.num}</div>
+          <div className="cs-card__cat">{c.cat}</div>
         </div>
         <div className="cs-card__body">
-          <div className="cs-card__kicker">
-            <span>{c.name}</span>
-            <span className="cat">{c.cat}</span>
+          <div className="cs-card__industry">
+            <span className="cs-card__icon">
+              <IndustryIcon slug={c.slug} />
+            </span>
+            <h3 className="cs-card__name">{c.name}</h3>
           </div>
-          <h3 className="cs-card__title">{c.tagline}</h3>
+          <div className="cs-card__tagline">{c.tagline}</div>
           <p className="cs-card__desc">{c.summary}</p>
           <div className="cs-card__metrics">
             {c.metrics.map(([v, l]) => (

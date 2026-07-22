@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams, Navigate } from "react-router-dom";
 import * as THREE from "three";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import CineNav from "../components/CineNav";
 import CineFooter from "../components/CineFooter";
 import CustomCursor from "../components/CustomCursor";
@@ -89,6 +89,159 @@ const fadeUp = {
   viewport: { once: true, margin: "-80px" },
   transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
 };
+
+/* ------------------------------------------------------------------
+   Interactive: click a stage to see exactly what runs there
+------------------------------------------------------------------ */
+function WorkflowStepper({ steps }) {
+  const [active, setActive] = useState(0);
+  const s = steps[active];
+  return (
+    <div className="cs-stepper">
+      <div className="cs-stepper__rail">
+        {steps.map((st, i) => (
+          <button
+            key={st.n}
+            className={`cs-stepper__tab ${i === active ? "is-active" : ""} ${i < active ? "is-done" : ""}`}
+            onClick={() => setActive(i)}
+            aria-current={i === active}
+          >
+            <span className="n">{st.n}</span>
+            <span className="t">{st.t}</span>
+          </button>
+        ))}
+        <div className="cs-stepper__track">
+          <div className="cs-stepper__fill" style={{ width: `${((active + 1) / steps.length) * 100}%` }} />
+        </div>
+      </div>
+
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={s.n}
+          className="cs-stepper__panel"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <div className="cs-stepper__stage">
+            Stage {s.n} — {s.t}
+          </div>
+          <div className="cs-stepper__rows">
+            <div className="cs-stepper__row">
+              <div className="k">What happens</div>
+              <div className="v">{s.what}</div>
+            </div>
+            <div className="cs-stepper__row">
+              <div className="k">What runs automatically</div>
+              <div className="v">{s.auto}</div>
+            </div>
+            <div className="cs-stepper__row cs-stepper__row--out">
+              <div className="k">What you get</div>
+              <div className="v">{s.out}</div>
+            </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------
+   Interactive: what actually ships, split by layer
+------------------------------------------------------------------ */
+const DELIV_TABS = [
+  { key: "agentic", label: "Agentic automation", blurb: "Agents that do the work — not chatbots that answer questions." },
+  { key: "saas", label: "SaaS layer", blurb: "The software you log into: dashboards, records and controls you own." },
+  { key: "integrations", label: "Integrations", blurb: "Wired into the tools you already run on, so nothing is rebuilt from scratch." },
+];
+
+function DeliverablesTabs({ deliverables }) {
+  const [tab, setTab] = useState("agentic");
+  const meta = DELIV_TABS.find((t) => t.key === tab);
+  const items = deliverables[tab] || [];
+  return (
+    <div className="cs-deliv">
+      <div className="cs-deliv__tabs">
+        {DELIV_TABS.map((t) => (
+          <button
+            key={t.key}
+            className={`cs-deliv__tab ${tab === t.key ? "is-active" : ""}`}
+            onClick={() => setTab(t.key)}
+          >
+            {t.label}
+            <span className="count">{(deliverables[t.key] || []).length}</span>
+          </button>
+        ))}
+      </div>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={tab}
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <p className="cs-deliv__blurb">{meta.blurb}</p>
+          <div className="cs-deliv__grid">
+            {items.map((item, i) => (
+              <motion.div
+                key={item}
+                className="cs-deliv__item"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: i * 0.05 }}
+              >
+                <span className="tick">✓</span>
+                {item}
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------
+   Interactive: project the engagement's shift onto the reader's volume
+------------------------------------------------------------------ */
+function Estimator({ est }) {
+  const [v, setV] = useState(est.def);
+  return (
+    <div className="cs-est">
+      <div className="cs-est__control">
+        <label className="cs-est__label" htmlFor="cs-est-input">
+          {est.label}
+        </label>
+        <div className="cs-est__value">{v.toLocaleString()}</div>
+        <input
+          id="cs-est-input"
+          className="cs-est__slider"
+          type="range"
+          min={est.min}
+          max={est.max}
+          step={est.step}
+          value={v}
+          onChange={(e) => setV(Number(e.target.value))}
+        />
+        <div className="cs-est__bounds">
+          <span>{est.min.toLocaleString()}</span>
+          <span>{est.max.toLocaleString()}</span>
+        </div>
+      </div>
+      <div className="cs-est__out">
+        {est.rows.map((r) => (
+          <div key={r.label} className={`cs-est__row ${r.hl ? "is-hl" : ""}`}>
+            <div className="l">{r.label}</div>
+            <div className="v">{r.fn(v)}</div>
+          </div>
+        ))}
+        <p className="cs-est__note">{est.note}</p>
+      </div>
+    </div>
+  );
+}
 
 /* ------------------------------------------------------------------
    PAGE
@@ -198,6 +351,32 @@ export default function CaseStudyDetail() {
         </motion.div>
       </section>
 
+      {/* ---------------- WHAT YOU GET ---------------- */}
+      <section className="container cs-section">
+        <motion.div {...fadeUp}>
+          <div className="cs-label">What this unlocks</div>
+          <h2 className="cs-h2">
+            What changes <span className="serif">for your business.</span>
+          </h2>
+          <div className="cs-outcomes">
+            {c.outcomes.map((o, i) => (
+              <motion.div
+                key={o.t}
+                className="cs-outcome"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.55, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <div className="cs-outcome__n">{String(i + 1).padStart(2, "0")}</div>
+                <div className="cs-outcome__t">{o.t}</div>
+                <div className="cs-outcome__d">{o.d}</div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </section>
+
       {/* ---------------- THE SYSTEM ---------------- */}
       <section className="container cs-section">
         <motion.div className="cs-split" {...fadeUp}>
@@ -236,7 +415,7 @@ export default function CaseStudyDetail() {
         </motion.div>
       </section>
 
-      {/* ---------------- FLOW ---------------- */}
+      {/* ---------------- FLOW SUMMARY ---------------- */}
       <section className="container cs-section">
         <motion.div className="cs-flow" {...fadeUp}>
           {c.flow.map((step, i) => (
@@ -253,6 +432,63 @@ export default function CaseStudyDetail() {
               {i < c.flow.length - 1 && <span className="cs-flow__arrow">→</span>}
             </motion.div>
           ))}
+        </motion.div>
+      </section>
+
+      {/* ---------------- INTERACTIVE WORKFLOW ---------------- */}
+      <section className="container cs-section">
+        <motion.div {...fadeUp}>
+          <div className="cs-label">The workflow you get</div>
+          <h2 className="cs-h2">
+            Click through <span className="serif">what actually runs.</span>
+          </h2>
+          <p className="cs-lede" style={{ marginTop: 18 }}>
+            Every stage below runs without anyone on your team touching it. Select a stage to see
+            what happens, what the system handles, and what lands on your side.
+          </p>
+          <WorkflowStepper steps={c.workflowSteps} />
+        </motion.div>
+      </section>
+
+      {/* ---------------- DELIVERABLES ---------------- */}
+      <section className="container cs-section">
+        <motion.div {...fadeUp}>
+          <div className="cs-label">What ships</div>
+          <h2 className="cs-h2">
+            Everything you <span className="serif">actually receive.</span>
+          </h2>
+          <DeliverablesTabs deliverables={c.deliverables} />
+        </motion.div>
+      </section>
+
+      {/* ---------------- ROLLOUT ---------------- */}
+      <section className="container cs-section">
+        <motion.div {...fadeUp}>
+          <div className="cs-label">How we get there</div>
+          <h2 className="cs-h2">
+            From first call <span className="serif">to live system.</span>
+          </h2>
+          <div className="cs-rollout">
+            {c.rollout.map((r, i) => (
+              <motion.div
+                key={r.w}
+                className="cs-rollout__step"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.55, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <div className="cs-rollout__marker">
+                  <span className="dot" />
+                </div>
+                <div className="cs-rollout__body">
+                  <div className="w">{r.w}</div>
+                  <div className="t">{r.t}</div>
+                  <div className="d">{r.d}</div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
       </section>
 
@@ -309,6 +545,17 @@ export default function CaseStudyDetail() {
             <div className="cs-story__label">How it actually runs</div>
             <p>{c.example.narrative}</p>
           </motion.div>
+        </motion.div>
+      </section>
+
+      {/* ---------------- ESTIMATOR ---------------- */}
+      <section className="container cs-section">
+        <motion.div {...fadeUp}>
+          <div className="cs-label">Run your own numbers</div>
+          <h2 className="cs-h2">
+            What this looks like <span className="serif">at your volume.</span>
+          </h2>
+          <Estimator est={c.estimator} />
         </motion.div>
       </section>
 
