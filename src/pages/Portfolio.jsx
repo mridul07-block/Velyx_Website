@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import * as THREE from 'three';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import CineNav from '../components/CineNav';
 import CineFooter from '../components/CineFooter';
 import CustomCursor from '../components/CustomCursor';
@@ -83,7 +83,59 @@ function PortfolioBg() {
    PORTFOLIO PAGE
 ------------------------------------------------------------------ */
 
+const CAL_URL = "https://cal.com/velyx-labs/30min";
+
 const PROJECTS = [
+  {
+    id: "getlandy",
+    name: "Getlandy AI",
+    cat: "Web Application",
+    year: "2026",
+    title: "AI Career & Personal-Brand OS",
+    desc: "A Netherlands-based SaaS: an AI-powered personal brand studio and career operating system. Landy helps high-signal professionals design career strategy, hold a credible online presence, and build long-term career leverage — beyond job searching.",
+    image: "https://res.cloudinary.com/dmhabztbf/image/upload/v1784826856/Screenshot_2026-07-23_at_10.40.33_PM_zrbnvf.png",
+    liveUrl: "https://getlandy.ai/",
+  },
+  {
+    id: "yorkscreenplay",
+    name: "theYorkScreenPlay",
+    cat: "Web Application",
+    year: "2026",
+    title: "Online Auction & Bidding Platform",
+    desc: "An online auction and bidding platform built for Jon Stewart, centred on the original screenplay YORK — An Untold American Epic. Real-time bidding, lot management, and a cinematic showcase for the work.",
+    image: "https://res.cloudinary.com/dmhabztbf/image/upload/v1784826853/Screenshot_2026-07-23_at_10.39.05_PM_sk5bpl.png",
+    liveUrl: "https://yorkscreenplay.com/",
+  },
+  {
+    id: "eavesdrop",
+    name: "Eavesdrop",
+    cat: "Web Application",
+    year: "2026",
+    title: "Buyer-Intent Lead Generation",
+    desc: "A buyer-intent platform that listens across Reddit, X, and Hacker News to surface prospects actively looking for a solution. AI intent-scoring on every mention, always-on competitor monitors, and AI-drafted replies — turning community signal into pipeline.",
+    image: "https://res.cloudinary.com/dmhabztbf/image/upload/v1784826856/Screenshot_2026-07-23_at_10.42.44_PM_oljvwt.png",
+    liveUrl: "https://www.eavesdrop.co.in/",
+  },
+  {
+    id: "wa-health",
+    name: "Health & Wellness",
+    cat: "Agentic Systems",
+    year: "2026",
+    title: "WhatsApp Automation + CRM for clinics.",
+    desc: "A WhatsApp-first booking and CRM system for clinics and wellness studios — conversational scheduling, digital intake, reminders, waitlist backfill, and package follow-ups that cut no-shows and keep chairs full.",
+    viz: "workflow",
+    bookUrl: CAL_URL,
+  },
+  {
+    id: "wa-realestate",
+    name: "Real Estate",
+    cat: "Agentic Systems",
+    year: "2026",
+    title: "WhatsApp Automation + CRM for brokerages.",
+    desc: "An instant-response and lead-nurture system for real estate teams — portal and ad leads answered in seconds over WhatsApp, qualified on budget and intent, routed to the right agent, and worked on autopilot until they convert.",
+    viz: "agents",
+    bookUrl: CAL_URL,
+  },
   {
     id: "bytecitadel",
     name: "ByteCitadel",
@@ -372,23 +424,36 @@ function PfCard({ p }) {
         </div>
         <h3 className="pf-card__title">{p.title}</h3>
         <p className="pf-card__desc">{p.desc}</p>
-        <div className="pf-card__metrics">
-          {p.metrics.map(([v, l]) => (
-            <div key={l} className="pf-card__metric">
-              <div className="v">{v}</div>
-              <div className="l">{l}</div>
-            </div>
-          ))}
-        </div>
+        {p.metrics && (
+          <div className="pf-card__metrics">
+            {p.metrics.map(([v, l]) => (
+              <div key={l} className="pf-card__metric">
+                <div className="v">{v}</div>
+                <div className="l">{l}</div>
+              </div>
+            ))}
+          </div>
+        )}
+        {p.bookUrl && (
+          <a href={p.bookUrl} target="_blank" rel="noopener noreferrer" className="pf-card__book">
+            Book a call <span className="arr">↗</span>
+          </a>
+        )}
       </div>
     </motion.article>
   );
 }
 
+const GROUPS = [
+  { key: "Web Application", label: "Web Applications" },
+  { key: "Agentic Systems", label: "Agentic Systems" },
+  { key: "SaaS MVP", label: "SaaS MVPs" },
+];
+
 function PortfolioPage() {
-  const [filter, setFilter] = useState("All");
-  const cats = ["All", "Web Application", "Agentic Systems", "SaaS MVP"];
-  const list = filter === "All" ? PROJECTS : PROJECTS.filter((p) => p.cat === filter);
+  const groups = GROUPS
+    .map((g) => ({ ...g, items: PROJECTS.filter((p) => p.cat === g.key) }))
+    .filter((g) => g.items.length > 0);
 
   return (
     <>
@@ -416,7 +481,7 @@ function PortfolioPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
             >
-              Ten engagements.<br /><span className="serif">One pattern.</span>
+              Selected work.<br /><span className="serif">One pattern.</span>
             </motion.h1>
           </div>
           <motion.p
@@ -432,39 +497,25 @@ function PortfolioPage() {
       </section>
 
       <div className="container" style={{ paddingTop: 40 }}>
-        <div style={{
-          display: "flex", flexWrap: "wrap", gap: 8, padding: "20px 0 30px",
-          borderBottom: "1px solid var(--line-soft)",
-        }}>
-          {cats.map((c) => (
-            <button
-              key={c}
-              onClick={() => setFilter(c)}
-              style={{
-                padding: "8px 16px",
-                borderRadius: 100,
-                border: "1px solid",
-                borderColor: filter === c ? "var(--accent)" : "var(--line-soft)",
-                background: filter === c ? "oklch(0.78 0.16 65 / 0.08)" : "transparent",
-                color: filter === c ? "var(--fg)" : "var(--fg-dim)",
-                fontFamily: "var(--font-mono)",
-                fontSize: 11.5,
-                letterSpacing: "0.04em",
-                textTransform: "uppercase",
-                cursor: "pointer",
-                transition: "all 0.25s",
-              }}
+        {groups.map((g, gi) => (
+          <section key={g.key} className="pf-group">
+            <motion.div
+              className="pf-group__head"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             >
-              {c}
-            </button>
-          ))}
-        </div>
+              <span className="pf-group__idx">{String(gi + 1).padStart(2, "0")}</span>
+              <h2 className="pf-group__title">{g.label}</h2>
+              <span className="pf-group__count">{g.items.length} {g.items.length === 1 ? "project" : "projects"}</span>
+            </motion.div>
 
-        <motion.div layout className="portfolio">
-          <AnimatePresence mode="popLayout">
-            {list.map((p) => p.image ? <WebCard key={p.id} p={p} /> : <PfCard key={p.id} p={p} />)}
-          </AnimatePresence>
-        </motion.div>
+            <div className="portfolio">
+              {g.items.map((p) => p.image ? <WebCard key={p.id} p={p} /> : <PfCard key={p.id} p={p} />)}
+            </div>
+          </section>
+        ))}
       </div>
 
       <section className="container" style={{ paddingBlock: "clamp(60px, 9vw, 120px)" }}>

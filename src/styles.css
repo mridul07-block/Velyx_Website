@@ -4904,3 +4904,66 @@ section {
   .fdr__orbit { animation: none; }
   .fdr__card { transition: none; }
 }
+
+/* Portfolio — "Book a call" link on offering cards */
+.pf-card__book {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 11px 20px;
+  align-self: flex-start;
+  border: 1px solid var(--accent);
+  border-radius: 100px;
+  background: oklch(0.78 0.16 65 / 0.08);
+  color: var(--fg);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.28s var(--ease);
+}
+
+.pf-card__book:hover {
+  background: var(--accent);
+  color: #14110a;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px -12px var(--accent-glow);
+}
+
+.pf-card__book .arr { transition: transform 0.28s var(--ease); }
+.pf-card__book:hover .arr { transform: translate(3px, -3px); }
+
+/* Portfolio — category groups (filters removed) */
+.pf-group { padding-block: clamp(24px, 4vw, 44px); }
+.pf-group:first-child { padding-top: 8px; }
+
+.pf-group__head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding-bottom: 22px;
+  margin-bottom: clamp(24px, 3vw, 40px);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.pf-group__idx {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+.pf-group__title {
+  font-size: clamp(22px, 2.6vw, 34px);
+  letter-spacing: -0.03em;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.pf-group__count {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+}
