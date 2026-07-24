@@ -264,7 +264,7 @@ function PortfolioPage() {
 
   return (
     <>
-      <Seo title="Portfolio — AI products & systems we\u2019ve shipped" description="Live web apps, SaaS products, and agentic systems Velyx Labs has designed and shipped for founders and businesses." path="/portfolio" />
+      <Seo title="Portfolio — AI products we've shipped" description="Live web apps, SaaS products, and agentic systems Velyx Labs has designed and shipped for founders and businesses." path="/portfolio" />
       <CustomCursor />
       <ProgressUpdater />
       <CineNav active="portfolio" />

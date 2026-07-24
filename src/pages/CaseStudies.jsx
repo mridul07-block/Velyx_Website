@@ -160,7 +160,7 @@ export default function CaseStudies() {
 
   return (
     <>
-      <Seo title="Case studies — how we help industries leverage AI" description="How Velyx Labs helps real estate, healthcare, coaching, legal, hospitality and B2B SaaS teams use AI to scale in revenue, not headcount." path="/case-studies" />
+      <Seo title="Case studies — AI systems by industry" description="How Velyx Labs helps real estate, healthcare, coaching, legal, hospitality and B2B SaaS teams use AI to scale in revenue, not headcount." path="/case-studies" />
       <CustomCursor />
       <ProgressUpdater />
       <CineNav active="case-studies" />

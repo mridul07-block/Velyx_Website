@@ -259,7 +259,15 @@ export default function CaseStudyDetail() {
 
   return (
     <>
-      <Seo title={`${c.name} — case study`} description={c.summary} path={`/case-studies/${c.slug}`} />
+      <Seo
+        title={`${c.name} — case study`}
+        description={c.summary}
+        path={`/case-studies/${c.slug}`}
+        jsonLd={{ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Case studies", item: "https://www.velyxlabs.in/case-studies" },
+          { "@type": "ListItem", position: 2, name: c.name, item: `https://www.velyxlabs.in/case-studies/${c.slug}` },
+        ] }}
+      />
       <CustomCursor />
       <ProgressUpdater />
       <CineNav active="case-studies" />

@@ -131,7 +131,7 @@ function ServiceDetail({ s }) {
 export default function Services() {
   return (
     <>
-      <Seo title="Services — agentic systems, SaaS & app development" description="Our AI practices: agentic systems, AI-native SaaS MVPs, website and mobile app development, internal copilots, and custom automation for founders." path="/services" />
+      <Seo title="Services — AI systems, SaaS & apps" description="Our AI practices: agentic systems, AI-native SaaS MVPs, website and mobile app development, internal copilots, and custom automation for founders." path="/services" />
       <CustomCursor />
       <ProgressUpdater />
       <CineNav active="services" />

@@ -10,7 +10,8 @@
     "build": "vite build",
     "postbuild": "node scripts/prerender-meta.mjs",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "indexnow": "node scripts/indexnow.mjs"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",

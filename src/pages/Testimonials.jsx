@@ -145,7 +145,7 @@ const FEATURED = [
 function TestimonialsPage() {
   return (
     <>
-      <Seo title="Testimonials — founders on working with Velyx Labs" description="What the founders and teams we\u2019ve worked with say about building with Velyx Labs." path="/testimonials" />
+      <Seo title="Testimonials — founders in their own words" description="What the founders and teams we've worked with say about building with Velyx Labs." path="/testimonials" />
       <CustomCursor />
       <ProgressUpdater />
       <CineNav active="testimonials" />

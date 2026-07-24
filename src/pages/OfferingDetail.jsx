@@ -30,7 +30,13 @@ export default function OfferingDetail() {
         title={o.title.replace(/\.$/, "")}
         description={o.desc}
         path={`/portfolio/${o.slug}`}
-        jsonLd={{ "@context": "https://schema.org", "@type": "Service", name: o.title.replace(/\.$/, ""), description: o.desc, serviceType: o.cat, provider: { "@type": "Organization", name: "Velyx Labs", url: "https://velyxlabs.in" }, areaServed: "Worldwide" }}
+        jsonLd={[
+          { "@context": "https://schema.org", "@type": "Service", name: o.title.replace(/\.$/, ""), description: o.desc, serviceType: o.cat, provider: { "@type": "Organization", name: "Velyx Labs", url: "https://www.velyxlabs.in" }, areaServed: "Worldwide" },
+          { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Portfolio", item: "https://www.velyxlabs.in/portfolio" },
+            { "@type": "ListItem", position: 2, name: o.title.replace(/\.$/, ""), item: `https://www.velyxlabs.in/portfolio/${o.slug}` },
+          ] },
+        ]}
       />
       <CustomCursor />
       <ProgressUpdater />
