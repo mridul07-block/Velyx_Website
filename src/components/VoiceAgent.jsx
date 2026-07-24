@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { getAmbient } from "../audio/ambientEngine";
+import { track } from "../lib/analytics";
 
 /* ------------------------------------------------------------------
    VOICE AGENT — a browser-based conversational guide.
@@ -213,6 +214,7 @@ export default function VoiceAgent() {
     wantListenRef.current = false;
 
     const intent = detect(input);
+    track("voice_agent_intent", { intent });
 
     if (intent === "bye") { await speak("Got it — closing the guide. Come back any time."); closeAgent(); return; }
     if (intent === "tour") { await speak("Great — let me walk you through the whole thing. Sit back."); if (token === runRef.current) runTour(); return; }
@@ -232,6 +234,7 @@ export default function VoiceAgent() {
   const openAgent = async () => {
     setOpen(true);
     activeRef.current = true;
+    track("voice_agent_open");
     setReply("");
     setHeard("");
     try { getAmbient()?.stop(); } catch { /* noop */ }

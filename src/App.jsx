@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Preloader from "./components/Preloader";
 import VoiceAgent from "./components/VoiceAgent";
+import { initClickTracking } from "./lib/analytics";
 
 // Lazy-load all pages so Three.js is only bundled when a route is visited.
 // This splits the single 953 KB chunk into smaller per-page chunks.
@@ -55,6 +56,9 @@ export default function App() {
       document.body.style.overflow = "";
     }
   }, [loading]);
+
+  // GA4 conversion + outbound click tracking
+  useEffect(() => initClickTracking(), []);
 
   return (
     <>

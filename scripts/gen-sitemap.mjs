@@ -3,7 +3,7 @@ import { writeFileSync } from "node:fs";
 import { OFFERINGS } from "../src/data/offerings.js";
 import { CASE_STUDIES } from "../src/data/caseStudies.js";
 
-const BASE = "https://velyxlabs.in";
+const BASE = "https://www.velyxlabs.in";
 const today = new Date().toISOString().slice(0, 10);
 
 const routes = [
