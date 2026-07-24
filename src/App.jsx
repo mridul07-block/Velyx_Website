@@ -15,6 +15,8 @@ const CaseStudies = lazy(() => import("./pages/CaseStudies"));
 const CaseStudyDetail = lazy(() => import("./pages/CaseStudyDetail"));
 const Testimonials = lazy(() => import("./pages/Testimonials"));
 const Contact     = lazy(() => import("./pages/Contact"));
+const Blog        = lazy(() => import("./pages/Blog"));
+const BlogPost    = lazy(() => import("./pages/BlogPost"));
 const Privacy     = lazy(() => import("./pages/Privacy"));
 const Terms       = lazy(() => import("./pages/Terms"));
 
@@ -78,6 +80,8 @@ export default function App() {
             <Route path="/case-studies/:slug" element={<CaseStudyDetail />} />
             <Route path="/testimonials" element={<Testimonials />} />
             <Route path="/contact"      element={<Contact />} />
+            <Route path="/blog"         element={<Blog />} />
+            <Route path="/blog/:slug"   element={<BlogPost />} />
             <Route path="/privacy"      element={<Privacy />} />
             <Route path="/terms"        element={<Terms />} />
           </Routes>

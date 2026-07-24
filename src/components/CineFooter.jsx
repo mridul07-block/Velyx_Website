@@ -40,6 +40,7 @@ export default function CineFooter() {
             <li><Link to="/services" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>Systems</Link></li>
             <li><Link to="/portfolio" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>Portfolio</Link></li>
             <li><Link to="/case-studies" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>Case studies</Link></li>
+            <li><Link to="/blog" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>Blog</Link></li>
             <li><Link to="/testimonials" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>Testimonials</Link></li>
             <li><Link to="/contact" style={{ fontSize: 14.5, color: "var(--fg-dim)" }}>Contact</Link></li>
           </ul>
