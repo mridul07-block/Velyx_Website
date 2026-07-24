@@ -1,0 +1,13 @@
+{
+  "name": "Velyx Labs",
+  "short_name": "Velyx Labs",
+  "description": "Agentic systems & AI-native SaaS for founders.",
+  "icons": [
+    { "src": "/favicon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/favicon-512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#0d0b07",
+  "background_color": "#0d0b07",
+  "display": "standalone",
+  "start_url": "/"
+}
