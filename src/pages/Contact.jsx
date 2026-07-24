@@ -5,6 +5,7 @@ import CineNav from '../components/CineNav';
 import CineFooter from '../components/CineFooter';
 import CustomCursor from '../components/CustomCursor';
 import ProgressUpdater from '../components/ProgressUpdater';
+import Seo from "../components/Seo";
 
 function ContactBg() {
   const ref = useRef(null);
@@ -95,6 +96,7 @@ function ContactPage() {
 
   return (
     <>
+      <Seo title="Contact — book a strategy call" description="Book a 30-minute strategy call with Velyx Labs. We take on a handful of founders each quarter." path="/contact" />
       <CustomCursor />
       <ProgressUpdater />
       <CineNav active="contact" />

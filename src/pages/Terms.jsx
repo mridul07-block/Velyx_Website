@@ -1,4 +1,5 @@
 import LegalPage from "./LegalPage";
+import Seo from "../components/Seo";
 
 const SECTIONS = [
   {
@@ -81,13 +82,16 @@ const SECTIONS = [
 
 export default function Terms() {
   return (
-    <LegalPage
+    <>
+      <Seo title="Terms of Service" description="The terms that govern your use of the Velyx Labs website." path="/terms" />
+      <LegalPage
       kicker="TERMS"
       title="Terms of"
       titleSerif="service."
       updated="24 JULY 2026"
       intro="The terms that govern your use of the Velyx Labs website."
       sections={SECTIONS}
-    />
+      />
+    </>
   );
 }

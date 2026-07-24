@@ -6,6 +6,7 @@ import CineNav from "../components/CineNav";
 import CineFooter from "../components/CineFooter";
 import CustomCursor from "../components/CustomCursor";
 import ProgressUpdater from "../components/ProgressUpdater";
+import Seo from "../components/Seo";
 import { CASE_STUDIES } from "../data/caseStudies";
 import { CASE_VIZ } from "../components/caseVizMap";
 import IndustryIcon from "../components/IndustryIcon";
@@ -159,6 +160,7 @@ export default function CaseStudies() {
 
   return (
     <>
+      <Seo title="Case studies — how we help industries leverage AI" description="How Velyx Labs helps real estate, healthcare, coaching, legal, hospitality and B2B SaaS teams use AI to scale in revenue, not headcount." path="/case-studies" />
       <CustomCursor />
       <ProgressUpdater />
       <CineNav active="case-studies" />

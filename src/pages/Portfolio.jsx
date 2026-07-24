@@ -6,6 +6,7 @@ import CineNav from '../components/CineNav';
 import CineFooter from '../components/CineFooter';
 import CustomCursor from '../components/CustomCursor';
 import ProgressUpdater from '../components/ProgressUpdater';
+import Seo from "../components/Seo";
 import { VIZ } from '../components/offeringVizMap';
 import { OFFERINGS } from '../data/offerings';
 
@@ -263,6 +264,7 @@ function PortfolioPage() {
 
   return (
     <>
+      <Seo title="Portfolio — AI products & systems we\u2019ve shipped" description="Live web apps, SaaS products, and agentic systems Velyx Labs has designed and shipped for founders and businesses." path="/portfolio" />
       <CustomCursor />
       <ProgressUpdater />
       <CineNav active="portfolio" />

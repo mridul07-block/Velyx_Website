@@ -2,6 +2,8 @@ import CineNav from "../components/CineNav";
 import CineFooter from "../components/CineFooter";
 import CustomCursor from "../components/CustomCursor";
 import ProgressUpdater from "../components/ProgressUpdater";
+import Seo from "../components/Seo";
+import { SITE } from "../components/seoConfig";
 import NavIndex from "../components/NavIndex";
 import Hero from "../sections/Hero";
 import ShipScroll from "../sections/ShipScroll";
@@ -22,6 +24,13 @@ const sections = [
 export default function Home() {
   return (
     <>
+      <Seo path="/" jsonLd={{
+        "@context": "https://schema.org",
+        "@graph": [
+          { "@type": "Organization", "@id": `${SITE.url}#org`, name: "Velyx Labs", url: SITE.url, logo: SITE.ogImage, description: SITE.defaultDescription, sameAs: ["https://x.com/VelyxLabs", "https://www.linkedin.com/company/velyx-labs/", "https://github.com/ATHARVISM2804"] },
+          { "@type": "WebSite", "@id": `${SITE.url}#website`, url: SITE.url, name: "Velyx Labs", publisher: { "@id": `${SITE.url}#org` } },
+        ],
+      }} />
       <CustomCursor />
       <ProgressUpdater />
       <CineNav active="home" />

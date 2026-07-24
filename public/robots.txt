@@ -1,0 +1,17 @@
+# Velyx Labs — robots
+User-agent: *
+Allow: /
+
+# Common AI / answer engines (welcome to index)
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://velyxlabs.in/sitemap.xml

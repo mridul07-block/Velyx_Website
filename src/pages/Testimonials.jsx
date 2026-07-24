@@ -6,6 +6,7 @@ import CineNav from '../components/CineNav';
 import CineFooter from '../components/CineFooter';
 import CustomCursor from '../components/CustomCursor';
 import ProgressUpdater from '../components/ProgressUpdater';
+import Seo from "../components/Seo";
 import { ENGAGEMENTS } from '../data/testimonials';
 
 function TestimonialBg() {
@@ -144,6 +145,7 @@ const FEATURED = [
 function TestimonialsPage() {
   return (
     <>
+      <Seo title="Testimonials — founders on working with Velyx Labs" description="What the founders and teams we\u2019ve worked with say about building with Velyx Labs." path="/testimonials" />
       <CustomCursor />
       <ProgressUpdater />
       <CineNav active="testimonials" />

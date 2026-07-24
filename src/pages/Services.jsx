@@ -6,6 +6,7 @@ import CineNav from "../components/CineNav";
 import CineFooter from "../components/CineFooter";
 import CustomCursor from "../components/CustomCursor";
 import ProgressUpdater from "../components/ProgressUpdater";
+import Seo from "../components/Seo";
 
 function ServiceBg() {
   const ref = useRef(null);
@@ -130,6 +131,7 @@ function ServiceDetail({ s }) {
 export default function Services() {
   return (
     <>
+      <Seo title="Services — agentic systems, SaaS & app development" description="Our AI practices: agentic systems, AI-native SaaS MVPs, website and mobile app development, internal copilots, and custom automation for founders." path="/services" />
       <CustomCursor />
       <ProgressUpdater />
       <CineNav active="services" />

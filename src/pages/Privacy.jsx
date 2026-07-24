@@ -1,4 +1,5 @@
 import LegalPage from "./LegalPage";
+import Seo from "../components/Seo";
 
 const SECTIONS = [
   {
@@ -90,13 +91,16 @@ const SECTIONS = [
 
 export default function Privacy() {
   return (
-    <LegalPage
+    <>
+      <Seo title="Privacy Policy" description="How Velyx Labs collects, uses, and protects the information you share through this website." path="/privacy" />
+      <LegalPage
       kicker="PRIVACY"
       title="Privacy"
       titleSerif="policy."
       updated="24 JULY 2026"
       intro="How Velyx Labs collects, uses, and protects the information you share through this website."
       sections={SECTIONS}
-    />
+      />
+    </>
   );
 }

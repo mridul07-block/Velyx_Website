@@ -6,6 +6,7 @@ import CineNav from "../components/CineNav";
 import CineFooter from "../components/CineFooter";
 import CustomCursor from "../components/CustomCursor";
 import ProgressUpdater from "../components/ProgressUpdater";
+import Seo from "../components/Seo";
 import { CASE_STUDIES, getCaseStudy } from "../data/caseStudies";
 import { CASE_VIZ } from "../components/caseVizMap";
 
@@ -258,6 +259,7 @@ export default function CaseStudyDetail() {
 
   return (
     <>
+      <Seo title={`${c.name} — case study`} description={c.summary} path={`/case-studies/${c.slug}`} />
       <CustomCursor />
       <ProgressUpdater />
       <CineNav active="case-studies" />

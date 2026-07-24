@@ -4,6 +4,7 @@ import CineNav from "../components/CineNav";
 import CineFooter from "../components/CineFooter";
 import CustomCursor from "../components/CustomCursor";
 import ProgressUpdater from "../components/ProgressUpdater";
+import Seo from "../components/Seo";
 import { OFFERINGS, getOffering } from "../data/offerings";
 import { VIZ } from "../components/offeringVizMap";
 
@@ -25,6 +26,12 @@ export default function OfferingDetail() {
 
   return (
     <>
+      <Seo
+        title={o.title.replace(/\.$/, "")}
+        description={o.desc}
+        path={`/portfolio/${o.slug}`}
+        jsonLd={{ "@context": "https://schema.org", "@type": "Service", name: o.title.replace(/\.$/, ""), description: o.desc, serviceType: o.cat, provider: { "@type": "Organization", name: "Velyx Labs", url: "https://velyxlabs.in" }, areaServed: "Worldwide" }}
+      />
       <CustomCursor />
       <ProgressUpdater />
       <CineNav active="portfolio" />
