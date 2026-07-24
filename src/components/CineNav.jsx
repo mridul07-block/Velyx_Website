@@ -24,14 +24,17 @@ export default function CineNav({ active }) {
       return;
     }
     amb.start();
-    if (amb.state === "suspended") {
-      // Kick in on the very first sign of activity — a mouse move is
-      // enough on desktop, so the sound starts almost immediately.
-      const events = ["pointermove", "mousemove", "pointerdown", "keydown", "touchstart", "scroll", "wheel"];
-      const unlock = () => {
-        amb.start();
+    // Browsers only allow audio after a real user gesture (click / tap /
+    // keypress — NOT mouse-move or scroll). Start on the first such gesture,
+    // and only stop listening once the context has actually resumed.
+    const events = ["pointerdown", "keydown", "touchstart", "click"];
+    const unlock = async () => {
+      await amb.start();
+      if (amb.state === "running") {
         events.forEach((e) => window.removeEventListener(e, unlock));
-      };
+      }
+    };
+    if (amb.state !== "running") {
       events.forEach((e) => window.addEventListener(e, unlock, { passive: true }));
       return () => events.forEach((e) => window.removeEventListener(e, unlock));
     }

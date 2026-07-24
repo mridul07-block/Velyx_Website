@@ -127,13 +127,9 @@ function build() {
       return ctx.state;
     },
     async start(target = 0.26) {
-      if (ctx.state === "suspended") {
-        try {
-          await ctx.resume();
-        } catch {
-          /* blocked until a user gesture */
-        }
-      }
+      // Build the scheduler + schedule the fade-in FIRST, so the graph is
+      // ready even while the context is still suspended. resume() then only
+      // unmutes it — never blocks the setup (that was the silent-audio bug).
       if (!timer) {
         nextTime = ctx.currentTime + 0.08;
         loop();
@@ -142,6 +138,13 @@ function build() {
       master.gain.cancelScheduledValues(now);
       master.gain.setValueAtTime(master.gain.value, now);
       master.gain.linearRampToValueAtTime(target, now + 1.4);
+      if (ctx.state !== "running") {
+        try {
+          await ctx.resume();
+        } catch {
+          /* blocked until a user gesture */
+        }
+      }
     },
     stop() {
       const now = ctx.currentTime;
