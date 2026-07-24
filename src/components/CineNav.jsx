@@ -25,7 +25,9 @@ export default function CineNav({ active }) {
     }
     amb.start();
     if (amb.state === "suspended") {
-      const events = ["pointerdown", "keydown", "touchstart", "wheel"];
+      // Kick in on the very first sign of activity — a mouse move is
+      // enough on desktop, so the sound starts almost immediately.
+      const events = ["pointermove", "mousemove", "pointerdown", "keydown", "touchstart", "scroll", "wheel"];
       const unlock = () => {
         amb.start();
         events.forEach((e) => window.removeEventListener(e, unlock));

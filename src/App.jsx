@@ -2,6 +2,7 @@ import { useState, useEffect, lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Preloader from "./components/Preloader";
+import VoiceAgent from "./components/VoiceAgent";
 
 // Lazy-load all pages so Three.js is only bundled when a route is visited.
 // This splits the single 953 KB chunk into smaller per-page chunks.
@@ -62,6 +63,7 @@ export default function App() {
       </AnimatePresence>
       <BrowserRouter>
         <ScrollToTop />
+        <VoiceAgent />
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/"             element={<Home />} />
