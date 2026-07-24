@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import BrandMark from "./BrandMark";
 
 export default function CineFooter() {
   return (
@@ -77,9 +76,8 @@ export default function CineFooter() {
       <div className="footer-pro__bottom">
         <span>© 2026 VELYX LABS · ALL RIGHTS RESERVED</span>
         <div className="links">
-          <a href="#">Privacy</a>
-          <a href="#">Terms</a>
-          <a href="#">Trust</a>
+          <Link to="/privacy">Privacy</Link>
+          <Link to="/terms">Terms</Link>
         </div>
         <span>BUILT BY HUMANS · DEPLOYED BY AGENTS</span>
       </div>

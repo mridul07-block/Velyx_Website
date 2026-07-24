@@ -4967,3 +4967,89 @@ section {
   text-transform: uppercase;
   color: var(--fg-mute);
 }
+
+/* Portfolio offering card — whole card links to its detail page */
+.pf-card__stretch { position: static; }
+.pf-card__stretch::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* ============================================
+   LEGAL PAGES (Privacy, Terms)
+   ============================================ */
+.legal {
+  max-width: 860px;
+  margin-inline: auto;
+  padding-block: clamp(50px, 8vw, 100px);
+}
+
+.legal__block {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: clamp(16px, 3vw, 34px);
+  padding-block: clamp(28px, 4vw, 44px);
+  border-top: 1px solid var(--line-soft);
+}
+
+.legal__block:first-child { border-top: 0; }
+
+@media (max-width: 640px) {
+  .legal__block { grid-template-columns: 1fr; gap: 12px; }
+}
+
+.legal__num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  padding-top: 6px;
+}
+
+.legal__h {
+  font-size: clamp(20px, 2.4vw, 28px);
+  letter-spacing: -0.026em;
+  font-weight: 500;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+
+.legal__p {
+  font-size: clamp(15px, 1.4vw, 16.5px);
+  line-height: 1.7;
+  color: var(--fg-dim);
+  margin-bottom: 14px;
+}
+
+.legal__p:last-child { margin-bottom: 0; }
+
+.legal__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  margin: 4px 0 14px;
+  padding: 0;
+}
+
+.legal__list li {
+  position: relative;
+  padding-left: 22px;
+  font-size: clamp(14.5px, 1.4vw, 16px);
+  line-height: 1.62;
+  color: var(--fg-dim);
+}
+
+.legal__list li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 10px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
+}
