@@ -30,13 +30,10 @@ const PROG = [
 const LEAD = [65, 67, 69, 72, 74];
 const MOTIF = [0, 2, 1, 3, 2, 4, 3, 1];
 
-const log = (...a) => console.log("%c[audio]", "color:#f0920f", ...a);
-
 function build() {
   const AC = window.AudioContext || window.webkitAudioContext;
-  if (!AC) { console.warn("[audio] Web Audio API not supported"); return null; }
+  if (!AC) return null;
   const ctx = new AC();
-  log("context created — state:", ctx.state, "sampleRate:", ctx.sampleRate);
 
   const master = ctx.createGain();
   master.gain.value = 0;
@@ -148,11 +145,10 @@ function build() {
       if (ctx.state !== "running") {
         try {
           await ctx.resume();
-        } catch (e) {
-          log("resume blocked (needs a click/tap):", e?.name || e);
+        } catch {
+          /* blocked until a user gesture */
         }
       }
-      log("start() → state:", ctx.state, "· masterGain→", target, "· scheduler:", timer ? "on" : "off");
     },
     stop() {
       const now = ctx.currentTime;
