@@ -1,14 +1,47 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import BrandMark from "./BrandMark";
+import { getAmbient } from "../audio/ambientEngine";
 
 export default function CineNav({ active }) {
   const [scrolled, setScrolled] = useState(false);
   const [time, setTime] = useState("--:--:--");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [audioOn, setAudioOn] = useState(() => {
+    if (typeof window === "undefined") return true;
+    return localStorage.getItem("velyx-audio") !== "off"; // default ON
+  });
   const location = useLocation();
   const currentActive = active || location.pathname.replace("/", "") || "home";
+
+  // Drive the ambient sound. Autoplay is blocked until the visitor
+  // interacts, so if the context is suspended we start on first gesture.
+  useEffect(() => {
+    const amb = getAmbient();
+    if (!amb) return;
+    if (!audioOn) {
+      amb.stop();
+      return;
+    }
+    amb.start();
+    if (amb.state === "suspended") {
+      const events = ["pointerdown", "keydown", "touchstart", "wheel"];
+      const unlock = () => {
+        amb.start();
+        events.forEach((e) => window.removeEventListener(e, unlock));
+      };
+      events.forEach((e) => window.addEventListener(e, unlock, { passive: true }));
+      return () => events.forEach((e) => window.removeEventListener(e, unlock));
+    }
+  }, [audioOn]);
+
+  const toggleAudio = () => {
+    setAudioOn((v) => {
+      const next = !v;
+      if (typeof window !== "undefined") localStorage.setItem("velyx-audio", next ? "on" : "off");
+      return next;
+    });
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -86,6 +119,22 @@ export default function CineNav({ active }) {
           ))}
         </div>
         <div className="nav__meta">
+          <button
+            className={`nav__audio ${audioOn ? "is-on" : ""}`}
+            onClick={toggleAudio}
+            aria-label={audioOn ? "Turn ambient sound off" : "Turn ambient sound on"}
+            aria-pressed={audioOn}
+            title={audioOn ? "Sound on" : "Sound off"}
+          >
+            {audioOn ? (
+              <span className="eq" aria-hidden="true"><i /><i /><i /><i /></span>
+            ) : (
+              <svg className="nav__audio-ic" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M4 9v6h4l5 4V5L8 9H4Z" />
+                <path d="M17 9l4 6M21 9l-4 6" />
+              </svg>
+            )}
+          </button>
           <span className="nav__time">
             <span className="pulse" />
             {time} BLR

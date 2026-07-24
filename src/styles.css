@@ -5053,3 +5053,64 @@ section {
   background: var(--accent);
   box-shadow: 0 0 8px var(--accent-glow);
 }
+
+/* ============================================
+   NAV — ambient audio toggle
+   ============================================ */
+.nav__audio {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: oklch(0.18 0.01 60 / 0.5);
+  color: var(--fg-mute);
+  cursor: pointer;
+  transition: border-color 0.25s var(--ease), background 0.25s var(--ease), color 0.25s var(--ease);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav__audio:hover {
+  border-color: var(--accent);
+  background: oklch(0.78 0.16 65 / 0.12);
+  color: var(--fg);
+}
+
+/* Equalizer bars (playing) */
+.nav__audio .eq {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 15px;
+}
+
+.nav__audio .eq i {
+  width: 2.5px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+
+.nav__audio.is-on .eq i {
+  animation: nav-eq 0.95s ease-in-out infinite;
+}
+.nav__audio.is-on .eq i:nth-child(1) { animation-delay: 0s; }
+.nav__audio.is-on .eq i:nth-child(2) { animation-delay: 0.22s; }
+.nav__audio.is-on .eq i:nth-child(3) { animation-delay: 0.44s; }
+.nav__audio.is-on .eq i:nth-child(4) { animation-delay: 0.15s; }
+
+@keyframes nav-eq {
+  0%, 100% { height: 3px; opacity: 0.7; }
+  50%      { height: 14px; opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav__audio.is-on .eq i { animation: none; height: 9px; }
+}
+
+/* Show the toggle on mobile too (time/cta hide, this stays) */
+@media (max-width: 768px) {
+  .nav__audio { width: 34px; height: 34px; margin-left: 4px; }
+}
