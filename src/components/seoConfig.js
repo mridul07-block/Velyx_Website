@@ -2,7 +2,7 @@
 export const SITE = {
   name: "Velyx Labs",
   url: "https://www.velyxlabs.in",
-  ogImage: "https://res.cloudinary.com/dmhabztbf/image/upload/v1779688104/ChatGPT_Image_May_25__2026__11_15_18_AM-removebg-preview_hy48ex.png",
+  ogImage: "https://res.cloudinary.com/dmhabztbf/image/upload/w_1200,h_630,c_pad,b_rgb:0d0b07/v1784914089/ChatGPT_Image_May_24_2026_12_33_18_AM_s7msqc.png",
   twitter: "@VelyxLabs",
   defaultTitle: "Velyx Labs — Agentic systems & AI-native SaaS for founders",
   defaultDescription:
