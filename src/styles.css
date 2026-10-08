@@ -244,3 +244,39 @@ h1, h2, h3 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; text-
 @media (min-width: 901px) {
   .sticky-cta { display: none; }
 }
+
+/* ---------- Client strip ---------- */
+
+.clients { margin-top: clamp(56px, 8vw, 88px); }
+.clients .eyebrow { margin-bottom: 18px; }
+.clients__list { display: flex; flex-wrap: wrap; gap: 12px 32px; font-size: 17px; font-weight: 500; color: var(--text-muted); }
+
+/* ---------- Process ---------- */
+
+.steps { list-style: none; }
+.step { display: flex; flex-direction: column; gap: 10px; }
+.step__num { font-size: 14px; font-weight: 600; color: var(--accent); }
+.section-cta { margin-top: 40px; display: flex; justify-content: center; }
+
+/* ---------- Final CTA ---------- */
+
+.cal-embed {
+  height: 640px;
+  max-width: 1000px;
+  margin-inline: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--bg);
+}
+.final-cta__alt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 12px;
+  margin-top: 20px;
+  font-size: 15px;
+  color: var(--text-muted);
+}
+.final-cta__alt a { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }

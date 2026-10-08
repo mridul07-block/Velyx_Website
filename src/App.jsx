@@ -3,13 +3,17 @@ import { BrowserRouter } from "react-router-dom";
 import { getCalApi } from "@calcom/embed-react";
 import AppRoutes from "./AppRoutes";
 import ScrollManager from "./components/ScrollManager";
-import { initClickTracking } from "./lib/analytics";
+import { initClickTracking, track } from "./lib/analytics";
 
 export default function App() {
   useEffect(() => {
     (async function () {
       const cal = await getCalApi({ namespace: "30min" });
       cal("ui", { hideEventTypeDetails: false, layout: "month_view" });
+      cal("on", {
+        action: "bookingSuccessful",
+        callback: () => track("call_booked", { location: window.location.pathname }),
+      });
     })();
   }, []);
 
