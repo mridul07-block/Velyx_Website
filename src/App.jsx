@@ -1,17 +1,9 @@
 import { useEffect } from "react";
-import { BrowserRouter, useLocation } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { getCalApi } from "@calcom/embed-react";
 import AppRoutes from "./AppRoutes";
+import ScrollManager from "./components/ScrollManager";
 import { initClickTracking } from "./lib/analytics";
-
-// Scroll to top on every route change
-function ScrollToTop() {
-  const { pathname } = useLocation();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-  return null;
-}
 
 export default function App() {
   useEffect(() => {
@@ -26,7 +18,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <ScrollToTop />
+      <ScrollManager />
       <AppRoutes />
     </BrowserRouter>
   );
