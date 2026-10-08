@@ -360,3 +360,31 @@ h1, h2, h3 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; text-
 @media (max-width: 900px) {
   .svc__inner { grid-template-columns: 1fr; }
 }
+
+/* ---------- Contact ---------- */
+
+.contact { padding-top: 0; }
+.contact__grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 32px; align-items: start; }
+.contact__direct { margin-top: 16px; font-size: 15px; }
+.contact__direct a, .form-error a, .contact .card a { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
+.form { display: flex; flex-direction: column; gap: 18px; }
+.field { display: flex; flex-direction: column; gap: 8px; font-size: 15px; font-weight: 500; }
+.field input, .field textarea {
+  font: inherit;
+  font-weight: 400;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.field input:focus, .field textarea:focus { outline: none; border-color: var(--accent); }
+.field textarea { resize: vertical; }
+.hp { position: absolute; left: -9999px; }
+.form-error { color: oklch(0.75 0.15 30); font-size: 15px; }
+.form-done { display: flex; flex-direction: column; gap: 10px; }
+.btn:disabled { opacity: 0.6; cursor: progress; }
+
+@media (max-width: 900px) {
+  .contact__grid { grid-template-columns: 1fr; }
+}
