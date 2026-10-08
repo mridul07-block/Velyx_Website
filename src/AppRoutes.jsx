@@ -7,6 +7,7 @@ const Contact = lazy(() => import("./pages/Contact"));
 const Start = lazy(() => import("./pages/Start"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Matches the site background so there is no white flash between routes.
 function PageFallback() {
@@ -23,6 +24,7 @@ export default function AppRoutes() {
         <Route path="/start" element={<Start />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
   );
