@@ -68,6 +68,20 @@ describe("ScrollManager", () => {
     target.remove();
   });
 
+  it("waits for a lazily rendered hash target (slow network)", () => {
+    vi.useFakeTimers();
+    renderWithProviders(<ScrollManager />, { route: "/#late" });
+    const target = document.createElement("div");
+    target.id = "late";
+    target.scrollIntoView = vi.fn();
+    act(() => vi.advanceTimersByTime(1000));
+    document.body.appendChild(target);
+    act(() => vi.advanceTimersByTime(500));
+    expect(target.scrollIntoView).toHaveBeenCalled();
+    target.remove();
+    vi.useRealTimers();
+  });
+
   it("scrolls to top when there is no hash", () => {
     const spy = vi.spyOn(window, "scrollTo").mockImplementation(() => {});
     renderWithProviders(<ScrollManager />, { route: "/services" });

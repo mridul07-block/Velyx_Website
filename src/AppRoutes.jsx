@@ -1,9 +1,11 @@
 import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
+// Main conversion pages load eagerly so they paint without a second
+// round-trip (each is only a few KB). Secondary routes stay lazy.
+import Home from "./pages/Home";
+import Services from "./pages/Services";
+import Contact from "./pages/Contact";
 
-const Home = lazy(() => import("./pages/Home"));
-const Services = lazy(() => import("./pages/Services"));
-const Contact = lazy(() => import("./pages/Contact"));
 const Start = lazy(() => import("./pages/Start"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
