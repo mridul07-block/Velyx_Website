@@ -20,7 +20,7 @@ describe("routes", () => {
     renderWithProviders(<AppRoutes />, { route: "/does-not-exist" });
     expect(await screen.findByRole("heading", { level: 1, name: /page not found/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Back to home" })).toHaveAttribute("href", "/");
-    expect(screen.getAllByRole("button", { name: "Book a free call" }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("link", { name: "Book a free call" }).length).toBeGreaterThan(0);
   });
 
   it("/start has no navigation links that leak traffic", async () => {

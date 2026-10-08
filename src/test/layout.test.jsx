@@ -5,6 +5,7 @@ import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import StickyCta from "../components/StickyCta";
 import ScrollManager from "../components/ScrollManager";
+import { Link } from "react-router-dom";
 
 describe("Nav", () => {
   it("shows the four links and the booking CTA", () => {
@@ -13,7 +14,7 @@ describe("Nav", () => {
     for (const [name, href] of [["Services", "/services"], ["Process", "/#process"], ["About", "/#about"], ["Contact", "/contact"]]) {
       expect(within(nav).getAllByRole("link", { name })[0]).toHaveAttribute("href", href);
     }
-    expect(within(nav).getAllByRole("button", { name: "Book a free call" })[0]).toHaveAttribute("data-cal-link", "velyx-labs/30min");
+    expect(within(nav).getAllByRole("link", { name: "Book a free call" })[0]).toHaveAttribute("data-cal-link", "velyx-labs/30min");
   });
 
   it("has no clock, no sound toggle, no removed pages", () => {
@@ -47,12 +48,12 @@ describe("Footer", () => {
 describe("StickyCta", () => {
   it("appears only after scrolling past the hero", () => {
     renderWithProviders(<StickyCta />);
-    expect(screen.queryByRole("button", { name: "Book a free call" })).toBeNull();
+    expect(screen.queryByRole("link", { name: "Book a free call" })).toBeNull();
     act(() => {
       window.scrollY = 700;
       window.dispatchEvent(new Event("scroll"));
     });
-    expect(screen.getByRole("button", { name: "Book a free call" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Book a free call" })).toBeInTheDocument();
     window.scrollY = 0;
   });
 });
@@ -80,6 +81,18 @@ describe("ScrollManager", () => {
     expect(target.scrollIntoView).toHaveBeenCalled();
     target.remove();
     vi.useRealTimers();
+  });
+
+  it("scrolls again when the same anchor link is clicked twice", () => {
+    const target = document.createElement("div");
+    target.id = "process";
+    target.scrollIntoView = vi.fn();
+    document.body.appendChild(target);
+    renderWithProviders(<><ScrollManager /><Link to="/#process">Process</Link></>, { route: "/#process" });
+    expect(target.scrollIntoView).toHaveBeenCalledTimes(1);
+    fireEvent.click(screen.getByRole("link", { name: "Process" }));
+    expect(target.scrollIntoView).toHaveBeenCalledTimes(2);
+    target.remove();
   });
 
   it("scrolls to top when there is no hash", () => {

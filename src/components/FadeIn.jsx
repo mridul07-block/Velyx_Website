@@ -1,7 +1,7 @@
 import useInView from "../lib/useInView";
 
 export default function FadeIn({ className = "", children }) {
-  const [ref, inView] = useInView("0px 0px -10% 0px");
+  const [ref, inView] = useInView("0px 0px -10% 0px", 2000);
   return (
     <div ref={ref} className={["fade", inView && "is-in", className].filter(Boolean).join(" ")}>
       {children}

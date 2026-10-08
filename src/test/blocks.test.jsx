@@ -14,7 +14,7 @@ describe("FinalCTA", () => {
     expect(screen.getByRole("heading", { level: 2, name: /what you want to build/i })).toBeInTheDocument();
     expect(screen.getByTestId("cal-embed")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "velyxlabs@gmail.com" })).toHaveAttribute("href", "mailto:velyxlabs@gmail.com");
-    expect(screen.getByRole("button", { name: "Open booking page" })).toHaveAttribute("data-cal-link", "velyx-labs/30min");
+    expect(screen.getByRole("link", { name: "Open booking page" })).toHaveAttribute("data-cal-link", "velyx-labs/30min");
   });
 });
 

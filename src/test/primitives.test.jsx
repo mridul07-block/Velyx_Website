@@ -8,17 +8,34 @@ import SectionHeader from "../components/SectionHeader";
 describe("CalButton", () => {
   it("opens the 30-min Cal.com booking with the default label", () => {
     render(<CalButton />);
-    const btn = screen.getByRole("button", { name: "Book a free call" });
+    const btn = screen.getByRole("link", { name: "Book a free call" });
     expect(btn).toHaveAttribute("data-cal-link", "velyx-labs/30min");
     expect(btn).toHaveAttribute("data-cal-namespace", "30min");
     expect(btn).toHaveAttribute("data-cal-config", '{"layout":"month_view"}');
-    expect(btn).toHaveAttribute("type", "button");
+    expect(btn).toHaveAttribute("href", "https://cal.com/velyx-labs/30min");
+    expect(btn).toHaveAttribute("target", "_blank");
     expect(btn).toHaveClass("btn", "btn--primary");
+  });
+
+  it("falls back to the cal.com page when the Cal script is blocked", () => {
+    render(<CalButton />);
+    const click = new MouseEvent("click", { bubbles: true, cancelable: true });
+    screen.getByRole("link", { name: "Book a free call" }).dispatchEvent(click);
+    expect(click.defaultPrevented).toBe(false);
+  });
+
+  it("lets the Cal popup handle the click once the Cal script has loaded", () => {
+    const spy = vi.spyOn(window.customElements, "get").mockImplementation((n) => (n === "cal-modal-box" ? class {} : undefined));
+    render(<CalButton />);
+    const click = new MouseEvent("click", { bubbles: true, cancelable: true });
+    screen.getByRole("link", { name: "Book a free call" }).dispatchEvent(click);
+    expect(click.defaultPrevented).toBe(true);
+    spy.mockRestore();
   });
 
   it("supports variant, size, block and custom label", () => {
     render(<CalButton variant="secondary" size="sm" block>Open booking</CalButton>);
-    expect(screen.getByRole("button", { name: "Open booking" })).toHaveClass("btn--secondary", "btn--sm", "btn--block");
+    expect(screen.getByRole("link", { name: "Open booking" })).toHaveClass("btn--secondary", "btn--sm", "btn--block");
   });
 });
 
@@ -52,6 +69,23 @@ describe("FadeIn", () => {
     vi.stubGlobal("IntersectionObserver", undefined);
     render(<FadeIn><p>content</p></FadeIn>);
     expect(screen.getByText("content").parentElement).toHaveClass("fade", "is-in");
+  });
+
+  it("reveals anyway if the observer never reports (broken webviews, print)", () => {
+    vi.useFakeTimers();
+    vi.stubGlobal(
+      "IntersectionObserver",
+      class {
+        observe() {}
+        disconnect() {}
+      }
+    );
+    render(<FadeIn><p>stuck</p></FadeIn>);
+    const wrap = screen.getByText("stuck").parentElement;
+    expect(wrap).not.toHaveClass("is-in");
+    act(() => vi.advanceTimersByTime(2000));
+    expect(wrap).toHaveClass("is-in");
+    vi.useRealTimers();
   });
 
   it("reveals when the observer reports intersection", () => {

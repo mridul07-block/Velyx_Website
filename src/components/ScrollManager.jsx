@@ -6,7 +6,8 @@ import { useLocation } from "react-router-dom";
    it every 100ms for up to 5s. Timers, unlike animation frames, keep
    running in background tabs. */
 export default function ScrollManager() {
-  const { pathname, hash } = useLocation();
+  // `key` changes on every navigation, so re-clicking the same anchor still scrolls.
+  const { pathname, hash, key } = useLocation();
 
   useEffect(() => {
     if (!hash) {
@@ -22,7 +23,7 @@ export default function ScrollManager() {
     };
     find();
     return () => clearTimeout(timer);
-  }, [pathname, hash]);
+  }, [pathname, hash, key]);
 
   return null;
 }
