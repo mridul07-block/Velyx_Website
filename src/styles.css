@@ -338,3 +338,25 @@ h1, h2, h3 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; text-
 @media (max-width: 900px) {
   .about { grid-template-columns: 1fr; }
 }
+
+/* ---------- Page hero (inner pages) ---------- */
+
+.page-hero { padding-top: calc(var(--nav-h) + clamp(56px, 8vw, 104px)); padding-bottom: clamp(48px, 7vw, 88px); }
+.page-hero .section-header { margin-bottom: 28px; }
+
+/* ---------- Services page ---------- */
+
+.svc__inner { display: grid; grid-template-columns: 1fr 1.2fr; gap: clamp(32px, 6vw, 80px); }
+.svc__intro { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+.svc__lists { display: grid; gap: 36px; }
+.svc__lists .h3 { margin-bottom: 14px; }
+.checklist { display: flex; flex-direction: column; gap: 10px; }
+.checklist li { padding-left: 28px; position: relative; }
+.checklist li::before { content: "✓"; position: absolute; left: 0; color: var(--accent); font-weight: 600; }
+.examples { display: grid; gap: 12px; }
+.examples li { display: flex; flex-direction: column; padding: 16px 18px; border: 1px solid var(--border); border-radius: 12px; }
+.examples__title { font-weight: 600; }
+
+@media (max-width: 900px) {
+  .svc__inner { grid-template-columns: 1fr; }
+}
