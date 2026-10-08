@@ -280,3 +280,61 @@ h1, h2, h3 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; text-
   color: var(--text-muted);
 }
 .final-cta__alt a { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- Home: hero ---------- */
+
+.hero {
+  padding-top: calc(var(--nav-h) + clamp(64px, 10vw, 128px));
+  padding-bottom: var(--section-y);
+  background: radial-gradient(60% 50% at 20% 0%, oklch(0.78 0.16 65 / 0.10), transparent 70%);
+}
+.hero__eyebrow { margin-bottom: 20px; }
+.hero__title { max-width: 16ch; }
+.hero__sub { margin-top: 24px; }
+.hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+.hero__note { margin-top: 16px; font-size: 14px; color: var(--text-muted); }
+
+/* ---------- Home: services ---------- */
+
+.service-card { display: flex; flex-direction: column; gap: 14px; }
+.service-card__examples { display: flex; flex-direction: column; gap: 8px; font-size: 15px; }
+.service-card__examples li::before { content: "—"; color: var(--accent); margin-right: 10px; }
+.service-card__link { margin-top: auto; padding-top: 8px; font-weight: 600; color: var(--accent); }
+.service-card__link:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- Home: testimonials ---------- */
+
+.quote { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; }
+.quote__text { font-size: 17px; line-height: 1.65; }
+.quote__who { display: flex; align-items: center; gap: 14px; }
+.quote__avatar {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.quote__name { display: block; font-weight: 600; }
+.quote__role { display: block; font-size: 14px; color: var(--text-muted); }
+
+/* ---------- Home: about ---------- */
+
+.about { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(32px, 6vw, 80px); align-items: start; }
+.about__points { display: flex; flex-direction: column; gap: 28px; }
+.about__points .h3 { margin-bottom: 6px; }
+.about__founders { padding: 0; overflow: hidden; }
+.about__photo { width: 100%; object-fit: cover; }
+.about__people { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 24px; }
+.about__people li { display: flex; flex-direction: column; gap: 2px; }
+.about__name { font-weight: 600; }
+.about__link { font-size: 14px; color: var(--accent); margin-top: 4px; }
+
+@media (max-width: 900px) {
+  .about { grid-template-columns: 1fr; }
+}
