@@ -1,4 +1,13 @@
 {
+  "redirects": [
+    { "source": "/portfolio", "destination": "/services", "permanent": true },
+    { "source": "/portfolio/:slug*", "destination": "/services", "permanent": true },
+    { "source": "/case-studies", "destination": "/services", "permanent": true },
+    { "source": "/case-studies/:slug*", "destination": "/services", "permanent": true },
+    { "source": "/blog", "destination": "/", "permanent": true },
+    { "source": "/blog/:slug*", "destination": "/", "permanent": true },
+    { "source": "/testimonials", "destination": "/", "permanent": true }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",
