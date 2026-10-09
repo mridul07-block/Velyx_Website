@@ -35,6 +35,13 @@ describe("/swipe-file", () => {
     expect(first).toHaveFocus();
   });
 
+  it("a category with no images says so instead of showing a blank grid", async () => {
+    await openSwipe("/swipe-file?type=product");
+    if (!SWIPE.some((s) => s.type === "product")) {
+      expect(screen.getByText("No images in this category yet.")).toBeInTheDocument();
+    }
+  });
+
   it("an unknown ?type= falls back to All", async () => {
     const { container } = await openSwipe("/swipe-file?type=zzz");
     expect(container.querySelectorAll(".swipe-item")).toHaveLength(SWIPE.length);

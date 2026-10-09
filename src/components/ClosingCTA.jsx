@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import useInView from "../lib/useInView";
+import useOnScreen from "../lib/useOnScreen";
+import useReducedMotion from "../lib/useReducedMotion";
 import AgentsArt from "./illustrations/AgentsArt";
 import SaasArt from "./illustrations/SaasArt";
 import WhatsAppArt from "./illustrations/WhatsAppArt";
@@ -12,12 +14,12 @@ const WORDS = ["Let's", "build", "something", "amazing"];
    drift behind. CSS stagger via nth-child; reduced motion shows it static. */
 export default function ClosingCTA() {
   const [ref, inView] = useInView("0px 0px -15% 0px", 2000);
-  // Separate observer without the timer fallback: the drifting art only
-  // animates once the section is really on screen.
-  const [artRef, artSeen] = useInView("0px");
+  // The drifting art only animates while the section is on screen.
+  const [artRef, artOnScreen] = useOnScreen("0px");
+  const reduced = useReducedMotion();
   return (
     <section id="closing" ref={ref} className={`closing${inView ? " is-in" : ""}`}>
-      <div ref={artRef} className={`closing__art${artSeen ? " is-playing" : ""}`} aria-hidden="true">
+      <div ref={artRef} className={`closing__art${artOnScreen && !reduced ? " is-playing" : ""}`} aria-hidden="true">
         <AgentsArt />
         <SaasArt />
         <WhatsAppArt />

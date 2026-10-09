@@ -40,10 +40,17 @@ describe("ServicesPanel", () => {
 describe("ServiceCard motion", () => {
   afterEach(() => vi.unstubAllGlobals());
 
-  it("plays the illustration when motion is allowed", () => {
+  it("plays the illustration only while it is on screen", () => {
+    let fire;
     vi.stubGlobal("matchMedia", (q) => ({ matches: false, media: q, addEventListener() {}, removeEventListener() {} }));
+    vi.stubGlobal("IntersectionObserver", class { constructor(cb) { fire = cb; } observe() {} disconnect() {} });
     const { container } = renderWithProviders(<ServiceCard service={SERVICES[0]} />);
-    expect(container.querySelector(".svc-card__art")).toHaveClass("is-playing");
+    const art = container.querySelector(".svc-card__art");
+    expect(art).not.toHaveClass("is-playing");
+    act(() => fire([{ isIntersecting: true }]));
+    expect(art).toHaveClass("is-playing");
+    act(() => fire([{ isIntersecting: false }]));
+    expect(art).not.toHaveClass("is-playing");
   });
 
   it("does not start looping off-screen just because a fallback timer fired", () => {
@@ -58,6 +65,7 @@ describe("ServiceCard motion", () => {
 
   it("never plays the illustration for reduced-motion visitors", () => {
     vi.stubGlobal("matchMedia", (q) => ({ matches: q.includes("reduce"), media: q, addEventListener() {}, removeEventListener() {} }));
+    vi.stubGlobal("IntersectionObserver", class { constructor(cb) { this.cb = cb; } observe() { this.cb([{ isIntersecting: true }]); } disconnect() {} });
     const { container } = renderWithProviders(<ServiceCard service={SERVICES[0]} />);
     expect(container.querySelector(".svc-card__art")).not.toHaveClass("is-playing");
   });

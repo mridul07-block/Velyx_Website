@@ -553,5 +553,9 @@ a.team__name:hover { text-decoration: underline; text-underline-offset: 3px; }
   html { scroll-behavior: auto; }
   .fade { opacity: 1; transform: none; }
   .marquee__track { animation: none; }
+  .marquee { mask-image: none; }
+  .marquee__track { width: auto; }
+  .marquee__group { flex-wrap: wrap; justify-content: center; gap: 16px 32px; padding: 0; width: 100%; }
+  .marquee__dup { display: none; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }

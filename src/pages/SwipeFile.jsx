@@ -46,6 +46,7 @@ export default function SwipeFile() {
             </button>
           ))}
         </div>
+        {list.length === 0 && <p className="container muted center">No images in this category yet.</p>}
       </section>
       {open !== null && <Lightbox items={list} index={open} onIndex={setOpen} onClose={close} />}
     </Layout>
