@@ -14,6 +14,7 @@ export const TESTIMONIAL_QUOTES = [
     role: "Founder · Overshoot Newsletter",
     avatar: "P",
     q: "Velyx Labs built a complete, production-ready web application for us from the ground up. Their engineering velocity and attention to detail transformed our vision into reality.",
+    highlights: ["production-ready web application"],
   },
   {
     kind: "quote",
@@ -21,6 +22,7 @@ export const TESTIMONIAL_QUOTES = [
     role: "Founder · Sacred Basil",
     avatar: "DP",
     q: "They didn't just build our complete e-commerce brand; they conducted a deep audit of our business operations. The strategic insights and execution were unparalleled.",
+    highlights: ["deep audit of our business operations"],
   },
   {
     kind: "quote",
@@ -28,6 +30,7 @@ export const TESTIMONIAL_QUOTES = [
     role: "Founder · NarayanKripa",
     avatar: "N",
     q: "Velyx delivered a robust, AI-integrated web application that immediately scaled our operations. They are true partners who deeply care about our business outcomes.",
+    highlights: ["immediately scaled our operations"],
   },
 ];
 

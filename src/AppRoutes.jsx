@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 // Main conversion pages load eagerly so they paint without a second
 // round-trip (each is only a few KB). Secondary routes stay lazy.
 import Home from "./pages/Home";
-import Services from "./pages/Services";
 import Contact from "./pages/Contact";
 
 const Start = lazy(() => import("./pages/Start"));
@@ -21,7 +20,6 @@ export default function AppRoutes() {
     <Suspense fallback={<PageFallback />}>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/services" element={<Services />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/start" element={<Start />} />
         <Route path="/privacy" element={<Privacy />} />

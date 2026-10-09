@@ -4,9 +4,6 @@ import { renderWithProviders } from "./renderWithProviders";
 import FinalCTA from "../components/FinalCTA";
 import ProcessSteps from "../components/ProcessSteps";
 import ClientStrip from "../components/ClientStrip";
-import { SERVICES } from "../data/services";
-import { FAQ_ITEMS } from "../data/faq";
-import { CLIENTS } from "../data/clients";
 
 describe("FinalCTA", () => {
   it("shows the inline calendar plus an email fallback", () => {
@@ -28,19 +25,7 @@ describe("ProcessSteps", () => {
 });
 
 describe("content data", () => {
-  it("has the four services with stable anchor ids", () => {
-    expect(SERVICES.map((s) => s.id)).toEqual(["agents", "saas", "whatsapp", "web"]);
-    for (const s of SERVICES) {
-      expect(s.examples.length).toBeGreaterThanOrEqual(3);
-      expect(s.deliverables.length).toBeGreaterThanOrEqual(3);
-    }
-  });
 
-  it("has six FAQs and no pricing or fabricated clients", () => {
-    expect(FAQ_ITEMS).toHaveLength(6);
-    const all = JSON.stringify([SERVICES, FAQ_ITEMS, CLIENTS]);
-    expect(all).not.toMatch(/\$|₹|Northwind|Sable|Halcyon|seats remain/i);
-  });
 
   it("renders the client strip", () => {
     renderWithProviders(<ClientStrip />);

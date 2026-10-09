@@ -7,7 +7,6 @@ import FAQ from "../components/FAQ";
 import ProcessSteps from "../components/ProcessSteps";
 import FinalCTA from "../components/FinalCTA";
 import Hero from "../sections/home/Hero";
-import ServicesGrid from "../sections/home/ServicesGrid";
 import Testimonials from "../sections/home/Testimonials";
 import About from "../sections/home/About";
 import { FAQ_ITEMS } from "../data/faq";
@@ -26,7 +25,6 @@ export default function Home() {
     <Layout>
       <Seo path="/" jsonLd={JSON_LD} />
       <Hero />
-      <ServicesGrid />
       <ProcessSteps />
       <Testimonials />
       <About />

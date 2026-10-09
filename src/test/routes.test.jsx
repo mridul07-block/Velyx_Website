@@ -6,7 +6,6 @@ import AppRoutes from "../AppRoutes";
 describe("routes", () => {
   it.each([
     ["/", /AI systems and software/],
-    ["/services", /What we build for founders/],
     ["/contact", /Tell us what you want to build/],
     ["/privacy", /Privacy/],
     ["/terms", /Terms/],

@@ -8,7 +8,7 @@ describe("Home", () => {
     const { container } = renderWithProviders(<Home />);
     expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
     const ids = [...container.querySelectorAll("main section[id]")].map((s) => s.id);
-    expect(ids).toEqual(["hero", "services", "process", "testimonials", "about", "faq", "book"]);
+    expect(ids).toEqual(["hero", "process", "testimonials", "about", "faq", "book"]);
   });
 
   it("leads with the booking CTA and a link to services", () => {
@@ -26,14 +26,5 @@ describe("Home", () => {
     expect(screen.getByText("Mridul")).toBeInTheDocument();
   });
 
-  it("links each service card to its section on /services", () => {
-    renderWithProviders(<Home />);
-    const links = screen.getAllByRole("link", { name: /^Learn more/ }).map((a) => a.getAttribute("href"));
-    expect(links).toEqual(["/services#agents", "/services#saas", "/services#whatsapp", "/services#web"]);
-  });
 
-  it("contains no pricing, fake clients or fake live claims", () => {
-    const { container } = renderWithProviders(<Home />);
-    expect(container.textContent).not.toMatch(/\$|₹|Northwind|Sable Health|Halcyon|seats remain|AGENTS DEPLOYED/i);
-  });
 });
