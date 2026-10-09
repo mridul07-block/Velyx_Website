@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Work from "./pages/Work";
 import CaseStudy from "./pages/CaseStudy";
+import StartProject from "./pages/StartProject";
 import Contact from "./pages/Contact";
 
 const SwipeFile = lazy(() => import("./pages/SwipeFile"));
@@ -30,6 +31,7 @@ export default function AppRoutes() {
         <Route path="/work" element={<Work />} />
         <Route path="/work/:slug" element={<CaseStudy />} />
         <Route path="/swipe-file" element={<SwipeFile />} />
+        <Route path="/start-a-project" element={<StartProject />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>

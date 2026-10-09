@@ -495,6 +495,41 @@ a.team__name:hover { text-decoration: underline; text-underline-offset: 3px; }
   .lightbox__nav { top: auto; bottom: 12px; transform: none; }
 }
 
+/* ---------- Start a project ---------- */
+
+.intro { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(28px, 5vw, 64px); align-items: start; }
+.intro__copy .section-header { margin-bottom: 16px; }
+.intro__link { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.brief { display: flex; flex-direction: column; gap: 20px; }
+.brief__row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.field { display: flex; flex-direction: column; gap: 8px; font-size: 14px; font-weight: 500; }
+.field input, .field textarea {
+  font: inherit;
+  font-weight: 400;
+  color: var(--ink);
+  background: var(--page);
+  border: 1px solid transparent;
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+.field input:focus, .field textarea:focus { outline: none; border-color: var(--ink); background: var(--card); }
+.field textarea { resize: vertical; }
+.choices { border: 0; display: flex; flex-direction: column; gap: 10px; }
+.choices legend { font-size: 14px; font-weight: 500; margin-bottom: 10px; }
+.choices__list { display: flex; flex-wrap: wrap; gap: 6px; }
+.choices .filter { background: var(--page); }
+.choices .filter[aria-pressed="true"] { background: var(--ink); color: var(--page); }
+.hp { position: absolute; left: -9999px; }
+.form-error { color: #b42318; font-size: 14px; }
+.form-error a { text-decoration: underline; }
+.brief-done { display: flex; flex-direction: column; gap: 12px; }
+@media (max-width: 860px) {
+  .intro { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .brief__row { grid-template-columns: 1fr; }
+}
+
 /* ---------- Reduced motion (keep last) ---------- */
 
 @media (prefers-reduced-motion: reduce) {
