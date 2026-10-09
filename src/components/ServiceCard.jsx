@@ -9,10 +9,11 @@ import MobileArt from "./illustrations/MobileArt";
 
 const ART = { agents: AgentsArt, saas: SaasArt, whatsapp: WhatsAppArt, web: WebArt, mobile: MobileArt };
 
-/* The illustration starts looping the first time the card is seen and
-   never plays for reduced-motion visitors. */
+/* The illustration starts looping the first time the card is really seen
+   (no timer fallback: a static drawing is fine if the observer never
+   fires) and never plays for reduced-motion visitors. */
 export default function ServiceCard({ service }) {
-  const [ref, inView] = useInView("0px 0px -10% 0px", 2000);
+  const [ref, inView] = useInView("0px 0px -10% 0px");
   const reduced = useReducedMotion();
   const Art = ART[service.art];
 

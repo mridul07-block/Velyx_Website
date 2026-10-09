@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { screen } from "@testing-library/react";
+import { act, screen } from "@testing-library/react";
 import { renderWithProviders } from "./renderWithProviders";
 import Hero from "../sections/home/Hero";
 import TrustedBy from "../sections/home/TrustedBy";
@@ -44,6 +44,16 @@ describe("ServiceCard motion", () => {
     vi.stubGlobal("matchMedia", (q) => ({ matches: false, media: q, addEventListener() {}, removeEventListener() {} }));
     const { container } = renderWithProviders(<ServiceCard service={SERVICES[0]} />);
     expect(container.querySelector(".svc-card__art")).toHaveClass("is-playing");
+  });
+
+  it("does not start looping off-screen just because a fallback timer fired", () => {
+    vi.useFakeTimers();
+    vi.stubGlobal("matchMedia", (q) => ({ matches: false, media: q, addEventListener() {}, removeEventListener() {} }));
+    vi.stubGlobal("IntersectionObserver", class { observe() {} disconnect() {} });
+    const { container } = renderWithProviders(<ServiceCard service={SERVICES[0]} />);
+    act(() => vi.advanceTimersByTime(5000));
+    expect(container.querySelector(".svc-card__art")).not.toHaveClass("is-playing");
+    vi.useRealTimers();
   });
 
   it("never plays the illustration for reduced-motion visitors", () => {

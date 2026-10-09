@@ -12,9 +12,12 @@ const WORDS = ["Let's", "build", "something", "amazing"];
    drift behind. CSS stagger via nth-child; reduced motion shows it static. */
 export default function ClosingCTA() {
   const [ref, inView] = useInView("0px 0px -15% 0px", 2000);
+  // Separate observer without the timer fallback: the drifting art only
+  // animates once the section is really on screen.
+  const [artRef, artSeen] = useInView("0px");
   return (
     <section id="closing" ref={ref} className={`closing${inView ? " is-in" : ""}`}>
-      <div className="closing__art is-playing" aria-hidden="true">
+      <div ref={artRef} className={`closing__art${artSeen ? " is-playing" : ""}`} aria-hidden="true">
         <AgentsArt />
         <SaasArt />
         <WhatsAppArt />
