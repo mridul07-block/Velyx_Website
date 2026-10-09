@@ -22,11 +22,11 @@ export default function TestimonialCarousel({ items }) {
   };
 
   return (
-    <section id="testimonials" className="section">
+    <section id="testimonials" className="tpanel">
       <div className="container">
         <div className="tcard" role="group" aria-roledescription="carousel" aria-label="Testimonials" onKeyDown={onKeyDown}>
           <div className="tcard__head">
-            <h2 className="h3">Testimonials</h2>
+            <h2 className="h2">Testimonials</h2>
             <div className="tcard__nav">
               <button type="button" aria-label="Previous testimonial" onClick={prev}>←</button>
               <button type="button" aria-label="Next testimonial" onClick={next}>→</button>

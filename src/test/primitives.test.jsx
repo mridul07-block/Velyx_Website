@@ -48,6 +48,15 @@ describe("FAQ", () => {
   });
 });
 
+describe("FAQ default state", () => {
+  it("opens the first question by default, like Kargul", () => {
+    const { container } = render(<FAQ items={[{ q: "Q one?", a: "A one." }, { q: "Q two?", a: "A two." }]} />);
+    const items = container.querySelectorAll("details");
+    expect(items[0]).toHaveAttribute("open");
+    expect(items[1]).not.toHaveAttribute("open");
+  });
+});
+
 describe("SectionHeader", () => {
   it("renders eyebrow, h2 title and sub", () => {
     render(<SectionHeader eyebrow="Process" title="How we work" sub="Four steps." />);

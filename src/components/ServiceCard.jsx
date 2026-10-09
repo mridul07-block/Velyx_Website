@@ -19,10 +19,10 @@ export default function ServiceCard({ service }) {
 
   return (
     <article className={`svc-card${service.wide ? " svc-card--wide" : ""}`}>
+      <h3 className="h3">{service.title}</h3>
       <div ref={ref} className={`svc-card__art${onScreen && !reduced ? " is-playing" : ""}`}>
         <Art />
       </div>
-      <h3 className="h3">{service.title}</h3>
       <p className="svc-card__copy">{service.copy}</p>
       <div className="tags">
         {service.tags.map((t) => <Tag key={t}>{t}</Tag>)}
