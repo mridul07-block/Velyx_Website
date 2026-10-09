@@ -1,7 +1,9 @@
 /* Real projects only. Facts come from the client engagements and quotes
    already on the site (src/data/testimonials.js). `stack` and `result`
    stay empty until the user confirms them, and empty sections don't
-   render. TO CONFIRM: Kettler and Priya, once described. */
+   render. Covers are real product screenshots only — never meeting or call
+   screenshots (client faces/names). TO CONFIRM: product screenshots for each
+   project; Kettler and Priya, once described. */
 const img = (src, w = 1600, h = 1040) => ({ src, w, h });
 
 export const PROJECTS = [
@@ -13,8 +15,8 @@ export const PROJECTS = [
     audience: "B2C SaaS",
     types: ["ai", "saas"],
     featured: true,
-    cover: img("/work/landy-1.jpg"),
-    gallery: [img("/work/landy-2.jpg"), img("/work/landy-3.jpg"), img("/work/landy-4.jpg")],
+    cover: null,
+    gallery: [],
     brief: "Landy helps professionals design their career strategy, hold a credible online presence and build long-term career leverage — beyond job searching.",
     built: "Built by Velyx Labs: the Landy product, from its AI-powered studio to the subscription experience.",
     stack: [],
@@ -45,7 +47,7 @@ export const PROJECTS = [
     audience: "B2C",
     types: ["saas", "web"],
     featured: true,
-    cover: img("/work/yorkscreenplay.jpg"),
+    cover: null,
     gallery: [],
     brief: "Jon Stewart needed an online platform where buyers could browse lots and bid live.",
     built: "Velyx Labs built YorkScreenPlay, an online auction and bidding platform, for Jon Stewart.",

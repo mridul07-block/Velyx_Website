@@ -137,7 +137,7 @@ h1, h2, h3 { font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; text-w
 /* ---------- Logo ---------- */
 
 .logo { display: inline-flex; align-items: center; gap: 10px; }
-.logo__icon { width: 28px; height: 28px; object-fit: contain; }
+.logo__icon { width: 28px; height: 28px; object-fit: contain; filter: brightness(0); }
 .logo__word { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; }
 
 /* ---------- Pill nav ---------- */
@@ -150,7 +150,7 @@ h1, h2, h3 { font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; text-w
   box-shadow: 0 1px 2px #0000000f, 0 6px 20px #0000000a;
 }
 .pnav__logo { display: grid; place-items: center; width: 44px; height: 44px; }
-.pnav__logo img { width: 24px; height: 24px; object-fit: contain; }
+.pnav__logo img { width: 24px; height: 24px; object-fit: contain; filter: brightness(0); }
 .pnav__links { display: flex; gap: 4px; padding: 4px 6px; font-size: 14px; color: var(--muted); }
 .pnav__links a { display: block; padding: 8px 10px; border-radius: var(--radius-pill); }
 .pnav__links a:hover, .pnav__links a.active { color: var(--ink); }
@@ -228,7 +228,7 @@ h1, h2, h3 { font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; text-w
 
 .hero { padding-top: calc(var(--nav-h) + clamp(56px, 9vw, 112px)); padding-bottom: clamp(40px, 6vw, 72px); }
 .hero__inner { display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; }
-.hero__mark { width: 96px; height: 96px; opacity: 0.08; filter: grayscale(1); margin-bottom: -40px; }
+.hero__mark { width: 96px; height: 96px; opacity: 0.07; filter: brightness(0); margin-bottom: -40px; }
 .status {
   display: inline-flex;
   align-items: center;

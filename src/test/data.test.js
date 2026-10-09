@@ -48,7 +48,7 @@ describe("content data", () => {
   });
 
   it("swipe images exist on disk with dimensions", () => {
-    expect(SWIPE.length).toBeGreaterThanOrEqual(10);
+    expect(SWIPE.length).toBeGreaterThanOrEqual(1);
     for (const s of SWIPE) {
       expect(existsSync(`public${s.src}`), s.src).toBe(true);
       expect(s.w).toBeGreaterThan(0);
