@@ -1,15 +1,20 @@
 import Seo from "../components/Seo";
 import { SITE } from "../components/seoConfig";
 import Layout from "../components/Layout";
-import Section from "../components/Section";
 import SectionHeader from "../components/SectionHeader";
 import FAQ from "../components/FAQ";
-import ProcessSteps from "../components/ProcessSteps";
-import FinalCTA from "../components/FinalCTA";
+import Stats from "../components/Stats";
+import TeamGrid from "../components/TeamGrid";
+import TestimonialCarousel from "../components/TestimonialCarousel";
+import ToolsStrip from "../components/ToolsStrip";
+import TrialCard from "../components/TrialCard";
+import ClosingCTA from "../components/ClosingCTA";
 import Hero from "../sections/home/Hero";
-import Testimonials from "../sections/home/Testimonials";
-import About from "../sections/home/About";
+import TrustedBy from "../sections/home/TrustedBy";
+import ServicesPanel from "../sections/home/ServicesPanel";
+import ProjectsPanel from "../sections/home/ProjectsPanel";
 import { FAQ_ITEMS } from "../data/faq";
+import { TESTIMONIAL_QUOTES } from "../data/testimonials";
 
 const JSON_LD = {
   "@context": "https://schema.org",
@@ -25,14 +30,21 @@ export default function Home() {
     <Layout>
       <Seo path="/" jsonLd={JSON_LD} />
       <Hero />
-      <ProcessSteps />
-      <Testimonials />
-      <About />
-      <Section id="faq">
-        <SectionHeader align="center" eyebrow="FAQ" title="Questions founders ask" />
-        <FAQ items={FAQ_ITEMS} />
-      </Section>
-      <FinalCTA />
+      <TrustedBy />
+      <ServicesPanel />
+      <Stats />
+      <ProjectsPanel />
+      <TeamGrid />
+      <TestimonialCarousel items={TESTIMONIAL_QUOTES} />
+      <ToolsStrip />
+      <TrialCard />
+      <section id="faq" className="section">
+        <div className="container">
+          <SectionHeader align="center" title="FAQs" />
+          <FAQ items={FAQ_ITEMS} />
+        </div>
+      </section>
+      <ClosingCTA />
     </Layout>
   );
 }

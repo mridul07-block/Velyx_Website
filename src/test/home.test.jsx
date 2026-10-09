@@ -1,25 +1,52 @@
 import { describe, it, expect } from "vitest";
-import { screen } from "@testing-library/react";
+import { fireEvent, screen, within } from "@testing-library/react";
 import { renderWithProviders } from "./renderWithProviders";
 import Home from "../pages/Home";
+import TestimonialCarousel from "../components/TestimonialCarousel";
+import { TESTIMONIAL_QUOTES } from "../data/testimonials";
 
 describe("Home", () => {
-  it("renders the 7 essential sections in order", () => {
+  it("renders Kargul's 11 sections in the user's order", () => {
     const { container } = renderWithProviders(<Home />);
-    expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
     const ids = [...container.querySelectorAll("main section[id]")].map((s) => s.id);
-    expect(ids).toEqual(["hero", "process", "testimonials", "about", "faq", "book"]);
+    expect(ids).toEqual(["hero", "trusted", "services", "numbers", "projects", "team", "testimonials", "tools", "trial", "faq", "closing"]);
   });
 
-
-  it("shows the three real quotes verbatim and both founders", () => {
+  it("spotlights the three featured projects with case-study links", () => {
     renderWithProviders(<Home />);
-    expect(screen.getByText(/built a complete, production-ready web application/)).toBeInTheDocument();
-    expect(screen.getByText("Dr. Parita")).toBeInTheDocument();
-    expect(screen.getByText("Nishant")).toBeInTheDocument();
-    expect(screen.getByText("Atharv Golait")).toBeInTheDocument();
-    expect(screen.getByText("Mridul")).toBeInTheDocument();
+    const links = screen.getAllByRole("link", { name: /See case study/ }).map((a) => a.getAttribute("href"));
+    expect(links).toEqual(["/work/getlandy", "/work/sacred-basil", "/work/yorkscreenplay"]);
   });
 
+  it("offers the $1500 trial week linked to a pre-selected brief", () => {
+    renderWithProviders(<Home />);
+    const trial = document.getElementById("trial");
+    expect(within(trial).getByText("$1500")).toBeInTheDocument();
+    expect(within(trial).getByRole("link", { name: "Start your trial week" })).toHaveAttribute("href", "/start-a-project?plan=trial");
+  });
 
+  it("ends with the animated closing CTA", () => {
+    renderWithProviders(<Home />);
+    expect(screen.getByRole("heading", { level: 2, name: "Let's build something amazing" })).toBeInTheDocument();
+  });
+
+  it("shows no borrowed or fabricated claims, and $1500 is the only price", () => {
+    const { container } = renderWithProviders(<Home />);
+    const text = container.textContent;
+    expect(text).not.toMatch(/\$1B|210M|75\+|95%|SideShift|ZeroLeaks|Agent Arcade|Northwind|Sable Health|Halcyon/i);
+    expect(text.match(/\$\d[\d,]*/g)).toEqual(["$1500", "$1500"]);
+  });
+});
+
+describe("TestimonialCarousel", () => {
+  it("shows one quote with bold highlights and cycles with arrows", () => {
+    renderWithProviders(<TestimonialCarousel items={TESTIMONIAL_QUOTES} />);
+    expect(screen.getByText(TESTIMONIAL_QUOTES[0].name)).toBeInTheDocument();
+    expect(screen.getByText(TESTIMONIAL_QUOTES[0].highlights[0]).tagName).toBe("STRONG");
+    fireEvent.click(screen.getByRole("button", { name: "Next testimonial" }));
+    expect(screen.getByText(TESTIMONIAL_QUOTES[1].name)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Previous testimonial" }));
+    fireEvent.click(screen.getByRole("button", { name: "Previous testimonial" }));
+    expect(screen.getByText(TESTIMONIAL_QUOTES[TESTIMONIAL_QUOTES.length - 1].name)).toBeInTheDocument();
+  });
 });
