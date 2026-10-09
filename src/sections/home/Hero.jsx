@@ -1,22 +1,22 @@
-import CalButton from "../../components/CalButton";
-import ClientStrip from "../../components/ClientStrip";
+import { Link } from "react-router-dom";
+import { LOGO_ICON } from "../../lib/brand";
 
 export default function Hero() {
   return (
     <section id="hero" className="hero">
-      <div className="container">
-        <p className="eyebrow hero__eyebrow">Founder-led AI studio · Bangalore, India</p>
-        <h1 className="h1 hero__title">AI systems and software that grow your business.</h1>
+      <div className="container hero__inner">
+        <img src={LOGO_ICON} alt="" width="96" height="96" className="hero__mark" />
+        {/* TO CONFIRM: a project count is allowed only if true. */}
+        <p className="status"><span className="status__dot" aria-hidden="true" />Now booking projects for Q4 2026</p>
+        <h1 className="h1 hero__title">An AI and engineering partner for founders and growing businesses.</h1>
         <p className="lead hero__sub">
-          We design and build agentic automation, AI-native SaaS, WhatsApp systems, websites and apps —
-          so your team spends less time on repetitive work and more on growth.
+          We design and build AI agents, SaaS products, WhatsApp systems, websites and apps — end to end,
+          with the founders in the room.
         </p>
         <div className="hero__actions">
-          <CalButton>Book a free 30-min call</CalButton>
-          <a href="#services" className="btn btn--secondary">See what we build</a>
+          <Link to="/start-a-project" className="btn btn--primary">Start a project</Link>
+          <Link to="/work" className="btn btn--secondary">See our work</Link>
         </div>
-        <p className="hero__note">30 minutes · No obligation · Talk directly to the builders</p>
-        <ClientStrip />
       </div>
     </section>
   );

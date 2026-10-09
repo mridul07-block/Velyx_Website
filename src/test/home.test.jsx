@@ -11,11 +11,6 @@ describe("Home", () => {
     expect(ids).toEqual(["hero", "process", "testimonials", "about", "faq", "book"]);
   });
 
-  it("leads with the booking CTA and a link to services", () => {
-    renderWithProviders(<Home />);
-    expect(screen.getByRole("link", { name: "Book a free 30-min call" })).toHaveAttribute("data-cal-link", "velyx-labs/30min");
-    expect(screen.getByRole("link", { name: "See what we build" })).toHaveAttribute("href", "#services");
-  });
 
   it("shows the three real quotes verbatim and both founders", () => {
     renderWithProviders(<Home />);
