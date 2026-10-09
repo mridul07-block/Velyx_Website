@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { act, screen } from "@testing-library/react";
+import { act, fireEvent, screen } from "@testing-library/react";
 import { renderWithProviders } from "./renderWithProviders";
 import Hero from "../sections/home/Hero";
 import TrustedBy from "../sections/home/TrustedBy";
@@ -68,6 +68,57 @@ describe("ServiceCard motion", () => {
     vi.stubGlobal("IntersectionObserver", class { constructor(cb) { this.cb = cb; } observe() { this.cb([{ isIntersecting: true }]); } disconnect() {} });
     const { container } = renderWithProviders(<ServiceCard service={SERVICES[0]} />);
     expect(container.querySelector(".svc-card__art")).not.toHaveClass("is-playing");
+  });
+});
+
+describe("ServiceCard scenes", () => {
+  afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); });
+  const motionOk = (q) => ({ matches: false, media: q, addEventListener() {}, removeEventListener() {} });
+
+  it("builds the scene one step at a time while playing, faster on hover", () => {
+    vi.useFakeTimers();
+    let fire;
+    vi.stubGlobal("matchMedia", motionOk);
+    vi.stubGlobal("IntersectionObserver", class { constructor(cb) { fire = cb; } observe() {} disconnect() {} });
+    const { container } = renderWithProviders(<ServiceCard service={SERVICES[0]} />);
+    const art = container.querySelector(".svc-card__art");
+    act(() => fire([{ isIntersecting: true }]));
+    expect(art).not.toHaveClass("s1");
+    act(() => vi.advanceTimersByTime(900));
+    expect(art).toHaveClass("s1");
+    expect(art).not.toHaveClass("s2");
+    fireEvent.pointerEnter(container.querySelector(".svc-card"));
+    act(() => vi.advanceTimersByTime(450));
+    expect(art).toHaveClass("s2");
+  });
+
+  it("loops back to an empty scene after holding the finished one", () => {
+    vi.useFakeTimers();
+    let fire;
+    vi.stubGlobal("matchMedia", motionOk);
+    vi.stubGlobal("IntersectionObserver", class { constructor(cb) { fire = cb; } observe() {} disconnect() {} });
+    const { container } = renderWithProviders(<ServiceCard service={SERVICES[0]} />);
+    const art = container.querySelector(".svc-card__art");
+    act(() => fire([{ isIntersecting: true }]));
+    let sawFull = false;
+    for (let i = 0; i < 20; i++) {
+      act(() => vi.advanceTimersByTime(900));
+      if (art.classList.contains("s6")) sawFull = true;
+      if (sawFull && !art.classList.contains("s1")) return;
+    }
+    throw new Error("scene never reset");
+  });
+
+  it("shows every service's finished scene when it is not playing", () => {
+    vi.stubGlobal("IntersectionObserver", undefined);
+    for (const service of SERVICES) {
+      const { container, unmount } = renderWithProviders(<ServiceCard service={service} />);
+      const art = container.querySelector(".svc-card__art");
+      const steps = [...art.classList].filter((c) => /^s\d+$/.test(c));
+      expect(steps.length, service.id).toBeGreaterThanOrEqual(5);
+      expect(art.querySelectorAll(`.a${steps.length}`).length, service.id).toBeGreaterThan(0);
+      unmount();
+    }
   });
 });
 

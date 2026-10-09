@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, afterEach } from "vitest";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { renderWithProviders } from "./renderWithProviders";
 import PillNav from "../components/PillNav";
@@ -33,6 +33,42 @@ describe("SiteFooter", () => {
     expect(screen.getByRole("link", { name: "LinkedIn" })).toHaveAttribute("href", "https://www.linkedin.com/company/velyx-labs/");
     expect(screen.getByRole("link", { name: "Privacy" })).toHaveAttribute("href", "/privacy");
     expect(screen.getByRole("link", { name: "Terms" })).toHaveAttribute("href", "/terms");
+  });
+});
+
+describe("Footer playground", () => {
+  it("throws the services around as decorative chips above a giant wordmark", () => {
+    const { container } = renderWithProviders(<SiteFooter />);
+    const play = container.querySelector(".fplay");
+    expect(play).not.toBeNull();
+    const chips = play.querySelectorAll(".fplay__chip");
+    expect(chips.length).toBeGreaterThanOrEqual(8);
+    expect(play.querySelector(".fplay__stage").getAttribute("aria-hidden")).toBe("true");
+    expect(play.querySelector(".fplay__word").getAttribute("aria-hidden")).toBe("true");
+    expect(within(play).getByRole("link", { name: "Start a project" })).toHaveAttribute("href", "/start-a-project");
+  });
+
+  it("stays a static pile when it can't tell it is on screen", () => {
+    const { container } = renderWithProviders(<SiteFooter />);
+    expect(container.querySelector(".fplay")).toHaveClass("is-static");
+  });
+});
+
+describe("Footer playground modes", () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("keeps the chips out of sight until they drop in", () => {
+    vi.stubGlobal("matchMedia", (q) => ({ matches: false, media: q, addEventListener() {}, removeEventListener() {} }));
+    vi.stubGlobal("IntersectionObserver", class { observe() {} disconnect() {} });
+    const { container } = renderWithProviders(<SiteFooter />);
+    expect(container.querySelector(".fplay")).toHaveClass("is-waiting");
+  });
+
+  it("shows the still pile to reduced-motion visitors", () => {
+    vi.stubGlobal("matchMedia", (q) => ({ matches: q.includes("reduce"), media: q, addEventListener() {}, removeEventListener() {} }));
+    vi.stubGlobal("IntersectionObserver", class { constructor(cb) { this.cb = cb; } observe() { this.cb([{ isIntersecting: true }]); } disconnect() {} });
+    const { container } = renderWithProviders(<SiteFooter />);
+    expect(container.querySelector(".fplay")).toHaveClass("is-static");
   });
 });
 

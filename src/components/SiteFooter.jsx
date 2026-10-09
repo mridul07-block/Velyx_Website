@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
+import FooterPlayground from "./FooterPlayground";
 
 export default function SiteFooter() {
   return (
     <footer className="sfoot">
+      <FooterPlayground />
       <div className="container sfoot__inner">
         <Link to="/" aria-label="Velyx Labs home"><Logo /></Link>
         <nav className="sfoot__links" aria-label="Footer">
