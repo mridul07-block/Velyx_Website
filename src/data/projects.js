@@ -49,7 +49,7 @@ export const PROJECTS = [
     featured: true,
     cover: null,
     gallery: [],
-    brief: "Jon Stewart needed an online platform where buyers could browse lots and bid live.",
+    brief: "Jon Stewart needed an online auction and bidding platform.",
     built: "Velyx Labs built YorkScreenPlay, an online auction and bidding platform, for Jon Stewart.",
     stack: [],
     result: null,
