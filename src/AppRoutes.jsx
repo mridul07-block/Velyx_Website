@@ -7,6 +7,7 @@ import Work from "./pages/Work";
 import CaseStudy from "./pages/CaseStudy";
 import Contact from "./pages/Contact";
 
+const SwipeFile = lazy(() => import("./pages/SwipeFile"));
 const Start = lazy(() => import("./pages/Start"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
@@ -28,6 +29,7 @@ export default function AppRoutes() {
         <Route path="/terms" element={<Terms />} />
         <Route path="/work" element={<Work />} />
         <Route path="/work/:slug" element={<CaseStudy />} />
+        <Route path="/swipe-file" element={<SwipeFile />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>

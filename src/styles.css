@@ -472,6 +472,29 @@ a.team__name:hover { text-decoration: underline; text-underline-offset: 3px; }
 .case__next { padding-block: 48px 0; text-align: center; font-weight: 600; }
 .case__next a:hover { text-decoration: underline; text-underline-offset: 4px; }
 
+/* ---------- Swipe file ---------- */
+
+.swipe-grid { columns: 3 280px; column-gap: 14px; }
+.swipe-item { display: block; width: 100%; margin-bottom: 14px; break-inside: avoid; border-radius: 20px; overflow: hidden; background: var(--card); transition: transform 0.2s; }
+.swipe-item:hover { transform: translateY(-3px); }
+.swipe-item img { width: 100%; }
+
+/* ---------- Lightbox ---------- */
+
+.lightbox { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 64px 72px; background: #0a0a0aeb; }
+.lightbox__img { max-width: 100%; max-height: calc(100vh - 128px); width: auto; border-radius: 16px; }
+.lightbox__close, .lightbox__nav { position: absolute; width: 44px; height: 44px; border-radius: 50%; background: #ffffff1a; color: #fff; font-size: 20px; }
+.lightbox__close:hover, .lightbox__nav:hover { background: #ffffff33; }
+.lightbox__close { top: 16px; right: 16px; }
+.lightbox__nav--prev { left: 16px; top: 50%; transform: translateY(-50%); }
+.lightbox__nav--next { right: 16px; top: 50%; transform: translateY(-50%); }
+.lightbox__count { position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; color: #bbb; font-size: 13px; }
+.lightbox :focus-visible { outline-color: #fff; }
+@media (max-width: 640px) {
+  .lightbox { padding: 64px 12px; }
+  .lightbox__nav { top: auto; bottom: 12px; transform: none; }
+}
+
 /* ---------- Reduced motion (keep last) ---------- */
 
 @media (prefers-reduced-motion: reduce) {
