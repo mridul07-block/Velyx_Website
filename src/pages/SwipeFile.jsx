@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Seo from "../components/Seo";
 import Layout from "../components/Layout";
@@ -13,7 +13,7 @@ export default function SwipeFile() {
   const type = pickFilter(SWIPE_FILTERS, params.get("type"));
   const list = type === "all" ? SWIPE : SWIPE.filter((s) => s.type === type);
   const [open, setOpen] = useState(null);
-  const close = useCallback(() => setOpen(null), []);
+  const close = () => setOpen(null);
 
   return (
     <Layout>
