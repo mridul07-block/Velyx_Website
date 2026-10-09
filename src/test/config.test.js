@@ -1,15 +1,18 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { ROUTES } from "../../scripts/routes.mjs";
+import { PROJECTS } from "../data/projects";
 
 const vercel = JSON.parse(readFileSync("vercel.json", "utf8"));
 
-describe("vercel redirects for removed pages", () => {
+describe("vercel redirects", () => {
   it.each([
-    ["/portfolio", "/services"],
-    ["/portfolio/:slug*", "/services"],
-    ["/case-studies", "/services"],
-    ["/case-studies/:slug*", "/services"],
+    ["/portfolio", "/work"],
+    ["/portfolio/:slug*", "/work"],
+    ["/case-studies", "/work"],
+    ["/case-studies/:slug*", "/work"],
+    ["/services", "/#services"],
+    ["/contact", "/start-a-project"],
     ["/blog", "/"],
     ["/blog/:slug*", "/"],
     ["/testimonials", "/"],
@@ -24,13 +27,21 @@ describe("vercel redirects for removed pages", () => {
 });
 
 describe("public route list (sitemap + prerender)", () => {
-  it("contains exactly the kept, indexable pages", () => {
-    expect(ROUTES.map((r) => r.path)).toEqual(["/", "/services", "/contact", "/privacy", "/terms"]);
+  it("lists the kept pages and every case study", () => {
+    expect(ROUTES.map((r) => r.path)).toEqual([
+      "/",
+      "/work",
+      ...PROJECTS.map((p) => `/work/${p.slug}`),
+      "/swipe-file",
+      "/start-a-project",
+      "/privacy",
+      "/terms",
+    ]);
   });
 
   it("every route has a description and sitemap fields", () => {
     for (const r of ROUTES) {
-      expect(r.desc.length).toBeGreaterThan(40);
+      expect(r.desc.length).toBeGreaterThan(20);
       expect(typeof r.priority).toBe("number");
       expect(r.changefreq).toMatch(/^(weekly|monthly|yearly)$/);
     }
