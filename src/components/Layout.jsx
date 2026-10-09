@@ -1,15 +1,13 @@
-import Nav from "./Nav";
-import Footer from "./Footer";
-import StickyCta from "./StickyCta";
+import PillNav from "./PillNav";
+import SiteFooter from "./SiteFooter";
 
 export default function Layout({ children }) {
   return (
     <>
       <a href="#main" className="skip-link">Skip to content</a>
-      <Nav />
+      <PillNav />
       <main id="main">{children}</main>
-      <Footer />
-      <StickyCta />
+      <SiteFooter />
     </>
   );
 }
