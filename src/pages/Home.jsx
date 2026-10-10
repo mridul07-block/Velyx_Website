@@ -8,7 +8,6 @@ import TeamGrid from "../components/TeamGrid";
 import TestimonialCarousel from "../components/TestimonialCarousel";
 import ToolsStrip from "../components/ToolsStrip";
 import TrialCard from "../components/TrialCard";
-import ClosingCTA from "../components/ClosingCTA";
 import Hero from "../sections/home/Hero";
 import TrustedBy from "../sections/home/TrustedBy";
 import ServicesPanel from "../sections/home/ServicesPanel";
@@ -44,7 +43,6 @@ export default function Home() {
           <FAQ items={FAQ_ITEMS} />
         </div>
       </section>
-      <ClosingCTA />
     </Layout>
   );
 }

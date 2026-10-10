@@ -55,3 +55,12 @@ describe("/work/:slug", () => {
     expect(await screen.findByRole("heading", { level: 1, name: /page not found/i })).toBeInTheDocument();
   });
 });
+
+describe("closing CTA", () => {
+  it.each(["/work", `/work/${PROJECTS[0].slug}`])("appears exactly once on %s (in the footer)", async (route) => {
+    const { container } = renderWithProviders(<AppRoutes />, { route });
+    await screen.findAllByRole("heading", { level: 1 });
+    expect(container.querySelectorAll("section#closing")).toHaveLength(1);
+    expect(container.querySelector("footer section#closing")).not.toBeNull();
+  });
+});

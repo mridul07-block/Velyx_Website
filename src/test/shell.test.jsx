@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import { renderWithProviders } from "./renderWithProviders";
 import PillNav from "../components/PillNav";
 import SiteFooter from "../components/SiteFooter";
@@ -36,39 +36,38 @@ describe("SiteFooter", () => {
   });
 });
 
-describe("Footer playground", () => {
-  it("throws the services around as decorative chips above a giant wordmark", () => {
-    const { container } = renderWithProviders(<SiteFooter />);
-    const play = container.querySelector(".fplay");
-    expect(play).not.toBeNull();
-    const chips = play.querySelectorAll(".fplay__chip");
-    expect(chips.length).toBeGreaterThanOrEqual(8);
-    expect(play.querySelector(".fplay__stage").getAttribute("aria-hidden")).toBe("true");
-    expect(play.querySelector(".fplay__word").getAttribute("aria-hidden")).toBe("true");
-    expect(within(play).getByRole("link", { name: "Start a project" })).toHaveAttribute("href", "/start-a-project");
-  });
-
-  it("stays a static pile when it can't tell it is on screen", () => {
-    const { container } = renderWithProviders(<SiteFooter />);
-    expect(container.querySelector(".fplay")).toHaveClass("is-static");
-  });
-});
-
-describe("Footer playground modes", () => {
+describe("Footer CTA scene", () => {
   afterEach(() => vi.unstubAllGlobals());
 
-  it("keeps the chips out of sight until they drop in", () => {
-    vi.stubGlobal("matchMedia", (q) => ({ matches: false, media: q, addEventListener() {}, removeEventListener() {} }));
-    vi.stubGlobal("IntersectionObserver", class { observe() {} disconnect() {} });
+  it("ends every page with Kargul's closing: heading, isometric scene, two CTAs", () => {
     const { container } = renderWithProviders(<SiteFooter />);
-    expect(container.querySelector(".fplay")).toHaveClass("is-waiting");
+    const cta = container.querySelector("footer section#closing");
+    expect(within(cta).getByRole("heading", { level: 2, name: "Let's build something amazing" })).toBeInTheDocument();
+    expect(within(cta).getByRole("link", { name: "Start a project" })).toHaveAttribute("href", "/start-a-project");
+    expect(within(cta).getByRole("link", { name: "See our work" })).toHaveAttribute("href", "/work");
+    const scene = cta.querySelector(".fcta__scene svg");
+    expect(scene.getAttribute("aria-hidden")).toBe("true");
+    expect(scene.querySelector(".dome")).not.toBeNull();
+    expect(scene.querySelectorAll(".orbit").length).toBeGreaterThanOrEqual(2);
+    expect(scene.querySelectorAll(".orbit-dot").length).toBeGreaterThanOrEqual(2);
   });
 
-  it("shows the still pile to reduced-motion visitors", () => {
+  it("animates the scene only while it is on screen and motion is allowed", () => {
+    let fire;
+    vi.stubGlobal("matchMedia", (q) => ({ matches: false, media: q, addEventListener() {}, removeEventListener() {} }));
+    vi.stubGlobal("IntersectionObserver", class { constructor(cb) { fire = cb; } observe() {} disconnect() {} });
+    const { container } = renderWithProviders(<SiteFooter />);
+    const scene = container.querySelector(".fcta__scene");
+    expect(scene).not.toHaveClass("is-playing");
+    act(() => fire([{ isIntersecting: true }]));
+    expect(scene).toHaveClass("is-playing");
+  });
+
+  it("keeps the scene still for reduced-motion visitors", () => {
     vi.stubGlobal("matchMedia", (q) => ({ matches: q.includes("reduce"), media: q, addEventListener() {}, removeEventListener() {} }));
     vi.stubGlobal("IntersectionObserver", class { constructor(cb) { this.cb = cb; } observe() { this.cb([{ isIntersecting: true }]); } disconnect() {} });
     const { container } = renderWithProviders(<SiteFooter />);
-    expect(container.querySelector(".fplay")).toHaveClass("is-static");
+    expect(container.querySelector(".fcta__scene")).not.toHaveClass("is-playing");
   });
 });
 

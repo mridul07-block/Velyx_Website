@@ -4,7 +4,6 @@ import Layout from "../components/Layout";
 import SectionHeader from "../components/SectionHeader";
 import FilterPills from "../components/FilterPills";
 import ProjectCard from "../components/ProjectCard";
-import ClosingCTA from "../components/ClosingCTA";
 import { PROJECTS } from "../data/projects";
 import { WORK_FILTERS, pickFilter } from "../data/filters";
 
@@ -42,7 +41,6 @@ export default function Work() {
         </div>
         {list.length === 0 && <p className="container muted center">No projects in this category yet.</p>}
       </section>
-      <ClosingCTA />
     </Layout>
   );
 }

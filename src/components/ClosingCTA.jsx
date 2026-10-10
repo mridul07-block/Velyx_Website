@@ -2,39 +2,42 @@ import { Link } from "react-router-dom";
 import useInView from "../lib/useInView";
 import useOnScreen from "../lib/useOnScreen";
 import useReducedMotion from "../lib/useReducedMotion";
-import AgentsArt from "./illustrations/AgentsArt";
-import SaasArt from "./illustrations/SaasArt";
-import WhatsAppArt from "./illustrations/WhatsAppArt";
-import WebArt from "./illustrations/WebArt";
-import MobileArt from "./illustrations/MobileArt";
+import ClosingScene from "./ClosingScene";
 
 const WORDS = ["Let's", "build", "something", "amazing"];
 
-/* Words rise in sequence when scrolled into view; service illustrations
-   drift behind. CSS stagger via nth-child; reduced motion shows it static. */
+/* Kargul's footer CTA, shown on every page: the heading's words rise in
+   sequence, then the isometric scene and the two CTAs. The scene animates
+   only while on screen and shifts with the cursor; reduced motion keeps
+   everything still. */
 export default function ClosingCTA() {
   const [ref, inView] = useInView("0px 0px -15% 0px", 2000);
-  // The drifting art only animates while the section is on screen.
-  const [artRef, artOnScreen] = useOnScreen("0px");
+  const [sceneRef, onScreen] = useOnScreen("0px");
   const reduced = useReducedMotion();
+  const playing = onScreen && !reduced;
+
+  const drift = (e) => {
+    const el = sceneRef.current;
+    if (!el || reduced) return;
+    const r = el.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    el.style.setProperty("--mx", (((e.clientX - r.left) / r.width) * 2 - 1).toFixed(3));
+    el.style.setProperty("--my", (((e.clientY - r.top) / r.height) * 2 - 1).toFixed(3));
+  };
+
   return (
-    <section id="closing" ref={ref} className={`closing${inView ? " is-in" : ""}`}>
-      <div ref={artRef} className={`closing__art${artOnScreen && !reduced ? " is-playing" : ""}`} aria-hidden="true">
-        <AgentsArt />
-        <SaasArt />
-        <WhatsAppArt />
-        <WebArt />
-        <MobileArt />
-      </div>
+    <section id="closing" ref={ref} className={`closing${inView ? " is-in" : ""}`} onPointerMove={drift}>
       <div className="container closing__inner">
         <h2 className="closing__title">
           {WORDS.flatMap((w, i) => [i > 0 ? " " : null, <span key={w} className="closing__word">{w}</span>])}
         </h2>
-        <p className="closing__sub">Tell us what you're building. We'll show you how we'd ship it.</p>
-        <div className="hero__actions closing__actions">
-          <Link to="/start-a-project" className="btn btn--primary">Start a project</Link>
-          <Link to="/work" className="btn btn--secondary">See our work</Link>
-        </div>
+      </div>
+      <div ref={sceneRef} className={`fcta__scene${playing ? " is-playing" : ""}`}>
+        <ClosingScene playing={playing} />
+      </div>
+      <div className="hero__actions closing__actions">
+        <Link to="/start-a-project" className="btn btn--primary">Start a project</Link>
+        <Link to="/work" className="btn btn--secondary">See our work</Link>
       </div>
     </section>
   );

@@ -3,7 +3,6 @@ import Seo from "../components/Seo";
 import Layout from "../components/Layout";
 import Tag from "../components/Tag";
 import ProjectCover from "../components/ProjectCover";
-import ClosingCTA from "../components/ClosingCTA";
 import NotFound from "./NotFound";
 import { PROJECTS } from "../data/projects";
 import { TESTIMONIAL_QUOTES } from "../data/testimonials";
@@ -73,7 +72,6 @@ export default function CaseStudy() {
           </div>
         )}
       </article>
-      <ClosingCTA />
     </Layout>
   );
 }

@@ -6,10 +6,11 @@ import TestimonialCarousel from "../components/TestimonialCarousel";
 import { TESTIMONIAL_QUOTES } from "../data/testimonials";
 
 describe("Home", () => {
-  it("renders Kargul's 11 sections in the user's order", () => {
+  it("renders Kargul's sections in the user's order, closing in the footer", () => {
     const { container } = renderWithProviders(<Home />);
     const ids = [...container.querySelectorAll("main section[id]")].map((s) => s.id);
-    expect(ids).toEqual(["hero", "trusted", "services", "numbers", "projects", "team", "testimonials", "tools", "trial", "faq", "closing"]);
+    expect(ids).toEqual(["hero", "trusted", "services", "numbers", "projects", "team", "testimonials", "tools", "trial", "faq"]);
+    expect(container.querySelector("footer section#closing")).not.toBeNull();
   });
 
   it("spotlights the three featured projects with case-study links", () => {
