@@ -47,9 +47,24 @@ describe("Footer CTA scene", () => {
     expect(within(cta).getByRole("link", { name: "See our work" })).toHaveAttribute("href", "/work");
     const scene = cta.querySelector(".fcta__scene svg");
     expect(scene.getAttribute("aria-hidden")).toBe("true");
-    expect(scene.querySelector(".dome")).not.toBeNull();
-    expect(scene.querySelectorAll(".orbit").length).toBeGreaterThanOrEqual(2);
-    expect(scene.querySelectorAll(".orbit-dot").length).toBeGreaterThanOrEqual(2);
+    expect(scene.querySelector(".core")).not.toBeNull();
+    expect(scene.querySelectorAll(".nn-node").length).toBeGreaterThanOrEqual(8);
+    const stations = [...scene.querySelectorAll(".station")].map((s) => s.dataset.station);
+    expect(stations).toEqual(["agents", "saas", "whatsapp", "web", "mobile"]);
+    expect(scene.querySelectorAll(".trace")).toHaveLength(5);
+    expect(scene.querySelectorAll(".packet")).toHaveLength(5);
+    expect(scene.querySelectorAll(".satellite").length).toBeGreaterThanOrEqual(3);
+  });
+
+  it("fires a burst when the AI core is clicked", () => {
+    vi.useFakeTimers();
+    const { container } = renderWithProviders(<SiteFooter />);
+    const scene = container.querySelector(".fcta__scene");
+    fireEvent.click(scene.querySelector(".core"));
+    expect(scene).toHaveClass("is-burst");
+    act(() => vi.advanceTimersByTime(2000));
+    expect(scene).not.toHaveClass("is-burst");
+    vi.useRealTimers();
   });
 
   it("animates the scene only while it is on screen and motion is allowed", () => {

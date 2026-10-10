@@ -489,11 +489,11 @@ a.team__name:hover { text-decoration: underline; text-underline-offset: 3px; }
 .closing__actions { position: relative; z-index: 1; margin-top: 0; opacity: 0; transition: opacity 0.6s ease 0.5s; }
 .closing.is-in .closing__actions { opacity: 1; }
 
-/* Footer scene (Kargul's light isometric footer). */
-.fcta__scene { --mx: 0; --my: 0; width: 100%; max-width: 1240px; aspect-ratio: 2 / 1; margin: -8px auto 0; }
+/* Footer scene: the AI engine (light isometric, Kargul's footer language). */
+.fcta__scene { --mx: 0; --my: 0; --orange: #e8a453; width: 100%; max-width: 1240px; aspect-ratio: 2 / 1; margin: -8px auto 0; }
 .fcta__scene svg { display: block; width: 100%; height: 100%; }
 @media (max-width: 640px) {
-  .fcta__scene { aspect-ratio: auto; height: 300px; margin-top: 8px; }
+  .fcta__scene { aspect-ratio: auto; height: 320px; margin-top: 8px; }
 }
 .fcta__scene :is(path, rect, polygon, ellipse, circle) { stroke-width: 1; stroke-linejoin: round; }
 .fcta__scene .fs-gridline { stroke: #d9d9d9; vector-effect: non-scaling-stroke; }
@@ -501,21 +501,97 @@ a.team__name:hover { text-decoration: underline; text-underline-offset: 3px; }
 .fcta__scene .fs-hatch { stroke: #d2d2d2; }
 .fcta__scene .fs-plinth { stroke: #c9c9c9; }
 .fcta__scene .fs-top { fill: #fbfbfb; stroke: #c4c4c4; }
+.fcta__scene .fs-top--strong { fill: #fff; stroke: #a9a9a9; }
 .fcta__scene .fs-left { fill: #f0f0f0; stroke: #c4c4c4; }
 .fcta__scene .fs-right { fill: #e7e7e7; stroke: #c4c4c4; }
-.fcta__scene .fs-shadow { fill: #e4e4e4; stroke: none; }
+.fcta__scene .fs-dim { stroke: #cfcfcf; }
+.fcta__scene .fs-wire { stroke: #b8b8b8; }
+.fcta__scene .fs-icon { stroke: #8f8f8f; }
+.fcta__scene .fs-node { fill: #fff; stroke: #9a9a9a; }
+.fcta__scene .fs-inkfill { fill: #bdbdbd; stroke: none; }
+.fcta__scene .fs-label { font-family: var(--font); font-weight: 700; letter-spacing: 0.02em; fill: #a3a3a3; }
+.fcta__scene .fs-ok { fill: var(--ok); stroke: none; }
+.fcta__scene .fs-okbubble { fill: #dcf5e4; stroke: var(--ok); }
+.fcta__scene .fs-tickmark { stroke: #fff; stroke-width: 1.6; stroke-linecap: round; }
+.fcta__scene .fs-bar { fill: #d6d6d6; stroke: none; transform-box: fill-box; transform-origin: bottom; }
+.fcta__scene .fs-bar--hot { fill: var(--orange); }
+.fcta__scene .fs-trend { stroke: var(--ok); stroke-width: 1.4; stroke-dasharray: 1; stroke-dashoffset: 0; }
 .fcta__scene .fs-brand-top { fill: #f2b06a; stroke: #d9893a; }
 .fcta__scene .fs-brand-left { fill: #e8a453; stroke: #d9893a; }
 .fcta__scene .fs-brand-right { fill: #d48a3c; stroke: #c27a2f; }
-.fcta__scene .fs-dome { fill: #f7f7f7e6; stroke: #c4c4c4; }
-.fcta__scene .fs-domeline { stroke: #cfcfcf; }
-.fcta__scene .fs-ink { fill: #9a9a9a; stroke: none; }
-.fcta__scene .fs-handle { fill: #fff; stroke: #9a9a9a; vector-effect: non-scaling-stroke; }
+.fcta__scene .fs-pad { stroke: #bdbdbd; stroke-dasharray: 3 4; }
+.fcta__scene .fs-shadow { fill: #e2e2e2; stroke: none; }
+.fcta__scene .beam { stroke: #c9c9c9; stroke-dasharray: 2 4; }
+.fcta__scene .trace { stroke: #a8a8a8; stroke-dasharray: 3 5; vector-effect: non-scaling-stroke; }
 .fcta__scene .orbit { stroke: #8f8f8f; stroke-dasharray: 2 4; vector-effect: non-scaling-stroke; }
 .fcta__scene .orbit-dot { fill: var(--ink); stroke: none; }
-.fcta__scene .fobj { transform: translate(calc(var(--mx) * var(--d, 1) * 9px), calc(var(--my) * var(--d, 1) * 6px)); transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
-.fcta__scene.is-playing .fobj__bob { animation: fs-bob 6s ease-in-out infinite; }
-@keyframes fs-bob { 50% { transform: translateY(-8px); } }
+.fcta__scene .ripple { stroke: var(--orange); stroke-width: 1.4; opacity: 0; transform-box: fill-box; transform-origin: center; }
+.fcta__scene .fs-core { stroke: #b9b9b9; }
+.fcta__scene .fs-shell { stroke: #c6c6c6; }
+.fcta__scene .core { cursor: pointer; }
+.fcta__scene .core__glow { opacity: 0.55; transition: opacity 0.4s; }
+.fcta__scene .nn-link { stroke: #d0d0d0; stroke-dasharray: 3 3; }
+.fcta__scene .nn-node { fill: #cfcfcf; stroke: #fff; transform-box: fill-box; transform-origin: center; }
+.fcta__scene .packet { fill: var(--orange); stroke: #fff; transition: opacity 0.2s; }
+.fcta__scene .packet.is-off { opacity: 0; }
+.fcta__scene .satellite { transition: opacity 0.4s; }
+.fcta__scene .satellite.is-behind { opacity: 0.28; }
+.fcta__scene .fs-chip-dark { fill: var(--ink); stroke: none; }
+.fcta__scene .fs-chiptext { font-family: var(--font); font-weight: 700; fill: #6b6b6b; stroke: none; }
+.fcta__scene .fs-chiptext--light { fill: #fff; }
+.fcta__scene .fs-terminal { fill: #232323; stroke: #232323; }
+.fcta__scene .fs-term-dot { fill: #555; stroke: none; }
+.fcta__scene .fs-code { fill: #6f6f6f; stroke: none; transform-box: fill-box; transform-origin: left; }
+.fcta__scene .fs-code--hot { fill: var(--orange); }
+.fcta__scene .fs-caret { fill: var(--ok); stroke: none; }
+.fcta__scene .st-tick { transform-box: fill-box; transform-origin: center; transition: opacity 0.25s, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.fcta__scene.is-playing .station:not(.is-hit) .st-tick { opacity: 0; transform: scale(0.2); }
+.fcta__scene.is-playing .station:not(.is-hit) .st-notif { opacity: 0; transform: translateY(-10px); }
+.fcta__scene .st-notif { transition: opacity 0.3s, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.fcta__scene .station.is-hit .fs-top--strong { stroke: var(--orange); }
+
+.fcta__scene .fobj { transform: translate(calc(var(--mx) * var(--d, 1) * 10px), calc(var(--my) * var(--d, 1) * 7px)); transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.fcta__scene .core__tilt { transform: translate(calc(var(--mx) * 18px), calc(var(--my) * 10px)); transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+.fcta__scene.is-playing .core__tilt > * { animation: fs-hover 5s ease-in-out infinite; }
+.fcta__scene.is-playing .core__glow { animation: fs-glow 2.6s ease-in-out infinite; }
+.fcta__scene.is-playing .nn-node { animation: fs-fire 2.6s ease-in-out infinite; }
+.fcta__scene.is-playing .nn-link { animation: fs-flow 1.4s linear infinite; }
+.fcta__scene.is-playing .trace { animation: fs-flow 1.2s linear infinite; }
+.fcta__scene.is-playing .orbit { animation: fs-flow 2s linear infinite; }
+.fcta__scene.is-playing .ripple { animation: fs-ripple 4.2s ease-out infinite; }
+.fcta__scene .ripple--burst { animation: none !important; }
+.fcta__scene.is-playing.is-burst .ripple--burst { animation: fs-burst 1.4s ease-out !important; }
+.fcta__scene.is-burst .core__glow { opacity: 1; }
+.fcta__scene.is-playing .st-bob { animation: fs-bob 4s ease-in-out infinite; }
+.fcta__scene.is-playing .st-layer { animation: fs-lift 5s ease-in-out infinite; }
+.fcta__scene.is-playing .fs-bar { animation: fs-bars 3.2s ease-in-out infinite; }
+.fcta__scene.is-playing .fs-trend { animation: fs-draw 3.2s ease-in-out infinite; }
+.fcta__scene.is-playing .st-rise { animation: fs-rise 4.8s cubic-bezier(0.2, 0.8, 0.2, 1) infinite; }
+.fcta__scene.is-playing .st-wave { animation: fs-bob 3.4s ease-in-out infinite; }
+.fcta__scene.is-playing .st-scroll { animation: fs-scroll 6s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
+.fcta__scene.is-playing .fs-code { animation: fs-type 5.4s steps(12) infinite; }
+.fcta__scene.is-playing .fs-caret { animation: fs-blink 0.9s steps(1) infinite; }
+@keyframes fs-hover { 50% { transform: translateY(-10px); } }
+@keyframes fs-glow { 50% { opacity: 0.9; } }
+@keyframes fs-fire { 0%, 62%, 100% { fill: #cfcfcf; transform: none; } 72% { fill: var(--orange); transform: scale(1.7); } }
+@keyframes fs-flow { to { stroke-dashoffset: -16; } }
+@keyframes fs-ripple { from { opacity: 0.55; transform: scale(0.55); } to { opacity: 0; transform: scale(2.3); } }
+@keyframes fs-burst { from { opacity: 0.9; transform: scale(0.4); stroke-width: 3; } to { opacity: 0; transform: scale(3.4); } }
+@keyframes fs-bob { 50% { transform: translateY(-7px); } }
+@keyframes fs-lift { 50% { transform: translateY(var(--lift)); } }
+@keyframes fs-bars { 0%, 100% { transform: scaleY(0.35); } 50% { transform: none; } }
+@keyframes fs-draw { 0% { stroke-dashoffset: 1; } 45%, 80% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -1; } }
+@keyframes fs-rise {
+  0% { opacity: 0; transform: translateY(var(--z)); }
+  18% { opacity: 1; transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+  82% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-8px); }
+}
+@keyframes fs-scroll { 0%, 15% { transform: none; } 45%, 65% { transform: translateY(-36px); } 95%, 100% { transform: none; } }
+@keyframes fs-type { 0% { transform: scaleX(0); } 30%, 90% { transform: scaleX(1); } 100% { transform: scaleX(0); } }
+@keyframes fs-blink { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
   .closing__word, .closing__actions { opacity: 1; transform: none; }
 }
