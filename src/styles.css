@@ -334,15 +334,6 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 }
 .svc-card:hover { transform: translateY(-4px); }
 .svc-card--wide { grid-column: span 3; }
-.svc-card__art {
-  color: var(--on-panel-muted);
-  margin-inline: -24px;
-  padding: 8px 24px;
-  background-image: radial-gradient(#ffffff12 1px, transparent 1px);
-  background-size: 14px 14px;
-  -webkit-mask-image: radial-gradient(ellipse at center, #000 55%, transparent 100%);
-  mask-image: radial-gradient(ellipse at center, #000 55%, transparent 100%);
-}
 .svc-card__copy { font-size: 14px; line-height: 22px; color: var(--on-panel-muted); }
 .svc-card .tags { margin-top: auto; padding-top: 8px; }
 @media (max-width: 900px) {
@@ -355,104 +346,61 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 
 /* ---------- Illustrations ---------- */
 
-/* Scenes are revealed beat by beat: ServiceCard adds s1…sN to the art div
-   and every .aN piece appears at .sN. Without the classes nothing shows,
-   so the finished (static) scene is simply all classes at once. */
-.svc-card__art { --mx: 0; --my: 0; perspective: 800px; }
-.art { width: 100%; height: auto; display: block; overflow: visible; transform: rotateY(calc(var(--mx) * 8deg)) rotateX(calc(var(--my) * -8deg)); transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
-.art .layer { transform: translate(calc(var(--mx) * var(--d, 1) * 5px), calc(var(--my) * var(--d, 1) * 4px)); transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+/* Kargul-style isometric line art. The art runs full-bleed behind the card
+   title; layers float on their own rhythm (.float), spread on hover
+   (.spread) and drift with the cursor (.layer, via --mx/--my). */
+.svc-card { position: relative; }
+.svc-card > .h3 { position: relative; z-index: 1; }
+.svc-card__art { --mx: 0; --my: 0; height: 240px; margin: -58px -24px 0; -webkit-mask-image: linear-gradient(#000 78%, transparent); mask-image: linear-gradient(#000 78%, transparent); }
+.svc-card--wide .svc-card__art { height: 290px; }
+@media (max-width: 640px) {
+  .svc-card__art, .svc-card--wide .svc-card__art { height: 220px; }
+}
+.art { width: 100%; height: 100%; display: block; overflow: hidden; }
+.art :is(rect, path, circle) { vector-effect: non-scaling-stroke; stroke-width: 1; }
 
-.art .t { font-family: var(--font); font-weight: 600; letter-spacing: -0.01em; stroke: none; fill: currentColor; }
-.art .t--hi { fill: var(--on-panel); }
-.art .t--mu { fill: var(--on-panel-muted); }
-.art .t--ok { fill: var(--ok); }
-.art .t--panel { fill: var(--panel); }
-.art .f-box { fill: #ffffff08; }
-.art .f-box2 { fill: #ffffff10; }
-.art .f-bot { fill: #22c55e1f; }
-.art .f-oktint { fill: #22c55e1a; }
-.art .f-hi { fill: var(--on-panel); }
-.art .f-mu { fill: currentColor; }
-.art .f-ok { fill: var(--ok); }
-.art .f-hub { fill: var(--on-panel); }
-.art .s-none { stroke: none; }
-.art .s-ok { stroke: var(--ok); }
-.art .s-hi { stroke: var(--on-panel); }
-.art .s-panel { stroke: var(--panel); }
-.art .s-read { stroke: #53bdeb; }
+.art .iso-guides { stroke-width: 1; stroke-dasharray: 3 5; }
+.art .iso-pat { stroke: #ffffff38; stroke-width: 0.7; vector-effect: none; }
+.art .iso-pat-dot { fill: #ffffff40; stroke: none; }
+.art image { filter: brightness(0) invert(1); }
+.art .iso-handle rect { fill: var(--on-panel); stroke: #232323; }
+.art .p-top { fill: #2c2c2c; stroke: #f2f2f2e6; }
+.art .p-solid { fill: #2c2c2c; stroke: #ffffff8c; }
+.art .p-dim { stroke: #ffffff4d; }
+.art .ln { stroke: #ffffff66; }
+.art .ln-bright { stroke: #f2f2f2e6; }
+.art .ln-panel { stroke: var(--panel); }
+.art .fill-hi { fill: var(--on-panel); stroke: none; }
+.art .fill-ok { fill: var(--ok); stroke: none; }
+.art .ok-tint { fill: #1f3a28; stroke: var(--ok); }
+.art .t { font-family: var(--font); font-weight: 700; letter-spacing: -0.02em; fill: #ffffff6b; stroke: none; }
+.art .wire { stroke: #ffffff73; stroke-dasharray: 2 4; }
 
-.art .a { opacity: 0; transform-box: fill-box; transform-origin: center; transition: opacity 0.35s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), stroke-dashoffset 1s ease; }
-.art .a--up { transform: translateY(8px); }
-.art .a--left { transform: translateX(-16px); }
-.art .a--pop { transform: scale(0.3); }
-.art .a--bubble-l { transform: scale(0.5); transform-origin: left bottom; }
-.art .a--bubble-r { transform: scale(0.5); transform-origin: right bottom; }
-.art .a--grow-y { transform: scaleY(0); transform-origin: bottom; }
-.art .a--grow-x { transform: scaleX(0); transform-origin: left; }
-.art .a--draw { opacity: 1; stroke-dasharray: 1; stroke-dashoffset: 1; }
-.s1 .a1, .s2 .a2, .s3 .a3, .s4 .a4, .s5 .a5, .s6 .a6, .s7 .a7, .s8 .a8 { opacity: 1; transform: none; stroke-dashoffset: 0; }
+.art .layer { transform: translate(calc(var(--mx) * var(--d, 1) * 7px), calc(var(--my) * var(--d, 1) * 5px)); transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.art .spread { transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.is-hover .spread { transform: translate(var(--sx), var(--sy)); }
+.art .travel { opacity: 0; }
 
-/* Ambient loops run only while the card is on screen. */
-.art .wire { stroke-dasharray: 3 4; }
-.is-playing .wire { animation: art-dash 1.4s linear infinite; }
-.art .loop-ring { opacity: 0; transform-box: fill-box; transform-origin: center; }
-.is-playing .loop-ring { animation: art-ring 2.2s ease-out infinite; }
-.is-playing .loop-blink { animation: art-blink 1.2s ease-in-out infinite; }
-.is-playing .loop-float { animation: art-float 4s ease-in-out infinite; }
-@keyframes art-dash { to { stroke-dashoffset: -14; } }
-@keyframes art-ring { from { opacity: 0.7; transform: scale(1); } to { opacity: 0; transform: scale(1.9); } }
-@keyframes art-blink { 50% { opacity: 0.25; } }
-@keyframes art-float { 50% { transform: translateY(-4px); } }
-
-/* Agents: pulses fly from the hub to each tool, then the hub goes green. */
-.art .pk { opacity: 0; transition: transform 0.75s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.25s ease; }
-.s1 .pk1 { opacity: 1; transform: translate(-58px, -34px); }
-.s3 .pk2 { opacity: 1; transform: translate(58px, -34px); }
-.s5 .pk3 { opacity: 1; transform: translate(0, 48px); }
-.s2 .pk1, .s4 .pk2, .s6 .pk3 { opacity: 0; }
-.art .hub { transition: fill 0.4s, stroke 0.4s; }
-.s6 .hub.f-hub { fill: var(--ok); }
-.s6 .hub { stroke: var(--ok); }
-
-/* SaaS: the cursor glides to Deploy, the click turns it Live. */
-.art .saas-cursor { transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1); }
-.is-playing:not(.s5) .saas-cursor { transform: translate(-150px, 120px); }
-.art .btn-bg { fill: #ffffff10; stroke: none; transition: fill 0.3s; }
-.art .btn-off { transition: opacity 0.2s; }
-.s6 .btn-bg { fill: var(--ok); }
-.s6 .btn-off { opacity: 0; }
-.art .click-ring { opacity: 0; transform-box: fill-box; transform-origin: center; }
-.is-playing.s6 .click-ring { animation: art-ring 0.7s ease-out forwards; }
-
-/* WhatsApp: the typing bubble shows only while the bot is "typing". */
-.art .typing { opacity: 0; transition: opacity 0.25s; }
-.s2 .typing { opacity: 1; }
-.s3 .typing { opacity: 0; }
-
-/* Web: the hero image is picked up, dragged into its slot, then the page scrolls. */
-.art .web-hero { opacity: 0; transform-box: fill-box; transform-origin: center; transform: translate(8px, 30px) rotate(-6deg) scale(0.9); transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.3s; }
-.s4 .web-hero { opacity: 1; }
-.s5 .web-hero { transform: none; }
-.art .web-slot { opacity: 0; transition: opacity 0.3s; }
-.s4 .web-slot { opacity: 1; }
-.s5 .web-slot { opacity: 0; }
-.art .web-cursor { transform: translate(56px, 60px); transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1); }
-.s4 .web-cursor { transform: translate(8px, 30px); }
-.s5 .web-cursor { transform: none; }
-.s6 .web-cursor { transform: translate(-60px, 56px); }
-.art .web-page { transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1); }
-.s7 .web-page { transform: translateY(-44px); }
-
-/* Mobile: swipe, notification, tap, swipe. */
-.art .mob-strip { transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1); }
-.s2 .mob-strip { transform: translateX(-60px); }
-.s5 .mob-strip { transform: translateX(-120px); }
-.art .mob-notif { opacity: 0; transform: translateY(-14px); transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s; }
-.s3 .mob-notif { opacity: 1; transform: none; }
-.s4 .mob-notif { opacity: 0; transform: translateY(-14px); }
-.art .mob-tap { opacity: 0; transition: opacity 0.2s; }
-.s4 .mob-tap { opacity: 0.9; }
-.s5 .mob-tap { opacity: 0; }
+.is-playing .float { animation: iso-float 6s ease-in-out infinite; }
+.is-playing .float--rise { animation-name: iso-rise; animation-timing-function: linear; }
+.is-playing .wire { animation: iso-dash 1.2s linear infinite; }
+.is-playing .travel { animation: iso-travel 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
+.is-playing .scroll { animation: iso-scroll 7s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
+@keyframes iso-float { 50% { transform: translateY(var(--amp)); } }
+@keyframes iso-rise {
+  0% { opacity: 0; transform: translateY(var(--z)); }
+  16% { opacity: 1; transform: translateY(0); }
+  50% { transform: translateY(var(--amp)); }
+  84% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(0); }
+}
+@keyframes iso-dash { to { stroke-dashoffset: -12; } }
+@keyframes iso-travel {
+  0% { opacity: 0; transform: translate(0, 0); }
+  15%, 85% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--tx), var(--ty)); }
+}
+@keyframes iso-scroll { 0%, 18% { transform: none; } 45%, 68% { transform: translateY(-58px); } 95%, 100% { transform: none; } }
 
 /* ---------- Numbers ---------- */
 

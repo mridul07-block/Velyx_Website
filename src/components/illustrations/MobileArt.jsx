@@ -1,59 +1,66 @@
-/* A mobile app in use. Beats: 1 home screen loads, 2 swipe to the
-   product, 3 a notification drops in, 4 tap to pay, 5 swipe to success,
-   6 store badges pop out around the phone. */
+import { LOGO_ICON } from "../../lib/brand";
+import { Guides, Handles, Layer, Patterns } from "./iso";
+import { floor, wall } from "./isoMatrix";
+
+/* Three phones stand in a row over an app-icon grid; the front screen
+   scrolls, a notification floats in from the side, the phones fan out. */
+const PHONES = [0, 1, 2];
+const ICONS = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+
 export default function MobileArt() {
   return (
-    <svg viewBox="0 0 320 180" className="art" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.25">
+    <svg viewBox="0 0 600 300" preserveAspectRatio="xMidYMid slice" className="art" aria-hidden="true" fill="none">
+      <Patterns id="mo" />
+      <Guides id="mo" w={600} h={300} step={60} />
       <defs>
-        <clipPath id="mobile-screen"><rect x="130" y="22" width="60" height="146" rx="8" /></clipPath>
+        <clipPath id="mo-screen"><rect x="5" y="14" width="52" height="102" rx="6" /></clipPath>
       </defs>
 
-      <g className="layer" style={{ "--d": 2 }}>
-        <g className="a a6 a--pop">
-          <rect x="34" y="52" width="62" height="22" rx="11" className="f-box2 s-none loop-float" />
-          <text x="65" y="66" fontSize="8" textAnchor="middle" className="t t--hi loop-float">iOS</text>
+      <Layer sx={-8} sy={4} amp={-3} dur={7} d={0.8}>
+        <g transform={floor(150, 150)}>
+          <rect width="90" height="90" className="p-dim" strokeDasharray="3 4" />
+          {ICONS.map((n) => (
+            <rect key={n} x={6 + (n % 3) * 28} y={6 + Math.floor(n / 3) * 28} width="22" height="22" rx="6"
+              className={n === 4 ? "fill-ok" : n % 2 ? "p-solid" : "p-dim"} fill={n === 2 || n === 6 ? "url(#mo-hatch)" : undefined} />
+          ))}
         </g>
-        <g className="a a6 a--pop" style={{ transitionDelay: ".12s" }}>
-          <rect x="44" y="104" width="56" height="22" rx="11" className="f-box2 s-none loop-float" style={{ animationDelay: "-1.5s" }} />
-          <text x="72" y="118" fontSize="8" textAnchor="middle" className="t t--ok loop-float" style={{ animationDelay: "-1.5s" }}>★ 4.9</text>
-        </g>
-        <g className="a a6 a--pop" style={{ transitionDelay: ".24s" }}>
-          <rect x="218" y="78" width="70" height="22" rx="11" className="f-box2 s-none loop-float" style={{ animationDelay: "-3s" }} />
-          <text x="253" y="92" fontSize="8" textAnchor="middle" className="t t--hi loop-float" style={{ animationDelay: "-3s" }}>Android</text>
-        </g>
-      </g>
+      </Layer>
 
-      <rect x="124" y="6" width="72" height="168" rx="14" className="f-box" />
-      <rect x="148" y="12" width="24" height="5" rx="2.5" className="f-mu s-none" />
-      <g clipPath="url(#mobile-screen)">
-        <g className="mob-strip">
-          <g className="a a1 a--up">
-            <path d="M136 32h24" />
-            <rect x="136" y="40" width="48" height="36" rx="6" className="f-oktint s-ok" />
-            <path d="M136 86h40M136 94h30" />
-            <rect x="136" y="104" width="48" height="12" rx="4" className="f-box2 s-none" />
-            <rect x="136" y="120" width="48" height="12" rx="4" className="f-box2 s-none" />
-            <rect x="136" y="136" width="48" height="12" rx="4" className="f-box2 s-none" />
-          </g>
-          <circle cx="220" cy="62" r="18" className="f-box2" />
-          <path d="M200 92h40M204 100h32M208 114h24" />
-          <rect x="196" y="140" width="48" height="14" rx="7" className="f-ok s-none" />
-          <text x="220" y="149.5" fontSize="6.5" textAnchor="middle" className="t t--panel">Pay now</text>
-          <circle cx="280" cy="70" r="14" className="f-ok s-none" />
-          <path d="M274 70.5l4 4 8-8" className="s-panel" strokeWidth="2" />
-          <path d="M262 98h36M268 106h24" />
+      <path className="wire" d="M470 128L404 150" />
+
+      {PHONES.map((i) => {
+        const front = i === PHONES.length - 1;
+        return (
+          <Layer key={i} sx={(i - 1) * 16} sy={(i - 1) * 9} amp={-7} delay={-i * 0.7} dur={5} d={0.6 + i * 0.4}>
+            <g transform={wall(250 + i * 52, 46 + i * 30)}>
+              <rect width="62" height="130" rx="10" className={front ? "p-top" : "p-solid"} />
+              <rect x="23" y="5" width="16" height="4" rx="2" className="fill-hi" />
+              {front ? (
+                <g clipPath="url(#mo-screen)">
+                  <g className="scroll">
+                    <image href={LOGO_ICON} x="9" y="20" width="12" height="12" />
+                    <rect x="9" y="38" width="40" height="6" rx="1" className="fill-hi" />
+                    <rect x="9" y="50" width="44" height="30" rx="4" fill="url(#mo-hatch)" className="ln" />
+                    <rect x="9" y="86" width="30" height="10" rx="5" className="fill-ok" />
+                    {[104, 122, 140, 158].map((y) => <rect key={y} x="9" y={y} width="44" height="12" rx="3" className="ln" />)}
+                  </g>
+                </g>
+              ) : (
+                <path d="M9 24h30M9 32h20M9 46h44M9 54h36" className="ln" />
+              )}
+              {front && <Handles w={62} h={130} />}
+            </g>
+          </Layer>
+        );
+      })}
+
+      <Layer sx={14} sy={-12} amp={-9} delay={-1} dur={4} d={2}>
+        <g transform={floor(470, 96)}>
+          <rect width="70" height="28" rx="8" className="p-top" />
+          <circle cx="12" cy="14" r="5" className="fill-ok" />
+          <path d="M22 10h38M22 17h24" className="ln-bright" />
         </g>
-      </g>
-      <g className="mob-notif">
-        <rect x="128" y="20" width="64" height="18" rx="6" className="f-hi s-none" />
-        <circle cx="137" cy="29" r="3.5" className="f-ok s-none" />
-        <text x="144" y="31.5" fontSize="6.5" className="t t--panel">New order</text>
-      </g>
-      <g className="mob-tap">
-        <circle cx="160" cy="147" r="6" className="f-hi s-none" />
-        <circle cx="160" cy="147" r="6" className="loop-ring s-hi" />
-      </g>
+      </Layer>
     </svg>
   );
 }
-MobileArt.steps = 6;

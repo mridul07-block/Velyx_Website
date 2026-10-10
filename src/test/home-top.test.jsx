@@ -72,51 +72,26 @@ describe("ServiceCard motion", () => {
 });
 
 describe("ServiceCard scenes", () => {
-  afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); });
-  const motionOk = (q) => ({ matches: false, media: q, addEventListener() {}, removeEventListener() {} });
+  afterEach(() => vi.unstubAllGlobals());
 
-  it("builds the scene one step at a time while playing, faster on hover", () => {
-    vi.useFakeTimers();
-    let fire;
-    vi.stubGlobal("matchMedia", motionOk);
-    vi.stubGlobal("IntersectionObserver", class { constructor(cb) { fire = cb; } observe() {} disconnect() {} });
+  it("spreads the scene's layers apart while hovered", () => {
     const { container } = renderWithProviders(<ServiceCard service={SERVICES[0]} />);
+    const card = container.querySelector(".svc-card");
     const art = container.querySelector(".svc-card__art");
-    act(() => fire([{ isIntersecting: true }]));
-    expect(art).not.toHaveClass("s1");
-    act(() => vi.advanceTimersByTime(900));
-    expect(art).toHaveClass("s1");
-    expect(art).not.toHaveClass("s2");
-    fireEvent.pointerEnter(container.querySelector(".svc-card"));
-    act(() => vi.advanceTimersByTime(450));
-    expect(art).toHaveClass("s2");
+    expect(art).not.toHaveClass("is-hover");
+    fireEvent.pointerEnter(card);
+    expect(art).toHaveClass("is-hover");
+    fireEvent.pointerLeave(card);
+    expect(art).not.toHaveClass("is-hover");
   });
 
-  it("loops back to an empty scene after holding the finished one", () => {
-    vi.useFakeTimers();
-    let fire;
-    vi.stubGlobal("matchMedia", motionOk);
-    vi.stubGlobal("IntersectionObserver", class { constructor(cb) { fire = cb; } observe() {} disconnect() {} });
-    const { container } = renderWithProviders(<ServiceCard service={SERVICES[0]} />);
-    const art = container.querySelector(".svc-card__art");
-    act(() => fire([{ isIntersecting: true }]));
-    let sawFull = false;
-    for (let i = 0; i < 20; i++) {
-      act(() => vi.advanceTimersByTime(900));
-      if (art.classList.contains("s6")) sawFull = true;
-      if (sawFull && !art.classList.contains("s1")) return;
-    }
-    throw new Error("scene never reset");
-  });
-
-  it("shows every service's finished scene when it is not playing", () => {
-    vi.stubGlobal("IntersectionObserver", undefined);
+  it("draws every service as layered isometric planes over guide lines", () => {
     for (const service of SERVICES) {
       const { container, unmount } = renderWithProviders(<ServiceCard service={service} />);
       const art = container.querySelector(".svc-card__art");
-      const steps = [...art.classList].filter((c) => /^s\d+$/.test(c));
-      expect(steps.length, service.id).toBeGreaterThanOrEqual(5);
-      expect(art.querySelectorAll(`.a${steps.length}`).length, service.id).toBeGreaterThan(0);
+      expect(art.querySelector(".iso-guides"), service.id).not.toBeNull();
+      expect(art.querySelectorAll(".spread .float").length, service.id).toBeGreaterThanOrEqual(3);
+      expect(art.querySelectorAll("[transform^='matrix(']").length, service.id).toBeGreaterThanOrEqual(3);
       unmount();
     }
   });

@@ -1,53 +1,50 @@
-/* A WhatsApp booking runs itself. Beats: 1 customer asks, 2 bot types,
-   3 bot replies, 4 customer confirms, 5 booking card, 6 read ticks. */
-function Ticks({ x, y }) {
-  return (
-    <g transform={`translate(${x} ${y})`}>
-      <path d="M0 3l2 2 4-4M3.5 5l4-4" className="s-read a a6 a--pop" strokeWidth="1.2" />
-    </g>
-  );
-}
+import { Guides, Handles, Layer, Patterns } from "./iso";
+import { floor } from "./isoMatrix";
+
+/* A phone lies flat; chat bubbles rise out of it one after another, the
+   last one a green booking confirmation. A CRM tile syncs on the side. */
+const BUBBLES = [
+  { at: [225, 109], w: 42, h: 18, z: 26, cls: "p-top", lines: "M7 7h26M7 12h16" },
+  { at: [193, 83], w: 48, h: 20, z: 50, cls: "ok-tint", lines: "M7 7h32M7 13h20" },
+  { at: [213, 57], w: 56, h: 22, z: 74, cls: "fill-ok", check: true },
+];
 
 export default function WhatsAppArt() {
   return (
-    <svg viewBox="0 0 320 180" className="art" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.25">
-      <rect x="70" y="6" width="180" height="168" rx="14" className="f-box" />
-      <circle cx="90" cy="24" r="8" className="f-ok s-none" />
-      <path d="M86 24.5l2.5 2.5 5-5" className="s-panel" strokeWidth="1.5" />
-      <text x="104" y="22" fontSize="8" className="t t--hi">Velyx Bot</text>
-      <text x="104" y="31" fontSize="6.5" className="t t--ok loop-blink">online</text>
-      <path d="M70 40h180" />
+    <svg viewBox="0 0 360 240" preserveAspectRatio="xMidYMid slice" className="art" aria-hidden="true" fill="none">
+      <Patterns id="wa" />
+      <Guides id="wa" w={360} h={240} />
+      <g transform="translate(-40 0)">
+      <path className="wire" d="M262 150l50-24" />
 
-      <g className="a a1 a--bubble-l">
-        <rect x="80" y="48" width="100" height="20" rx="8" className="f-box2 s-none" />
-        <text x="88" y="61" fontSize="7.5" className="t t--hi">Table for 4 tonight?</text>
-      </g>
-      <g className="typing">
-        <rect x="208" y="74" width="32" height="18" rx="8" className="f-bot s-none" />
-        <circle cx="217" cy="83" r="2" className="f-mu s-none loop-blink" />
-        <circle cx="224" cy="83" r="2" className="f-mu s-none loop-blink" style={{ animationDelay: ".2s" }} />
-        <circle cx="231" cy="83" r="2" className="f-mu s-none loop-blink" style={{ animationDelay: ".4s" }} />
-      </g>
-      <g className="a a3 a--bubble-r">
-        <rect x="136" y="74" width="104" height="20" rx="8" className="f-bot s-none" />
-        <text x="144" y="87" fontSize="7.5" className="t t--hi">Sure! 8:00 PM works?</text>
-      </g>
-      <Ticks x={229} y={84} />
-      <g className="a a4 a--bubble-l">
-        <rect x="80" y="100" width="62" height="20" rx="8" className="f-box2 s-none" />
-        <text x="88" y="113" fontSize="7.5" className="t t--hi">Yes please!</text>
-      </g>
-      <g className="layer" style={{ "--d": 1.4 }}>
-        <g className="a a5 a--up">
-          <rect x="112" y="128" width="128" height="34" rx="9" className="f-bot s-ok" />
-          <circle cx="126" cy="145" r="7" className="f-ok s-none" />
-          <path d="M122.5 145.5l2.5 2.5 5-5" className="s-panel" strokeWidth="1.5" />
-          <text x="138" y="142" fontSize="7.5" className="t t--hi">Booking confirmed</text>
-          <text x="138" y="153" fontSize="6.5" className="t t--mu">Fri · 8:00 PM · 4 guests</text>
+      <Layer sy={4} amp={-3} dur={7}>
+        <g transform={floor(241, 103)}>
+          <rect width="64" height="124" rx="12" className="p-solid" />
+          <rect x="6" y="14" width="52" height="102" rx="6" fill="url(#wa-dots)" className="p-dim" />
+          <rect x="24" y="5" width="16" height="4" rx="2" className="fill-hi" />
         </g>
+      </Layer>
+
+      <Layer sx={10} sy={-8} amp={-5} delay={-2} dur={5} d={1.6}>
+        <g transform={floor(330, 87)}>
+          <rect width="46" height="46" className="p-solid" />
+          {[8, 20, 32].map((y) => <rect key={y} x="7" y={y} width="32" height="7" rx="2" className="ln" />)}
+          <circle cx="11" cy="11.5" r="2" className="fill-ok" />
+          <text x="4" y="44" fontSize="5" className="t">CRM</text>
+        </g>
+      </Layer>
+
+      {BUBBLES.map((b, i) => (
+        <Layer key={i} sy={-8 - i * 8} amp={-4} rise={b.z} delay={i * 0.7} dur={6}>
+          <g transform={floor(b.at[0], b.at[1])}>
+            <rect width={b.w} height={b.h} rx="6" className={b.cls} />
+            {b.lines && <path d={b.lines} className="ln-bright" />}
+            {b.check && <path d="M8 11l3 3 6-6M24 8h24M24 14h16" className="ln-panel" strokeWidth="1.6" />}
+            {i === 2 && <Handles w={b.w} h={b.h} />}
+          </g>
+        </Layer>
+      ))}
       </g>
-      <Ticks x={229} y={153} />
     </svg>
   );
 }
-WhatsAppArt.steps = 6;

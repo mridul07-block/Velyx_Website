@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Tag from "./Tag";
 import useOnScreen from "../lib/useOnScreen";
 import useReducedMotion from "../lib/useReducedMotion";
@@ -9,33 +9,16 @@ import WebArt from "./illustrations/WebArt";
 import MobileArt from "./illustrations/MobileArt";
 
 const ART = { agents: AgentsArt, saas: SaasArt, whatsapp: WhatsAppArt, web: WebArt, mobile: MobileArt };
-const TICK = 900;
-const TICK_FAST = 450;
-const HOLD = 3; // ticks the finished scene stays up before it resets
 
-/* Each illustration is a little story told in `Art.steps` beats. While the
-   card is on screen the art div collects s1…sN classes one beat at a time
-   (CSS reveals .aN pieces at .sN), holds the finished scene, then resets.
-   Hovering speeds the story up and tilts the scene toward the cursor.
-   Off screen, without IntersectionObserver or under reduced motion, the
-   finished scene is shown still. */
+/* Kargul-style living illustrations: isometric layers float on their own
+   rhythm while the card is on screen, spread apart while it is hovered and
+   shift with the cursor. Off screen or under reduced motion they hold still. */
 export default function ServiceCard({ service }) {
   const [ref, onScreen] = useOnScreen("0px 0px -10% 0px");
   const reduced = useReducedMotion();
-  const [step, setStep] = useState(0);
   const [hover, setHover] = useState(false);
   const Art = ART[service.art];
-  const steps = Art.steps;
   const playing = onScreen && !reduced;
-
-  useEffect(() => {
-    if (!playing) return;
-    const id = setInterval(() => setStep((s) => (s + 1) % (steps + HOLD)), hover ? TICK_FAST : TICK);
-    return () => clearInterval(id);
-  }, [playing, hover, steps]);
-
-  const shown = playing ? Math.min(step, steps) : steps;
-  const beats = Array.from({ length: shown }, (_, i) => ` s${i + 1}`).join("");
 
   const tilt = (e) => {
     const el = ref.current;
@@ -47,7 +30,7 @@ export default function ServiceCard({ service }) {
   };
   const enter = (e) => {
     setHover(true);
-    // Touch has no hover: a tap speeds the story up for a few seconds.
+    // Touch has no hover: a tap spreads the layers for a few seconds.
     if (e.pointerType === "touch") setTimeout(() => setHover(false), 3000);
   };
   const leave = (e) => {
@@ -64,7 +47,7 @@ export default function ServiceCard({ service }) {
       onPointerLeave={leave}
     >
       <h3 className="h3">{service.title}</h3>
-      <div ref={ref} className={`svc-card__art${playing ? " is-playing" : ""}${beats}`}>
+      <div ref={ref} className={`svc-card__art${playing ? " is-playing" : ""}${hover ? " is-hover" : ""}`}>
         <Art />
       </div>
       <p className="svc-card__copy">{service.copy}</p>

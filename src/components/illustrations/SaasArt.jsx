@@ -1,53 +1,51 @@
-/* A SaaS dashboard assembles itself, then ships. Beats: 1 sidebar,
-   2 KPI cards and chart frame, 3 bars grow, 4 trend line draws,
-   5 cursor heads to Deploy, 6 click → Live. */
-const BARS = [[108, 18], [124, 30], [140, 24], [156, 40], [172, 50]];
+import { Guides, Handles, Layer, Patterns } from "./iso";
+import { floor } from "./isoMatrix";
+
+/* A product exploded into its layers: hatched database, API mesh and the
+   dashboard on top, breathing apart and together. */
+const W = 130;
+const D = 96;
+const NODES = [[22, 22], [48, 22], [82, 22], [108, 22], [34, 48], [66, 48], [96, 48], [22, 74], [56, 74], [108, 74]];
 
 export default function SaasArt() {
   return (
-    <svg viewBox="0 0 320 180" className="art" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.25">
-      <rect x="30" y="12" width="260" height="156" rx="12" className="f-box" />
-      <path d="M30 34h260" />
-      <circle cx="44" cy="23" r="2.5" /><circle cx="54" cy="23" r="2.5" /><circle cx="64" cy="23" r="2.5" />
-      <g className="saas-btn">
-        <rect x="236" y="17" width="46" height="12" rx="6" className="btn-bg" />
-        <text x="259" y="25.5" fontSize="7" textAnchor="middle" className="t t--hi btn-off">Deploy</text>
-        <text x="259" y="25.5" fontSize="7" textAnchor="middle" className="t t--panel a a6">Live ✓</text>
-        <circle cx="259" cy="23" r="12" className="s-ok click-ring" />
-      </g>
+    <svg viewBox="0 0 360 240" preserveAspectRatio="xMidYMid slice" className="art" aria-hidden="true" fill="none">
+      <Patterns id="sa" />
+      <Guides id="sa" w={360} h={240} />
+      <g transform="translate(-40 0)">
 
-      <g className="a a1 a--left">
-        <rect x="38" y="42" width="50" height="118" rx="7" className="f-box2 s-none" />
-        <rect x="44" y="63" width="38" height="12" rx="4" className="f-box2 s-none" />
-        <path d="M48 54h22M48 69h26M48 85h20M48 99h24M48 113h18" />
-      </g>
-
-      <g className="layer" style={{ "--d": 1.2 }}>
-        <g className="a a2 a--up">
-          <rect x="96" y="42" width="88" height="40" rx="7" className="f-box2 s-none" />
-          <text x="104" y="56" fontSize="7" className="t t--mu">Revenue</text>
-          <text x="104" y="73" fontSize="13" className="t t--hi">24.8k</text>
+      <Layer sy={10} amp={-3} dur={6}>
+        <g transform={floor(210, 124)}>
+          <rect width={W} height={D} fill="url(#sa-hatch)" className="p-dim" />
+          {[12, 38, 64].map((y) => <rect key={y} x="12" y={y} width="106" height="18" rx="4" className="p-solid" />)}
+          {[12, 38, 64].map((y) => <circle key={y} cx="22" cy={y + 9} r="2.5" className="fill-ok" />)}
         </g>
-        <g className="a a2 a--up" style={{ transitionDelay: ".12s" }}>
-          <rect x="192" y="42" width="88" height="40" rx="7" className="f-box2 s-none" />
-          <text x="200" y="56" fontSize="7" className="t t--mu">Users</text>
-          <text x="200" y="73" fontSize="13" className="t t--hi">1,284</text>
-          <text x="272" y="73" fontSize="7" textAnchor="end" className="t t--ok">+18%</text>
+      </Layer>
+
+      <Layer sy={-4} amp={-5} delay={-1.2} dur={6}>
+        <g transform={floor(210, 90)}>
+          <rect width={W} height={D} className="p-solid" />
+          <path className="ln" d="M22 22h86M34 48h62M22 74h86M22 22l12 26 22 26M82 22l-16 26-10 26M108 22l-12 26 12 26" />
+          {NODES.map(([x, y]) => <circle key={`${x}-${y}`} cx={x} cy={y} r="3" className="p-top" />)}
         </g>
-      </g>
+      </Layer>
 
-      <rect x="96" y="90" width="184" height="70" rx="7" className="f-box2 s-none a a2 a--up" style={{ transitionDelay: ".24s" }} />
-      {BARS.map(([x, h], i) => (
-        <rect key={x} x={x} y={150 - h} width="9" height={h} rx="2"
-          className={`s-none a a3 a--grow-y ${i === BARS.length - 1 ? "f-ok" : "f-mu"}`}
-          style={{ transitionDelay: `${i * 0.08}s` }} />
-      ))}
-      <path d="M198 142c12-8 18-4 28-16s18-12 28-20 14-8 18-10" pathLength="1" className="s-ok a a4 a--draw" strokeWidth="1.75" />
+      <Layer sy={-20} amp={-8} delay={-2.4} dur={6} d={0.7}>
+        <g transform={floor(210, 56)}>
+          <rect width={W} height={D} className="p-top" />
+          <rect x="10" y="10" width="54" height="8" rx="2" className="fill-hi" />
+          <rect x="10" y="26" width="22" height="60" rx="3" className="ln" />
+          {[[42, 44], [56, 30], [70, 50], [84, 24], [98, 38]].map(([x, h]) => (
+            <rect key={x} x={x} y={86 - h} width="9" height={h} rx="1" className={x === 84 ? "fill-ok" : "ln-bright"} />
+          ))}
+          <path d="M42 34h70" className="ln" strokeDasharray="2 3" />
+          <Handles w={W} h={D} />
+        </g>
+      </Layer>
 
-      <g transform="translate(262 26)">
-        <path d="M0 0v14l4-4 3 7 3-1-3-7h6z" className="f-hi s-panel saas-cursor" strokeWidth="1" />
+      <path className="wire" d="M323 121l34 20" />
+      <text x="360" y="152" fontSize="15" className="t">{"{ }"}</text>
       </g>
     </svg>
   );
 }
-SaasArt.steps = 6;
