@@ -153,8 +153,7 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
   box-shadow: 0 1px 2px #0000000f, 0 6px 20px #0000000a;
 }
 .pnav__logo { display: grid; place-items: center; width: 44px; height: 44px; }
-.pnav__inner .pnav__logo { background: var(--brand-ground); }
-.pnav__logo img { width: 22px; height: 22px; object-fit: contain; }
+.pnav__logo img { width: 24px; height: 24px; object-fit: contain; }
 .pnav__links { display: flex; gap: 2px; padding: 4px 8px; font-size: 13px; color: var(--muted); }
 .pnav__links a { display: block; padding: 8px 10px; border-radius: var(--radius-pill); }
 .pnav__links a:hover, .pnav__links a.active { color: var(--ink); }

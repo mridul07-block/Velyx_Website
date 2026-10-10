@@ -21,11 +21,11 @@ describe("Velyx brand mark", () => {
     expect(rule(".hero .status")).toMatch(/z-index/);
   });
 
-  it("keeps the navbar mark in its original colours on the brand ground", () => {
+  it("shows the navbar mark in dark lines and orange on a white chip", () => {
     const { container } = renderWithProviders(<PillNav />);
-    expect(container.querySelector(".pnav__logo img")).not.toBeNull();
+    expect(container.querySelector(".pnav__logo img").getAttribute("src")).toBe("/brand/velyx-mark-nav.webp");
     expect(rule(".pnav__logo img")).not.toMatch(/filter/);
-    expect(rule(".pnav__inner .pnav__logo")).toMatch(/var\(--brand-ground\)/);
+    expect(css).not.toMatch(/\.pnav__inner \.pnav__logo\s*\{[^}]*brand-ground/);
     expect(rule(".logo__icon")).not.toMatch(/filter/);
   });
 });
