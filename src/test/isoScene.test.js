@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { project, meridians, orbitAt, ORBITS } from "../lib/isoScene";
+import { project, meridians, orbitAt, ORBITS, extrudeWall } from "../lib/isoScene";
 
 describe("isoScene geometry", () => {
   it("projects the world origin to the scene centre and z straight up", () => {
@@ -35,5 +35,12 @@ describe("isoScene geometry", () => {
       expect(xm).toBeLessThan(x1);
       expect(ym).toBeLessThan(Math.min(y0, y1));
     }
+  });
+
+  it("extrudes an upright shape: front face plus only the sides that face the viewer", () => {
+    const square = extrudeWall([[0, 0], [100, 0], [100, 100], [0, 100]], 0, 20);
+    expect(square.front.split(" ")).toHaveLength(8);
+    // Right side (+x) and top (+z) face the viewer; left and bottom do not.
+    expect(square.sides).toHaveLength(2);
   });
 });

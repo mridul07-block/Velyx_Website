@@ -1,88 +1,78 @@
 import { useEffect, useRef } from "react";
-import { floor } from "./illustrations/isoMatrix";
-import { box, disc, domeOutline, extrude, meridians, ORBITS, orbitAt, orbitPath, parallels, project } from "../lib/isoScene";
+import { floor, wall } from "./illustrations/isoMatrix";
+import { disc, extrude, extrudeWall, ORBITS, orbitAt, orbitPath, project } from "../lib/isoScene";
 
-/* Kargul-style footer scene, kept as quiet as theirs: one soft-gray
-   palette, a wireframe dome on a hatched plinth over a fading grid, a few
-   Velyx objects spaced around it (the V, a chat bubble, a phone, a
-   browser with a chart, dashboard bars, a database, building blocks, a
-   handled ring) and three dots gliding along two dotted arcs. While
-   `playing`, one rAF loop turns the dome and moves the dots; CSS bobs the
-   objects gently. Otherwise it is a still drawing. */
-const R = 150;
-const MERIDIANS = 12;
-const DOME_PERIOD = 3200; // ms per meridian spacing
+/* Kargul-style footer scene, in Velyx's own objects. A large standing
+   Velyx V floats over a hatched plinth on a fine diamond lattice, with
+   three dots gliding along two dotted arcs around it. Spaced around it,
+   in one soft-gray palette, are the things Velyx builds: an AI sparkle,
+   a WhatsApp chat bubble, a SaaS dashboard, a website, a mobile app, an
+   automation workflow and </> code. Each has one quiet loop (CSS); one
+   rAF loop moves the dots while `playing`. Otherwise it is a still. */
 const DOTS = [
   { orbit: 0, period: 7000, offset: 0.2 },
   { orbit: 1, period: 9000, offset: 0.1 },
   { orbit: 1, period: 9000, offset: 0.6 },
 ];
-// Dots fade in at the start of an arc and out at its end.
-const fade = (t) => Math.sin(Math.PI * t).toFixed(2);
+const TRAIL = [1, 2, 3];
+const TRAIL_GAP = 0.014;
+const fade = (t) => Math.sin(Math.PI * t).toFixed(2); // dots fade in and out along an arc
+const f = (n) => n.toFixed(1);
+const W = (x, y, z) => wall(...project(x, y, z).map(f));
+const dotAt = (dot, k) => {
+  const [x, y] = orbitAt(ORBITS[dot.orbit], k);
+  return `translate(${f(x)} ${f(y)})`;
+};
 
-// The Velyx V lying flat and facing the viewer (letter x runs across the
-// screen, letter up runs into the scene), its orange slash laid on top like the logo.
+// The Velyx V standing on its plinth (letter space: a across, b up).
+const toV = ([a, b]) => [(a - 70) * 1.4, b * 1.5 + 24];
+const BRAND_V = extrudeWall([[0, 130], [34, 130], [70, 40], [106, 130], [140, 130], [88, 0], [52, 0]].map(toV), 40, 34);
+const BRAND_SLASH = extrudeWall([[10, -14], [20, -14], [152, 150], [144, 150]].map(toV), 48, 6);
+const V_SHADOW = disc(0, 30, 0, 120);
+const PLINTH = [[-150, -150], [150, -150], [150, 150], [-150, 150]].map(([x, y]) => project(x, y, 0).map(f).join(" ")).join(" ");
+
+// AI: two four-point sparkles, standing.
+const star = (cx, cz, r) => Array.from({ length: 8 }, (_, i) => {
+  const a = Math.PI / 2 + (i * Math.PI) / 4;
+  const k = i % 2 ? r * 0.26 : r;
+  return [cx + k * Math.cos(a), cz + k * Math.sin(a)];
+});
+const SPARKLE = extrudeWall(star(-300, 64, 36), -40, 10);
+const SPARKLE_SM = extrudeWall(star(-246, 112, 15), -40, 6);
+
+// Code: </> lying on the floor at the front right.
 const K = Math.SQRT1_2;
-const toWorld = ([a, b]) => [316 + (a - b) * K, 116 - (a + b) * K];
-const V_LETTER = extrude([[0, 130], [34, 130], [70, 40], [106, 130], [140, 130], [88, 0], [52, 0]].map(toWorld), 0, 26);
-const V_SLASH = extrude([[10, -14], [20, -14], [152, 150], [144, 150]].map(toWorld), 26, 5);
+const toFloor = ([a, b]) => [330 + (a - b) * K, 140 - (a + b) * K];
+const CODE = [
+  [[36, 0], [50, 0], [18, 40], [50, 80], [36, 80], [4, 40]],
+  [[60, 0], [72, 0], [98, 80], [86, 80]],
+  [[104, 0], [118, 0], [150, 40], [118, 80], [104, 80], [136, 40]],
+].map((p) => extrude(p.map(toFloor), 0, 16));
 
-const PLINTH = [[-180, -180], [180, -180], [180, 180], [-180, 180]].map(([x, y]) => project(x, y, 0).join(" ")).join(" ");
-const BARS = [[-50, 255, 40], [-20, 255, 64], [10, 255, 92]].map(([x, y, h]) => box(x, y, 0, 24, 24, h));
-const CUBE = box(-270, -60, 46, 44, 44, 44);
-const LEGO = [box(250, -260, 0, 64, 44, 22), box(262, -248, 22, 40, 32, 20)];
-const STUDS = [[266, -244, 42], [286, -244, 42], [266, -228, 42], [286, -228, 42], [258, -256, 22], [300, -256, 22]].map(([x, y, z]) => disc(x, y, z + 5, 5));
-const CYLINDERS = [[10, -270, 16, 42]].map(([x, y, r, h]) => ({ top: disc(x, y, h, r), base: disc(x, y, 0, r) }));
-const DOME = { outline: domeOutline(R), rings: parallels(R, [18, 36, 54, 72]) };
-const RING_AT = project(210, 200, 0);
 const BUBBLE_AT = project(-320, 120, 34);
-const PHONE_AT = project(-150, 380, 18);
-const BROWSER_AT = project(120, -420, 24);
-const ORBIT_PATHS = ORBITS.map(orbitPath);
-const START = meridians(R, MERIDIANS, 0);
+const DASH_AT = project(60, -380, 46);
+const FLOW_AT = project(150, 230, 0);
 
-function Box({ b }) {
-  return (
-    <>
-      <polygon points={b.left} className="fs-left" />
-      <polygon points={b.right} className="fs-right" />
-      <polygon points={b.top} className="fs-top" />
-    </>
-  );
-}
-
-function Cylinder({ c }) {
-  const { top, base } = c;
-  return (
-    <>
-      <path d={`M${top.cx - top.rx} ${top.cy}V${base.cy}A${base.rx} ${base.ry} 0 0 0 ${base.cx + base.rx} ${base.cy}V${top.cy}`} className="fs-left" />
-      <ellipse cx={top.cx} cy={top.cy} rx={top.rx} ry={top.ry} className="fs-top" />
-    </>
-  );
-}
-
-/* A scene object: drifts with the cursor (--d), bobs gently, and casts a
-   soft floor shadow that shrinks as it rises. shadow = [x, y, radius]. */
-function Obj({ d = 1, delay = 0, shadow, children }) {
+function Obj({ d = 1, delay = 0, shadow, name, children }) {
   const sh = shadow && disc(shadow[0], shadow[1], 0, shadow[2]);
   return (
-    <g className="fobj" style={{ "--d": d }}>
-      {sh && <ellipse cx={sh.cx.toFixed(1)} cy={sh.cy.toFixed(1)} rx={sh.rx.toFixed(1)} ry={sh.ry.toFixed(1)} fill="url(#fs-shadow-g)" className="fobj__shadow" style={{ animationDelay: `${delay}s` }} />}
+    <g className="fobj" style={{ "--d": d }} data-obj={name}>
+      {sh && <ellipse cx={f(sh.cx)} cy={f(sh.cy)} rx={f(sh.rx)} ry={f(sh.ry)} fill="url(#fs-shadow-g)" className="fobj__shadow" style={{ animationDelay: `${delay}s` }} />}
       <g className="fobj__bob" style={{ animationDelay: `${delay}s` }}>{children}</g>
     </g>
   );
 }
 
-const TRAIL = [1, 2, 3];
-const TRAIL_GAP = 0.014;
-const dotAt = (dot, k) => {
-  const [x, y] = orbitAt(ORBITS[dot.orbit], k);
-  return `translate(${x.toFixed(1)} ${y.toFixed(1)})`;
-};
-const DOME_SHADOW = disc(0, 0, 0, R * 1.12);
+function Solid({ s, front = "front", cls = "" }) {
+  return (
+    <>
+      {s.sides.map((side, i) => <polygon key={i} points={side.d} className={`fs-${side.shade}${cls}`} />)}
+      <polygon points={s.front ?? s.top} className={`fs-${front}${cls}`} />
+    </>
+  );
+}
 
 export default function ClosingScene({ playing }) {
-  const merRefs = useRef([]);
   const dotRefs = useRef([]);
   const trailRefs = useRef([]);
   const spotRef = useRef(null);
@@ -94,11 +84,9 @@ export default function ClosingScene({ playing }) {
     const t0 = performance.now();
     const frame = (now) => {
       const t = now - t0;
-      meridians(R, MERIDIANS, t / DOME_PERIOD).forEach((d, i) => merRefs.current[i]?.setAttribute("d", d));
       DOTS.forEach((dot, i) => {
         const k = (t / dot.period + dot.offset) % 1;
-        const [x, y] = orbitAt(ORBITS[dot.orbit], k);
-        dotRefs.current[i]?.setAttribute("transform", `translate(${x.toFixed(1)} ${y.toFixed(1)})`);
+        dotRefs.current[i]?.setAttribute("transform", dotAt(dot, k));
         dotRefs.current[i]?.setAttribute("opacity", fade(k));
         TRAIL.forEach((j) => {
           const kj = Math.max(k - j * TRAIL_GAP, 0);
@@ -135,6 +123,9 @@ export default function ClosingScene({ playing }) {
         <pattern id="fs-grid-hot" width="9" height="9" patternUnits="userSpaceOnUse">
           <path d="M9 0H0V9" className="fs-gridline fs-gridline--hot" />
         </pattern>
+        <pattern id="fs-vhatch" width="4" height="4" patternUnits="userSpaceOnUse">
+          <path d="M1 0v4" className="fs-hatch" />
+        </pattern>
         <radialGradient id="fs-spot-g">
           <stop offset="0" stopColor="#fff" />
           <stop offset="1" stopColor="#fff" stopOpacity="0" />
@@ -146,13 +137,6 @@ export default function ClosingScene({ playing }) {
           <stop offset="0" stopColor="#000" stopOpacity="0.13" />
           <stop offset="1" stopColor="#000" stopOpacity="0" />
         </radialGradient>
-        <radialGradient id="fs-dome-g" cx="36%" cy="22%" r="85%">
-          <stop offset="0" stopColor="#ffffff" />
-          <stop offset="1" stopColor="#e6e6e6" />
-        </radialGradient>
-        <pattern id="fs-vhatch" width="4" height="4" patternUnits="userSpaceOnUse">
-          <path d="M1 0v4" className="fs-hatch" />
-        </pattern>
         <radialGradient id="fs-fade-g" cx="50%" cy="48%" r="58%">
           <stop offset="0.62" stopColor="#fff" />
           <stop offset="1" stopColor="#fff" stopOpacity="0" />
@@ -160,6 +144,10 @@ export default function ClosingScene({ playing }) {
         <mask id="fs-fade" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="600">
           <rect width="1200" height="600" fill="url(#fs-fade-g)" />
         </mask>
+        <linearGradient id="fs-front-g" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#ffffff" />
+          <stop offset="1" stopColor="#efefef" />
+        </linearGradient>
       </defs>
 
       <g mask="url(#fs-fade)">
@@ -176,84 +164,93 @@ export default function ClosingScene({ playing }) {
 
       <polygon points={PLINTH} fill="url(#fs-vhatch)" className="fs-plinth" />
 
-      <Obj d={1.4} delay={-2} shadow={[-270, 149, 58]}>
+      <Obj name="ai" d={1.8} delay={-1} shadow={[-300, -40, 30]}>
+        <g className="ai-pulse">
+          <Solid s={SPARKLE} />
+        </g>
+        <g className="ai-pulse ai-pulse--late">
+          <Solid s={SPARKLE_SM} />
+        </g>
+      </Obj>
+
+      <Obj name="chat" d={1.4} delay={-2} shadow={[-270, 149, 58]}>
         <g transform={floor(...BUBBLE_AT)}>
           <rect x="4" y="6" width="100" height="58" rx="14" className="fs-shadow" />
           <path d="M14 0h76a14 14 0 0 1 14 14v30a14 14 0 0 1-14 14H40l-16 14V58H14A14 14 0 0 1 0 44V14A14 14 0 0 1 14 0z" className="fs-top" />
-          {[34, 52, 70].map((x) => <circle key={x} cx={x} cy="29" r="4" className="fs-ink" />)}
+          {[34, 52, 70].map((x, i) => <circle key={x} cx={x} cy="29" r="4" className="fs-ink typing-dot" style={{ animationDelay: `${i * 0.18}s` }} />)}
         </g>
       </Obj>
 
-      <Obj d={1.8} delay={-1} shadow={[-248, -38, 34]}>
-        <Box b={CUBE} />
-      </Obj>
-
-      <Obj d={1.5} delay={-2.6} shadow={[175, -382, 62]}>
-        <g transform={floor(...BROWSER_AT)}>
+      <Obj name="dashboard" d={1.5} delay={-2.6} shadow={[115, -342, 62]}>
+        <g transform={floor(...DASH_AT)}>
           <rect x="4" y="6" width="110" height="76" rx="6" className="fs-shadow" />
           <rect width="110" height="76" rx="6" className="fs-top" />
-          <path d="M0 12h110" className="fs-line" />
-          {[6, 11, 16].map((cx) => <circle key={cx} cx={cx} cy="6" r="1.6" className="fs-line" />)}
-          <path d="M10 60c12-2 16-16 28-16s14 10 26 6 16-24 36-26" className="fs-line" />
-          {[16, 30, 44].map((x, i) => <rect key={x} x={x} y={66 - (i + 1) * 4} width="8" height={(i + 1) * 4} className="fs-left" />)}
+          <rect x="8" y="8" width="40" height="6" rx="2" className="fs-left" />
+          {[[12, 26], [26, 38], [40, 20], [54, 44], [68, 32]].map(([x, h], i) => (
+            <rect key={x} x={x} y={68 - h} width="9" height={h} rx="1.5" className="fs-left dash-bar" style={{ animationDelay: `${i * 0.18}s` }} />
+          ))}
+          <path d="M82 60c4-10 8-6 12-16s6-8 10-12" className="fs-line" />
         </g>
       </Obj>
 
-      <Obj d={1.2} delay={-3.4} shadow={[-126, 424, 46]}>
-        <g transform={floor(...PHONE_AT)}>
-          <rect x="4" y="6" width="48" height="88" rx="10" className="fs-shadow" />
-          <rect width="48" height="88" rx="10" className="fs-top" />
-          <rect x="17" y="5" width="14" height="3" rx="1.5" className="fs-left" />
-          <path d="M9 22h30M9 30h20M9 44h30M9 52h24" className="fs-line" />
-          <rect x="9" y="66" width="30" height="10" rx="5" className="fs-left" />
+      <Obj name="browser" d={1.2} delay={-0.6} shadow={[300, -170, 54]}>
+        <g transform={W(300, -120, 76)}>
+          <rect width="104" height="76" rx="5" className="fs-panel" fill="url(#fs-front-g)" />
+          <path d="M0 11h104" className="fs-line" />
+          {[6, 11, 16].map((cx) => <circle key={cx} cx={cx} cy="5.5" r="1.6" className="fs-line" />)}
+          <rect x="30" y="3" width="44" height="5" rx="2.5" className="fs-line" />
+          <rect x="10" y="20" width="56" height="6" rx="1.5" className="fs-left" />
+          <rect x="10" y="30" width="38" height="6" rx="1.5" className="fs-left" />
+          <rect x="10" y="44" width="30" height="10" rx="5" className="fs-ink cta-btn" />
+          <rect x="62" y="40" width="32" height="26" rx="3" className="fs-line" />
+          <g className="web-cursor">
+            <path d="M0 0v12l3.5-3.5 2.6 6 2.6-1.1-2.6-6H12z" className="fs-cursor" />
+          </g>
         </g>
       </Obj>
 
-      {CYLINDERS.map((c, i) => (
-        <Obj key={i} d={1.2} delay={-i * 1.4} shadow={[10, -270, 26]}>
-          <Cylinder c={c} />
-        </Obj>
-      ))}
+      <Obj name="phone" d={1.1} delay={-3.4} shadow={[-120, 280, 32]}>
+        <g transform={W(-120, 300, 86)}>
+          <rect width="44" height="86" rx="9" className="fs-panel" fill="url(#fs-front-g)" />
+          <rect x="16" y="4" width="12" height="3" rx="1.5" className="fs-left" />
+          {Array.from({ length: 9 }, (_, i) => (
+            <rect key={i} x={7 + (i % 3) * 11} y={14 + Math.floor(i / 3) * 11} width="8" height="8" rx="2.5" className="fs-left app-icon" style={{ animationDelay: `${i * 0.22}s` }} />
+          ))}
+          <rect x="7" y="54" width="30" height="20" rx="3" className="fs-line" />
+        </g>
+      </Obj>
 
-      <ellipse cx={DOME_SHADOW.cx.toFixed(1)} cy={DOME_SHADOW.cy.toFixed(1)} rx={DOME_SHADOW.rx.toFixed(1)} ry={DOME_SHADOW.ry.toFixed(1)} fill="url(#fs-shadow-g)" />
-      <g className="dome">
-        <path d={DOME.outline} className="fs-dome" />
-        {DOME.rings.map((d, i) => <path key={i} d={d} className="fs-domeline" />)}
-        {START.map((d, i) => <path key={i} ref={(el) => { merRefs.current[i] = el; }} d={d} className="fs-domeline" />)}
+      <Obj name="workflow" d={0.9} delay={-1.8} shadow={[240, 250, 84]}>
+        <g transform={floor(...FLOW_AT)}>
+          <path d="M36 18H66M102 18H132" className="fs-dash" />
+          {[0, 66, 132].map((x, i) => (
+            <g key={x}>
+              <rect x={x + 3} y="6" width="36" height="36" rx="9" className="fs-shadow" />
+              <rect x={x} y="0" width="36" height="36" rx="9" className="fs-top flow-node" style={{ animationDelay: `${i * 0.8}s` }} />
+            </g>
+          ))}
+          <path d="M20 7l-7 12h7l-3 10 9-14h-7z" className="fs-ink" />
+          <path d="M84 8q1.5 8.5 10 10-8.5 1.5-10 10-1.5-8.5-10-10 8.5-1.5 10-10z" className="fs-ink" />
+          <path d="M141 18l5 5 9-10" className="fs-tick" />
+          <circle cx="36" cy="18" r="3.5" className="fs-ink flow-pulse" />
+        </g>
+      </Obj>
+
+      <Obj name="code" d={1.3} delay={-2.2}>
+        <Solid s={CODE[0]} front="top" />
+        <g className="code-slash"><Solid s={CODE[1]} front="top" /></g>
+        <Solid s={CODE[2]} front="top" />
+      </Obj>
+
+      <g className="fobj" style={{ "--d": 0.6 }}>
+        <ellipse cx={f(V_SHADOW.cx)} cy={f(V_SHADOW.cy)} rx={f(V_SHADOW.rx)} ry={f(V_SHADOW.ry)} fill="url(#fs-shadow-g)" className="fobj__shadow brand-v__shadow" />
+        <g className="brand-v">
+          <Solid s={BRAND_V} />
+          <Solid s={BRAND_SLASH} cls=" fs-brand" />
+        </g>
       </g>
 
-      {ORBIT_PATHS.map((d, i) => <path key={i} d={d} className="orbit" />)}
-
-      <Obj d={0.8} delay={-3}>
-        {BARS.map((b, i) => <Box key={i} b={b} />)}
-        <path d="M352 352c18-30 50-26 74-48" className="fs-dash" />
-        <circle cx="426" cy="304" r="3" className="fs-ink" />
-      </Obj>
-
-      <Obj d={1.6} delay={-0.5}>
-        {LEGO.map((b, i) => <Box key={i} b={b} />)}
-        {STUDS.map((s, i) => <ellipse key={i} cx={s.cx} cy={s.cy} rx={s.rx} ry={s.ry} className="fs-top" />)}
-      </Obj>
-
-      <Obj d={1.1} delay={-1.8}>
-        <g transform={floor(RING_AT[0], RING_AT[1] + 10)}>
-          <path d="M46 0A46 46 0 1 1 0 -46V-26A26 26 0 1 0 26 0Z" className="fs-right" />
-        </g>
-        <g transform={floor(...RING_AT)}>
-          <rect x="-62" y="-62" width="124" height="124" className="fs-dash" />
-          {[[-62, -62], [62, -62], [62, 62], [-62, 62], [0, -62], [62, 0], [0, 62], [-62, 0]].map(([x, y]) => (
-            <rect key={`${x}${y}`} x={x - 4} y={y - 4} width="8" height="8" className="fs-handle" />
-          ))}
-          <path d="M46 0A46 46 0 1 1 0 -46V-26A26 26 0 1 0 26 0Z" className="fs-top" />
-        </g>
-      </Obj>
-
-      <Obj d={1.3}>
-        {V_LETTER.sides.map((s, i) => <polygon key={i} points={s.d} className={`fs-${s.shade}`} />)}
-        <polygon points={V_LETTER.top} className="fs-top" />
-        {V_SLASH.sides.map((s, i) => <polygon key={i} points={s.d} className={`fs-brand-${s.shade}`} />)}
-        <polygon points={V_SLASH.top} className="fs-brand-top" />
-      </Obj>
+      {ORBITS.map((o, i) => <path key={i} d={orbitPath(o)} className="orbit" />)}
 
       {DOTS.flatMap((dot, i) => TRAIL.map((j) => {
         const kj = Math.max(dot.offset - j * TRAIL_GAP, 0);
@@ -263,14 +260,11 @@ export default function ClosingScene({ playing }) {
           </g>
         );
       }))}
-      {DOTS.map((dot, i) => {
-        const [x, y] = orbitAt(ORBITS[dot.orbit], dot.offset);
-        return (
-          <g key={i} ref={(el) => { dotRefs.current[i] = el; }} transform={`translate(${x.toFixed(1)} ${y.toFixed(1)})`} opacity={fade(dot.offset)}>
-            <ellipse rx="5" ry="3.4" className="orbit-dot" />
-          </g>
-        );
-      })}
+      {DOTS.map((dot, i) => (
+        <g key={i} ref={(el) => { dotRefs.current[i] = el; }} transform={dotAt(dot, dot.offset)} opacity={fade(dot.offset)}>
+          <ellipse rx="5" ry="3.4" className="orbit-dot" />
+        </g>
+      ))}
     </svg>
   );
 }
