@@ -61,17 +61,32 @@ function Cylinder({ c }) {
   );
 }
 
-function Obj({ d = 1, delay = 0, children }) {
+/* A scene object: drifts with the cursor (--d), bobs gently, and casts a
+   soft floor shadow that shrinks as it rises. shadow = [x, y, radius]. */
+function Obj({ d = 1, delay = 0, shadow, children }) {
+  const sh = shadow && disc(shadow[0], shadow[1], 0, shadow[2]);
   return (
     <g className="fobj" style={{ "--d": d }}>
+      {sh && <ellipse cx={sh.cx.toFixed(1)} cy={sh.cy.toFixed(1)} rx={sh.rx.toFixed(1)} ry={sh.ry.toFixed(1)} fill="url(#fs-shadow-g)" className="fobj__shadow" style={{ animationDelay: `${delay}s` }} />}
       <g className="fobj__bob" style={{ animationDelay: `${delay}s` }}>{children}</g>
     </g>
   );
 }
 
+const TRAIL = [1, 2, 3];
+const TRAIL_GAP = 0.014;
+const dotAt = (dot, k) => {
+  const [x, y] = orbitAt(ORBITS[dot.orbit], k);
+  return `translate(${x.toFixed(1)} ${y.toFixed(1)})`;
+};
+const DOME_SHADOW = disc(0, 0, 0, R * 1.12);
+
 export default function ClosingScene({ playing }) {
   const merRefs = useRef([]);
   const dotRefs = useRef([]);
+  const trailRefs = useRef([]);
+  const spotRef = useRef(null);
+  const spotLayerRef = useRef(null);
 
   useEffect(() => {
     if (!playing) return;
@@ -85,6 +100,12 @@ export default function ClosingScene({ playing }) {
         const [x, y] = orbitAt(ORBITS[dot.orbit], k);
         dotRefs.current[i]?.setAttribute("transform", `translate(${x.toFixed(1)} ${y.toFixed(1)})`);
         dotRefs.current[i]?.setAttribute("opacity", fade(k));
+        TRAIL.forEach((j) => {
+          const kj = Math.max(k - j * TRAIL_GAP, 0);
+          const el = trailRefs.current[i * TRAIL.length + j - 1];
+          el?.setAttribute("transform", dotAt(dot, kj));
+          el?.setAttribute("opacity", (fade(kj) * (0.5 - j * 0.12)).toFixed(2));
+        });
       });
       raf = requestAnimationFrame(frame);
     };
@@ -92,17 +113,48 @@ export default function ClosingScene({ playing }) {
     return () => cancelAnimationFrame(raf);
   }, [playing]);
 
+  /* The lattice darkens in a soft circle around the cursor. */
+  const spot = (e) => {
+    const m = e.currentTarget.getScreenCTM?.();
+    if (!m || !spotRef.current) return;
+    const p = new DOMPoint(e.clientX, e.clientY).matrixTransform(m.inverse());
+    spotRef.current.setAttribute("cx", p.x.toFixed(0));
+    spotRef.current.setAttribute("cy", p.y.toFixed(0));
+    spotLayerRef.current?.classList.add("is-on");
+  };
+  const unspot = () => spotLayerRef.current?.classList.remove("is-on");
+
   return (
-    <svg viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true" fill="none">
+    <svg viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true" fill="none" onPointerMove={spot} onPointerLeave={unspot}>
       <defs>
-        <pattern id="fs-grid" width="26" height="26" patternUnits="userSpaceOnUse">
-          <path d="M26 0H0V26" className="fs-gridline" />
+        {/* Kargul's floor: small diamond cells, each line a groove with a lit edge. */}
+        <pattern id="fs-grid" width="9" height="9" patternUnits="userSpaceOnUse">
+          <path d="M9 0H0V9" className="fs-gridline" />
+          <path d="M9 0.8H0.8V9" className="fs-gridlight" />
         </pattern>
+        <pattern id="fs-grid-hot" width="9" height="9" patternUnits="userSpaceOnUse">
+          <path d="M9 0H0V9" className="fs-gridline fs-gridline--hot" />
+        </pattern>
+        <radialGradient id="fs-spot-g">
+          <stop offset="0" stopColor="#fff" />
+          <stop offset="1" stopColor="#fff" stopOpacity="0" />
+        </radialGradient>
+        <mask id="fs-spot-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="600">
+          <circle ref={spotRef} cx="600" cy="420" r="170" fill="url(#fs-spot-g)" />
+        </mask>
+        <radialGradient id="fs-shadow-g">
+          <stop offset="0" stopColor="#000" stopOpacity="0.13" />
+          <stop offset="1" stopColor="#000" stopOpacity="0" />
+        </radialGradient>
+        <radialGradient id="fs-dome-g" cx="36%" cy="22%" r="85%">
+          <stop offset="0" stopColor="#ffffff" />
+          <stop offset="1" stopColor="#e6e6e6" />
+        </radialGradient>
         <pattern id="fs-vhatch" width="4" height="4" patternUnits="userSpaceOnUse">
           <path d="M1 0v4" className="fs-hatch" />
         </pattern>
-        <radialGradient id="fs-fade-g" cx="50%" cy="50%" r="50%">
-          <stop offset="0.35" stopColor="#fff" />
+        <radialGradient id="fs-fade-g" cx="50%" cy="48%" r="58%">
+          <stop offset="0.62" stopColor="#fff" />
           <stop offset="1" stopColor="#fff" stopOpacity="0" />
         </radialGradient>
         <mask id="fs-fade" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="600">
@@ -114,12 +166,17 @@ export default function ClosingScene({ playing }) {
         <g transform={floor(600, 300)}>
           <rect x="-1300" y="-1300" width="2600" height="2600" fill="url(#fs-grid)" />
         </g>
+        <g ref={spotLayerRef} className="fs-spot" mask="url(#fs-spot-mask)">
+          <g transform={floor(600, 300)}>
+            <rect x="-1300" y="-1300" width="2600" height="2600" fill="url(#fs-grid-hot)" />
+          </g>
+        </g>
         <path d="M0 300H1200M0 314H1200" className="fs-horizon" />
       </g>
 
       <polygon points={PLINTH} fill="url(#fs-vhatch)" className="fs-plinth" />
 
-      <Obj d={1.4} delay={-2}>
+      <Obj d={1.4} delay={-2} shadow={[-270, 149, 58]}>
         <g transform={floor(...BUBBLE_AT)}>
           <rect x="4" y="6" width="100" height="58" rx="14" className="fs-shadow" />
           <path d="M14 0h76a14 14 0 0 1 14 14v30a14 14 0 0 1-14 14H40l-16 14V58H14A14 14 0 0 1 0 44V14A14 14 0 0 1 14 0z" className="fs-top" />
@@ -127,11 +184,11 @@ export default function ClosingScene({ playing }) {
         </g>
       </Obj>
 
-      <Obj d={1.8} delay={-1}>
+      <Obj d={1.8} delay={-1} shadow={[-248, -38, 34]}>
         <Box b={CUBE} />
       </Obj>
 
-      <Obj d={1.5} delay={-2.6}>
+      <Obj d={1.5} delay={-2.6} shadow={[175, -382, 62]}>
         <g transform={floor(...BROWSER_AT)}>
           <rect x="4" y="6" width="110" height="76" rx="6" className="fs-shadow" />
           <rect width="110" height="76" rx="6" className="fs-top" />
@@ -142,7 +199,7 @@ export default function ClosingScene({ playing }) {
         </g>
       </Obj>
 
-      <Obj d={1.2} delay={-3.4}>
+      <Obj d={1.2} delay={-3.4} shadow={[-126, 424, 46]}>
         <g transform={floor(...PHONE_AT)}>
           <rect x="4" y="6" width="48" height="88" rx="10" className="fs-shadow" />
           <rect width="48" height="88" rx="10" className="fs-top" />
@@ -153,11 +210,12 @@ export default function ClosingScene({ playing }) {
       </Obj>
 
       {CYLINDERS.map((c, i) => (
-        <Obj key={i} d={1.2} delay={-i * 1.4}>
+        <Obj key={i} d={1.2} delay={-i * 1.4} shadow={[10, -270, 26]}>
           <Cylinder c={c} />
         </Obj>
       ))}
 
+      <ellipse cx={DOME_SHADOW.cx.toFixed(1)} cy={DOME_SHADOW.cy.toFixed(1)} rx={DOME_SHADOW.rx.toFixed(1)} ry={DOME_SHADOW.ry.toFixed(1)} fill="url(#fs-shadow-g)" />
       <g className="dome">
         <path d={DOME.outline} className="fs-dome" />
         {DOME.rings.map((d, i) => <path key={i} d={d} className="fs-domeline" />)}
@@ -197,6 +255,14 @@ export default function ClosingScene({ playing }) {
         <polygon points={V_SLASH.top} className="fs-brand-top" />
       </Obj>
 
+      {DOTS.flatMap((dot, i) => TRAIL.map((j) => {
+        const kj = Math.max(dot.offset - j * TRAIL_GAP, 0);
+        return (
+          <g key={`${i}-${j}`} ref={(el) => { trailRefs.current[i * TRAIL.length + j - 1] = el; }} transform={dotAt(dot, kj)} opacity={(fade(kj) * (0.5 - j * 0.12)).toFixed(2)}>
+            <ellipse rx={5 - j} ry={3.4 - j * 0.7} className="orbit-trail" />
+          </g>
+        );
+      }))}
       {DOTS.map((dot, i) => {
         const [x, y] = orbitAt(ORBITS[dot.orbit], dot.offset);
         return (

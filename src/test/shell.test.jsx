@@ -51,6 +51,13 @@ describe("Footer CTA scene", () => {
     expect(scene.querySelectorAll(".orbit")).toHaveLength(2);
     expect(scene.querySelectorAll(".orbit-dot")).toHaveLength(3);
     expect(scene.querySelectorAll(".fobj").length).toBeGreaterThanOrEqual(9);
+    // Kargul's floor: a fine lattice of small embossed diamond cells.
+    const grid = scene.querySelector("pattern#fs-grid");
+    expect(Number(grid.getAttribute("width"))).toBeLessThanOrEqual(12);
+    expect(grid.querySelectorAll("path")).toHaveLength(2);
+    expect(scene.querySelector(".fs-spot")).not.toBeNull();
+    expect(scene.querySelectorAll(".fobj__shadow").length).toBeGreaterThanOrEqual(4);
+    expect(scene.querySelectorAll(".orbit-trail")).toHaveLength(9);
     // Kargul's restraint: none of the busy extras.
     expect(scene.querySelector(".core, .packet, .station, .trace, .ripple, .satellite")).toBeNull();
   });

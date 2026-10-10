@@ -496,7 +496,15 @@ a.team__name:hover { text-decoration: underline; text-underline-offset: 3px; }
   .fcta__scene { aspect-ratio: auto; height: 300px; margin-top: 8px; }
 }
 .fcta__scene :is(path, rect, polygon, ellipse, circle) { stroke-width: 1; stroke-linejoin: round; }
-.fcta__scene .fs-gridline { stroke: #d9d9d9; vector-effect: non-scaling-stroke; }
+.fcta__scene .fs-gridline { stroke: #c8c8c8; stroke-width: 0.8; }
+.fcta__scene .fs-gridlight { stroke: #fdfdfd; stroke-width: 0.8; }
+.fcta__scene .fs-gridline--hot { stroke: #9c9c9c; }
+.fcta__scene .fs-spot { opacity: 0; transition: opacity 0.5s ease; }
+.fcta__scene .fs-spot.is-on { opacity: 1; }
+.fcta__scene .orbit-trail { fill: var(--ink); stroke: none; }
+.fcta__scene .fobj__shadow { transform-box: fill-box; transform-origin: center; }
+.fcta__scene.is-playing .fobj__shadow { animation: fs-shadow 6s ease-in-out infinite; }
+@keyframes fs-shadow { 50% { transform: scale(0.84); opacity: 0.6; } }
 .fcta__scene .fs-horizon { stroke: #d4d4d4; stroke-dasharray: 2 5; }
 .fcta__scene .fs-hatch { stroke: #d2d2d2; }
 .fcta__scene .fs-plinth { stroke: #c9c9c9; }
@@ -508,7 +516,7 @@ a.team__name:hover { text-decoration: underline; text-underline-offset: 3px; }
 .fcta__scene .fs-brand-top { fill: #fbeedd; stroke: #dfb98c; }
 .fcta__scene .fs-brand-left { fill: #f4dfc4; stroke: #dfb98c; }
 .fcta__scene .fs-brand-right { fill: #ecd2b0; stroke: #dfb98c; }
-.fcta__scene .fs-dome { fill: #f7f7f7e6; stroke: #c4c4c4; }
+.fcta__scene .fs-dome { fill: url(#fs-dome-g); stroke: #c4c4c4; }
 .fcta__scene .fs-domeline { stroke: #cfcfcf; }
 .fcta__scene .fs-ink { fill: #9a9a9a; stroke: none; }
 .fcta__scene .fs-handle { fill: #fff; stroke: #9a9a9a; vector-effect: non-scaling-stroke; }
