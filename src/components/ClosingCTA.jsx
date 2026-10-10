@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import useInView from "../lib/useInView";
 import useOnScreen from "../lib/useOnScreen";
@@ -9,21 +8,13 @@ const WORDS = ["Let's", "build", "something", "amazing"];
 
 /* Kargul's footer CTA, shown on every page: the heading's words rise in
    sequence, then the isometric scene and the two CTAs. The scene animates
-   only while on screen, shifts with the cursor and bursts when the core
-   is clicked; reduced motion keeps everything still. */
+   only while on screen and shifts with the cursor; reduced motion keeps
+   everything still. */
 export default function ClosingCTA() {
   const [ref, inView] = useInView("0px 0px -15% 0px", 2000);
   const [sceneRef, onScreen] = useOnScreen("0px");
   const reduced = useReducedMotion();
   const playing = onScreen && !reduced;
-  // Clicking the AI core fires a burst: faster packets and a big ripple.
-  const [burst, setBurst] = useState(false);
-
-  useEffect(() => {
-    if (!burst) return;
-    const id = setTimeout(() => setBurst(false), 1600);
-    return () => clearTimeout(id);
-  }, [burst]);
 
   const drift = (e) => {
     const el = sceneRef.current;
@@ -41,8 +32,8 @@ export default function ClosingCTA() {
           {WORDS.flatMap((w, i) => [i > 0 ? " " : null, <span key={w} className="closing__word">{w}</span>])}
         </h2>
       </div>
-      <div ref={sceneRef} className={`fcta__scene${playing ? " is-playing" : ""}${burst ? " is-burst" : ""}`}>
-        <ClosingScene playing={playing} burst={burst} onCoreClick={() => setBurst(true)} />
+      <div ref={sceneRef} className={`fcta__scene${playing ? " is-playing" : ""}`}>
+        <ClosingScene playing={playing} />
       </div>
       <div className="hero__actions closing__actions">
         <Link to="/start-a-project" className="btn btn--primary">Start a project</Link>

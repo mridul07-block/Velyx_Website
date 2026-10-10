@@ -1,23 +1,24 @@
 /* Isometric geometry for the footer scene. World units: x runs down-right,
    y down-left, z straight up; the origin sits at the centre of the
    1200×600 scene. A sphere of radius R projects to a circle of radius
-   R·√1.5 (SPHERE_SCALE), so outlines are exact. */
+   R·√1.5, so the dome outline is exact. */
 export const CX = 600;
 export const CY = 300;
-export const SPHERE_SCALE = Math.sqrt(1.5);
+const S = Math.sqrt(1.5);
 const f = (n) => n.toFixed(1);
 
 export function project(x, y, z) {
   return [CX + (x - y) * 0.866, CY + (x + y) * 0.5 - z];
 }
 
-/* Draws the parts of a 3D polyline that face the viewer at (1,1,1) as seen
-   from `c` (a sphere's centre) as one SVG path string. */
-function visiblePath(points, c = [0, 0, 0]) {
+const visible = ([x, y, z]) => x + y + z >= -1e-9; // faces the viewer at (1,1,1)
+
+/* Draws the visible runs of a 3D polyline as one SVG path string. */
+function visiblePath(points) {
   let d = "";
   let pen = false;
   for (const p of points) {
-    if (p[0] - c[0] + p[1] - c[1] + p[2] - c[2] < -1e-9) { pen = false; continue; }
+    if (!visible(p)) { pen = false; continue; }
     const [x, y] = project(...p);
     d += `${pen ? "L" : "M"}${f(x)} ${f(y)}`;
     pen = true;
@@ -25,80 +26,69 @@ function visiblePath(points, c = [0, 0, 0]) {
   return d;
 }
 
-const onSphere = (c, R, e, th) => [c[0] + R * Math.cos(e) * Math.cos(th), c[1] + R * Math.cos(e) * Math.sin(th), c[2] + R * Math.sin(e)];
-
-/* n pole-to-pole meridians of a sphere centred at c; phase in [0,1) turns it
-   by one meridian spacing, so phase 1 draws the same picture as phase 0. */
-export function sphereMeridians(c, R, n, phase) {
+/* n meridians from the pole to the equator; phase in [0,1) turns the dome
+   by one meridian spacing, so phase 1 is the same picture as phase 0. */
+export function meridians(R, n, phase) {
   const shift = ((phase % 1) + 1) % 1;
   return Array.from({ length: n }, (_, i) => {
     const th = ((i + shift) / n) * Math.PI * 2;
     const pts = [];
-    for (let k = 0; k <= 36; k++) pts.push(onSphere(c, R, -Math.PI / 2 + (k / 36) * Math.PI, th));
-    return visiblePath(pts, c);
+    for (let k = 0; k <= 24; k++) {
+      const e = (k / 24) * (Math.PI / 2);
+      pts.push([R * Math.cos(e) * Math.cos(th), R * Math.cos(e) * Math.sin(th), R * Math.sin(e)]);
+    }
+    return visiblePath(pts);
   });
 }
 
 /* Latitude rings (visible parts) at the given elevations in degrees. */
-export function sphereParallels(c, R, degrees) {
+export function parallels(R, degrees) {
   return degrees.map((deg) => {
+    const e = (deg * Math.PI) / 180;
     const pts = [];
-    for (let k = 0; k <= 72; k++) pts.push(onSphere(c, R, (deg * Math.PI) / 180, (k / 72) * Math.PI * 2));
-    return visiblePath(pts, c);
+    for (let k = 0; k <= 72; k++) {
+      const th = (k / 72) * Math.PI * 2;
+      pts.push([R * Math.cos(e) * Math.cos(th), R * Math.cos(e) * Math.sin(th), R * Math.sin(e)]);
+    }
+    return visiblePath(pts);
   });
 }
 
-/* A trace through world points: its SVG path and the screen point a given
-   fraction of the way along it (by world length). */
-export function polyline(points) {
-  const lens = points.slice(1).map((p, i) => Math.hypot(p[0] - points[i][0], p[1] - points[i][1], p[2] - points[i][2]));
-  const total = lens.reduce((a, b) => a + b, 0);
-  const d = points.map((p, i) => `${i ? "L" : "M"}${project(...p).map(f).join(" ")}`).join("");
-  const at = (t) => {
-    let left = Math.min(Math.max(t, 0), 1) * total;
-    for (let i = 0; i < lens.length; i++) {
-      if (left <= lens[i] || i === lens.length - 1) {
-        const k = lens[i] ? Math.min(left / lens[i], 1) : 0;
-        const [a, b] = [points[i], points[i + 1]];
-        return project(a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k);
-      }
-      left -= lens[i];
-    }
-    return project(...points[0]);
-  };
-  return { d, at };
+/* The dome's outline: the silhouette's upper arc plus the front equator. */
+export function domeOutline(R) {
+  const r = R * S;
+  const front = [];
+  for (let k = 0; k <= 48; k++) {
+    const th = -Math.PI / 4 + (k / 48) * Math.PI;
+    front.push(project(R * Math.cos(th), R * Math.sin(th), 0));
+  }
+  return `M${f(CX - r)} ${f(CY)}A${f(r)} ${f(r)} 0 0 1 ${f(CX + r)} ${f(CY)}` + front.map(([x, y]) => `L${f(x)} ${f(y)}`).join("") + "Z";
 }
 
-/* Orbits around the AI core: a level ring and a tilted ring. */
-export const CORE = [0, 0, 130];
+/* Kargul's two dotted arcs, both running left to right over the dome: a
+   tall arch leaning toward us and the back half of a ring around it. */
 export const ORBITS = [
-  { id: "ring", r: 190, tilt: 0 },
-  { id: "tilted", r: 165, tilt: 1 },
+  { id: "arch", r: 250, z: 0, tilt: 1, from: Math.PI, to: 0 },
+  { id: "ring", r: 235, z: 64, tilt: 0, from: (3 * Math.PI) / 4, to: (7 * Math.PI) / 4 },
 ];
 
-function orbitPoint3({ r, tilt }, t) {
-  const a = t * Math.PI * 2;
-  if (!tilt) return [CORE[0] + r * Math.cos(a), CORE[1] + r * Math.sin(a), CORE[2]];
+function orbitPoint3({ r, z, tilt, from, to }, t) {
+  const a = from + t * (to - from);
+  if (!tilt) return [r * Math.cos(a), r * Math.sin(a), z];
   const u = [Math.SQRT1_2, -Math.SQRT1_2, 0];
-  const lean = 0.42;
+  const lean = 0.35;
   const v = [lean * Math.SQRT1_2, lean * Math.SQRT1_2, Math.sqrt(1 - lean * lean)];
-  return [0, 1, 2].map((i) => CORE[i] + r * (Math.cos(a) * u[i] + Math.sin(a) * v[i]));
+  return [0, 1, 2].map((i) => r * (Math.cos(a) * u[i] + Math.sin(a) * v[i]) + (i === 2 ? z : 0));
 }
 
 export function orbitAt(orbit, t) {
   return project(...orbitPoint3(orbit, t));
 }
 
-/* True while a point on the orbit is behind the core. */
-export function orbitBehind(orbit, t) {
-  const p = orbitPoint3(orbit, t);
-  return p[0] - CORE[0] + p[1] - CORE[1] + p[2] - CORE[2] < 0;
-}
-
 export function orbitPath(orbit) {
   const pts = [];
-  for (let k = 0; k <= 120; k++) pts.push(orbitPoint3(orbit, k / 120));
-  return pts.map((p, i) => `${i ? "L" : "M"}${project(...p).map(f).join(" ")}`).join("");
+  for (let k = 0; k <= 80; k++) pts.push(project(...orbitPoint3(orbit, k / 80)));
+  return pts.map(([x, y], i) => `${i ? "L" : "M"}${f(x)} ${f(y)}`).join("");
 }
 
 /* Box faces visible from the viewer: top, +x side and +y side. */
