@@ -505,44 +505,6 @@ a.team__name:hover { text-decoration: underline; text-underline-offset: 3px; }
 .fcta__scene .fobj__shadow { transform-box: fill-box; transform-origin: center; }
 .fcta__scene.is-playing .fobj__shadow { animation: fs-shadow 6s ease-in-out infinite; }
 @keyframes fs-shadow { 50% { transform: scale(0.84); opacity: 0.6; } }
-
-/* Velyx objects. */
-.fcta__scene .fs-front { fill: #fbfbfb; stroke: #bdbdbd; }
-.fcta__scene .fs-panel { stroke: #b9b9b9; }
-.fcta__scene .fs-top.fs-brand, .fcta__scene .fs-front.fs-brand { fill: #fbeedd; stroke: #dfb98c; }
-.fcta__scene .fs-right.fs-brand { fill: #ecd2b0; stroke: #dfb98c; }
-.fcta__scene .fs-cursor { fill: var(--ink); stroke: #fff; stroke-width: 0.8; }
-.fcta__scene .fs-tick { stroke: #8f8f8f; stroke-width: 2; stroke-linecap: round; }
-.fcta__scene .brand-v, .fcta__scene .ai-pulse, .fcta__scene .dash-bar, .fcta__scene .app-icon, .fcta__scene .cta-btn { transform-box: fill-box; }
-.fcta__scene .ai-pulse { transform-origin: center; }
-.fcta__scene .dash-bar { transform-origin: bottom; }
-.fcta__scene .web-cursor { transform: translate(25px, 49px); }
-.fcta__scene.is-playing .brand-v { animation: fs-bob 7s ease-in-out infinite; }
-.fcta__scene.is-playing .brand-v__shadow { animation-duration: 7s; }
-.fcta__scene.is-playing .ai-pulse { animation: fs-pulse 3.2s ease-in-out infinite; }
-.fcta__scene.is-playing .ai-pulse--late { animation-delay: -1.6s; }
-.fcta__scene.is-playing .typing-dot { animation: fs-typing 1.2s ease-in-out infinite; }
-.fcta__scene.is-playing .dash-bar { animation: fs-grow 3.6s ease-in-out infinite; }
-.fcta__scene.is-playing .web-cursor { animation: fs-click 4.8s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
-.fcta__scene.is-playing .cta-btn { animation: fs-press 4.8s ease-in-out infinite; }
-.fcta__scene.is-playing .app-icon { animation: fs-icon 2.4s ease-in-out infinite; }
-.fcta__scene.is-playing .flow-node { animation: fs-node 2.4s ease-in-out infinite; }
-.fcta__scene.is-playing .flow-pulse { animation: fs-flowpulse 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
-.fcta__scene.is-playing .code-slash { animation: fs-lift-slash 3.6s ease-in-out infinite; }
-@keyframes fs-pulse { 50% { transform: scale(1.1); } }
-@keyframes fs-typing { 0%, 60%, 100% { opacity: 0.35; } 30% { opacity: 1; } }
-@keyframes fs-grow { 0%, 100% { transform: scaleY(0.45); } 50% { transform: none; } }
-@keyframes fs-click {
-  0%, 12% { transform: translate(80px, 64px); }
-  42%, 56% { transform: translate(25px, 49px); }
-  49% { transform: translate(25px, 49px) scale(0.85); }
-  86%, 100% { transform: translate(80px, 64px); }
-}
-@keyframes fs-press { 0%, 45%, 55%, 100% { fill: #9a9a9a; } 49% { fill: var(--ink); } }
-@keyframes fs-icon { 0%, 70%, 100% { fill: #f0f0f0; } 35% { fill: #cfcfcf; } }
-@keyframes fs-node { 0%, 60%, 100% { stroke: #c4c4c4; } 20% { stroke: #7a7a7a; } }
-@keyframes fs-flowpulse { 0% { transform: translateX(0); opacity: 0; } 10%, 90% { opacity: 1; } 100% { transform: translateX(96px); opacity: 0; } }
-@keyframes fs-lift-slash { 50% { transform: translateY(-9px); } }
 .fcta__scene .fs-horizon { stroke: #d4d4d4; stroke-dasharray: 2 5; }
 .fcta__scene .fs-hatch { stroke: #d2d2d2; }
 .fcta__scene .fs-plinth { stroke: #c9c9c9; }
@@ -554,6 +516,8 @@ a.team__name:hover { text-decoration: underline; text-underline-offset: 3px; }
 .fcta__scene .fs-brand-top { fill: #fbeedd; stroke: #dfb98c; }
 .fcta__scene .fs-brand-left { fill: #f4dfc4; stroke: #dfb98c; }
 .fcta__scene .fs-brand-right { fill: #ecd2b0; stroke: #dfb98c; }
+.fcta__scene .fs-dome { fill: url(#fs-dome-g); stroke: #c4c4c4; }
+.fcta__scene .fs-domeline { stroke: #cfcfcf; }
 .fcta__scene .fs-ink { fill: #9a9a9a; stroke: none; }
 .fcta__scene .fs-handle { fill: #fff; stroke: #9a9a9a; vector-effect: non-scaling-stroke; }
 .fcta__scene .orbit { stroke: #8f8f8f; stroke-dasharray: 2 4; vector-effect: non-scaling-stroke; }

@@ -129,33 +129,6 @@ export function extrude(points, z, h) {
   return { sides, top };
 }
 
-/* An upright shape: points are [x, z] in the plane y = y0 (facing the
-   viewer's left), extruded backward by `depth`. Returns the visible side
-   faces (far to near) and the front face. */
-export function extrudeWall(points, y0, depth) {
-  const n = points.length;
-  let area = 0;
-  for (let i = 0; i < n; i++) {
-    const [ax, az] = points[i];
-    const [bx, bz] = points[(i + 1) % n];
-    area += ax * bz - bx * az;
-  }
-  const sign = area > 0 ? 1 : -1;
-  const sides = [];
-  for (let i = 0; i < n; i++) {
-    const [ax, az] = points[i];
-    const [bx, bz] = points[(i + 1) % n];
-    const nx = sign * (bz - az);
-    const nz = sign * -(bx - ax);
-    if (nx + nz <= 1e-9) continue; // faces away from the viewer
-    const pts = [project(ax, y0, az), project(bx, y0, bz), project(bx, y0 - depth, bz), project(ax, y0 - depth, az)];
-    sides.push({ depth: (ax + bx) / 2 + (az + bz) / 2, shade: nx >= nz ? "right" : "top", d: pts.map((p) => p.map(f).join(" ")).join(" ") });
-  }
-  sides.sort((a, b) => a.depth - b.depth);
-  const front = points.map(([px, pz]) => project(px, y0, pz).map(f).join(" ")).join(" ");
-  return { sides, front };
-}
-
 /* Ellipse of a flat circle of radius r centred at (x, y, z). */
 export function disc(x, y, z, r) {
   const [cx, cy] = project(x, y, z);

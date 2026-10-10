@@ -47,13 +47,10 @@ describe("Footer CTA scene", () => {
     expect(within(cta).getByRole("link", { name: "See our work" })).toHaveAttribute("href", "/work");
     const scene = cta.querySelector(".fcta__scene svg");
     expect(scene.getAttribute("aria-hidden")).toBe("true");
-    expect(scene.querySelectorAll(".brand-v")).toHaveLength(1);
-    // Every object stands for something Velyx builds.
-    expect([...scene.querySelectorAll("[data-obj]")].map((o) => o.dataset.obj)).toEqual(["ai", "chat", "dashboard", "browser", "phone", "workflow", "code"]);
-    expect(scene.querySelector(".dome")).toBeNull();
+    expect(scene.querySelectorAll(".dome")).toHaveLength(1);
     expect(scene.querySelectorAll(".orbit")).toHaveLength(2);
     expect(scene.querySelectorAll(".orbit-dot")).toHaveLength(3);
-    expect(scene.querySelectorAll(".fobj").length).toBeGreaterThanOrEqual(8);
+    expect(scene.querySelectorAll(".fobj").length).toBeGreaterThanOrEqual(9);
     // Kargul's floor: a fine lattice of small embossed diamond cells.
     const grid = scene.querySelector("pattern#fs-grid");
     expect(Number(grid.getAttribute("width"))).toBeLessThanOrEqual(12);
