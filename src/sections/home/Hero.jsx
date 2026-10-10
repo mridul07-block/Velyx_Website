@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
-import { LOGO_ICON } from "../../lib/brand";
+import { LOGO_ICON_LG } from "../../lib/brand";
 
 export default function Hero() {
   return (
     <section id="hero" className="hero">
       <div className="container hero__inner">
-        <img src={LOGO_ICON} alt="" width="96" height="96" className="hero__mark" />
+        <span className="hero__mark" aria-hidden="true">
+          <img src={LOGO_ICON_LG} alt="" width="84" height="84" />
+        </span>
         {/* TO CONFIRM: a project count is allowed only if true. */}
         <p className="status"><span className="status__dot" aria-hidden="true" />Now booking projects for Q4 2026</p>
         <h1 className="h1 hero__title">An AI and engineering partner for founders and growing businesses.</h1>

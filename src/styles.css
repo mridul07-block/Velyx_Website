@@ -15,6 +15,7 @@
   --panel-line: #ffffff14;
   --tag-dark: #1f1f1f;
   --ok: #22c55e;
+  --brand-ground: #14110a; /* the Velyx mark's own dark (favicon) */
 
   --font: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
@@ -139,7 +140,7 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 /* ---------- Logo ---------- */
 
 .logo { display: inline-flex; align-items: center; gap: 10px; }
-.logo__icon { width: 28px; height: 28px; object-fit: contain; filter: brightness(0); }
+.logo__icon { width: 32px; height: 32px; padding: 7px; border-radius: 10px; object-fit: contain; background: var(--brand-ground); }
 .logo__word { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; }
 
 /* ---------- Pill nav ---------- */
@@ -152,7 +153,8 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
   box-shadow: 0 1px 2px #0000000f, 0 6px 20px #0000000a;
 }
 .pnav__logo { display: grid; place-items: center; width: 44px; height: 44px; }
-.pnav__logo img { width: 24px; height: 24px; object-fit: contain; filter: brightness(0); }
+.pnav__inner .pnav__logo { background: var(--brand-ground); }
+.pnav__logo img { width: 22px; height: 22px; object-fit: contain; }
 .pnav__links { display: flex; gap: 2px; padding: 4px 8px; font-size: 13px; color: var(--muted); }
 .pnav__links a { display: block; padding: 8px 10px; border-radius: var(--radius-pill); }
 .pnav__links a:hover, .pnav__links a.active { color: var(--ink); }
@@ -287,7 +289,21 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 
 .hero { padding-top: calc(var(--nav-h) + clamp(40px, 6vw, 72px)); padding-bottom: clamp(48px, 6vw, 80px); }
 .hero__inner { display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; }
-.hero__mark { width: 128px; height: 128px; opacity: 0.08; filter: brightness(0); margin-bottom: -64px; }
+.hero__mark {
+  display: grid;
+  place-items: center;
+  width: 120px;
+  height: 120px;
+  margin-bottom: 28px;
+  border-radius: 34px;
+  background: var(--brand-ground);
+  box-shadow: inset 0 0 0 1px #ffffff12, 0 24px 56px -18px #e8a45373, 0 10px 24px -10px #14110a59;
+}
+.hero__mark img { width: 62px; height: 62px; object-fit: contain; }
+@media (max-width: 640px) {
+  .hero__mark { width: 96px; height: 96px; border-radius: 28px; margin-bottom: 22px; }
+  .hero__mark img { width: 50px; height: 50px; }
+}
 .status {
   display: inline-flex;
   align-items: center;
