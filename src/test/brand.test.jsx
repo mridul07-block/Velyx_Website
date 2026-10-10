@@ -11,13 +11,14 @@ const css = readFileSync("src/styles.css", "utf8");
 const rule = (sel) => (css.match(new RegExp(`${sel.replace(/[.]/g, "\\.")}\\s*\\{([^}]*)\\}`)) || [])[1] || "";
 
 describe("Velyx brand mark", () => {
-  it("shows the hero mark large and fully opaque on a brand tile above the status pill", () => {
+  it("puts a large, clearly visible Velyx mark behind the status pill, like Kargul's", () => {
     const { container } = renderWithProviders(<Hero />);
-    const tile = container.querySelector(".hero__mark");
-    expect(tile.nextElementSibling).toHaveClass("status");
-    expect(tile.querySelector("img").getAttribute("src")).toMatch(/w_256/);
+    const mark = container.querySelector("img.hero__mark");
+    expect(mark.nextElementSibling).toHaveClass("status");
+    expect(mark.getAttribute("src")).toBe("/brand/velyx-mark-hero.webp");
     expect(rule(".hero__mark")).not.toMatch(/opacity|filter/);
-    expect(rule(".hero__mark")).toMatch(/var\(--brand-ground\)/);
+    expect(rule(".hero__mark")).toMatch(/margin-bottom:\s*-/);
+    expect(rule(".hero .status")).toMatch(/z-index/);
   });
 
   it("keeps the navbar mark in its original colours on the brand ground", () => {
