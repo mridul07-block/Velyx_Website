@@ -15,6 +15,7 @@ export default function PillNav() {
       <nav className="pnav__inner" aria-label="Main">
         <Link to="/" className="pnav__logo" aria-label="Velyx Labs home" onClick={close}>
           <img src="/brand/velyx-mark-nav.webp" alt="" width="96" height="104" />
+          <span className="pnav__word" aria-hidden="true">VELYX <em>LABS</em></span>
         </Link>
         <ul className="pnav__links">
           {LINKS.map((l) => (

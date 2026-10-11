@@ -11,7 +11,7 @@ describe("CalButton", () => {
     const btn = screen.getByRole("link", { name: "Book a free call" });
     expect(btn).toHaveAttribute("data-cal-link", "velyx-labs/30min");
     expect(btn).toHaveAttribute("data-cal-namespace", "30min");
-    expect(btn).toHaveAttribute("data-cal-config", '{"layout":"month_view","theme":"light"}');
+    expect(btn).toHaveAttribute("data-cal-config", '{"layout":"month_view","theme":"dark"}');
     expect(btn).toHaveAttribute("href", "https://cal.com/velyx-labs/30min");
     expect(btn).toHaveAttribute("target", "_blank");
     expect(btn).toHaveClass("btn", "btn--primary");
