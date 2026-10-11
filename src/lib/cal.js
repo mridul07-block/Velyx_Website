@@ -1,7 +1,7 @@
 /* Cal.com booking — the site's single conversion. */
 export const CAL_NAMESPACE = "30min";
 export const CAL_LINK = "velyx-labs/30min";
-export const CAL_CONFIG = { layout: "month_view", theme: "dark" };
+export const CAL_CONFIG = { layout: "month_view", theme: "light" };
 export const CAL_URL = `https://cal.com/${CAL_LINK}`;
 
 export const CAL_ATTRS = {

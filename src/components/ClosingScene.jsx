@@ -143,12 +143,12 @@ export default function ClosingScene({ playing }) {
           <circle ref={spotRef} cx="600" cy="420" r="170" fill="url(#fs-spot-g)" />
         </mask>
         <radialGradient id="fs-shadow-g">
-          <stop offset="0" stopColor="#000" stopOpacity="0.55" />
+          <stop offset="0" stopColor="#000" stopOpacity="0.13" />
           <stop offset="1" stopColor="#000" stopOpacity="0" />
         </radialGradient>
         <radialGradient id="fs-dome-g" cx="36%" cy="22%" r="85%">
-          <stop offset="0" stopColor="#2e281f" />
-          <stop offset="1" stopColor="#15120d" />
+          <stop offset="0" stopColor="#ffffff" />
+          <stop offset="1" stopColor="#ece4d7" />
         </radialGradient>
         <pattern id="fs-vhatch" width="4" height="4" patternUnits="userSpaceOnUse">
           <path d="M1 0v4" className="fs-hatch" />

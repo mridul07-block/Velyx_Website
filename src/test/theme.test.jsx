@@ -5,17 +5,18 @@ import Layout from "../components/Layout";
 import BoxGrid from "../components/BoxGrid";
 import { CELL, GLOWS } from "../lib/boxGrid";
 
-/* The Velyx theme, taken from the X banner: the logo's warm near-black,
-   cream type, orange accent, and a boxed tile background. */
+/* The Velyx light theme: warm off-white page, the logo's near-black ink,
+   the brand orange, and the X banner's boxed tile background. */
 const css = readFileSync("src/styles.css", "utf8");
 const token = (name) => (css.match(new RegExp(`${name}:\\s*(#[0-9a-f]+)`, "i")) || [])[1];
 
 describe("Velyx banner theme", () => {
-  it("uses the banner's dark ground, cream ink and orange accent", () => {
-    expect(token("--page")).toBe("#14110a");
-    expect(token("--ink")).toBe("#f6ebd9");
+  it("is a light theme with the brand orange", () => {
+    expect(token("--page")).toBe("#f5f0e8");
+    expect(token("--ink")).toBe("#1a160f");
     expect(token("--accent")).toBe("#e8a453");
-    expect(readFileSync("index.html", "utf8")).toMatch(/name="theme-color" content="#14110a"/);
+    expect(token("--panel")).toBe("#14110a");
+    expect(readFileSync("index.html", "utf8")).toMatch(/name="theme-color" content="#f5f0e8"/);
   });
 
   it("puts the boxed background behind every page", () => {
