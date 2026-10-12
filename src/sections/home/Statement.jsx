@@ -43,7 +43,8 @@ export default function Statement() {
   return (
     <section id="statement" className="section statement">
       <div className="container">
-        <p ref={ref} className="statement__text" aria-label={COPY}>
+        <p ref={ref} className="statement__text">
+          <span className="sr-only">{COPY}</span>
           {WORDS.map((w, i) => (
             <span key={i} ref={(n) => (words.current[i] = n)} className="statement__w" aria-hidden="true">
               {w}{" "}

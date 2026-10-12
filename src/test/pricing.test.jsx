@@ -34,9 +34,11 @@ describe("Pricing (925 Studios)", () => {
     expect(screen.queryAllByText("Custom").length).toBe(unpriced);
   });
 
-  it("has its own /pricing page with the heading as h1", () => {
+  it("has its own /pricing page with the heading as h1, plan titles as h2 and no hide-until-scroll", () => {
     renderWithProviders(<PricingPage />, { route: "/pricing" });
     expect(screen.getByRole("heading", { level: 1 }).textContent).toMatch(/Start small\.\s*Scale when it works\./);
+    expect(screen.getAllByRole("heading", { level: 2 }).map((h) => h.textContent)).toEqual(expect.arrayContaining(PLANS.map((p) => p.title)));
+    expect(document.querySelector("#pricing")).not.toHaveClass("rv-armed");
     expect(ROUTES.some((r) => r.path === "/pricing")).toBe(true);
   });
 });

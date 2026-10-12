@@ -6,11 +6,11 @@ import Home from "./pages/Home";
 import Work from "./pages/Work";
 import CaseStudy from "./pages/CaseStudy";
 import StartProject from "./pages/StartProject";
+import IntroCall from "./pages/IntroCall";
+import PricingPage from "./pages/PricingPage";
 
 const SwipeFile = lazy(() => import("./pages/SwipeFile"));
 const Start = lazy(() => import("./pages/Start"));
-const IntroCall = lazy(() => import("./pages/IntroCall"));
-const PricingPage = lazy(() => import("./pages/PricingPage"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
 const NotFound = lazy(() => import("./pages/NotFound"));

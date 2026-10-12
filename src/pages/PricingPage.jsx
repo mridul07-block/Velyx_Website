@@ -7,7 +7,7 @@ export default function PricingPage() {
     <Layout>
       <Seo title="Pricing" description="Start with a $1500 trial week, then a product sprint or a monthly partnership with the Velyx Labs founders." path="/pricing" />
       <div className="pricing-page">
-        <Pricing headingLevel={1} />
+        <Pricing headingLevel={1} reveal={false} />
       </div>
     </Layout>
   );

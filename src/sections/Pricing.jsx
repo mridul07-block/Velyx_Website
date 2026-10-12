@@ -12,11 +12,13 @@ const ICONS = {
 /* 925 Studios' pricing: a "Simple pricing" eyebrow, a two-tone heading,
    then (our addition) the trial week strip and two plan cards — dark and
    light — each with a price line, a full-width CTA and what's included.
-   Rows un-blur in as the section enters view; visible by default. */
-export default function Pricing({ headingLevel = 2 }) {
+   Rows un-blur in as the section enters view (`reveal`); off on /pricing,
+   where the cards are the first thing on screen. */
+export default function Pricing({ headingLevel = 2, reveal = true }) {
   const H = `h${headingLevel}`;
+  const H2 = `h${headingLevel + 1}`;
   const [ref, inView] = useInView("0px 0px -10% 0px", 3000);
-  const [armed] = useState(() => typeof IntersectionObserver !== "undefined");
+  const [armed] = useState(() => reveal && typeof IntersectionObserver !== "undefined");
   const cls = ["section", "pricing", armed && "rv-armed", inView && "is-in"].filter(Boolean).join(" ");
 
   return (
@@ -46,7 +48,7 @@ export default function Pricing({ headingLevel = 2 }) {
                 <span className="plan__icon" aria-hidden="true">
                   <svg viewBox="0 0 20 20" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round">{ICONS[p.id]}</svg>
                 </span>
-                <h3 className="plan__title">{p.title}</h3>
+                <H2 className="plan__title">{p.title}</H2>
                 <p className="plan__tagline">{p.tagline}</p>
                 <p className="plan__price">
                   {p.price ? (p.unit === "from" ? <>From {p.price}</> : <>{p.price}<span>{p.unit}</span></>) : "Custom"}

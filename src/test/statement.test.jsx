@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { screen } from "@testing-library/react";
+
 import { renderWithProviders } from "./renderWithProviders";
 import Statement from "../sections/home/Statement";
 import { wordOpacity, progress, countValue } from "../lib/reveal";
@@ -30,9 +30,11 @@ describe("scroll reveal maths", () => {
 });
 
 describe("Statement", () => {
-  it("reads as one accessible paragraph and is fully visible without motion", () => {
+  it("reads as one accessible paragraph (no aria-label on a <p>) and is fully visible without motion", () => {
     renderWithProviders(<Statement />);
-    const p = screen.getByText((_, el) => el?.tagName === "P" && /founder-led team/.test(el.getAttribute("aria-label") || ""));
+    const p = document.querySelector(".statement__text");
+    expect(p).not.toHaveAttribute("aria-label");
+    expect(p.querySelector(".sr-only").textContent).toMatch(/founder-led team/);
     expect(p.querySelectorAll(".statement__w").length).toBeGreaterThan(10);
     for (const w of p.querySelectorAll(".statement__w")) expect(w.style.opacity).toBe("");
   });
