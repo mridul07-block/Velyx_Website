@@ -13,6 +13,7 @@ import TrustedBy from "../sections/home/TrustedBy";
 import ServicesPanel from "../sections/home/ServicesPanel";
 import SelectedWork from "../sections/home/SelectedWork";
 import MoreWork from "../sections/home/MoreWork";
+import Process from "../sections/home/Process";
 import Statement from "../sections/home/Statement";
 import { FAQ_ITEMS } from "../data/faq";
 import { TESTIMONIAL_QUOTES } from "../data/testimonials";
@@ -37,6 +38,7 @@ export default function Home() {
       <Stats />
       <SelectedWork />
       <MoreWork />
+      <Process />
       <TeamGrid />
       <TestimonialCarousel items={TESTIMONIAL_QUOTES} />
       <ToolsStrip />
