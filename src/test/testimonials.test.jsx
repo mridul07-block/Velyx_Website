@@ -4,7 +4,7 @@ import { renderWithProviders } from "./renderWithProviders";
 import Testimonials from "../components/Testimonials";
 import TeamGrid from "../components/TeamGrid";
 import { TESTIMONIAL_QUOTES } from "../data/testimonials";
-import { shouldDrift, wrap, roleLine } from "../lib/drift";
+import { shouldDrift, wrap, roleLine, loopPeriod } from "../lib/drift";
 
 describe("testimonial drift rules", () => {
   it("only drifts with 6+ cards and never under reduced motion", () => {
@@ -16,6 +16,18 @@ describe("testimonial drift rules", () => {
   it("wraps the doubled track at its half width", () => {
     expect(wrap(1200, 1000)).toBe(200);
     expect(wrap(400, 1000)).toBe(400);
+  });
+
+  it("measures the loop as the distance between the two copies of the first card", () => {
+    const cards = [{ offsetLeft: 200 }, { offsetLeft: 659 }, { offsetLeft: 1118 }, { offsetLeft: 1577 }];
+    expect(loopPeriod(cards, 2)).toBe(1118 - 200);
+  });
+
+  it("turns snapping off while drifting so the drift is smooth", () => {
+    const many = Array.from({ length: 6 }, (_, i) => ({ ...TESTIMONIAL_QUOTES[i % 3], name: `N${i}` }));
+    renderWithProviders(<Testimonials items={many} />);
+    expect(document.querySelector(".tsec__track")).toHaveClass("is-drifting");
+    expect(document.querySelectorAll(".tcard2").length).toBe(12);
   });
 
   it("formats roles Bricx-style", () => {

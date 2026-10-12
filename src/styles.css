@@ -586,6 +586,7 @@ a.team__name:hover { text-decoration: underline; text-underline-offset: 3px; }
   scroll-padding-inline: max(var(--gutter), calc((100vw - var(--container)) / 2 + var(--gutter)));
 }
 .tsec__track::-webkit-scrollbar { display: none; }
+.tsec__track.is-drifting { scroll-snap-type: none; } /* snapping would fight the drift */
 .tsec__track:focus-visible { outline-offset: -2px; }
 .tcard2 { position: relative; flex: 0 0 443px; aspect-ratio: 445 / 621; border-radius: 14px; border: 1px solid #dcdde0; overflow: hidden; background: #1c1c1c; color: #fff; scroll-snap-align: start; }
 .tcard2__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.05); transition: transform 0.5s ease-out; }
@@ -843,6 +844,7 @@ a.team__name:hover { text-decoration: underline; text-underline-offset: 3px; }
 .intro { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(28px, 5vw, 64px); align-items: start; }
 .intro__copy .section-header { margin-bottom: 16px; }
 .intro__link { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.brief__plan { align-self: flex-start; padding: 6px 12px; border-radius: var(--radius-pill); background: var(--page); font-size: 13px; font-weight: 600; }
 .brief { display: flex; flex-direction: column; gap: 20px; }
 .brief__row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .field { display: flex; flex-direction: column; gap: 8px; font-size: 14px; font-weight: 500; }
@@ -875,6 +877,7 @@ a.team__name:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---------- /start landing, legal, 404 ---------- */
 
+.lp { --nav-h: 88px; } /* /start has no audit row or fixed nav */
 .lp-head { display: flex; justify-content: space-between; align-items: center; padding-block: 20px; }
 .lp-foot { padding-block: 32px; font-size: 14px; color: var(--muted); text-align: center; }
 .lp-foot a { text-decoration: underline; text-underline-offset: 3px; }

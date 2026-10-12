@@ -19,8 +19,17 @@ function reducedMotion() {
   return typeof window !== "undefined" && typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
+/* Runs inside the visitor's first pointerdown/keydown, so the context is
+   created (and resumed) within a real user gesture. */
 export function unlock() {
   unlocked = true;
+  if (typeof AudioContext === "undefined") return;
+  try {
+    ctx ??= new AudioContext();
+    if (ctx.state === "suspended") ctx.resume?.().catch(() => {});
+  } catch {
+    /* audio unavailable: hover still works silently */
+  }
 }
 
 export function isMuted() {
@@ -40,6 +49,7 @@ export function tick(step = 0) {
   if (!unlocked || muted || reducedMotion() || typeof AudioContext === "undefined") return;
   try {
     ctx ??= new AudioContext();
+    if (ctx.state === "suspended") ctx.resume?.().catch(() => {});
     const t = ctx.currentTime;
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();

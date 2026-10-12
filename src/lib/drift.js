@@ -16,3 +16,9 @@ export function roleLine(role) {
   const [title, company] = role.split(" · ");
   return company ? `${title} @${company}` : title;
 }
+
+/* One loop length: the distance from a card to its copy in the doubled
+   track (independent of the track's side padding). */
+export function loopPeriod(cards, count) {
+  return cards[count].offsetLeft - cards[0].offsetLeft;
+}

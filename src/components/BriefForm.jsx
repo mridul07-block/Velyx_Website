@@ -25,7 +25,7 @@ function Choices({ legend, options, selected, onToggle }) {
 
 const labelOf = (options, key) => options.find(([k]) => k === key)?.[1] ?? "";
 
-export default function BriefForm({ formKey, initialBudget = "" }) {
+export default function BriefForm({ formKey, initialBudget = "", plan }) {
   const [status, setStatus] = useState("idle");
   const [services, setServices] = useState([]);
   const [budget, setBudget] = useState(initialBudget);
@@ -51,13 +51,14 @@ export default function BriefForm({ formKey, initialBudget = "" }) {
           services: services.map((id) => labelOf(serviceOptions, id)).join(", "),
           budget: labelOf(BUDGETS, budget),
           timeline: labelOf(TIMELINES, timeline),
+          ...(plan ? { plan } : {}),
         }),
       });
       const json = await res.json();
       if (!res.ok || !json.success) throw new Error(json.message || "Send failed");
       form.reset();
       setStatus("sent");
-      track("brief_submit", { budget, location: "/start-a-project" });
+      track("brief_submit", { budget, plan, location: "/start-a-project" });
     } catch {
       setStatus("error");
     }
@@ -75,6 +76,7 @@ export default function BriefForm({ formKey, initialBudget = "" }) {
 
   return (
     <form className="card brief" aria-label="Project brief" onSubmit={onSubmit}>
+      {plan && <p className="brief__plan">Plan: {plan}</p>}
       <div className="brief__row">
         <label className="field"><span>Name</span><input name="name" type="text" autoComplete="name" required /></label>
         <label className="field"><span>Email</span><input name="email" type="email" autoComplete="email" required /></label>

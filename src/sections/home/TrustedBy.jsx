@@ -12,15 +12,23 @@ const NOTES = CLIENTS.map(noteFor);
    we built for them, and a soft tick per hover. Phones keep the marquee. */
 export default function TrustedBy() {
   const gridRef = useRef(null);
+  const lastPointer = useRef("mouse");
   const [active, setActive] = useState(null); // { i, x, y, w, h, pop }
   const [muted, setMutedState] = useState(isMuted);
 
   useEffect(() => {
+    // Only activation keys count as a user gesture for audio (not Esc/Tab).
+    const onKey = (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        unlock();
+        window.removeEventListener("keydown", onKey);
+      }
+    };
     window.addEventListener("pointerdown", unlock, { once: true });
-    window.addEventListener("keydown", unlock, { once: true });
+    window.addEventListener("keydown", onKey);
     return () => {
       window.removeEventListener("pointerdown", unlock);
-      window.removeEventListener("keydown", unlock);
+      window.removeEventListener("keydown", onKey);
     };
   }, []);
 
@@ -40,7 +48,7 @@ export default function TrustedBy() {
       <div className="container">
         <h2 className="trusted__title">Trusted by founders and startups</h2>
 
-        <div ref={gridRef} className="cgrid" onPointerLeave={() => setActive(null)}>
+        <div ref={gridRef} className="cgrid" onPointerLeave={(e) => e.pointerType !== "touch" && setActive(null)}>
           <span
             className={`cpill${active ? " is-on" : ""}`}
             aria-hidden="true"
@@ -52,8 +60,12 @@ export default function TrustedBy() {
               type="button"
               className={`ctile${active?.i === i ? " is-active" : ""}`}
               aria-label={NOTES[i] ? `${name}: ${NOTES[i].line}` : name}
-              onPointerEnter={(e) => show(i, e.currentTarget, e.pointerType !== "touch")}
-              onFocus={(e) => show(i, e.currentTarget, true)}
+              onPointerEnter={(e) => {
+                lastPointer.current = e.pointerType;
+                show(i, e.currentTarget, e.pointerType !== "touch");
+              }}
+              onPointerDown={(e) => (lastPointer.current = e.pointerType)}
+              onFocus={(e) => show(i, e.currentTarget, lastPointer.current !== "touch")}
               onBlur={() => setActive(null)}
             >
               <span className={`ctile__name${name.length > 15 ? " ctile__name--long" : ""}`}>{name}</span>

@@ -45,3 +45,9 @@ describe("contrast on the new sections (WCAG AA)", () => {
     expect(rule(".closing__actions")).not.toMatch(/opacity:\s*0[;\s]/);
   });
 });
+
+describe("/start ads landing has no audit row", () => {
+  it("resets the nav height so its hero doesn't gain the audit row's space", () => {
+    expect(rule(".lp")).toMatch(/--nav-h:\s*88px/);
+  });
+});

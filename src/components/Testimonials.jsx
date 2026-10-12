@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import useOnScreen from "../lib/useOnScreen";
 import useReducedMotion from "../lib/useReducedMotion";
-import { roleLine, shouldDrift, wrap } from "../lib/drift";
+import { loopPeriod, roleLine, shouldDrift, wrap } from "../lib/drift";
 import { PROJECTS } from "../data/projects";
 
 const SPEED = 40; // px per second
@@ -16,6 +16,7 @@ export default function Testimonials({ items }) {
   const reduced = useReducedMotion();
   const trackRef = useRef(null);
   const paused = useRef(false);
+  const holdUntil = useRef(0);
   const drift = shouldDrift(items.length, reduced);
 
   useEffect(() => {
@@ -27,8 +28,8 @@ export default function Testimonials({ items }) {
     const step = (now) => {
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
-      if (!paused.current && !document.hidden) {
-        pos = wrap(pos + SPEED * dt, el.scrollWidth / 2);
+      if (!paused.current && now > holdUntil.current && !document.hidden) {
+        pos = wrap(pos + SPEED * dt, loopPeriod(el.querySelectorAll(".tcard2"), items.length));
         el.scrollLeft = pos;
       } else {
         pos = el.scrollLeft;
@@ -37,14 +38,15 @@ export default function Testimonials({ items }) {
     };
     frame = requestAnimationFrame(step);
     return () => cancelAnimationFrame(frame);
-  }, [drift, onScreen]);
+  }, [drift, onScreen, items.length]);
 
   if (!items.length) return null;
   const cards = drift ? [...items, ...items] : items;
   const by = (dir) => {
     const el = trackRef.current;
     const card = el?.querySelector(".tcard2");
-    el?.scrollBy({ left: dir * ((card?.offsetWidth ?? 0) + 16), behavior: "smooth" });
+    holdUntil.current = performance.now() + 900; // let the arrow's scroll finish
+    el?.scrollBy({ left: dir * ((card?.offsetWidth ?? 0) + 16), behavior: reduced ? "auto" : "smooth" });
   };
   const hold = () => (paused.current = true);
   const release = () => (paused.current = false);
@@ -67,7 +69,7 @@ export default function Testimonials({ items }) {
 
       <div
         ref={trackRef}
-        className="tsec__track"
+        className={`tsec__track${drift ? " is-drifting" : ""}`}
         role="region"
         aria-label="Testimonials"
         tabIndex={0}

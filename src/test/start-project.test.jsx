@@ -50,6 +50,24 @@ describe("/start-a-project", () => {
     expect(screen.getByRole("button", { name: "Trial week ($1500)" })).toHaveAttribute("aria-pressed", "true");
   });
 
+  it("?plan=<pricing plan> shows the chosen plan and sends it with the brief", async () => {
+    vi.stubEnv("VITE_WEB3FORMS_KEY", "test-key");
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ success: true }) });
+    vi.stubGlobal("fetch", fetchMock);
+    await openPage("/start-a-project?plan=partner");
+    expect(screen.getByText(/Plan: Monthly partner/)).toBeInTheDocument();
+    fill();
+    fireEvent.click(screen.getByRole("button", { name: /send/i }));
+    await screen.findByText(/thanks|sent|received/i);
+    expect(JSON.parse(fetchMock.mock.calls[0][1].body).plan).toBe("Monthly partner");
+  });
+
+  it("ignores an unknown ?plan value", async () => {
+    vi.stubEnv("VITE_WEB3FORMS_KEY", "test-key");
+    await openPage("/start-a-project?plan=nope");
+    expect(screen.queryByText(/^Plan:/)).toBeNull();
+  });
+
   it("shows an error with email fallback when sending fails", async () => {
     vi.stubEnv("VITE_WEB3FORMS_KEY", "test-key");
     vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("offline")));

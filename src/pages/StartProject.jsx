@@ -5,6 +5,7 @@ import SectionHeader from "../components/SectionHeader";
 import BriefForm from "../components/BriefForm";
 import CalEmbed from "../components/CalEmbed";
 import CalButton from "../components/CalButton";
+import { PLANS } from "../data/pricing";
 
 const EMAIL = "velyxlabs@gmail.com";
 
@@ -12,6 +13,7 @@ export default function StartProject() {
   const [params] = useSearchParams();
   const formKey = import.meta.env.VITE_WEB3FORMS_KEY;
   const initialBudget = params.get("plan") === "trial" ? "trial" : "";
+  const plan = PLANS.find((p) => p.id === params.get("plan"))?.title;
 
   return (
     <Layout>
@@ -30,7 +32,7 @@ export default function StartProject() {
             </p>
           </div>
           {formKey ? (
-            <BriefForm formKey={formKey} initialBudget={initialBudget} />
+            <BriefForm formKey={formKey} initialBudget={initialBudget} plan={plan} />
           ) : (
             <div className="card">
               <h2 className="h3">Email us your brief</h2>

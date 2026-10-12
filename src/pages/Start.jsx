@@ -23,7 +23,7 @@ export default function Start() {
         <Logo />
         <CalButton size="sm" />
       </header>
-      <main>
+      <main className="lp">
         <section className="hero">
           <div className="container hero__inner">
             <p className="status"><span className="status__dot" aria-hidden="true" />Founder-led · Bangalore, India</p>
