@@ -30,8 +30,8 @@ describe("PillNav", () => {
 describe("SiteFooter", () => {
   it("has email, socials and legal links", () => {
     renderWithProviders(<SiteFooter />);
-    expect(screen.getByRole("link", { name: "velyxlabs@gmail.com" })).toHaveAttribute("href", "mailto:velyxlabs@gmail.com");
-    expect(screen.getByRole("link", { name: "LinkedIn" })).toHaveAttribute("href", "https://www.linkedin.com/company/velyx-labs/");
+    expect(screen.getByRole("link", { name: "Email Velyx Labs" })).toHaveAttribute("href", "mailto:velyxlabs@gmail.com");
+    expect(screen.getByRole("link", { name: "Velyx Labs on LinkedIn" })).toHaveAttribute("href", "https://www.linkedin.com/company/velyx-labs/");
     expect(screen.getByRole("link", { name: "Privacy" })).toHaveAttribute("href", "/privacy");
     expect(screen.getByRole("link", { name: "Terms" })).toHaveAttribute("href", "/terms");
   });
@@ -136,17 +136,15 @@ describe("Footer (Altair layout)", () => {
     expect(document.querySelector(".sfoot__copy").compareDocumentPosition(nav) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
-  it("Ask AI links only carry the fixed prompt about Velyx Labs", async () => {
+  it("shows email, X, LinkedIn and Instagram as labelled icon buttons, and no Ask AI row", async () => {
     const { default: SiteFooter } = await import("../components/SiteFooter");
-    const { askAiLinks } = await import("../lib/askAi");
     renderWithProviders(<SiteFooter />);
-    const links = document.querySelectorAll(".askai a");
-    expect(links.length).toBe(4);
-    for (const a of links) {
-      expect(decodeURIComponent(a.href)).toMatch(/Tell me about Velyx Labs \(velyxlabs\.in\)/);
-      expect(a).toHaveAttribute("target", "_blank");
-      expect(a.getAttribute("aria-label")).toMatch(/^Ask .+ about Velyx Labs$/);
-    }
-    expect(askAiLinks("x y")[0].href).toBe("https://chatgpt.com/?q=x%20y");
+    expect(document.querySelector(".askai")).toBeNull();
+    expect(screen.queryByText(/Ask AI/)).toBeNull();
+    const icons = [...document.querySelectorAll(".sfoot__social a")];
+    expect(icons.map((a) => a.getAttribute("aria-label"))).toEqual(["Email Velyx Labs", "Velyx Labs on X", "Velyx Labs on LinkedIn", "Velyx Labs on Instagram"]);
+    expect(icons[0]).toHaveAttribute("href", "mailto:velyxlabs@gmail.com");
+    for (const a of icons) expect(a.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
+    for (const a of icons.slice(1)) expect(a).toHaveAttribute("target", "_blank");
   });
 });
