@@ -711,21 +711,14 @@ a.team__name:hover { text-decoration: underline; text-underline-offset: 3px; }
 .closing__actions { align-items: center; position: relative; z-index: 1; margin-top: 0; }
 
 /* Footer scene (Kargul's light isometric footer). */
-.fcta__scene { --mx: 0; --my: 0; width: 100%; max-width: 1240px; aspect-ratio: 2 / 1; margin: -8px auto 0; }
+.fcta__scene { width: 100%; max-width: 1280px; aspect-ratio: 2 / 1; margin: -8px auto 0; }
 .fcta__scene svg { display: block; width: 100%; height: 100%; }
 @media (max-width: 640px) {
   .fcta__scene { aspect-ratio: auto; height: 300px; margin-top: 8px; }
 }
 .fcta__scene :is(path, rect, polygon, ellipse, circle) { stroke-width: 1; stroke-linejoin: round; }
-.fcta__scene .fs-gridline { stroke: #c8c8c8; stroke-width: 0.8; }
-.fcta__scene .fs-gridlight { stroke: #fdfdfd; stroke-width: 0.8; }
-.fcta__scene .fs-gridline--hot { stroke: #9c9c9c; }
-.fcta__scene .fs-spot { opacity: 0; transition: opacity 0.5s ease; }
-.fcta__scene .fs-spot.is-on { opacity: 1; }
-.fcta__scene .orbit-trail { fill: var(--ink); stroke: none; }
+.fcta__scene .fs-gridline { stroke: #d6d6d6; stroke-width: 0.9; }
 .fcta__scene .fobj__shadow { transform-box: fill-box; transform-origin: center; }
-.fcta__scene.is-playing .fobj__shadow { animation: fs-shadow 6s ease-in-out infinite; }
-@keyframes fs-shadow { 50% { transform: scale(0.84); opacity: 0.6; } }
 .fcta__scene .fs-horizon { stroke: #b9b9b9; stroke-dasharray: 1 5; stroke-linecap: round; }
 .fcta__scene .fs-hatch { stroke: #c9c9c9; stroke-width: 0.6; }
 .fcta__scene .fs-hatch--soft { stroke: #dedede; }
@@ -733,13 +726,19 @@ a.team__name:hover { text-decoration: underline; text-underline-offset: 3px; }
 .fcta__scene .fs-left { fill: #f1f1f1; stroke: #c4c4c4; }
 .fcta__scene .fs-right { fill: #e9e9e9; stroke: #c4c4c4; }
 .fcta__scene .fs-plinth-side { fill: #f3f3f3; stroke: #c4c4c4; }
-.fcta__scene .fs-plinth-side.is-hatched { fill: #ececec; }
+.fcta__scene .fs-plinth-side.is-hatched { fill: #ebebeb; }
+.fcta__scene .obs-fan line { stroke: #c2c2c2; stroke-width: 0.6; vector-effect: non-scaling-stroke; }
+.fcta__scene .fs-inline { stroke: #d2d2d2; }
+.fcta__scene .obs-drum__side { fill: url(#obs-drum-g); stroke: #b9b9b9; }
+.fcta__scene .obs-oculus { fill: #fbfbfb; stroke: #b9b9b9; }
+.fcta__scene .arc-still { fill: #9a9a9a; stroke: none; }
+.fcta__scene .arc-still--dark { fill: var(--ink); }
 .fcta__scene .fs-dome { fill: url(#fs-dome-g); stroke: #b9b9b9; }
-.fcta__scene .fs-domeline { stroke: #d3d3d3; stroke-width: 0.8; }
-.fcta__scene .obs-slit { fill: #dcdcdc; stroke: #8f8f8f; }
+.fcta__scene .fs-domeline { stroke: #cdcdcd; stroke-width: 0.7; }
+.fcta__scene .obs-slit { fill: #cfcfcf; stroke: #6f6f6f; }
 .fcta__scene .obs-scope { transform-box: view-box; transform-origin: 0 0; }
-.fcta__scene.is-playing .obs-scope { animation: obs-sweep 7s ease-in-out infinite; }
-@keyframes obs-sweep { 50% { transform: rotate(-7deg); } }
+.fcta__scene.is-playing .obs-scope { animation: obs-sweep 9s ease-in-out infinite; }
+@keyframes obs-sweep { 50% { transform: rotate(9deg); } }
 .fcta__scene .fs-handle { fill: #fff; stroke: #9a9a9a; vector-effect: non-scaling-stroke; }
 .fcta__scene .orbit { stroke: #9f9f9f; stroke-dasharray: 3 4; vector-effect: non-scaling-stroke; }
 .fcta__scene .orbit-dot { fill: var(--ink); stroke: none; }
@@ -747,12 +746,7 @@ a.team__name:hover { text-decoration: underline; text-underline-offset: 3px; }
 .fcta__scene .hz-dot--dark { fill: var(--ink); }
 .fcta__scene .fs-dash { stroke: #a9a9a9; stroke-dasharray: 3 3; vector-effect: non-scaling-stroke; }
 .fcta__scene .fwire { stroke: #a3a3a3; stroke-dasharray: 1 4; stroke-linecap: round; vector-effect: non-scaling-stroke; }
-.fcta__scene.is-playing .fwire { animation: fs-flow 1.6s linear infinite; }
-@keyframes fs-flow { to { stroke-dashoffset: -10; } }
 .fcta__scene .fwire-dot { fill: #7a7a7a; stroke: none; }
-.fcta__scene .fobj { transform: translate(calc(var(--mx) * var(--d, 1) * 6px), calc(var(--my) * var(--d, 1) * 4px)); transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
-.fcta__scene.is-playing .fobj__bob { animation: fs-bob 6s ease-in-out infinite; }
-@keyframes fs-bob { 50% { transform: translateY(-5px); } }
 @media (prefers-reduced-motion: reduce) {
   .closing__word { opacity: 1; transform: none; }
 }

@@ -10,25 +10,17 @@ const WORDS = ["Let's", "build", "something", "amazing"];
 /* The footer CTA on every page, laid out like Altair's: the heading's words
    rise in sequence over a reply-time line, then the isometric scene and a
    single Intro call button. The scene animates
-   only while on screen and shifts with the cursor; reduced motion keeps
-   everything still. */
+   only while on screen; reduced motion keeps everything still. */
 export default function ClosingCTA() {
   const [ref, inView] = useInView("0px 0px -15% 0px", 2000);
   const [sceneRef, onScreen] = useOnScreen("0px");
   const reduced = useReducedMotion();
   const playing = onScreen && !reduced;
 
-  const drift = (e) => {
-    const el = sceneRef.current;
-    if (!el || reduced) return;
-    const r = el.getBoundingClientRect();
-    if (!r.width || !r.height) return;
-    el.style.setProperty("--mx", (((e.clientX - r.left) / r.width) * 2 - 1).toFixed(3));
-    el.style.setProperty("--my", (((e.clientY - r.top) / r.height) * 2 - 1).toFixed(3));
-  };
+
 
   return (
-    <section id="closing" ref={ref} className={`closing${inView ? " is-in" : ""}`} onPointerMove={drift}>
+    <section id="closing" ref={ref} className={`closing${inView ? " is-in" : ""}`}>
       <div className="container closing__inner">
         <h2 className="closing__title">
           {WORDS.flatMap((w, i) => [i > 0 ? " " : null, <span key={w} className="closing__word">{w}</span>])}

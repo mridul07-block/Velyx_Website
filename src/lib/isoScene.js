@@ -67,14 +67,22 @@ export function domeOutline(R) {
   return `M${f(CX - r)} ${f(CY)}A${f(r)} ${f(r)} 0 0 1 ${f(CX + r)} ${f(CY)}` + front.map(([x, y]) => `L${f(x)} ${f(y)}`).join("") + "Z";
 }
 
-/* Altair's dotted arc: half an ellipse from the left end of the horizon,
-   over the scene, down to the right end. t runs 0..1 left to right. */
+/* Altair's dotted arc: part of a large circle through both ends of the
+   horizon and the top of the scene. t runs 0..1 left to right. */
 export const HORIZON_Y = 248;
-const ARC = { cx: 600, rx: 530, ry: 181 };
-export const ARC_D = `M${ARC.cx - ARC.rx} ${HORIZON_Y}A${ARC.rx} ${ARC.ry} 0 0 1 ${ARC.cx + ARC.rx} ${HORIZON_Y}`;
+const ARC = { x0: 70, x1: 1130, top: 67 };
+const ARC_C = (() => {
+  const half = (ARC.x1 - ARC.x0) / 2;
+  const cy = (half * half + HORIZON_Y * HORIZON_Y - ARC.top * ARC.top) / (2 * (HORIZON_Y - ARC.top));
+  return { cx: ARC.x0 + half, cy, r: cy - ARC.top };
+})();
+const A0 = Math.atan2(HORIZON_Y - ARC_C.cy, ARC.x0 - ARC_C.cx);
+const A1 = Math.atan2(HORIZON_Y - ARC_C.cy, ARC.x1 - ARC_C.cx);
+export const ARC_D = `M${ARC.x0} ${HORIZON_Y}A${ARC_C.r.toFixed(1)} ${ARC_C.r.toFixed(1)} 0 0 1 ${ARC.x1} ${HORIZON_Y}`;
 
 export function arcAt(t) {
-  return [ARC.cx - ARC.rx * Math.cos(Math.PI * t), HORIZON_Y - ARC.ry * Math.sin(Math.PI * t)];
+  const a = A0 + (A1 - A0) * t;
+  return [ARC_C.cx + ARC_C.r * Math.cos(a), ARC_C.cy + ARC_C.r * Math.sin(a)];
 }
 
 /* A point t of the way from a to b (wire dots). */

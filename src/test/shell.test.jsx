@@ -48,32 +48,34 @@ describe("Footer CTA scene", () => {
     expect(within(cta).getByRole("link", { name: "See our work" })).toHaveAttribute("href", "/work");
     const scene = cta.querySelector(".fcta__scene svg");
     expect(scene.getAttribute("aria-hidden")).toBe("true");
-    // Altair's observatory: a hatched stepped plinth, a drum and the dome
-    // with its slit and telescope.
+    // Altair's observatory, as in the reference recording: a flared plinth
+    // with a fanned hatch on its right side, a shaded drum, a still dome
+    // with its oculus, a slit on the left and a telescope.
     expect(scene.querySelectorAll(".dome")).toHaveLength(1);
-    expect(scene.querySelector(".fs-plinth-side.is-hatched")).not.toBeNull();
+    expect(scene.querySelectorAll(".obs-fan line").length).toBeGreaterThan(40);
     expect(scene.querySelector(".obs-drum")).not.toBeNull();
+    expect(scene.querySelector(".obs-oculus")).not.toBeNull();
     expect(scene.querySelector(".obs-slit")).not.toBeNull();
     expect(scene.querySelector(".obs-scope")).not.toBeNull();
-    // One dotted arc and a dotted horizon.
+    // One dotted circular arc with a single travelling dot, a still cluster
+    // of dots on it, and a dotted horizon with still dots.
     expect(scene.querySelectorAll(".orbit")).toHaveLength(1);
+    expect(scene.querySelectorAll(".orbit-dot")).toHaveLength(1);
+    expect(scene.querySelectorAll(".arc-still").length).toBe(3);
     expect(scene.querySelector(".fs-horizon")).not.toBeNull();
-    expect(scene.querySelectorAll(".orbit-dot")).toHaveLength(3);
-    // Nine objects; four sit in dashed selection frames with corner handles,
-    // each wired back to the plinth with a flowing dotted line.
+    expect(scene.querySelectorAll(".hz-dot").length).toBe(4);
+    // Nine still objects; four in dashed selection frames with corner
+    // handles, each wired to the plinth with a dot sliding along the wire.
     expect(scene.querySelectorAll(".fobj").length).toBe(9);
+    expect(scene.querySelector(".fobj__bob")).toBeNull();
     expect(scene.querySelectorAll(".fsel")).toHaveLength(4);
     for (const f of scene.querySelectorAll(".fsel")) expect(f.querySelectorAll(".fs-handle")).toHaveLength(4);
     expect(scene.querySelectorAll(".fwire")).toHaveLength(4);
     expect(scene.querySelectorAll(".fwire-dot")).toHaveLength(4);
-    // Kargul's floor: a fine lattice of small embossed diamond cells.
+    // Altair's floor: a large, faint diamond grid.
     const grid = scene.querySelector("pattern#fs-grid");
-    expect(Number(grid.getAttribute("width"))).toBeLessThanOrEqual(12);
-    expect(grid.querySelectorAll("path")).toHaveLength(2);
-    expect(scene.querySelector(".fs-spot")).not.toBeNull();
+    expect(Number(grid.getAttribute("width"))).toBeGreaterThanOrEqual(30);
     expect(scene.querySelectorAll(".fobj__shadow").length).toBeGreaterThanOrEqual(4);
-    expect(scene.querySelectorAll(".orbit-trail")).toHaveLength(9);
-    // Kargul's restraint: none of the busy extras.
     expect(scene.querySelector(".core, .packet, .station, .trace, .ripple, .satellite")).toBeNull();
   });
 
