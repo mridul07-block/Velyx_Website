@@ -313,7 +313,7 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 .trusted__title { font-size: 16px; line-height: 21px; font-weight: 700; letter-spacing: -0.02em; text-align: center; margin-bottom: 36px; }
 .trusted__name { font-size: 17px; font-weight: 700; letter-spacing: -0.03em; color: var(--muted); white-space: nowrap; }
 /* Kargul's grid: 6 x 153px cells, one white pill that slides to the
-   hovered client. Bricx's dark popup sits above it. Phones keep the marquee. */
+   hovered client. Phones keep the marquee. */
 .cgrid { position: relative; display: none; cursor: none; grid-template-columns: repeat(6, 153px); justify-content: center; }
 .ctile { position: relative; z-index: 1; display: grid; place-items: center; height: 108px; padding: 0 6px; background: none; cursor: none; }
 .ccursor { position: absolute; left: 0; top: 0; z-index: 4; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: var(--ink); opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
@@ -325,28 +325,6 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 .ctile--more span { display: inline-grid; place-items: center; height: 44px; padding: 0 16px; border-radius: var(--radius-pill); background: var(--card); font-size: 14px; font-weight: 700; letter-spacing: -0.01em; color: var(--ink); }
 .cpill { position: absolute; left: 0; top: 0; z-index: 0; width: 150px; height: 60px; border-radius: var(--radius-pill); background: var(--card); opacity: 0; pointer-events: none; transition: transform 0.25s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.2s; }
 .cpill.is-on { opacity: 1; }
-.cpop {
-  position: absolute;
-  z-index: 3;
-  width: max-content;
-  max-width: 320px;
-  padding: 13px 14px 12px;
-  border-radius: 12px;
-  background: #232323f2;
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  color: #fff;
-  box-shadow: 0 12px 30px #00000033;
-  pointer-events: none;
-  opacity: 0;
-  transform: translate(-50%, calc(-100% - 4px));
-  transition: opacity 0.16s ease, transform 0.16s ease;
-}
-.cpop.is-on { opacity: 1; transform: translate(-50%, calc(-100% - 10px)); }
-.cpop::after { content: ""; position: absolute; left: 50%; bottom: -5px; width: 10px; height: 10px; margin-left: -5px; background: inherit; transform: rotate(45deg); border-radius: 2px; }
-.cpop__line { font-size: 14px; line-height: 20px; font-weight: 500; letter-spacing: -0.01em; }
-.cpop__chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-.cpop__chip { padding: 3px 10px; border-radius: var(--radius-pill); background: #ffffff1a; font-size: 12px; line-height: 18px; font-weight: 500; color: #ffffffcc; }
 @media (min-width: 761px) {
   .cgrid { display: grid; }
   .trusted__marquee { display: none; }

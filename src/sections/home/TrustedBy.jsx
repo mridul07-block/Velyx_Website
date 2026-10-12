@@ -2,22 +2,18 @@ import { useEffect, useRef, useState } from "react";
 import Marquee from "../../components/Marquee";
 import VelyxMark from "../../components/VelyxMark";
 import { CLIENTS, CLIENT_PLACEHOLDERS } from "../../data/clients";
-import { noteFor } from "../../lib/clientNotes";
 import { tick, unlock } from "../../lib/tick";
 
 const COLS = 6;
 const SHOWN = [...CLIENTS, ...CLIENT_PLACEHOLDERS];
-const NOTES = SHOWN.map(noteFor);
 
 /* Kargul's layout: a 6-column wordmark grid where one white pill slides to
-   the hovered (or focused) client, a dot for a cursor and a "15+ More" tile.
-   Bricx's touch: a dark popup saying what we built for them, and a soft tick
-   per hover. Phones keep the marquee. */
+   the hovered (or focused) client, a dot for a cursor, a "15+ More" tile and
+   a soft tick per hover (Bricx). Phones keep the marquee. */
 export default function TrustedBy() {
   const gridRef = useRef(null);
-  const lastPointer = useRef("mouse");
   const cursorRef = useRef(null);
-  const [active, setActive] = useState(null); // { i, x, y, w, h, pop }
+  const [active, setActive] = useState(null); // { i, x, y, w, h }
 
   useEffect(() => {
     // Only activation keys count as a user gesture for audio (not Esc/Tab).
@@ -35,8 +31,8 @@ export default function TrustedBy() {
     };
   }, []);
 
-  const show = (i, el, pop) => {
-    setActive({ i, x: el.offsetLeft, y: el.offsetTop, w: el.offsetWidth, h: el.offsetHeight, pop: pop && Boolean(NOTES[i]) });
+  const show = (i, el) => {
+    setActive({ i, x: el.offsetLeft, y: el.offsetTop, w: el.offsetWidth, h: el.offsetHeight });
     tick(i % COLS);
   };
   /* Kargul's cursor: over the grid the arrow becomes a dot that follows the mouse. */
@@ -51,8 +47,6 @@ export default function TrustedBy() {
     cursorRef.current?.classList.remove("is-on");
     if (e.pointerType !== "touch") setActive(null);
   };
-
-  const note = active && NOTES[active.i];
 
   return (
     <section id="trusted" className="trusted">
@@ -73,33 +67,14 @@ export default function TrustedBy() {
               key={name}
               type="button"
               className={`ctile${active?.i === i ? " is-active" : ""}`}
-              aria-label={NOTES[i] ? `${name}: ${NOTES[i].line}` : name}
-              onPointerEnter={(e) => {
-                lastPointer.current = e.pointerType;
-                show(i, e.currentTarget, e.pointerType !== "touch");
-              }}
-              onPointerDown={(e) => (lastPointer.current = e.pointerType)}
-              onFocus={(e) => show(i, e.currentTarget, lastPointer.current !== "touch")}
+              onPointerEnter={(e) => show(i, e.currentTarget)}
+              onFocus={(e) => show(i, e.currentTarget)}
               onBlur={() => setActive(null)}
             >
               <span className={`ctile__name${name.length > 15 ? " ctile__name--long" : ""}`}>{name}</span>
             </button>
           ))}
           <span className="ctile ctile--more"><span>15+ More</span></span>
-          <div
-            className={`cpop${active?.pop ? " is-on" : ""}`}
-            aria-hidden="true"
-            style={active ? { left: active.x + active.w / 2, top: active.y + (active.h - 60) / 2 } : undefined}
-          >
-            {note && (
-              <>
-                <p className="cpop__line">{note.line}</p>
-                {note.chips.length > 0 && (
-                  <span className="cpop__chips">{note.chips.map((c) => <span key={c} className="cpop__chip">{c}</span>)}</span>
-                )}
-              </>
-            )}
-          </div>
         </div>
 
         <div className="trusted__marquee">

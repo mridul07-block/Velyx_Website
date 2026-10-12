@@ -2,7 +2,6 @@ import { describe, it, expect, vi, afterEach } from "vitest";
 import { fireEvent, screen } from "@testing-library/react";
 import { renderWithProviders } from "./renderWithProviders";
 import TrustedBy from "../sections/home/TrustedBy";
-import { noteFor } from "../lib/clientNotes";
 import { CLIENTS, CLIENT_PLACEHOLDERS } from "../data/clients";
 
 describe("clients grid (Kargul layout, Bricx popup)", () => {
@@ -19,26 +18,23 @@ describe("clients grid (Kargul layout, Bricx popup)", () => {
 
   it("uses buttons so the pill follows keyboard focus too", () => {
     renderWithProviders(<TrustedBy />);
-    const tile = screen.getByRole("button", { name: /^Sacred Basil/ });
+    const tile = screen.getByRole("button", { name: "Sacred Basil" });
     fireEvent.focus(tile);
     expect(tile).toHaveClass("is-active");
   });
 
-  it("shows what we built on mouse hover, but no popup on touch", () => {
+  it("hovering a client only moves the pill — no popup", () => {
     renderWithProviders(<TrustedBy />);
-    const tile = screen.getByRole("button", { name: /^Sacred Basil/ });
+    const tile = screen.getByRole("button", { name: "Sacred Basil" });
     fireEvent.pointerEnter(tile, { pointerType: "mouse" });
-    const pop = document.querySelector(".cpop");
-    expect(pop).toHaveClass("is-on");
-    expect(pop.textContent).toMatch(/e-commerce/i);
-    fireEvent.pointerLeave(document.querySelector(".cgrid"));
-    fireEvent.pointerEnter(tile, { pointerType: "touch" });
-    expect(document.querySelector(".cpop.is-on")).toBeNull();
+    expect(tile).toHaveClass("is-active");
+    expect(document.querySelector(".cpill")).toHaveClass("is-on");
+    expect(document.querySelector(".cpop")).toBeNull();
   });
 
-  it("a real tap keeps the pill on the tapped client and never opens the popup", () => {
+  it("a real tap keeps the pill on the tapped client", () => {
     renderWithProviders(<TrustedBy />);
-    const tile = screen.getByRole("button", { name: /^Sacred Basil/ });
+    const tile = screen.getByRole("button", { name: "Sacred Basil" });
     const grid = document.querySelector(".cgrid");
     fireEvent.pointerEnter(tile, { pointerType: "touch" });
     fireEvent.pointerDown(tile, { pointerType: "touch" });
@@ -47,20 +43,6 @@ describe("clients grid (Kargul layout, Bricx popup)", () => {
     fireEvent.focus(tile);
     expect(tile).toHaveClass("is-active");
     expect(document.querySelector(".cpill")).toHaveClass("is-on");
-    expect(document.querySelector(".cpop.is-on")).toBeNull();
-  });
-
-  it("shows only the pill for a client without any copy", () => {
-    expect(noteFor("Estatico")).toBeNull();
-    renderWithProviders(<TrustedBy />);
-    fireEvent.pointerEnter(screen.getByRole("button", { name: /^Estatico/ }), { pointerType: "mouse" });
-    expect(document.querySelector(".cpop.is-on")).toBeNull();
-  });
-
-  it("builds notes from real project and engagement copy", () => {
-    expect(noteFor("Sacred Basil")).toEqual({ line: expect.stringMatching(/e-commerce/i), chips: expect.arrayContaining(["Web"]) });
-    expect(noteFor("Overshoot").line).toMatch(/web application/i);
-    expect(noteFor("Orange Production").line).toMatch(/marketing agency/i);
   });
 });
 
@@ -70,11 +52,10 @@ describe("three full rows", () => {
     expect(document.querySelectorAll(".cgrid .ctile").length).toBe(18);
   });
 
-  it("keeps the dummy names separate, marked for replacement, with no popup", () => {
+  it("keeps the dummy names separate, marked for replacement", () => {
     expect(CLIENT_PLACEHOLDERS).toHaveLength(6);
     for (const name of CLIENT_PLACEHOLDERS) {
       expect(CLIENTS).not.toContain(name);
-      expect(noteFor(name)).toBeNull();
     }
   });
 });
