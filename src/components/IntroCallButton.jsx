@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import BtnLabel from "./BtnLabel";
 
 /* Maydit-style "Intro call": a clean dark pill with a video-call glyph
    (the booking runs on Cal Video), opening the Cal.com booking page. */
@@ -9,7 +10,7 @@ export default function IntroCallButton({ className = "", children = "Intro call
         <rect x="2" y="5" width="11" height="10" rx="2.5" />
         <path d="M13 9l5-3v8l-5-3z" />
       </svg>
-      {children}
+      <BtnLabel>{children}</BtnLabel>
     </Link>
   );
 }

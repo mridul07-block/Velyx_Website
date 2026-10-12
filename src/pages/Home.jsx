@@ -7,7 +7,7 @@ import Stats from "../components/Stats";
 import TeamGrid from "../components/TeamGrid";
 import Testimonials from "../components/Testimonials";
 import ToolsStrip from "../components/ToolsStrip";
-import TrialCard from "../components/TrialCard";
+import Pricing from "../sections/Pricing";
 import Hero from "../sections/home/Hero";
 import TrustedBy from "../sections/home/TrustedBy";
 import ServicesPanel from "../sections/home/ServicesPanel";
@@ -42,7 +42,7 @@ export default function Home() {
       <TeamGrid />
       <Testimonials items={TESTIMONIAL_QUOTES} />
       <ToolsStrip />
-      <TrialCard />
+      <Pricing />
       <section id="faq" className="section">
         <div className="container">
           <SectionHeader align="center" title="FAQs" />
