@@ -90,11 +90,6 @@ export function lerpAt(a, b, t) {
   return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
 }
 
-/* A point on the dome's sphere (radius R) at elevation e and azimuth th. */
-export function sphereAt(R, e, th, o) {
-  return project(R * Math.cos(e) * Math.cos(th), R * Math.cos(e) * Math.sin(th), R * Math.sin(e), o);
-}
-
 /* The dome's slit at azimuth th (width w, radians): the band between two
    meridians from the equator to near the top, keeping only what faces the
    viewer, so it slides out of sight as the turret turns away. */
