@@ -7,7 +7,8 @@ describe("Home", () => {
   it("renders Kargul's sections in the user's order, closing in the footer", () => {
     const { container } = renderWithProviders(<Home />);
     const ids = [...container.querySelectorAll("main section[id]")].map((s) => s.id);
-    expect(ids).toEqual(["hero", "trusted", "services", "statement", "numbers", "work", "more-work", "process", "team", "testimonials", "tools", "pricing", "faq"]);
+    expect(ids).toEqual(["hero", "trusted", "services", "statement", "numbers", "work", "more-work", "process", "team", "testimonials", "pricing", "tools"]);
+    expect(container.querySelector("#faq")).toBeNull();
     expect(container.querySelector("footer section#closing")).not.toBeNull();
   });
 
@@ -34,7 +35,7 @@ describe("Home", () => {
     const { container } = renderWithProviders(<Home />);
     const text = container.textContent;
     expect(text).not.toMatch(/\$1B|210M|75\+|95%|SideShift|ZeroLeaks|Agent Arcade|Northwind|Sable Health|Halcyon/i);
-    expect(text.match(/\$\d[\d,]*/g)).toEqual(["$1500", "$1500"]);
+    expect(text.match(/\$\d[\d,]*/g)).toEqual(["$1500"]);
   });
 });
 

@@ -1,8 +1,6 @@
 import Seo from "../components/Seo";
 import { SITE } from "../components/seoConfig";
 import Layout from "../components/Layout";
-import SectionHeader from "../components/SectionHeader";
-import FAQ from "../components/FAQ";
 import Stats from "../components/Stats";
 import TeamGrid from "../components/TeamGrid";
 import Testimonials from "../components/Testimonials";
@@ -15,7 +13,6 @@ import SelectedWork from "../sections/home/SelectedWork";
 import MoreWork from "../sections/home/MoreWork";
 import Process from "../sections/home/Process";
 import Statement from "../sections/home/Statement";
-import { FAQ_ITEMS } from "../data/faq";
 import { TESTIMONIAL_QUOTES } from "../data/testimonials";
 
 const JSON_LD = {
@@ -41,14 +38,8 @@ export default function Home() {
       <Process />
       <TeamGrid />
       <Testimonials items={TESTIMONIAL_QUOTES} />
-      <ToolsStrip />
       <Pricing />
-      <section id="faq" className="section">
-        <div className="container">
-          <SectionHeader align="center" title="FAQs" />
-          <FAQ items={FAQ_ITEMS} />
-        </div>
-      </section>
+      <ToolsStrip />
     </Layout>
   );
 }

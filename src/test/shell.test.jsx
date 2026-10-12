@@ -40,11 +40,11 @@ describe("SiteFooter", () => {
 describe("Footer CTA scene", () => {
   afterEach(() => vi.unstubAllGlobals());
 
-  it("ends every page with Kargul's closing: heading, isometric scene, two CTAs", () => {
+  it("ends every page with the closing: heading, isometric scene, Intro call and See our work", () => {
     const { container } = renderWithProviders(<SiteFooter />);
     const cta = container.querySelector("footer section#closing");
     expect(within(cta).getByRole("heading", { level: 2, name: "Let's build something amazing" })).toBeInTheDocument();
-    expect(within(cta).getByRole("link", { name: "Start a project" })).toHaveAttribute("href", "/start-a-project");
+    expect(within(cta).getByRole("link", { name: "Intro call" })).toHaveAttribute("href", "/intro-call");
     expect(within(cta).getByRole("link", { name: "See our work" })).toHaveAttribute("href", "/work");
     const scene = cta.querySelector(".fcta__scene svg");
     expect(scene.getAttribute("aria-hidden")).toBe("true");
@@ -93,5 +93,41 @@ describe("Marquee and Panel", () => {
   it("renders a dark panel section with its id", () => {
     const { container } = render(<Panel id="services"><p>x</p></Panel>);
     expect(container.querySelector("section#services.panel .container")).not.toBeNull();
+  });
+});
+
+describe("Footer (Altair layout)", () => {
+  it("has one Intro call CTA, a reply-time line and a quiet See our work link", async () => {
+    const { default: SiteFooter } = await import("../components/SiteFooter");
+    renderWithProviders(<SiteFooter />);
+    const closing = document.querySelector("#closing");
+    const ctas = closing.querySelectorAll("a.btn");
+    expect(ctas.length).toBe(1);
+    expect(ctas[0]).toHaveAttribute("href", "/intro-call");
+    expect(closing.querySelector(".closing__sub").textContent).toMatch(/reply within one working day/i);
+    expect(closing.querySelector('a.closing__link[href="/work"]')).toBeTruthy();
+  });
+
+  it("puts © on the left and Work and Pricing in the footer links", async () => {
+    const { default: SiteFooter } = await import("../components/SiteFooter");
+    renderWithProviders(<SiteFooter />);
+    const nav = screen.getByRole("navigation", { name: "Footer" });
+    expect(nav.querySelector('a[href="/work"]')).toBeTruthy();
+    expect(nav.querySelector('a[href="/pricing"]')).toBeTruthy();
+    expect(document.querySelector(".sfoot__copy").compareDocumentPosition(nav) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("Ask AI links only carry the fixed prompt about Velyx Labs", async () => {
+    const { default: SiteFooter } = await import("../components/SiteFooter");
+    const { askAiLinks } = await import("../lib/askAi");
+    renderWithProviders(<SiteFooter />);
+    const links = document.querySelectorAll(".askai a");
+    expect(links.length).toBe(4);
+    for (const a of links) {
+      expect(decodeURIComponent(a.href)).toMatch(/Tell me about Velyx Labs \(velyxlabs\.in\)/);
+      expect(a).toHaveAttribute("target", "_blank");
+      expect(a.getAttribute("aria-label")).toMatch(/^Ask .+ about Velyx Labs$/);
+    }
+    expect(askAiLinks("x y")[0].href).toBe("https://chatgpt.com/?q=x%20y");
   });
 });
