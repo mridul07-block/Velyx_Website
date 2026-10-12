@@ -33,7 +33,7 @@ describe("ServicesPanel", () => {
     expect(container.querySelector("section#services.panel")).not.toBeNull();
     expect(container.querySelectorAll(".svc-card")).toHaveLength(5);
     expect(container.querySelectorAll(".svc-card--wide")).toHaveLength(2);
-    expect(screen.getByText("WHATSAPP API")).toBeInTheDocument();
+    expect(screen.getByText("WhatsApp API")).toBeInTheDocument();
   });
 });
 
