@@ -11,7 +11,8 @@ import TrialCard from "../components/TrialCard";
 import Hero from "../sections/home/Hero";
 import TrustedBy from "../sections/home/TrustedBy";
 import ServicesPanel from "../sections/home/ServicesPanel";
-import ProjectsPanel from "../sections/home/ProjectsPanel";
+import SelectedWork from "../sections/home/SelectedWork";
+import MoreWork from "../sections/home/MoreWork";
 import Statement from "../sections/home/Statement";
 import { FAQ_ITEMS } from "../data/faq";
 import { TESTIMONIAL_QUOTES } from "../data/testimonials";
@@ -34,7 +35,8 @@ export default function Home() {
       <ServicesPanel />
       <Statement />
       <Stats />
-      <ProjectsPanel />
+      <SelectedWork />
+      <MoreWork />
       <TeamGrid />
       <TestimonialCarousel items={TESTIMONIAL_QUOTES} />
       <ToolsStrip />
