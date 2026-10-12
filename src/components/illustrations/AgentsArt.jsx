@@ -1,4 +1,4 @@
-import { LOGO_ICON } from "../../lib/brand";
+import VelyxMark from "../VelyxMark";
 import { Guides, Handles, Layer, Patterns } from "./iso";
 import { floor } from "./isoMatrix";
 
@@ -44,7 +44,7 @@ export default function AgentsArt() {
       <Layer sy={-16} amp={-8} d={0.6}>
         <g transform={floor(225, 60)}>
           <rect width="100" height="100" className="p-top" />
-          <image href={LOGO_ICON} x="24" y="24" width="52" height="52" />
+          <VelyxMark x="22" y="34" width="56" height="32" className="vmark" />
           <rect x="10" y="84" width="40" height="6" fill="url(#ag-hatch)" />
           <Handles w={100} h={100} />
         </g>

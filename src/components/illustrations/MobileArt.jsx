@@ -1,4 +1,4 @@
-import { LOGO_ICON } from "../../lib/brand";
+import VelyxMark from "../VelyxMark";
 import { Guides, Handles, Layer, Patterns } from "./iso";
 import { floor, wall } from "./isoMatrix";
 
@@ -38,7 +38,7 @@ export default function MobileArt() {
               {front ? (
                 <g clipPath="url(#mo-screen)">
                   <g className="scroll">
-                    <image href={LOGO_ICON} x="9" y="20" width="12" height="12" />
+                    <VelyxMark x="9" y="22" width="14" height="8" className="vmark" />
                     <rect x="9" y="38" width="40" height="6" rx="1" className="fill-hi" />
                     <rect x="9" y="50" width="44" height="30" rx="4" fill="url(#mo-hatch)" className="ln" />
                     <rect x="9" y="86" width="30" height="10" rx="5" className="fill-ok" />

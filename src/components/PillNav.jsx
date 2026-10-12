@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import VelyxMark from "./VelyxMark";
 
 const LINKS = [
   { label: "Recent Work", to: "/work" },
@@ -14,7 +15,7 @@ export default function PillNav() {
     <header className="pnav">
       <nav className="pnav__inner" aria-label="Main">
         <Link to="/" className="pnav__logo" aria-label="Velyx Labs home" onClick={close}>
-          <img src="/brand/velyx-mark-nav.webp" alt="" width="96" height="104" />
+          <VelyxMark />
         </Link>
         <ul className="pnav__links">
           {LINKS.map((l) => (

@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
+import VelyxMark from "../../components/VelyxMark";
 
 export default function Hero() {
   return (
     <section id="hero" className="hero">
       <div className="container hero__inner">
         {/* Kargul-style: a big quiet mark that the status pill overlaps. */}
-        <img src="/brand/velyx-mark-hero.webp" alt="" width="340" height="368" className="hero__mark" fetchPriority="high" />
+        <VelyxMark className="hero__mark" />
         {/* TO CONFIRM: a project count is allowed only if true. */}
         <p className="status"><span className="status__dot" aria-hidden="true" />Now booking projects for Q4 2026</p>
         <h1 className="h1 hero__title">An AI and engineering partner for founders and growing businesses.</h1>

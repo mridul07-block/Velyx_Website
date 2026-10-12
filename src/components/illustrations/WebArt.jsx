@@ -1,4 +1,4 @@
-import { LOGO_ICON } from "../../lib/brand";
+import VelyxMark from "../VelyxMark";
 import { Guides, Handles, Layer, Patterns } from "./iso";
 import { floor, wall } from "./isoMatrix";
 
@@ -24,7 +24,7 @@ function Page({ i }) {
       <path d="M0 14h110" className="ln" />
       {[8, 14, 20].map((x) => <circle key={x} cx={x} cy="7" r="1.8" className="ln-bright" />)}
       <rect x="34" y="4" width="50" height="6" rx="3" className="ln" />
-      <image href={LOGO_ICON} x="10" y="22" width="16" height="16" />
+      <VelyxMark x="10" y="25" width="18" height="10" className="vmark" />
       <rect x="10" y="46" width="70" height="7" rx="1" className="fill-hi" />
       <rect x="10" y="57" width="50" height="7" rx="1" className="fill-hi" />
       <rect x="10" y="72" width="34" height="11" rx="5.5" className="fill-ok" />
