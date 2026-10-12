@@ -2,18 +2,18 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import BtnLabel from "../components/BtnLabel";
 import useInView from "../lib/useInView";
-import { PLAN_NOTE, TIERS } from "../data/pricing";
+import { PLAN_NOTE, PLANS, TRIAL } from "../data/pricing";
 
-const Check = () => (
-  <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M3.5 8.5l3 3 6-7" />
-  </svg>
-);
+const ICONS = {
+  partner: <path d="M4 14l4-4 3 3 5-6M13 7h3v3" />,
+  sprint: <path d="M11 2L5 11h5l-1 7 6-9h-5z" />,
+};
 
-/* "Start small. Scale when it works." as a ladder: three steps joined by a
-   rail a dot travels along — the trial week first and raised dark, then a
-   sprint, then an ongoing partnership. Each card keeps to a short list and
-   one button. Cards un-blur in on scroll-in (`reveal`); off on /pricing. */
+/* 925 Studios' pricing: a "Simple pricing" eyebrow, a two-tone heading,
+   then (our addition) the trial week strip and two plan cards — dark and
+   light — each with a price line, a full-width CTA and what's included.
+   Rows un-blur in as the section enters view (`reveal`); off on /pricing,
+   where the cards are the first thing on screen. */
 export default function Pricing({ headingLevel = 2, reveal = true }) {
   const H = `h${headingLevel}`;
   const H2 = `h${headingLevel + 1}`;
@@ -31,41 +31,48 @@ export default function Pricing({ headingLevel = 2, reveal = true }) {
           </H>
         </div>
 
-        <div className="ladder">
-          <div className="ladder__rail" aria-hidden="true">
-            {TIERS.map((t) => <span key={t.id} className="ladder__node" />)}
-            <span className="ladder__dot" />
+        <div className="trialstrip rv" style={{ "--i": 0 }}>
+          <div className="trialstrip__copy">
+            <p className="trialstrip__title">
+              Trial week <span className="price-tag">{TRIAL.price}</span>
+            </p>
+            <p className="trialstrip__line">{TRIAL.line}</p>
           </div>
-          <ol className="ladder__tiers">
-            {TIERS.map((t, i) => (
-              <li key={t.id} className={`tier rv${t.hero ? " tier--hero" : ""}`} style={{ "--i": i }}>
-                <p className="tier__step">{t.step}</p>
-                <H2 className="tier__title">{t.title}</H2>
-                <p className="tier__desc">{t.desc}</p>
-                <p className="tier__price">
-                  {t.price ? (
-                    <>
-                      <span className="tier__amount">{t.price}</span>
-                      <span className="tier__unit">{t.unit}</span>
-                    </>
-                  ) : (
-                    <span className="tier__quote">Custom quote</span>
-                  )}
-                </p>
-                <ul className="tier__list">
-                  {t.features.map((f) => (
-                    <li key={f} className="tier__feature"><Check />{f}</li>
-                  ))}
-                </ul>
-                <Link to={t.href} className={`btn tier__cta${t.hero ? " btn--light" : " btn--primary"}`}>
-                  <BtnLabel>{t.cta}</BtnLabel>
-                </Link>
-              </li>
-            ))}
-          </ol>
+          <Link to={TRIAL.href} className="btn btn--primary trialstrip__cta"><BtnLabel>{TRIAL.cta}</BtnLabel></Link>
         </div>
 
-        <p className="pricing__note"><Check />{PLAN_NOTE}</p>
+        <div className="plans">
+          {PLANS.map((p, i) => (
+            <article key={p.id} className={`plan rv${p.dark ? " plan--dark" : ""}`} style={{ "--i": i + 1 }}>
+              <div className="plan__top">
+                <span className="plan__icon" aria-hidden="true">
+                  <svg viewBox="0 0 20 20" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round">{ICONS[p.id]}</svg>
+                </span>
+                <H2 className="plan__title">{p.title}</H2>
+                <p className="plan__tagline">{p.tagline}</p>
+                <p className="plan__price">
+                  {p.price ? (p.unit === "from" ? <>From {p.price}</> : <>{p.price}<span>{p.unit}</span></>) : "Custom"}
+                </p>
+              </div>
+              <Link to={`/start-a-project?plan=${p.id}`} className="btn plan__cta"><BtnLabel>Start a project</BtnLabel></Link>
+              <div>
+                <p className="plan__includes">Plan includes:</p>
+                <ul className="plan__list">
+                  {p.features.map((f, j) => (
+                    <li key={f} className="plan__feature rv" style={{ "--i": i + 2 + j * 0.5 }}>
+                      <span className="plan__bullet" aria-hidden="true" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <p className="plan__note">
+                  <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M3 8.5l3 3 7-7" /></svg>
+                  {PLAN_NOTE}
+                </p>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );

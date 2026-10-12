@@ -42,7 +42,7 @@ describe("contrast on the new sections (WCAG AA)", () => {
   });
 
   it("keeps small text on the dark plan card at 4.5:1 or better", () => {
-    expect(ratio(color(".tier--hero .tier__desc"), token("--panel"))).toBeGreaterThanOrEqual(4.5);
+    expect(ratio(color(".plan--dark .plan__includes"), token("--panel"))).toBeGreaterThanOrEqual(4.5);
   });
 
   it("never fades the footer actions in (they must always be readable)", () => {
@@ -76,7 +76,7 @@ describe("one theme across sections (hero + services palette and type)", () => {
       ["/* ---------- Project spotlights", "/* Covers (case study"],
       ["/* ---------- Process (Altair)", "/* ---------- Team"],
       ["/* ---------- Testimonials (Bricx)", "/* ---------- Tools"],
-      ["/* ---------- Pricing ladder", "/* Reveal:"],
+      ["/* ---------- Pricing (925 Studios)", "/* Reveal:"],
     ]) {
       const part = block(a, b);
       for (const c of off) expect(part, `${a} uses ${c}`).not.toContain(c);
@@ -101,7 +101,8 @@ describe("Services spacing and type everywhere", () => {
 
   it("only uses the site's type sizes (52 / 36 / 18 / 16 / 14 / 13 / 10.5)", () => {
     expect(rule(".statement__text")).toMatch(/font-size:\s*min\(36px/);
-    expect(rule(".tier__title")).toMatch(/font-size:\s*18px/);
+    expect(rule(".plan__title")).toMatch(/font-size:\s*18px/);
+    expect(rule(".trialstrip__title")).toMatch(/font-size:\s*18px/);
     expect(rule(".step__title")).toMatch(/font-size:\s*18px/);
     expect(rule(".tcard2__name")).toMatch(/font-size:\s*18px/);
   });
