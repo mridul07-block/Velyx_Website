@@ -35,3 +35,14 @@ describe("audit bar + nav + intro call", () => {
     expect(ROUTES.some((r) => r.path === "/intro-call")).toBe(true);
   });
 });
+
+describe("Intro call button", () => {
+  it("shows the Google Meet symbol in its four colours", async () => {
+    const { default: IntroCallButton } = await import("../components/IntroCallButton");
+    renderWithProviders(<IntroCallButton />);
+    const icon = screen.getByRole("link", { name: "Intro call" }).querySelector("svg.meet-icon");
+    expect(icon).toHaveAttribute("aria-hidden", "true");
+    const fills = [...icon.querySelectorAll("path")].map((p) => p.getAttribute("fill").toLowerCase());
+    for (const c of ["#00832d", "#0066da", "#e94235", "#2684fc", "#00ac47", "#ffba00"]) expect(fills).toContain(c);
+  });
+});
