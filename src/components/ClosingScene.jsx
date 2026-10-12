@@ -148,7 +148,7 @@ export default function ClosingScene({ playing }) {
         </radialGradient>
         <radialGradient id="fs-dome-g" cx="36%" cy="22%" r="85%">
           <stop offset="0" stopColor="#ffffff" />
-          <stop offset="1" stopColor="#ece4d7" />
+          <stop offset="1" stopColor="#e6e6e6" />
         </radialGradient>
         <pattern id="fs-vhatch" width="4" height="4" patternUnits="userSpaceOnUse">
           <path d="M1 0v4" className="fs-hatch" />
