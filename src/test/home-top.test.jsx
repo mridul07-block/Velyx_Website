@@ -10,12 +10,18 @@ import { SERVICES } from "../data/services";
 import { STATS } from "../data/stats";
 
 describe("Hero", () => {
-  it("has the status pill, h1 and both CTAs", () => {
+  it("has the status pill, h1, the Intro call button and See our work", () => {
     renderWithProviders(<Hero />);
     expect(screen.getByText("Now booking projects for Q4 2026")).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(/AI and engineering partner/);
-    expect(screen.getByRole("link", { name: "Start a project" })).toHaveAttribute("href", "/start-a-project");
+    expect(screen.getByRole("link", { name: "Intro call" })).toHaveAttribute("href", "/intro-call");
     expect(screen.getByRole("link", { name: "See our work" })).toHaveAttribute("href", "/work");
+    expect(screen.queryByRole("link", { name: "Start a project" })).toBeNull();
+  });
+
+  it("gives the status dot Kargul's two live ripples", () => {
+    const { container } = renderWithProviders(<Hero />);
+    expect(container.querySelectorAll(".status__dot .status__ripple").length).toBe(2);
   });
 });
 

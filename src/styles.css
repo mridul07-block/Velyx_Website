@@ -279,7 +279,10 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
   margin-bottom: 20px;
   position: relative;
 }
-.status__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+.status__dot { position: relative; flex-shrink: 0; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+.status__ripple { position: absolute; inset: 0; border-radius: 50%; background: var(--ok); animation: ripple 1.6s cubic-bezier(0, 0, 0.2, 1) infinite; }
+.status__ripple + .status__ripple { animation-delay: 0.3s; }
+@keyframes ripple { to { transform: scale(2.6); opacity: 0; } }
 .hero__title { max-width: 12.04em; }
 .hero__sub { margin-top: 16px; }
 .hero__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 28px; }
