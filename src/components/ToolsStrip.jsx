@@ -11,7 +11,7 @@ export default function ToolsStrip() {
             {TOOLS.map((t) => (
               <span key={t.name} className="tools__item">
                 {t.icon && (
-                  <img src={`https://cdn.simpleicons.org/${t.icon}/6b6b6b`} alt="" width="18" height="18" loading="lazy" />
+                  <img src={`https://cdn.simpleicons.org/${t.icon}/6b6b6b`} alt="" width="22" height="22" loading="lazy" />
                 )}
                 {t.name}
               </span>
