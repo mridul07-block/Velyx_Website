@@ -4,6 +4,7 @@ import useOnScreen from "../lib/useOnScreen";
 import useReducedMotion from "../lib/useReducedMotion";
 import ClosingScene from "./ClosingScene";
 import IntroCallButton from "./IntroCallButton";
+import VelyxMark from "./VelyxMark";
 
 const WORDS = ["Let's", "build", "something", "amazing"];
 
@@ -22,6 +23,7 @@ export default function ClosingCTA() {
   return (
     <section id="closing" ref={ref} className={`closing${inView ? " is-in" : ""}`}>
       <div className="container closing__inner">
+        <VelyxMark className="closing__mark" />
         <h2 className="closing__title">
           {WORDS.flatMap((w, i) => [i > 0 ? " " : null, <span key={w} className="closing__word">{w}</span>])}
         </h2>

@@ -7,9 +7,10 @@ import { noteFor } from "../lib/clientNotes";
 describe("clients grid (Kargul layout, Bricx popup)", () => {
   afterEach(() => vi.unstubAllGlobals());
 
-  it("has the founders heading and ends with an And many more tile", () => {
+  it("has Kargul's heading, the faint V watermark behind the grid and an And many more tile", () => {
     renderWithProviders(<TrustedBy />);
-    expect(screen.getByRole("heading", { name: "Trusted by founders and startups" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Trusted by founders and industry leaders" })).toBeInTheDocument();
+    expect(document.querySelector("#trusted svg.trusted__mark")).toHaveAttribute("aria-hidden", "true");
     expect(screen.getByText("And many more")).toBeInTheDocument();
   });
 

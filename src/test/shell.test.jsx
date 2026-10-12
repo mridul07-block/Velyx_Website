@@ -44,6 +44,9 @@ describe("Footer CTA scene", () => {
     const { container } = renderWithProviders(<SiteFooter />);
     const cta = container.querySelector("footer section#closing");
     expect(within(cta).getByRole("heading", { level: 2, name: "Let's build something amazing" })).toBeInTheDocument();
+    const mark = cta.querySelector("svg.closing__mark");
+    expect(mark).toHaveAttribute("aria-hidden", "true");
+    expect(mark.compareDocumentPosition(cta.querySelector("h2")) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(within(cta).getByRole("link", { name: "Intro call" })).toHaveAttribute("href", "/intro-call");
     expect(within(cta).getByRole("link", { name: "See our work" })).toHaveAttribute("href", "/work");
     const scene = cta.querySelector(".fcta__scene svg");

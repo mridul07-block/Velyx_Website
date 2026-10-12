@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Marquee from "../../components/Marquee";
+import VelyxMark from "../../components/VelyxMark";
 import { CLIENTS } from "../../data/clients";
 import { noteFor } from "../../lib/clientNotes";
 import { isMuted, setMuted, tick, unlock } from "../../lib/tick";
@@ -45,8 +46,10 @@ export default function TrustedBy() {
 
   return (
     <section id="trusted" className="trusted">
-      <div className="container">
-        <h2 className="trusted__title">Trusted by founders and startups</h2>
+      <div className="container trusted__inner">
+        {/* Kargul's watermark: the brand mark, large and faint, behind the grid. */}
+        <VelyxMark className="trusted__mark" />
+        <h2 className="trusted__title">Trusted by founders and industry leaders</h2>
 
         <div ref={gridRef} className="cgrid" onPointerLeave={(e) => e.pointerType !== "touch" && setActive(null)}>
           <span

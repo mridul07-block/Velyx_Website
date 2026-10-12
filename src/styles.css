@@ -301,6 +301,10 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 /* ---------- Trusted by ---------- */
 
 .trusted { padding-block: clamp(32px, 5vw, 56px) clamp(56px, 7vw, 80px); }
+.trusted__inner { position: relative; }
+.trusted__mark { position: absolute; left: 50%; top: 58%; z-index: 0; width: min(540px, 70%); height: auto; color: #e8e8e8; transform: translate(-50%, -50%); pointer-events: none; }
+@media (max-width: 760px) { .trusted__mark { display: none; } }
+.trusted__inner > :not(.trusted__mark) { position: relative; z-index: 1; }
 .trusted__title { font-size: 16px; line-height: 21px; font-weight: 700; letter-spacing: -0.02em; text-align: center; margin-bottom: 36px; }
 .trusted__name { font-size: 17px; font-weight: 700; letter-spacing: -0.03em; color: var(--muted); white-space: nowrap; }
 /* Kargul's grid: 6 x 153px cells, one white pill that slides to the
@@ -695,6 +699,8 @@ a.team__name:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 .closing { position: relative; overflow: hidden; padding-top: clamp(72px, 10vw, 120px); padding-bottom: 56px; text-align: center; }
 .closing__inner { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; }
+.closing__mark { width: 56px; height: auto; margin-bottom: 22px; color: var(--ink); opacity: 0; transform: translateY(0.4em); transition: opacity 0.6s ease, transform 0.6s ease; }
+.closing.is-in .closing__mark { opacity: 1; transform: none; }
 .closing__title { font-size: min(83px, 9.5vw); letter-spacing: -0.03em; line-height: 1.1; max-width: 9em; }
 @media (min-width: 640px) { .closing__title { font-size: 52px; line-height: 1.07; max-width: 9.5em; } }
 .closing__word { display: inline-block; opacity: 0; transform: translateY(0.4em); transition: opacity 0.6s ease, transform 0.6s ease; }
@@ -742,7 +748,7 @@ a.team__name:hover { text-decoration: underline; text-underline-offset: 3px; }
 .fcta__scene .fwire { stroke: #a3a3a3; stroke-dasharray: 1 4; stroke-linecap: round; vector-effect: non-scaling-stroke; }
 .fcta__scene .fwire-dot { fill: #7a7a7a; stroke: none; }
 @media (prefers-reduced-motion: reduce) {
-  .closing__word { opacity: 1; transform: none; }
+  .closing__word, .closing__mark { opacity: 1; transform: none; }
 }
 
 /* ---------- Page head + filters ---------- */
