@@ -26,9 +26,9 @@ describe("Hero", () => {
 });
 
 describe("TrustedBy", () => {
-  it("lists real clients under Kargul's heading", () => {
+  it("lists real clients under the founders heading", () => {
     renderWithProviders(<TrustedBy />);
-    expect(screen.getByRole("heading", { name: "Trusted by startups and industry leaders" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Trusted by founders and startups" })).toBeInTheDocument();
     expect(screen.getAllByText("Sacred Basil").length).toBeGreaterThan(0);
   });
 });

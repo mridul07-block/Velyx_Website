@@ -293,11 +293,49 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 .trusted { padding-block: clamp(32px, 5vw, 56px) clamp(56px, 7vw, 80px); }
 .trusted__title { font-size: 16px; line-height: 21px; font-weight: 700; letter-spacing: -0.02em; text-align: center; margin-bottom: 36px; }
 .trusted__name { font-size: 17px; font-weight: 700; letter-spacing: -0.03em; color: var(--muted); white-space: nowrap; }
+/* Kargul's grid: 6 x 153px cells, one white pill that slides to the
+   hovered client. Bricx's dark popup sits above it. Phones keep the marquee. */
+.cgrid { position: relative; display: none; grid-template-columns: repeat(6, 153px); justify-content: center; }
+.ctile { position: relative; z-index: 1; display: grid; place-items: center; height: 108px; padding: 0 6px; background: none; cursor: default; }
+.ctile__name { font-size: 17px; font-weight: 700; letter-spacing: -0.03em; color: #9a9a9a; white-space: nowrap; transition: color 0.2s; }
+.ctile__name--long { font-size: 14px; letter-spacing: -0.035em; }
+.ctile.is-active .ctile__name { color: var(--ink); }
+.ctile.is-active::after { content: ""; position: absolute; left: 50%; bottom: 30px; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: var(--ink); }
+.ctile:focus-visible { outline-offset: -20px; border-radius: var(--radius-pill); }
+.ctile--more span { display: inline-grid; place-items: center; height: 44px; padding: 0 16px; border-radius: var(--radius-pill); background: var(--card); font-size: 14px; font-weight: 700; letter-spacing: -0.01em; color: var(--ink); }
+.cpill { position: absolute; left: 0; top: 0; z-index: 0; width: 150px; height: 60px; border-radius: var(--radius-pill); background: var(--card); opacity: 0; pointer-events: none; transition: transform 0.25s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.2s; }
+.cpill.is-on { opacity: 1; }
+.cpop {
+  position: absolute;
+  z-index: 3;
+  width: max-content;
+  max-width: 320px;
+  padding: 13px 14px 12px;
+  border-radius: 12px;
+  background: #181818f0;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  box-shadow: 0 12px 30px #00000033;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, calc(-100% - 4px));
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+.cpop.is-on { opacity: 1; transform: translate(-50%, calc(-100% - 10px)); }
+.cpop::after { content: ""; position: absolute; left: 50%; bottom: -5px; width: 10px; height: 10px; margin-left: -5px; background: inherit; transform: rotate(45deg); border-radius: 2px; }
+.cpop__line { font-size: 14px; line-height: 20px; font-weight: 500; letter-spacing: -0.01em; }
+.cpop__chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.cpop__chip { padding: 3px 10px; border-radius: var(--radius-pill); background: #ffffff1a; font-size: 12px; line-height: 18px; font-weight: 500; color: #ffffffcc; }
+.cmute { position: absolute; right: -36px; top: -44px; z-index: 2; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; color: var(--muted); transition: background-color 0.2s, color 0.2s; }
+.cmute:hover { background: var(--card); color: var(--ink); }
 @media (min-width: 761px) {
-  .trusted .marquee { mask-image: none; }
-  .trusted .marquee__track { animation: none; width: auto; }
-  .trusted .marquee__group { display: grid; grid-template-columns: repeat(6, auto); justify-content: center; align-items: center; justify-items: center; gap: 44px 56px; padding: 0; width: 100%; max-width: 960px; margin-inline: auto; }
-  .trusted .marquee__dup { display: none; }
+  .cgrid { display: grid; }
+  .trusted__marquee { display: none; }
+}
+@media (min-width: 761px) and (max-width: 1000px) {
+  .cgrid { grid-template-columns: repeat(4, 153px); }
+  .cmute { right: 0; }
 }
 
 /* ---------- Services panel ---------- */
