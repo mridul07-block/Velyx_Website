@@ -7,16 +7,17 @@ describe("Home", () => {
   it("renders Kargul's sections in the user's order, closing in the footer", () => {
     const { container } = renderWithProviders(<Home />);
     const ids = [...container.querySelectorAll("main section[id]")].map((s) => s.id);
-    expect(ids).toEqual(["hero", "trusted", "services", "statement", "numbers", "work", "more-work", "process", "team", "testimonials", "pricing", "tools"]);
+    expect(ids).toEqual(["hero", "trusted", "services", "statement", "numbers", "projects", "compare", "process", "team", "testimonials", "pricing", "tools"]);
     expect(container.querySelector("#faq")).toBeNull();
     expect(container.querySelector("footer section#closing")).not.toBeNull();
   });
 
-  it("leads with two selected case studies, then the more-work table", () => {
+  it("spotlights the featured projects with case-study links, then compares", () => {
     renderWithProviders(<Home />);
-    const links = [...document.querySelectorAll("#work a.case__link")].map((a) => a.getAttribute("href"));
-    expect(links).toEqual(["/work/sacred-basil", "/work/getlandy"]);
-    expect(document.querySelectorAll("#more-work .mwork__row").length).toBeGreaterThan(2);
+    const links = [...document.querySelectorAll("#projects .spot a.btn")].map((a) => a.getAttribute("href"));
+    expect(links).toEqual(["/work/getlandy", "/work/sacred-basil", "/work/yorkscreenplay"]);
+    expect(document.querySelector("#more-work")).toBeNull();
+    expect(document.querySelector("#compare table")).not.toBeNull();
   });
 
   it("offers the $1500 trial week linked to a pre-selected brief", () => {

@@ -38,7 +38,7 @@ describe("contrast on the new sections (WCAG AA)", () => {
   };
 
   it("keeps large grey headline text at 3:1 or better on the page grey", () => {
-    for (const sel of [".mwork__row--next .mwork__name", ".tsec__muted"]) expect(ratio(color(sel), "#efefef")).toBeGreaterThanOrEqual(3);
+    for (const sel of [".tsec__muted"]) expect(ratio(color(sel), "#efefef")).toBeGreaterThanOrEqual(3);
   });
 
   it("keeps small text on the dark plan card at 4.5:1 or better", () => {
@@ -73,7 +73,7 @@ describe("one theme across sections (hero + services palette and type)", () => {
 
   it("the new sections use only the site's colour tokens, not one-off greys", () => {
     for (const [a, b] of [
-      ["/* ---------- Selected work + More work", "/* Covers (case study"],
+      ["/* ---------- Project spotlights", "/* Covers (case study"],
       ["/* ---------- Process (Altair)", "/* ---------- Team"],
       ["/* ---------- Testimonials (Bricx)", "/* ---------- Tools"],
       ["/* ---------- Pricing (925 Studios)", "/* Reveal:"],
@@ -84,7 +84,7 @@ describe("one theme across sections (hero + services palette and type)", () => {
   });
 
   it("section titles share the services heading size", () => {
-    for (const sel of [".process__title", ".tsec__title", ".pricing__title", ".selwork__title"]) expect(rule(sel)).toMatch(/font-size:\s*min\(36px/);
+    for (const sel of [".process__title", ".tsec__title", ".pricing__title"]) expect(rule(sel)).toMatch(/font-size:\s*min\(36px/);
   });
 });
 
@@ -97,8 +97,6 @@ describe("Services spacing and type everywhere", () => {
   it("no section overrides the shared side spacing", () => {
     expect(css).not.toMatch(/\.mwork > \.container\s*\{/);
     expect(css).not.toMatch(/\.panel\.process\s*\{/);
-    expect(rule(".selwork__list")).not.toMatch(/margin-inline/);
-    expect(rule(".selwork__head")).not.toMatch(/padding-inline/);
   });
 
   it("only uses the site's type sizes (52 / 36 / 18 / 16 / 14 / 13 / 10.5)", () => {
@@ -109,8 +107,8 @@ describe("Services spacing and type everywhere", () => {
     expect(rule(".tcard2__name")).toMatch(/font-size:\s*18px/);
   });
 
-  it("cards use the shared radius and the services gap", () => {
-    expect(rule(".case")).toMatch(/border-radius:\s*var\(--radius-card\)/);
-    expect(rule(".selwork__list")).toMatch(/gap:\s*24px/);
+  it("project spotlights keep Kargul's card measurements and the services gap", () => {
+    expect(rule(".spot-list")).toMatch(/gap:\s*24px/);
+    expect(rule(".spot-list")).toMatch(/max-width:\s*1042px/);
   });
 });

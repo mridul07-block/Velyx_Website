@@ -9,8 +9,8 @@ import Pricing from "../sections/Pricing";
 import Hero from "../sections/home/Hero";
 import TrustedBy from "../sections/home/TrustedBy";
 import ServicesPanel from "../sections/home/ServicesPanel";
-import SelectedWork from "../sections/home/SelectedWork";
-import MoreWork from "../sections/home/MoreWork";
+import ProjectsPanel from "../sections/home/ProjectsPanel";
+import Compare from "../sections/home/Compare";
 import Process from "../sections/home/Process";
 import Statement from "../sections/home/Statement";
 import { TESTIMONIAL_QUOTES } from "../data/testimonials";
@@ -33,8 +33,8 @@ export default function Home() {
       <ServicesPanel />
       <Statement />
       <Stats />
-      <SelectedWork />
-      <MoreWork />
+      <ProjectsPanel />
+      <Compare />
       <Process />
       <TeamGrid />
       <Testimonials items={TESTIMONIAL_QUOTES} />

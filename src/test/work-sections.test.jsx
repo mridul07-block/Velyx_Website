@@ -1,67 +1,44 @@
 import { describe, it, expect } from "vitest";
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import { renderWithProviders } from "./renderWithProviders";
-import SelectedWork from "../sections/home/SelectedWork";
-import MoreWork from "../sections/home/MoreWork";
+import ProjectsPanel from "../sections/home/ProjectsPanel";
+import Compare from "../sections/home/Compare";
 import { PROJECTS } from "../data/projects";
+import { COMPARE } from "../data/compare";
 
-describe("Selected work (Altair)", () => {
-  it("shows two large case cards with problem and built copy and a case-study link", () => {
-    renderWithProviders(<SelectedWork />);
-    const cards = document.querySelectorAll(".case");
-    expect(cards.length).toBe(2);
-    for (const c of cards) {
-      expect(c.querySelector(".case__problem").textContent.length).toBeGreaterThan(10);
-      expect(c.querySelector(".case__built").textContent.length).toBeGreaterThan(10);
-      expect(c.querySelector('a[href^="/work/"]')).toHaveTextContent(/Read the case study/);
-    }
-    // Altair: the first card leads with its screenshots, the next flips.
-    expect(cards[0]).toHaveClass("case--media-first");
-    expect(cards[1]).not.toHaveClass("case--media-first");
-  });
-
-  it("has Altair's header row: the title on the left, a short line on the right", () => {
-    renderWithProviders(<SelectedWork />);
-    const head = document.querySelector(".selwork__head");
-    expect(head.querySelector("h2").textContent).toBe("Selected work.");
-    expect(head.querySelector(".selwork__sub").textContent.length).toBeGreaterThan(10);
-  });
-
-  it("layers every screenshot a project has, and never invents one", () => {
-    renderWithProviders(<SelectedWork />);
-    for (const c of document.querySelectorAll(".case")) {
-      const slug = c.querySelector('a[href^="/work/"]').getAttribute("href").split("/").pop();
-      const p = PROJECTS.find((x) => x.slug === slug);
-      const shots = [p.cover, ...p.gallery].filter(Boolean).slice(0, 3);
-      expect(c.querySelectorAll(".case__shot").length).toBe(shots.length);
-    }
-  });
-
-  it("never renders an outcome line without a real result", () => {
-    renderWithProviders(<SelectedWork />);
-    for (const c of document.querySelectorAll(".case")) {
-      const slug = c.querySelector('a[href^="/work/"]').getAttribute("href").split("/").pop();
-      const p = PROJECTS.find((x) => x.slug === slug);
-      expect(Boolean(c.querySelector(".case__outcome"))).toBe(Boolean(p.result));
-    }
+describe("Project spotlights (Kargul)", () => {
+  it("shows the featured projects as alternating spotlight cards with case-study buttons", () => {
+    renderWithProviders(<ProjectsPanel />);
+    expect(screen.getByRole("heading", { level: 2, name: "Project spotlights" })).toBeInTheDocument();
+    const featured = PROJECTS.filter((p) => p.featured);
+    const cards = document.querySelectorAll(".spot");
+    expect(cards.length).toBe(featured.length);
+    expect(cards[1]).toHaveClass("spot--flip");
+    expect([...document.querySelectorAll(".spot a.btn")].map((a) => a.getAttribute("href"))).toEqual(featured.map((p) => `/work/${p.slug}`));
   });
 });
 
-describe("More work (Altair)", () => {
-  it("lists the other projects as rows linking to their case studies", () => {
-    renderWithProviders(<MoreWork />);
-    const rows = [...document.querySelectorAll(".mwork__row")];
-    const projectRows = rows.slice(0, -1);
-    expect(projectRows.length).toBeGreaterThan(2);
-    for (const r of projectRows) expect(r.getAttribute("href")).toMatch(/^\/work\//);
+describe("How we compare (Kargul)", () => {
+  it("compares Velyx Labs with an in-house hire and freelancers, row by row", () => {
+    renderWithProviders(<Compare />);
+    expect(screen.getByRole("heading", { level: 2, name: "How we compare" })).toBeInTheDocument();
+    const table = screen.getByRole("table");
+    const heads = within(table).getAllByRole("columnheader").map((th) => th.textContent.trim());
+    expect(heads).toEqual(["Compared on", "Velyx Labs", "In-house hire", "Freelancers"]);
+    expect(within(table).getAllByRole("rowheader").map((th) => th.textContent)).toEqual(COMPARE.map((r) => r.label));
+    for (const r of COMPARE) expect(r.cells).toHaveLength(3);
   });
 
-  it("ends with Your product, next. linking to the intro call, then All work", () => {
-    renderWithProviders(<MoreWork />);
-    const rows = document.querySelectorAll(".mwork__row");
-    const last = rows[rows.length - 1];
-    expect(last).toHaveTextContent(/Your product, next\./);
-    expect(last.getAttribute("href")).toBe("/intro-call");
-    expect(screen.getByRole("link", { name: /All work and case studies/ })).toHaveAttribute("href", "/work");
+  it("highlights the Velyx column and shows the logo in its header", () => {
+    renderWithProviders(<Compare />);
+    const ours = screen.getByRole("columnheader", { name: "Velyx Labs" });
+    expect(ours).toHaveClass("cmp__us");
+    expect(ours.querySelector("svg")).toBeTruthy();
+    expect(document.querySelectorAll("tbody tr:not(.cmp__end) td.cmp__us").length).toBe(COMPARE.length);
+  });
+
+  it("only makes claims we can stand behind: the one price is the real trial week", () => {
+    renderWithProviders(<Compare />);
+    expect(new Set(document.querySelector(".cmp").textContent.match(/\$\d[\d,]*/g) ?? [])).toEqual(new Set(["$1500"]));
   });
 });
