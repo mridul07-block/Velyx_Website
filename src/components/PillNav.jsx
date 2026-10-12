@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import VelyxMark from "./VelyxMark";
+import IntroCallButton from "./IntroCallButton";
 
 const LINKS = [
   { label: "Recent Work", to: "/work" },
+  { label: "Pricing", to: "/pricing" },
   { label: "Swipe file", to: "/swipe-file" },
 ];
 
@@ -24,7 +26,7 @@ export default function PillNav() {
             </li>
           ))}
         </ul>
-        <Link to="/start-a-project" className="pnav__cta" onClick={close}>Start a project</Link>
+        <IntroCallButton className="pnav__cta" onClick={close} />
         <button
           type="button"
           className="pnav__toggle"
@@ -38,7 +40,7 @@ export default function PillNav() {
         </button>
         {open && (
           <ul id="mobile-menu" className="pnav__menu">
-            {LINKS.map((l) => (
+            {[...LINKS, { label: "Start a project", to: "/start-a-project" }].map((l) => (
               <li key={l.to}>
                 <Link to={l.to} onClick={close}>{l.label}</Link>
               </li>

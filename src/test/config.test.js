@@ -34,6 +34,7 @@ describe("public route list (sitemap + prerender)", () => {
       ...PROJECTS.map((p) => `/work/${p.slug}`),
       "/swipe-file",
       "/start-a-project",
+      "/intro-call",
       "/privacy",
       "/terms",
     ]);

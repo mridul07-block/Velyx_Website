@@ -25,7 +25,7 @@
   --container: 1120px;
   --gutter: clamp(19px, 4vw, 40px);
   --section-y: clamp(56px, 7vw, 80px);
-  --nav-h: 88px;
+  --nav-h: 124px; /* audit row 36 + nav 88 */
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -110,6 +110,9 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
   transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
 }
 .btn--primary { background: var(--ink); color: var(--page); }
+.btn--intro { background: var(--ink); color: #fff; }
+.btn--intro:hover { background: #000; }
+.btn--intro svg { flex-shrink: 0; }
 .btn--primary:hover { background: #000; }
 .btn:active { transform: scale(0.98); }
 .btn--secondary { background: var(--card); color: var(--ink); box-shadow: 0 1px 2px #0000000d; }
@@ -148,9 +151,16 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 .logo__icon svg { width: 100%; height: auto; }
 .logo__word { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; }
 
+/* ---------- Audit row (Kargul) ---------- */
+
+.audit { position: fixed; inset: 0 0 auto; z-index: 101; height: 36px; display: flex; align-items: center; justify-content: center; gap: 6px; padding-inline: 12px; background: #232323; color: #fff; font-size: 13px; line-height: 18px; font-weight: 600; white-space: nowrap; overflow: hidden; }
+.audit svg { flex-shrink: 0; transition: transform 0.2s; }
+.audit:hover svg { transform: translateX(3px); }
+.audit:focus-visible { outline-color: #fff; outline-offset: -4px; }
+
 /* ---------- Pill nav ---------- */
 
-.pnav { position: fixed; inset: 16px 0 auto 0; z-index: 100; display: flex; justify-content: center; pointer-events: none; }
+.pnav { position: fixed; inset: 52px 0 auto 0; z-index: 100; display: flex; justify-content: center; pointer-events: none; }
 .pnav__inner { display: flex; align-items: center; gap: 8px; pointer-events: auto; position: relative; }
 .pnav__logo, .pnav__links, .pnav__cta, .pnav__toggle {
   background: var(--card);
@@ -162,7 +172,9 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 .pnav__links { display: flex; gap: 2px; padding: 4px 8px; font-size: 13px; line-height: 22px; font-weight: 500; color: var(--muted); }
 .pnav__links a { display: block; padding: 6px 10px; border-radius: var(--radius-pill); }
 .pnav__links a:hover, .pnav__links a.active { color: var(--ink); }
-.pnav__cta { display: inline-flex; align-items: center; height: 42px; padding: 0 18px; font-size: 13px; line-height: 18px; font-weight: 700; letter-spacing: -0.008em; }
+.pnav__cta.btn { height: 42px; padding: 0 18px; font-size: 13px; line-height: 18px; gap: 7px; }
+.pnav .pnav__cta.btn--intro { background: var(--ink); color: #fff; box-shadow: none; }
+.pnav .pnav__cta.btn--intro:hover { background: #000; }
 .pnav__cta:hover { box-shadow: 0 4px 14px #00000014; }
 .pnav__toggle { display: none; width: 42px; height: 42px; flex-direction: column; justify-content: center; align-items: center; gap: 5px; }
 .pnav__toggle span { display: block; width: 16px; height: 1.5px; background: var(--ink); }
@@ -239,6 +251,7 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 
 /* ---------- Cal embed ---------- */
 
+.intro-call .cal-embed { height: 720px; margin-top: 8px; }
 .cal-embed { height: 640px; max-width: 1000px; margin-inline: auto; border-radius: var(--radius-card); overflow: hidden; background: var(--card); }
 .final-cta__alt { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 12px; margin-top: 18px; font-size: 14px; color: var(--muted); }
 .final-cta__alt a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
