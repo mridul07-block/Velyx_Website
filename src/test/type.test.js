@@ -16,7 +16,7 @@ describe("Kargul type scale", () => {
     expect(rule(".btn")).toMatch(/font-weight:\s*700/);
     expect(rule(".h3")).toMatch(/letter-spacing:\s*-0\.01em/);
     expect(rule(".section-header__sub")).toMatch(/font-size:\s*14px/);
-    expect(rule(".tcard2__quote")).toMatch(/16px/); // testimonial cards, site body size
+    expect(rule(".tcard2__quote")).toMatch(/14px/); // testimonial cards, card copy size
     expect(rule(".team__name")).toMatch(/font-size:\s*18px/);
     expect(rule(".svc-card__copy")).toMatch(/font-weight:\s*500/);
   });

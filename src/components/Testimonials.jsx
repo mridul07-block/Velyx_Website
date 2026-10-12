@@ -46,7 +46,7 @@ export default function Testimonials({ items }) {
     const el = trackRef.current;
     const card = el?.querySelector(".tcard2");
     holdUntil.current = performance.now() + 900; // let the arrow's scroll finish
-    el?.scrollBy({ left: dir * ((card?.offsetWidth ?? 0) + 16), behavior: reduced ? "auto" : "smooth" });
+    el?.scrollBy({ left: dir * ((card?.offsetWidth ?? 0) + 24), behavior: reduced ? "auto" : "smooth" });
   };
   const hold = () => (paused.current = true);
   const release = () => (paused.current = false);
@@ -67,6 +67,7 @@ export default function Testimonials({ items }) {
         </div>
       </div>
 
+      <div className="container">
       <div
         ref={trackRef}
         className={`tsec__track${drift ? " is-drifting" : ""}`}
@@ -108,6 +109,7 @@ export default function Testimonials({ items }) {
             </figure>
           );
         })}
+      </div>
       </div>
     </section>
   );

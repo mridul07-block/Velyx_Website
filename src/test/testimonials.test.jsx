@@ -73,6 +73,29 @@ describe("Testimonials (Bricx)", () => {
   });
 });
 
+describe("Testimonials layout", () => {
+  it("keeps the track inside the page container so cards line up with the heading", () => {
+    renderWithProviders(<Testimonials items={TESTIMONIAL_QUOTES} />);
+    expect(document.querySelector(".tsec__track").parentElement).toHaveClass("container");
+  });
+
+  it("fits exactly three compact cards per view on desktop", async () => {
+    const { readFileSync } = await import("node:fs");
+    const css = readFileSync("src/styles.css", "utf8");
+    const rule = (css.match(/(?:^|\n)\.tcard2 \{([^}]*)\}/) || [])[1];
+    expect(rule).toMatch(/flex:\s*0 0 calc\(\(100% - 48px\) \/ 3\)/);
+    expect(rule).toMatch(/aspect-ratio:\s*4 \/ 5/);
+  });
+
+  it("shows ten clients' cards once there are ten, drifting with a seamless copy", () => {
+    const ten = Array.from({ length: 10 }, (_, i) => ({ ...TESTIMONIAL_QUOTES[i % 3], name: `Client ${i}`, photo: `/people/c${i}.jpg` }));
+    renderWithProviders(<Testimonials items={ten} />);
+    expect(document.querySelectorAll(".tcard2")).toHaveLength(20);
+    expect(document.querySelectorAll(".tcard2[aria-hidden='true']")).toHaveLength(10);
+    expect(document.querySelectorAll("img.tcard2__img")).toHaveLength(20);
+  });
+});
+
 describe("Founders", () => {
   it("titles the team section Founders", () => {
     renderWithProviders(<TeamGrid />);
