@@ -5,7 +5,7 @@ import Stats from "../components/Stats";
 import TeamGrid from "../components/TeamGrid";
 import Testimonials from "../components/Testimonials";
 import ToolsStrip from "../components/ToolsStrip";
-import Pricing from "../sections/Pricing";
+import TrialCard from "../components/TrialCard";
 import Hero from "../sections/home/Hero";
 import TrustedBy from "../sections/home/TrustedBy";
 import ServicesPanel from "../sections/home/ServicesPanel";
@@ -38,7 +38,7 @@ export default function Home() {
       <Process />
       <TeamGrid />
       <Testimonials items={quotesFor(import.meta.env.DEV)} />
-      <Pricing />
+      <TrialCard pricingLink />
       <ToolsStrip />
     </Layout>
   );

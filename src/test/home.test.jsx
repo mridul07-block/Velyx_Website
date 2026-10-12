@@ -7,7 +7,7 @@ describe("Home", () => {
   it("renders Kargul's sections in the user's order, closing in the footer", () => {
     const { container } = renderWithProviders(<Home />);
     const ids = [...container.querySelectorAll("main section[id]")].map((s) => s.id);
-    expect(ids).toEqual(["hero", "trusted", "services", "statement", "numbers", "projects", "compare", "process", "team", "testimonials", "pricing", "tools"]);
+    expect(ids).toEqual(["hero", "trusted", "services", "statement", "numbers", "projects", "compare", "process", "team", "testimonials", "trial", "tools"]);
     expect(container.querySelector("#faq")).toBeNull();
     expect(container.querySelector("footer section#closing")).not.toBeNull();
   });
@@ -22,9 +22,12 @@ describe("Home", () => {
 
   it("offers the $1500 trial week linked to a pre-selected brief", () => {
     renderWithProviders(<Home />);
-    const trial = document.getElementById("pricing");
-    expect(within(trial).getByText("$1500")).toBeInTheDocument();
+    const trial = document.getElementById("trial");
+    expect(within(trial).getByRole("heading", { level: 2 })).toHaveTextContent(/Start with a trial week for only \$1500/);
     expect(within(trial).getByRole("link", { name: "Start your trial week" })).toHaveAttribute("href", "/start-a-project?plan=trial");
+    // The full plans live on their own page.
+    expect(within(trial).getByRole("link", { name: /See all pricing/ })).toHaveAttribute("href", "/pricing");
+    expect(document.getElementById("pricing")).toBeNull();
   });
 
   it("ends with the animated closing CTA", () => {

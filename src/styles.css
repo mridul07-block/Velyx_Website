@@ -652,6 +652,8 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 .trial__title { max-width: 10em; }
 .price-tag { display: inline-block; font-size: 0.8em; padding: 2px 14px; border-radius: var(--radius-pill); background: var(--page); transform: rotate(-4deg); }
 .trial__cta { margin-top: 12px; min-width: 260px; }
+.trial__more { font-size: 14px; font-weight: 700; letter-spacing: -0.008em; color: var(--muted); transition: color 0.2s; }
+.trial__more:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 5px; }
 
 /* ---------- Pricing (925 Studios structure, site theme) ---------- */
 
