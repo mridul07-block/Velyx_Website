@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { project, meridians, orbitAt, ORBITS } from "../lib/isoScene";
+import { project, meridians, arcAt, lerpAt } from "../lib/isoScene";
 
 describe("isoScene geometry", () => {
   it("projects the world origin to the scene centre and z straight up", () => {
@@ -26,14 +26,15 @@ describe("isoScene geometry", () => {
     expect(meridians(150, 12, 1)).toEqual(meridians(150, 12, 0));
   });
 
-  it("runs each orbit as an arc from the left over the dome to the right", () => {
-    for (const o of ORBITS) {
-      const [x0, y0] = orbitAt(o, 0);
-      const [xm, ym] = orbitAt(o, 0.5);
-      const [x1, y1] = orbitAt(o, 1);
-      expect(x0).toBeLessThan(xm);
-      expect(xm).toBeLessThan(x1);
-      expect(ym).toBeLessThan(Math.min(y0, y1));
-    }
+  it("runs the dotted arc from the left horizon over the scene to the right", () => {
+    const [a, top, b] = [arcAt(0), arcAt(0.5), arcAt(1)];
+    expect(a[0]).toBeLessThan(top[0]);
+    expect(top[0]).toBeLessThan(b[0]);
+    expect(top[1]).toBeLessThan(a[1]);
+    expect(a[1]).toBeCloseTo(b[1]);
+  });
+
+  it("moves wire dots in a straight line between two points", () => {
+    expect(lerpAt([0, 0], [10, 20], 0.5)).toEqual([5, 10]);
   });
 });
