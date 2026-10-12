@@ -13,10 +13,13 @@ describe("audit bar + nav + intro call", () => {
     expect(bar.compareDocumentPosition(screen.getByRole("navigation", { name: "Main" })) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
-  it("nav CTA is Intro call to /intro-call, with Pricing in the links", () => {
+  it("nav CTA is Start a project (no icon) to the booking page, with Pricing in the links", () => {
     renderWithProviders(<Layout><p /></Layout>);
     const nav = screen.getByRole("navigation", { name: "Main" });
-    expect(nav.querySelector('a[href="/intro-call"]').textContent).toMatch(/Intro call/);
+    const cta = nav.querySelector("a.pnav__cta");
+    expect(cta).toHaveAttribute("href", "/intro-call");
+    expect(cta.textContent).toMatch(/^Start a project/);
+    expect(cta.querySelector("svg")).toBeNull();
     expect(nav.querySelector('a[href="/pricing"]')).toBeTruthy();
   });
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import VelyxMark from "./VelyxMark";
-import IntroCallButton from "./IntroCallButton";
+import BtnLabel from "./BtnLabel";
 
 const LINKS = [
   { label: "Recent Work", to: "/work" },
@@ -26,7 +26,7 @@ export default function PillNav() {
             </li>
           ))}
         </ul>
-        <IntroCallButton className="pnav__cta" onClick={close} />
+        <Link to="/intro-call" className="btn btn--intro pnav__cta" onClick={close}><BtnLabel>Start a project</BtnLabel></Link>
         <button
           type="button"
           className="pnav__toggle"
