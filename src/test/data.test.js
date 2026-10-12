@@ -19,9 +19,10 @@ describe("content data", () => {
     for (const s of SERVICES) expect(s.tags.length).toBeGreaterThanOrEqual(4);
   });
 
-  it("derives counted stats from real data", () => {
-    expect(STATS[0].value).toBe(`${CLIENTS.length}+`);
-    expect(STATS[1].value).toBe(String(SERVICES.length));
+  it("uses the real client and service figures", () => {
+    // The user's real figures (2026-10-13).
+    expect(STATS[0]).toEqual({ value: "30+", label: "Clients and partners" });
+    expect(STATS[1]).toEqual({ value: "10+", label: "Services under one roof" });
   });
 
   it("features exactly three projects, all with covers that exist on disk", () => {

@@ -1,53 +1,20 @@
-import { useEffect, useRef } from "react";
-import useOnScreen from "../../lib/useOnScreen";
-import useReducedMotion from "../../lib/useReducedMotion";
-import { progress, wordOpacity } from "../../lib/reveal";
+import useInView from "../../lib/useInView";
+import { STATEMENT } from "../../data/statement";
 
-/* TO CONFIRM: the statement copy. */
-const COPY =
-  "Velyx Labs is a small founder-led team. We design the product, build the AI and ship the code — one team from first call to launch, so nothing gets lost in a handoff.";
-const WORDS = COPY.split(" ");
-
-/* Dualite-style reveal: the words light up in reading order as the
-   paragraph scrolls through the viewport. Fully visible by default, under
-   reduced motion and before JS runs. */
+/* A calm, two-tone statement: three lines, the first in ink and the rest
+   muted (like the two-tone headings), each sliding up into place in turn
+   as the paragraph comes into view. Visible by default and under reduced
+   motion; screen readers get it as one sentence. */
 export default function Statement() {
-  const [ref, onScreen] = useOnScreen("0px");
-  const reduced = useReducedMotion();
-  const words = useRef([]);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!onScreen || reduced || !el) return;
-    let frame = 0;
-    const paint = () => {
-      const p = progress(el.getBoundingClientRect(), window.innerHeight);
-      words.current.forEach((w, i) => w && (w.style.opacity = wordOpacity(i, WORDS.length, p).toFixed(3)));
-    };
-    const onScroll = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(paint);
-    };
-    paint();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, [onScreen, reduced, ref]);
-
-  useEffect(() => {
-    if (reduced) words.current.forEach((w) => w && (w.style.opacity = ""));
-  }, [reduced]);
-
+  const [ref, inView] = useInView("0px 0px -12% 0px", 2500);
   return (
     <section id="statement" className="section statement">
       <div className="container">
-        <p ref={ref} className="statement__text">
-          <span className="sr-only">{COPY}</span>
-          {WORDS.map((w, i) => (
-            <span key={i} ref={(n) => (words.current[i] = n)} className="statement__w" aria-hidden="true">
-              {w}{" "}
+        <p ref={ref} className={`statement__text${inView ? " is-in" : ""}`}>
+          <span className="sr-only">{STATEMENT.join(" ")}</span>
+          {STATEMENT.map((line, i) => (
+            <span key={line} className="statement__mask">
+              <span className={`statement__line ${i ? "tone-soft" : "tone-ink"}`} style={{ "--i": i }} aria-hidden="true">{line}</span>
             </span>
           ))}
         </p>
