@@ -11,7 +11,9 @@ describe("clients grid (Kargul layout, Bricx popup)", () => {
     renderWithProviders(<TrustedBy />);
     expect(screen.getByRole("heading", { name: "Trusted by founders and industry leaders" })).toBeInTheDocument();
     expect(document.querySelector("#trusted svg.trusted__mark")).toHaveAttribute("aria-hidden", "true");
-    expect(screen.getByText("And many more")).toBeInTheDocument();
+    expect(screen.getByText("15+ More")).toBeInTheDocument();
+    expect(screen.queryByText("And many more")).toBeNull();
+    expect(document.querySelector(".cmute")).toBeNull();
   });
 
   it("uses buttons so the pill follows keyboard focus too", () => {
@@ -58,6 +60,28 @@ describe("clients grid (Kargul layout, Bricx popup)", () => {
     expect(noteFor("Sacred Basil")).toEqual({ line: expect.stringMatching(/e-commerce/i), chips: expect.arrayContaining(["Web"]) });
     expect(noteFor("Overshoot").line).toMatch(/web application/i);
     expect(noteFor("Orange Production").line).toMatch(/marketing agency/i);
+  });
+});
+
+describe("Kargul's cursor over the clients grid", () => {
+  it("shows a dot that follows the mouse instead of the arrow, and hides it on leave", () => {
+    renderWithProviders(<TrustedBy />);
+    const grid = document.querySelector(".cgrid");
+    const dot = grid.querySelector(".ccursor");
+    expect(dot).toHaveAttribute("aria-hidden", "true");
+    expect(dot).not.toHaveClass("is-on");
+    fireEvent.pointerMove(grid, { pointerType: "mouse", clientX: 120, clientY: 40 });
+    expect(dot).toHaveClass("is-on");
+    expect(dot.style.transform).toMatch(/translate\(/);
+    fireEvent.pointerLeave(grid, { pointerType: "mouse" });
+    expect(dot).not.toHaveClass("is-on");
+  });
+
+  it("never shows the dot for touch", () => {
+    renderWithProviders(<TrustedBy />);
+    const grid = document.querySelector(".cgrid");
+    fireEvent.pointerMove(grid, { pointerType: "touch", clientX: 50, clientY: 50 });
+    expect(grid.querySelector(".ccursor")).not.toHaveClass("is-on");
   });
 });
 

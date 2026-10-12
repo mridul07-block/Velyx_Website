@@ -3,19 +3,20 @@ import Marquee from "../../components/Marquee";
 import VelyxMark from "../../components/VelyxMark";
 import { CLIENTS } from "../../data/clients";
 import { noteFor } from "../../lib/clientNotes";
-import { isMuted, setMuted, tick, unlock } from "../../lib/tick";
+import { tick, unlock } from "../../lib/tick";
 
 const COLS = 6;
 const NOTES = CLIENTS.map(noteFor);
 
 /* Kargul's layout: a 6-column wordmark grid where one white pill slides to
-   the hovered (or focused) client. Bricx's touch: a dark popup saying what
-   we built for them, and a soft tick per hover. Phones keep the marquee. */
+   the hovered (or focused) client, a dot for a cursor and a "15+ More" tile.
+   Bricx's touch: a dark popup saying what we built for them, and a soft tick
+   per hover. Phones keep the marquee. */
 export default function TrustedBy() {
   const gridRef = useRef(null);
   const lastPointer = useRef("mouse");
+  const cursorRef = useRef(null);
   const [active, setActive] = useState(null); // { i, x, y, w, h, pop }
-  const [muted, setMutedState] = useState(isMuted);
 
   useEffect(() => {
     // Only activation keys count as a user gesture for audio (not Esc/Tab).
@@ -37,9 +38,17 @@ export default function TrustedBy() {
     setActive({ i, x: el.offsetLeft, y: el.offsetTop, w: el.offsetWidth, h: el.offsetHeight, pop: pop && Boolean(NOTES[i]) });
     tick(i % COLS);
   };
-  const toggleMute = () => {
-    setMuted(!muted);
-    setMutedState(!muted);
+  /* Kargul's cursor: over the grid the arrow becomes a dot that follows the mouse. */
+  const moveCursor = (e) => {
+    const dot = cursorRef.current;
+    if (!dot || e.pointerType === "touch") return;
+    const r = gridRef.current.getBoundingClientRect();
+    dot.style.transform = `translate(${(e.clientX - r.left).toFixed(0)}px, ${(e.clientY - r.top).toFixed(0)}px)`;
+    dot.classList.add("is-on");
+  };
+  const leaveGrid = (e) => {
+    cursorRef.current?.classList.remove("is-on");
+    if (e.pointerType !== "touch") setActive(null);
   };
 
   const note = active && NOTES[active.i];
@@ -51,7 +60,8 @@ export default function TrustedBy() {
         <VelyxMark className="trusted__mark" />
         <h2 className="trusted__title">Trusted by founders and industry leaders</h2>
 
-        <div ref={gridRef} className="cgrid" onPointerLeave={(e) => e.pointerType !== "touch" && setActive(null)}>
+        <div ref={gridRef} className="cgrid" onPointerMove={moveCursor} onPointerLeave={leaveGrid}>
+          <span ref={cursorRef} className="ccursor" aria-hidden="true" />
           <span
             className={`cpill${active ? " is-on" : ""}`}
             aria-hidden="true"
@@ -74,7 +84,7 @@ export default function TrustedBy() {
               <span className={`ctile__name${name.length > 15 ? " ctile__name--long" : ""}`}>{name}</span>
             </button>
           ))}
-          <span className="ctile ctile--more"><span>And many more</span></span>
+          <span className="ctile ctile--more"><span>15+ More</span></span>
           <div
             className={`cpop${active?.pop ? " is-on" : ""}`}
             aria-hidden="true"
@@ -89,12 +99,6 @@ export default function TrustedBy() {
               </>
             )}
           </div>
-          <button type="button" className="cmute" aria-pressed={muted} aria-label={muted ? "Turn hover sound on" : "Mute hover sound"} onClick={toggleMute}>
-            <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" aria-hidden="true">
-              <path d="M3 8h3l4-3v10l-4-3H3z" />
-              {muted ? <path d="M13 8l4 4m0-4l-4 4" /> : <path d="M13.5 7.5a3.5 3.5 0 010 5M15.5 5.5a6.5 6.5 0 010 9" />}
-            </svg>
-          </button>
         </div>
 
         <div className="trusted__marquee">
