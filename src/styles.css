@@ -686,8 +686,8 @@ a.team__name:hover { text-decoration: underline; text-underline-offset: 3px; }
   .trialstrip__cta { width: 100%; }
 }
 /* Reveal: hidden only once JS has armed it, then un-blurs in order. */
-.rv-armed .rv { opacity: 0; filter: blur(8px); transform: translateY(8px); }
-.rv-armed.is-in .rv { opacity: 1; filter: none; transform: none; transition: opacity 0.5s ease, filter 0.5s ease, transform 0.5s ease; transition-delay: calc(var(--i, 0) * 60ms); }
+.rv-armed .rv { filter: blur(6px); transform: translateY(8px); }
+.rv-armed.is-in .rv { filter: none; transform: none; transition: filter 0.5s ease, transform 0.5s ease; transition-delay: calc(var(--i, 0) * 60ms); }
 
 /* Button label roll (925 Studios) */
 .btn__roll { position: relative; display: inline-flex; flex-direction: column; height: 1lh; overflow: hidden; }

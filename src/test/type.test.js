@@ -51,3 +51,9 @@ describe("/start ads landing has no audit row", () => {
     expect(rule(".lp")).toMatch(/--nav-h:\s*88px/);
   });
 });
+
+describe("pricing reveal", () => {
+  it("never fades text out (it un-blurs and settles instead), so contrast holds mid-reveal", () => {
+    expect(rule(".rv-armed .rv")).not.toMatch(/opacity/);
+  });
+});
