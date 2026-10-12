@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import Marquee from "../../components/Marquee";
 import VelyxMark from "../../components/VelyxMark";
-import { CLIENTS } from "../../data/clients";
+import { CLIENTS, CLIENT_PLACEHOLDERS } from "../../data/clients";
 import { noteFor } from "../../lib/clientNotes";
 import { tick, unlock } from "../../lib/tick";
 
 const COLS = 6;
-const NOTES = CLIENTS.map(noteFor);
+const SHOWN = [...CLIENTS, ...CLIENT_PLACEHOLDERS];
+const NOTES = SHOWN.map(noteFor);
 
 /* Kargul's layout: a 6-column wordmark grid where one white pill slides to
    the hovered (or focused) client, a dot for a cursor and a "15+ More" tile.
@@ -67,7 +68,7 @@ export default function TrustedBy() {
             aria-hidden="true"
             style={active ? { transform: `translate(${active.x + (active.w - 150) / 2}px, ${active.y + (active.h - 60) / 2}px)` } : undefined}
           />
-          {CLIENTS.map((name, i) => (
+          {SHOWN.map((name, i) => (
             <button
               key={name}
               type="button"
@@ -103,7 +104,7 @@ export default function TrustedBy() {
 
         <div className="trusted__marquee">
           <Marquee label="Clients">
-            {CLIENTS.map((c) => <span key={c} className="trusted__name">{c}</span>)}
+            {SHOWN.map((c) => <span key={c} className="trusted__name">{c}</span>)}
           </Marquee>
         </div>
       </div>

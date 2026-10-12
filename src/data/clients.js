@@ -13,3 +13,8 @@ export const CLIENTS = [
   "Orange Production",
   "Scanva & Co",
 ];
+
+/* DUMMY — layout placeholders so the grid shows Kargul's three full rows.
+   These are fictional companies, not clients. TO CONFIRM: replace every
+   name with a real client before launch (then delete this list). */
+export const CLIENT_PLACEHOLDERS = ["Acme", "Globex", "Initech", "Hooli", "Vandelay", "Wonka"];

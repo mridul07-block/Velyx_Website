@@ -3,6 +3,7 @@ import { fireEvent, screen } from "@testing-library/react";
 import { renderWithProviders } from "./renderWithProviders";
 import TrustedBy from "../sections/home/TrustedBy";
 import { noteFor } from "../lib/clientNotes";
+import { CLIENTS, CLIENT_PLACEHOLDERS } from "../data/clients";
 
 describe("clients grid (Kargul layout, Bricx popup)", () => {
   afterEach(() => vi.unstubAllGlobals());
@@ -60,6 +61,21 @@ describe("clients grid (Kargul layout, Bricx popup)", () => {
     expect(noteFor("Sacred Basil")).toEqual({ line: expect.stringMatching(/e-commerce/i), chips: expect.arrayContaining(["Web"]) });
     expect(noteFor("Overshoot").line).toMatch(/web application/i);
     expect(noteFor("Orange Production").line).toMatch(/marketing agency/i);
+  });
+});
+
+describe("three full rows", () => {
+  it("fills Kargul's 3 x 6 grid: 17 clients and the 15+ More tile", () => {
+    renderWithProviders(<TrustedBy />);
+    expect(document.querySelectorAll(".cgrid .ctile").length).toBe(18);
+  });
+
+  it("keeps the dummy names separate, marked for replacement, with no popup", () => {
+    expect(CLIENT_PLACEHOLDERS).toHaveLength(6);
+    for (const name of CLIENT_PLACEHOLDERS) {
+      expect(CLIENTS).not.toContain(name);
+      expect(noteFor(name)).toBeNull();
+    }
   });
 });
 
