@@ -268,13 +268,8 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 
 /* ---------- Hero ---------- */
 
-.hero { padding-top: calc(var(--nav-h) + clamp(40px, 6vw, 72px)); padding-bottom: clamp(48px, 6vw, 80px); }
+.hero { padding-top: calc(var(--nav-h) + clamp(28px, 5vw, 56px)); padding-bottom: clamp(36px, 4.5vw, 56px); }
 .hero__inner { display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; }
-.hero__mark { width: 200px; height: auto; color: #dcdcdc; margin-bottom: -22px; user-select: none; pointer-events: none; }
-.hero .status { position: relative; z-index: 1; margin-bottom: 30px; }
-@media (max-width: 640px) {
-  .hero__mark { width: 150px; margin-bottom: -16px; }
-}
 .status {
   display: inline-flex;
   align-items: center;
@@ -290,13 +285,23 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
   position: relative;
 }
 .status__dot { position: relative; flex-shrink: 0; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
-.status__ripple { position: absolute; inset: 0; border-radius: 50%; background: var(--ok); animation: ripple 1.6s cubic-bezier(0, 0, 0.2, 1) infinite; }
-.status__ripple + .status__ripple { animation-delay: 0.3s; }
-@keyframes ripple { to { transform: scale(2.6); opacity: 0; } }
 .hero__title { max-width: 12.04em; }
 .hero__sub { margin-top: 16px; }
 .hero__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 28px; }
 .hero__actions .btn { font-size: 15px; letter-spacing: -0.008em; }
+
+/* Maydit's changing proof line: a small V and one uppercase line; words
+   blur and rise in one after another, the old line rises out. */
+.proof { position: relative; width: 100%; height: 24px; margin-bottom: 22px; }
+.proof__row { position: absolute; left: 50%; top: 0; display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; transform: translateX(-50%); pointer-events: none; }
+.proof__icon { width: 18px; height: auto; color: var(--ink); opacity: 0; transform: scale(0.4) rotate(-40deg); transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+.proof__words { display: inline-flex; gap: 0.32em; font-size: 13px; line-height: 24px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.proof__w { display: inline-block; opacity: 0; transform: translateY(9px); filter: blur(4px); transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), filter 0.5s ease; transition-delay: calc(var(--i) * 28ms); }
+.proof__row.is-on .proof__icon { opacity: 1; transform: none; transition-delay: 0.1s; }
+.proof__row.is-on .proof__w { opacity: 1; transform: none; filter: none; transition-delay: calc(0.12s + var(--i) * 28ms); }
+.proof__row.is-out .proof__w { opacity: 0; transform: translateY(-9px); filter: blur(4px); }
+.proof__row.is-out .proof__icon { opacity: 0; transform: scale(0.4) rotate(40deg); }
+@media (max-width: 420px) { .proof__words { font-size: 12px; letter-spacing: 0.04em; } }
 
 /* ---------- Trusted by ---------- */
 

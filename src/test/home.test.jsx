@@ -35,7 +35,7 @@ describe("Home", () => {
     const { container } = renderWithProviders(<Home />);
     const text = container.textContent;
     expect(text).not.toMatch(/\$1B|210M|75\+|95%|SideShift|ZeroLeaks|Agent Arcade|Northwind|Sable Health|Halcyon/i);
-    expect(text.match(/\$\d[\d,]*/g)).toEqual(["$1500"]);
+    expect(new Set(text.match(/\$\d[\d,]*/g))).toEqual(new Set(["$1500"])); // the trial week, in the proof line and pricing
   });
 });
 

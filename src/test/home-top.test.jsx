@@ -8,20 +8,36 @@ import ServiceCard from "../components/ServiceCard";
 import Stats from "../components/Stats";
 import { SERVICES } from "../data/services";
 import { STATS } from "../data/stats";
+import { PROOFS, PROOF_INTERVAL } from "../data/proofs";
 
 describe("Hero", () => {
-  it("has the status pill, h1, the Intro call button and See our work", () => {
-    renderWithProviders(<Hero />);
-    expect(screen.getByText("Now booking projects for Q4 2026")).toBeInTheDocument();
+  it("has the changing proof line, h1, the Intro call button and See our work, and no mark or status pill", () => {
+    const { container } = renderWithProviders(<Hero />);
+    expect(container.querySelector(".hero__mark, .status")).toBeNull();
+    const proof = container.querySelector(".proof");
+    expect(proof.nextElementSibling.tagName).toBe("H1");
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(/AI and engineering partner/);
     expect(screen.getByRole("link", { name: "Intro call" })).toHaveAttribute("href", "/intro-call");
     expect(screen.getByRole("link", { name: "See our work" })).toHaveAttribute("href", "/work");
-    expect(screen.queryByRole("link", { name: "Start a project" })).toBeNull();
   });
 
-  it("gives the status dot Kargul's two live ripples", () => {
+  it("reads every proof line once to assistive tech and shows the first one by default", () => {
     const { container } = renderWithProviders(<Hero />);
-    expect(container.querySelectorAll(".status__dot .status__ripple").length).toBe(2);
+    const rows = container.querySelectorAll(".proof__row");
+    expect(rows.length).toBe(PROOFS.length);
+    expect(rows[0]).toHaveClass("is-on");
+    for (const r of rows) expect(r).toHaveAttribute("aria-hidden", "true");
+    expect(container.querySelector(".proof .sr-only").textContent).toBe(PROOFS.join(". "));
+  });
+
+  it("moves to the next line on a timer and wraps round", () => {
+    vi.useFakeTimers();
+    const { container } = renderWithProviders(<Hero />);
+    act(() => vi.advanceTimersByTime(PROOF_INTERVAL));
+    expect(container.querySelectorAll(".proof__row")[1]).toHaveClass("is-on");
+    act(() => vi.advanceTimersByTime(PROOF_INTERVAL * (PROOFS.length - 1)));
+    expect(container.querySelectorAll(".proof__row")[0]).toHaveClass("is-on");
+    vi.useRealTimers();
   });
 });
 

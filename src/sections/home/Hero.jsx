@@ -1,15 +1,12 @@
 import { Link } from "react-router-dom";
-import VelyxMark from "../../components/VelyxMark";
+import ProofLine from "../../components/ProofLine";
 import IntroCallButton from "../../components/IntroCallButton";
 
 export default function Hero() {
   return (
     <section id="hero" className="hero">
       <div className="container hero__inner">
-        {/* Kargul-style: a big quiet mark that the status pill overlaps. */}
-        <VelyxMark className="hero__mark" />
-        {/* TO CONFIRM: a project count is allowed only if true. */}
-        <p className="status"><span className="status__dot" aria-hidden="true"><span className="status__ripple" /><span className="status__ripple" /></span>Now booking projects for Q4 2026</p>
+        <ProofLine />
         <h1 className="h1 hero__title">An AI and engineering partner for founders and growing businesses.</h1>
         <p className="lead hero__sub">
           We design and build AI agents, SaaS products, WhatsApp systems, websites and apps — end to end,

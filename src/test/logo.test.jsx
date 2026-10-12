@@ -4,7 +4,6 @@ import { readFileSync } from "node:fs";
 import { renderWithProviders } from "./renderWithProviders";
 import VelyxMark from "../components/VelyxMark";
 import PillNav from "../components/PillNav";
-import Hero from "../sections/home/Hero";
 
 /* The official V (2026-10-12) is an inline SVG so it stays sharp and takes
    its colour from CSS. */
@@ -17,11 +16,9 @@ describe("new Velyx V logo", () => {
     expect(svg.querySelectorAll("path").length).toBe(1);
   });
 
-  it("is the navbar and hero mark", () => {
+  it("is the navbar mark", () => {
     const nav = renderWithProviders(<PillNav />).container;
     expect(nav.querySelector(".pnav__logo svg")).toBeTruthy();
-    const hero = renderWithProviders(<Hero />).container;
-    expect(hero.querySelector(".hero__mark").tagName.toLowerCase()).toBe("svg");
   });
 
   it("no source file references the old logo assets", () => {
