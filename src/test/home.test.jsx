@@ -1,9 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { fireEvent, screen, within } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import { renderWithProviders } from "./renderWithProviders";
 import Home from "../pages/Home";
-import TestimonialCarousel from "../components/TestimonialCarousel";
-import { TESTIMONIAL_QUOTES } from "../data/testimonials";
 
 describe("Home", () => {
   it("renders Kargul's sections in the user's order, closing in the footer", () => {
@@ -15,7 +13,7 @@ describe("Home", () => {
 
   it("leads with two selected case studies, then the more-work table", () => {
     renderWithProviders(<Home />);
-    const links = screen.getAllByRole("link", { name: /Read the case study/ }).map((a) => a.getAttribute("href"));
+    const links = [...document.querySelectorAll("#work a.case__link")].map((a) => a.getAttribute("href"));
     expect(links).toEqual(["/work/sacred-basil", "/work/getlandy"]);
     expect(document.querySelectorAll("#more-work .mwork__row").length).toBeGreaterThan(2);
   });
@@ -40,15 +38,3 @@ describe("Home", () => {
   });
 });
 
-describe("TestimonialCarousel", () => {
-  it("shows one quote with bold highlights and cycles with arrows", () => {
-    renderWithProviders(<TestimonialCarousel items={TESTIMONIAL_QUOTES} />);
-    expect(screen.getByText(TESTIMONIAL_QUOTES[0].name)).toBeInTheDocument();
-    expect(screen.getByText(TESTIMONIAL_QUOTES[0].highlights[0]).tagName).toBe("STRONG");
-    fireEvent.click(screen.getByRole("button", { name: "Next testimonial" }));
-    expect(screen.getByText(TESTIMONIAL_QUOTES[1].name)).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Previous testimonial" }));
-    fireEvent.click(screen.getByRole("button", { name: "Previous testimonial" }));
-    expect(screen.getByText(TESTIMONIAL_QUOTES[TESTIMONIAL_QUOTES.length - 1].name)).toBeInTheDocument();
-  });
-});

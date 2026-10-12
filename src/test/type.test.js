@@ -16,7 +16,7 @@ describe("Kargul type scale", () => {
     expect(rule(".btn")).toMatch(/font-weight:\s*700/);
     expect(rule(".h3")).toMatch(/letter-spacing:\s*-0\.01em/);
     expect(rule(".section-header__sub")).toMatch(/font-size:\s*14px/);
-    expect(rule(".tcard__quote")).toMatch(/24px/);
+    expect(rule(".tcard2__quote")).toMatch(/17px/); // Bricx testimonial cards
     expect(rule(".team__name")).toMatch(/font-size:\s*18px/);
     expect(rule(".svc-card__copy")).toMatch(/font-weight:\s*500/);
   });

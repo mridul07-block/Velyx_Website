@@ -5,7 +5,7 @@ export default function TeamGrid() {
   return (
     <section id="team" className="section">
       <div className="container">
-        <SectionHeader align="center" title="Team" />
+        <SectionHeader align="center" title="Founders" />
         <ul className="team">
           {TEAM.map((m) => (
             <li key={m.name} className="team__member">

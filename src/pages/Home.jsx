@@ -5,7 +5,7 @@ import SectionHeader from "../components/SectionHeader";
 import FAQ from "../components/FAQ";
 import Stats from "../components/Stats";
 import TeamGrid from "../components/TeamGrid";
-import TestimonialCarousel from "../components/TestimonialCarousel";
+import Testimonials from "../components/Testimonials";
 import ToolsStrip from "../components/ToolsStrip";
 import TrialCard from "../components/TrialCard";
 import Hero from "../sections/home/Hero";
@@ -40,7 +40,7 @@ export default function Home() {
       <MoreWork />
       <Process />
       <TeamGrid />
-      <TestimonialCarousel items={TESTIMONIAL_QUOTES} />
+      <Testimonials items={TESTIMONIAL_QUOTES} />
       <ToolsStrip />
       <TrialCard />
       <section id="faq" className="section">
