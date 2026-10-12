@@ -15,7 +15,26 @@ describe("Selected work (Altair)", () => {
       expect(c.querySelector(".case__built").textContent.length).toBeGreaterThan(10);
       expect(c.querySelector('a[href^="/work/"]')).toHaveTextContent(/Read the case study/);
     }
-    expect(cards[1]).toHaveClass("case--flip");
+    // Altair: the first card leads with its screenshots, the next flips.
+    expect(cards[0]).toHaveClass("case--media-first");
+    expect(cards[1]).not.toHaveClass("case--media-first");
+  });
+
+  it("has Altair's header row: the title on the left, a short line on the right", () => {
+    renderWithProviders(<SelectedWork />);
+    const head = document.querySelector(".selwork__head");
+    expect(head.querySelector("h2").textContent).toBe("Selected work.");
+    expect(head.querySelector(".selwork__sub").textContent.length).toBeGreaterThan(10);
+  });
+
+  it("layers every screenshot a project has, and never invents one", () => {
+    renderWithProviders(<SelectedWork />);
+    for (const c of document.querySelectorAll(".case")) {
+      const slug = c.querySelector('a[href^="/work/"]').getAttribute("href").split("/").pop();
+      const p = PROJECTS.find((x) => x.slug === slug);
+      const shots = [p.cover, ...p.gallery].filter(Boolean).slice(0, 3);
+      expect(c.querySelectorAll(".case__shot").length).toBe(shots.length);
+    }
   });
 
   it("never renders an outcome line without a real result", () => {

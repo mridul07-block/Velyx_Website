@@ -84,6 +84,13 @@ describe("one theme across sections (hero + services palette and type)", () => {
   });
 
   it("section titles share the services heading size", () => {
-    for (const sel of [".process__title", ".tsec__title", ".pricing__title"]) expect(rule(sel)).toMatch(/font-size:\s*min\(36px/);
+    for (const sel of [".process__title", ".tsec__title", ".pricing__title", ".selwork__title"]) expect(rule(sel)).toMatch(/font-size:\s*min\(36px/);
+  });
+});
+
+describe("Altair layout for Selected work and Process", () => {
+  it("left-aligns the process heading and runs the case cards full width like the panels", () => {
+    expect(rule(".process__title")).not.toMatch(/text-align:\s*center/);
+    expect(rule(".selwork__list")).toMatch(/margin-inline:\s*0/);
   });
 });
