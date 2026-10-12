@@ -1,82 +1,134 @@
-import { Layer, Patterns } from "./iso";
-import { floor, wall } from "./isoMatrix";
+import { box as isoBox, disc, project } from "../../lib/isoScene";
 
-/* Four small isometric scenes for the process steps, in the service-card
-   style: they breathe only while the section is on screen (.is-playing). */
+/* Altair-style step scenes: solid, shaded isometric objects in the site's
+   dark palette. One part at a time lifts and lights its edge (.pick, staggered
+   delays), the building's top floor lifts off and settles (.split) and the
+   lighthouse's beams sweep (.beam). Everything moves only while the process
+   section is on screen (.is-playing); otherwise it is a still drawing. */
+const O = [120, 104]; // floor centre of every scene
+const PICK = 8; // seconds per full cycle; each part gets a quarter of it
+const box = (x, y, z, w, d, h) => isoBox(x, y, z, w, d, h, O);
+
+function Box({ b, edge = false }) {
+  return (
+    <>
+      <polygon points={b.left} className="s-left" />
+      <polygon points={b.right} className="s-right" />
+      <polygon points={b.right} fill="url(#st-hatch)" />
+      <polygon points={b.top} className="s-top" />
+      {edge && <polygon points={b.top} className="pick-edge" />}
+    </>
+  );
+}
+
+/* An upright cylinder (frustum when r2 differs) at z, with an optional
+   highlight outline for the pick animation. */
+function Cyl({ o = O, r, h, z = 0, r2 = r, edge = false, hatch = true }) {
+  const base = disc(0, 0, z, r, o);
+  const top = disc(0, 0, z + h, r2, o);
+  const side = `M${base.cx - base.rx} ${base.cy}A${base.rx} ${base.ry} 0 0 0 ${base.cx + base.rx} ${base.cy}L${top.cx + top.rx} ${top.cy}A${top.rx} ${top.ry} 0 0 1 ${top.cx - top.rx} ${top.cy}Z`;
+  return (
+    <>
+      <path d={side} className="s-left" />
+      {hatch && <path d={side} fill="url(#st-hatch)" />}
+      <ellipse cx={top.cx} cy={top.cy} rx={top.rx} ry={top.ry} className="s-top" />
+      {edge && (
+        <g className="pick-edge">
+          <path d={`M${base.cx - base.rx} ${base.cy}A${base.rx} ${base.ry} 0 0 0 ${base.cx + base.rx} ${base.cy}`} />
+          <ellipse cx={top.cx} cy={top.cy} rx={top.rx} ry={top.ry} />
+        </g>
+      )}
+    </>
+  );
+}
+
+const pickStyle = (i, n = 4) => ({ animationDelay: `${(-PICK + (i * PICK) / n).toFixed(2)}s` });
+
+/* 01 · Day 1 — a data stack on a round base: each segment lifts in turn. */
+const TRAY = box(30, 14, 6, 30, 16, 3);
 function Call() {
   return (
     <>
-      <g transform={floor(120, 70)}>
-        <rect width="70" height="70" rx="6" fill="url(#st-call-hatch)" className="p-dim" />
-      </g>
-      <Layer amp={-6} dur={6}>
-        <g transform={floor(120, 52)}>
-          <rect width="70" height="44" rx="8" className="p-top" />
-          <circle cx="16" cy="22" r="7" className="ln-bright" />
-          <rect x="30" y="16" width="30" height="5" rx="2" className="fill-hi" />
-          <rect x="30" y="26" width="20" height="4" rx="2" className="ln" />
+      <Cyl r={42} h={6} />
+      <Box b={TRAY} />
+      {[0, 1, 2, 3].map((i) => (
+        <g key={i} className="pick" style={pickStyle(i)}>
+          <Cyl r={22} h={12} z={6 + i * 14} edge />
         </g>
-      </Layer>
-      <Layer amp={-9} delay={-2} dur={6}>
-        <g transform={floor(150, 26)}>
-          <rect width="46" height="28" rx="8" className="p-solid" />
-          {[12, 23, 34].map((x) => <circle key={x} cx={x} cy="14" r="2.2" className="fill-hi" />)}
-        </g>
-      </Layer>
+      ))}
     </>
   );
 }
 
+/* 02 · Week 1 — a planning board of blocks: one block at a time lifts. */
+const BOARD = box(-50, -36, 0, 100, 72, 7);
+const BLOCKS = [
+  { b: box(-42, -26, 7, 22, 22, 20), pick: 0 },
+  { b: box(-12, -30, 7, 26, 22, 10) },
+  { b: box(-6, -26, 17, 14, 14, 20) },
+  { b: box(22, -22, 7, 20, 20, 15), pick: 1 },
+  { b: box(-28, 6, 7, 12, 12, 6), pick: 2 },
+  { b: box(0, 6, 7, 28, 22, 10), pick: 3 },
+];
 function Trial() {
   return (
     <>
-      {[0, 1, 2].map((i) => (
-        <Layer key={i} amp={-3 - i * 3} delay={-i * 0.8} dur={7}>
-          <g transform={floor(120, 92 - i * 16)}>
-            <rect width="78" height="58" rx="4" className={i === 2 ? "p-top" : "p-solid"} />
-            {i === 2 && (
-              <>
-                <rect x="10" y="10" width="36" height="6" rx="2" className="fill-hi" />
-                {[24, 33, 42].map((y) => <rect key={y} x="10" y={y} width={y === 42 ? 34 : 56} height="4" rx="2" className="ln" />)}
-              </>
-            )}
+      <Box b={BOARD} />
+      {BLOCKS.map(({ b, pick }, i) =>
+        pick === undefined ? (
+          <Box key={i} b={b} />
+        ) : (
+          <g key={i} className="pick" style={pickStyle(pick)}>
+            <Box b={b} edge />
           </g>
-        </Layer>
-      ))}
+        )
+      )}
     </>
   );
 }
 
+/* 03 · Weeks 2 to 3 — floors on pillars: the top floor lifts and settles. */
+const FLOOR = (z) => box(-32, -32, z, 64, 64, 4);
+const PILLARS = (z) => [[-26, -26], [22, -26], [-26, 22], [22, 22]].map(([x, y]) => box(x, y, z, 4, 4, 10));
+const BUILD_BASE = box(-36, -36, 0, 72, 72, 6);
 function Build() {
   return (
     <>
-      {[0, 1, 2, 3].map((i) => (
-        <Layer key={i} amp={-2 - i * 2.5} delay={-i * 0.5} dur={5}>
-          <g transform={floor(120, 96 - i * 15)}>
-            <rect width="74" height="74" rx="5" className={i === 3 ? "p-top" : "p-solid"} />
-            {i === 3 && <path className="ln" d="M14 14h46M14 26h30M14 60h46M14 48h20" />}
-          </g>
-        </Layer>
+      <Box b={BUILD_BASE} />
+      {[6, 20, 34].map((z) => (
+        <g key={z}>
+          {PILLARS(z).map((p, i) => <Box key={i} b={p} />)}
+          <Box b={FLOOR(z + 10)} />
+        </g>
       ))}
+      <g className="split">
+        {PILLARS(48).map((p, i) => <Box key={i} b={p} />)}
+        <Box b={FLOOR(58)} edge />
+      </g>
     </>
   );
 }
 
+/* 04 · Week 3 — a lighthouse on a round base: its beams sweep. */
+const LAMP = project(0, 0, 74, O);
+const CAP = (() => {
+  const c = disc(0, 0, 79, 8, O);
+  const [tx, ty] = project(0, 0, 90, O);
+  return `M${c.cx - c.rx} ${c.cy}L${tx} ${ty}L${c.cx + c.rx} ${c.cy}A${c.rx} ${c.ry} 0 0 1 ${c.cx - c.rx} ${c.cy}Z`;
+})();
 function Launch() {
+  const [lx, ly] = LAMP;
   return (
     <>
-      <g transform={floor(120, 96)}>
-        <rect width="60" height="60" rx="30" fill="url(#st-launch-hatch)" className="p-dim" />
+      <g className="beam" style={{ transformOrigin: `${lx.toFixed(1)}px ${ly.toFixed(1)}px` }}>
+        <path d={`M${lx} ${ly}L${lx - 100} ${ly - 26}M${lx} ${ly}L${lx - 104} ${ly - 6}`} className="beam__ray" />
       </g>
-      <g transform={wall(108, 58)}>
-        <rect width="26" height="62" rx="3" className="p-solid" />
-      </g>
-      <Layer amp={-4} dur={6}>
-        <g transform={wall(110, 40)}>
-          <rect width="22" height="16" rx="3" className="p-top" />
-        </g>
-      </Layer>
-      <path className="wire" d="M118 44L40 14M118 48L34 38" />
+      <Cyl r={40} h={6} />
+      <Cyl r={30} h={3} z={6} hatch={false} />
+      <Cyl r={13} r2={9} h={56} z={9} />
+      <Cyl r={13} h={4} z={65} />
+      <Cyl r={7} h={10} z={69} hatch={false} edge />
+      <path d={CAP} className="s-top" />
     </>
   );
 }
@@ -87,7 +139,11 @@ export default function StepArt({ kind }) {
   const Scene = SCENES[kind];
   return (
     <svg viewBox="0 0 240 150" className="art step__art" aria-hidden="true" fill="none">
-      <Patterns id={`st-${kind}`} />
+      <defs>
+        <pattern id="st-hatch" width="2.5" height="2.5" patternUnits="userSpaceOnUse">
+          <path d="M0.5 0v2.5" className="s-hatch" />
+        </pattern>
+      </defs>
       <Scene />
     </svg>
   );

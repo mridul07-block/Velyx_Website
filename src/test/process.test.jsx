@@ -27,4 +27,18 @@ describe("Process (Altair)", () => {
     expect(arcPoint(0).y).toBeCloseTo(arcPoint(1).y);
     expect(PROCESS.map((s) => s.n)).toEqual(["01", "02", "03", "04"]);
   });
+  it("draws Altair-style solid iso scenes where one part at a time lifts and lights up", () => {
+    renderWithProviders(<Process />);
+    const [call, trial, build, launch] = [...document.querySelectorAll(".step svg.art")];
+    expect(call.querySelectorAll(".pick").length).toBe(4);
+    expect(call.querySelectorAll(".pick .pick-edge").length).toBe(4);
+    expect(trial.querySelectorAll(".pick").length).toBeGreaterThanOrEqual(4);
+    expect(build.querySelector(".split")).not.toBeNull();
+    expect(launch.querySelector(".beam")).not.toBeNull();
+    // Staggered so only one part moves at a time.
+    const delays = [...call.querySelectorAll(".pick")].map((g) => g.style.animationDelay);
+    expect(new Set(delays).size).toBe(4);
+    // Each card's art sits on a faint grid.
+    for (const st of document.querySelectorAll(".step")) expect(st.querySelector(".step__grid")).not.toBeNull();
+  });
 });

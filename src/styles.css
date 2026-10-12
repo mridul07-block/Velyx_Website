@@ -543,7 +543,29 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 @keyframes arc-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 .steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
 .step { display: flex; flex-direction: column; gap: 10px; padding: 18px 24px 24px; background: var(--panel-card); border-radius: 18px; }
-.step__art { width: calc(100% + 24px); height: 170px; margin: 0 -12px 6px; }
+.step__grid { position: relative; height: 180px; margin: -6px -12px 8px; border-radius: 14px; background-image: linear-gradient(#ffffff0a 1px, transparent 1px), linear-gradient(90deg, #ffffff0a 1px, transparent 1px); background-size: 24px 24px; background-position: center; -webkit-mask-image: radial-gradient(ellipse at 50% 55%, #000 45%, transparent 78%); mask-image: radial-gradient(ellipse at 50% 55%, #000 45%, transparent 78%); }
+.step__art { position: absolute; inset: 0; width: 100%; height: 100%; }
+.step__art :is(path, polygon, ellipse) { stroke-width: 0.8; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.step__art .s-top { fill: #3a3a3a; stroke: #606060; }
+.step__art .s-left { fill: #2d2d2d; stroke: #606060; }
+.step__art .s-right { fill: #262626; stroke: #606060; }
+.step__art .s-hatch { stroke: #ffffff14; stroke-width: 0.5; }
+.step__art .pick-edge, .step__art .pick-edge :is(path, ellipse) { fill: none; stroke: #f2f2f2; stroke-width: 1.1; }
+.step__art .pick-edge { opacity: 0; }
+.step__art .beam__ray { stroke: #c9c9c9; stroke-dasharray: 1.5 3; stroke-linecap: round; }
+.step__art .beam { transform-box: view-box; }
+/* Altair's motions: one part lifts and lights in turn, the top floor splits off, the beams sweep. */
+.process .is-playing .step__art .pick { animation: iso-pick 8s ease-in-out infinite; }
+.process .is-playing .step__art .pick .pick-edge { animation: iso-pick-edge 8s ease-in-out infinite; animation-delay: inherit; }
+.process .is-playing .step__art .pick .pick-edge * { animation: none; }
+.process .is-playing .step__art .split { animation: iso-split 5s ease-in-out infinite; }
+.process .is-playing .step__art .split .pick-edge { animation: iso-split-edge 5s ease-in-out infinite; }
+.process .is-playing .step__art .beam { animation: beam-sweep 6s ease-in-out infinite alternate; }
+@keyframes iso-pick { 0%, 24%, 100% { transform: none; } 6%, 18% { transform: translateY(-5px); } }
+@keyframes iso-pick-edge { 0%, 24%, 100% { opacity: 0; } 6%, 18% { opacity: 1; } }
+@keyframes iso-split { 0%, 15%, 85%, 100% { transform: none; } 40%, 60% { transform: translateY(-8px); } }
+@keyframes iso-split-edge { 0%, 15%, 85%, 100% { opacity: 0; } 40%, 60% { opacity: 1; } }
+@keyframes beam-sweep { from { transform: rotate(-9deg); } to { transform: rotate(7deg); } }
 .step__when { color: var(--on-panel-muted); }
 .step__title { font-size: 18px; line-height: 24px; font-weight: 700; letter-spacing: -0.01em; color: var(--on-panel); }
 .step__copy { font-size: 14px; line-height: 22px; font-weight: 500; color: var(--on-panel-muted); }

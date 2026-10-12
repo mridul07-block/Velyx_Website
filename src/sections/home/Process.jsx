@@ -35,7 +35,7 @@ export default function Process() {
         <ol className="steps">
           {PROCESS.map((s) => (
             <li key={s.n} className="step">
-              <StepArt kind={s.art} />
+              <div className="step__grid"><StepArt kind={s.art} /></div>
               <p className="mono step__when">{s.n} · {s.when}</p>
               <h3 className="step__title">{s.title}</h3>
               <p className="step__copy">{s.copy}</p>
