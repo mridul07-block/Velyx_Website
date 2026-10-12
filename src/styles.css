@@ -653,7 +653,7 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 .price-tag { display: inline-block; font-size: 0.8em; padding: 2px 14px; border-radius: var(--radius-pill); background: var(--page); transform: rotate(-4deg); }
 .trial__cta { margin-top: 12px; min-width: 260px; }
 
-/* ---------- Pricing (925 Studios structure, site theme) ---------- */
+/* ---------- Pricing ladder (site theme) ---------- */
 
 .pricing__head { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: clamp(32px, 4vw, 42px); text-align: center; }
 .pricing__eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; line-height: 18px; font-weight: 500; color: var(--muted); }
@@ -663,43 +663,46 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 .pricing__title { font-size: min(36px, 7.3vw); line-height: 1.16; font-weight: 700; letter-spacing: -0.03em; }
 .pricing__title span { display: block; }
 .pricing__title .tone-muted { color: var(--muted); }
-.trialstrip { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 32px; margin-bottom: 24px; padding: 24px 32px; border-radius: var(--radius-card); background: var(--card); }
-.trialstrip__title { font-size: 18px; line-height: 24px; font-weight: 700; letter-spacing: -0.01em; }
-.trialstrip__title .price-tag { margin-left: 6px; }
-.trialstrip__line { margin-top: 8px; max-width: 34em; font-size: 14px; line-height: 22px; font-weight: 500; color: var(--muted); }
-.trialstrip__cta { min-width: 220px; }
-.plans { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-.plan { display: flex; flex-direction: column; gap: 32px; padding: 24px; border-radius: var(--radius-card); background: var(--card); color: var(--ink); }
-.plan--dark { background: var(--panel); color: var(--on-panel); }
-.plan__top { display: flex; flex-direction: column; }
-.plan__icon { display: grid; place-items: center; width: 42px; height: 42px; margin-bottom: 18px; border-radius: 12px; background: var(--page); }
-.plan--dark .plan__icon { background: var(--panel-card); }
-.plan__title { font-size: 18px; line-height: 24px; font-weight: 700; letter-spacing: -0.01em; }
-.plan__tagline { margin-top: 8px; max-width: 315px; font-size: 14px; line-height: 22px; font-weight: 500; color: var(--muted); }
-.plan--dark .plan__tagline { color: var(--on-panel-muted); }
-.plan__price { margin-top: 20px; font-size: 36px; line-height: 1.16; font-weight: 700; letter-spacing: -0.03em; }
-.plan__price span { font-size: 14px; font-weight: 500; letter-spacing: 0; color: var(--muted); }
-.btn.plan__cta { width: 100%; background: var(--ink); color: var(--page); }
-.btn.plan__cta:hover { background: #000; }
-.plan--dark .btn.plan__cta { background: var(--page); color: var(--ink); }
-.plan--dark .btn.plan__cta:hover { background: #fff; }
-.plan__includes { margin-bottom: 14px; font-size: 13px; line-height: 18px; font-weight: 500; color: var(--muted); }
-.plan--dark .plan__includes { color: var(--on-panel-muted); }
-.plan__list { display: flex; flex-direction: column; gap: 12px; }
-.plan__feature { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 22px; font-weight: 500; color: var(--ink); }
-.plan--dark .plan__feature { color: var(--on-panel); }
-.plan__bullet { position: relative; flex-shrink: 0; width: 18px; height: 18px; margin-top: 2px; border-radius: 50%; background: var(--ink); }
-.plan--dark .plan__bullet { background: var(--panel-card); }
-.plan__bullet::before, .plan__bullet::after { content: ""; position: absolute; left: 5px; top: 8px; width: 8px; height: 2px; background: #fff; }
-.plan__bullet::after { transform: rotate(90deg); }
-.plan__note { display: flex; align-items: flex-start; gap: 10px; margin-top: 20px; font-size: 13px; line-height: 20px; font-weight: 500; color: var(--muted); }
-.plan--dark .plan__note { color: var(--on-panel-muted); }
-.plan__note svg { flex-shrink: 0; margin-top: 2px; }
+.ladder { position: relative; }
+/* The rail: a dashed line joining the three steps, a dot travelling along it. */
+.ladder__rail { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; height: 28px; margin-bottom: 14px; }
+.ladder__rail::before { content: ""; position: absolute; left: calc(100% / 6); right: calc(100% / 6); top: 50%; border-top: 1px dashed #23232340; }
+.ladder__node { position: relative; justify-self: center; width: 12px; height: 12px; margin-top: 8px; border-radius: 50%; background: var(--page); border: 1.5px solid var(--ink); }
+.ladder__node:first-child { background: var(--ink); }
+.ladder__dot { position: absolute; top: 50%; left: calc(100% / 6); width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; border-radius: 50%; background: var(--ink); }
+.pricing.is-in .ladder__dot, .pricing:not(.rv-armed) .ladder__dot { animation: ladder-run 4.8s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
+@keyframes ladder-run { 0% { left: calc(100% / 6); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { left: calc(500% / 6); opacity: 0; } }
+.ladder__tiers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.tier { display: flex; flex-direction: column; padding: 28px 24px 24px; border-radius: var(--radius-card); background: var(--card); color: var(--ink); transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s; }
+.tier:hover { transform: translateY(-4px); box-shadow: 0 18px 40px #0000000f; }
+.tier--hero { background: var(--panel); color: var(--on-panel); }
+.tier__step { font-size: 13px; line-height: 18px; font-weight: 500; color: var(--muted); }
+.tier--hero .tier__step { color: var(--on-panel-muted); }
+.tier__title { margin-top: 14px; font-size: 18px; line-height: 24px; font-weight: 700; letter-spacing: -0.01em; }
+.tier__desc { margin-top: 6px; font-size: 14px; line-height: 22px; font-weight: 500; color: var(--muted); }
+.tier--hero .tier__desc { color: var(--on-panel-muted); }
+.tier__price { display: flex; align-items: flex-end; gap: 8px; height: 42px; box-sizing: content-box; margin-top: 22px; padding-bottom: 22px; border-bottom: 1px solid #23232314; }
+.tier--hero .tier__price { border-bottom-color: #ffffff14; }
+.tier__amount { font-size: 36px; line-height: 1.16; font-weight: 700; letter-spacing: -0.03em; }
+.tier__unit { font-size: 14px; font-weight: 500; color: var(--muted); }
+.tier--hero .tier__unit { color: var(--on-panel-muted); }
+.tier__quote { align-self: flex-end; font-size: 18px; line-height: 24px; font-weight: 700; letter-spacing: -0.01em; padding-bottom: 6px; }
+.tier__amount, .tier__unit { align-self: flex-end; }
+.tier__amount { line-height: 42px; }
+.tier__unit { line-height: 32px; }
+.tier__list { display: flex; flex-direction: column; gap: 10px; margin: 20px 0 28px; }
+.tier__feature { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 22px; font-weight: 500; }
+.tier__feature svg { flex-shrink: 0; margin-top: 3px; color: var(--muted); }
+.tier--hero .tier__feature svg { color: var(--on-panel-muted); }
+.btn.tier__cta { width: 100%; margin-top: auto; }
+.tier--hero .btn--light { background: var(--page); color: var(--ink); }
+.tier--hero .btn--light:hover { background: #fff; }
+.pricing__note { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 28px; font-size: 14px; line-height: 22px; font-weight: 500; color: var(--muted); text-align: center; }
+.pricing__note svg { flex-shrink: 0; }
 .pricing-page .pricing { padding-top: calc(var(--nav-h) + clamp(24px, 4vw, 48px)); }
-@media (max-width: 810px) {
-  .plans { grid-template-columns: 1fr; gap: 18px; }
-  .trialstrip { padding: 24px; }
-  .trialstrip__cta { width: 100%; }
+@media (max-width: 900px) {
+  .ladder__rail { display: none; }
+  .ladder__tiers { grid-template-columns: 1fr; max-width: 520px; margin-inline: auto; gap: 18px; }
 }
 /* Reveal: hidden only once JS has armed it, then un-blurs in order. */
 .rv-armed .rv { filter: blur(6px); transform: translateY(8px); }

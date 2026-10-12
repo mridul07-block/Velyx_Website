@@ -4,40 +4,50 @@ import { renderWithProviders } from "./renderWithProviders";
 import Pricing from "../sections/Pricing";
 import PricingPage from "../pages/PricingPage";
 import IntroCallButton from "../components/IntroCallButton";
-import { PLANS, TRIAL } from "../data/pricing";
+import { TIERS, PLAN_NOTE } from "../data/pricing";
 import { ROUTES } from "../../scripts/routes.mjs";
 
-describe("Pricing (925 Studios)", () => {
-  it("shows the two-tone heading, the trial week strip and two plans, dark then light", () => {
+describe("Pricing ladder", () => {
+  it("lays out start small → scale as three steps, the trial week first and highlighted", () => {
     renderWithProviders(<Pricing />);
     expect(screen.getByRole("heading", { level: 2 }).textContent).toMatch(/Start small\.\s*Scale when it works\./);
-    expect(screen.getByText(TRIAL.price)).toBeInTheDocument();
-    const plans = document.querySelectorAll(".plan");
-    expect(plans.length).toBe(2);
-    expect(plans[0]).toHaveClass("plan--dark");
-    expect(plans[1]).not.toHaveClass("plan--dark");
-    for (const [i, p] of PLANS.entries()) expect(plans[i].querySelectorAll(".plan__feature").length).toBe(p.features.length);
+    const tiers = document.querySelectorAll(".tier");
+    expect(tiers).toHaveLength(3);
+    expect([...tiers].map((t) => t.querySelector(".tier__step").textContent)).toEqual(["01 · Start here", "02 · Then", "03 · Ongoing"]);
+    expect(tiers[0]).toHaveClass("tier--hero");
+    expect(tiers[0]).toHaveTextContent("$1500");
   });
 
-  it("never says Book a call, and every CTA starts a project with its plan", () => {
+  it("joins the steps with a rail and keeps each list short", () => {
+    renderWithProviders(<Pricing />);
+    expect(document.querySelector(".ladder__rail")).toHaveAttribute("aria-hidden", "true");
+    for (const t of document.querySelectorAll(".tier")) {
+      const n = t.querySelectorAll(".tier__feature").length;
+      expect(n).toBeGreaterThan(0);
+      expect(n).toBeLessThanOrEqual(4);
+    }
+  });
+
+  it("never says Book a call; the trial starts the trial, the others start a project with their plan", () => {
     renderWithProviders(<Pricing />);
     const sec = document.querySelector("#pricing");
     expect(sec.textContent).not.toMatch(/book a call/i);
-    const ctas = [...sec.querySelectorAll("a.btn")];
-    expect(ctas.length).toBe(PLANS.length + 1);
-    for (const a of ctas) expect(a.getAttribute("href")).toMatch(/^\/start-a-project\?plan=/);
+    const ctas = [...sec.querySelectorAll(".tier a.btn")].map((a) => a.getAttribute("href"));
+    expect(ctas).toEqual(TIERS.map((t) => t.href));
+    for (const h of ctas) expect(h).toMatch(/^\/start-a-project\?plan=/);
   });
 
-  it("renders Custom for a plan without a confirmed price", () => {
+  it("shows Custom quote for unconfirmed prices and the trial-week promise once", () => {
     renderWithProviders(<Pricing />);
-    const unpriced = PLANS.filter((p) => !p.price).length;
-    expect(screen.queryAllByText("Custom").length).toBe(unpriced);
+    expect(screen.queryAllByText("Custom quote")).toHaveLength(TIERS.filter((t) => !t.price).length);
+    expect(screen.getAllByText(PLAN_NOTE)).toHaveLength(1);
   });
 
-  it("has its own /pricing page with the heading as h1, plan titles as h2 and no hide-until-scroll", () => {
+  it("has its own /pricing page with the heading as h1 and tier titles as h2", () => {
     renderWithProviders(<PricingPage />, { route: "/pricing" });
     expect(screen.getByRole("heading", { level: 1 }).textContent).toMatch(/Start small\.\s*Scale when it works\./);
-    expect(screen.getAllByRole("heading", { level: 2 }).map((h) => h.textContent)).toEqual(expect.arrayContaining(PLANS.map((p) => p.title)));
+    const sec = document.querySelector("#pricing");
+    expect([...sec.querySelectorAll("h2")].map((h) => h.textContent)).toEqual(TIERS.map((t) => t.title));
     expect(document.querySelector("#pricing")).not.toHaveClass("rv-armed");
     expect(ROUTES.some((r) => r.path === "/pricing")).toBe(true);
   });
