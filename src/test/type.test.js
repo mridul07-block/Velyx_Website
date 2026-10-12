@@ -88,9 +88,29 @@ describe("one theme across sections (hero + services palette and type)", () => {
   });
 });
 
-describe("Altair layout for Selected work and Process", () => {
-  it("left-aligns the process heading and runs the case cards full width like the panels", () => {
-    expect(rule(".process__title")).not.toMatch(/text-align:\s*center/);
-    expect(rule(".selwork__list")).toMatch(/margin-inline:\s*0/);
+describe("Services spacing and type everywhere", () => {
+  it("light sections share the services panel's content width (1100px + gutters)", () => {
+    expect(css).toMatch(/--container:\s*1180px/);
+    expect(rule(".panel > .container")).toMatch(/max-width:\s*1100px/);
+  });
+
+  it("no section overrides the shared side spacing", () => {
+    expect(css).not.toMatch(/\.mwork > \.container\s*\{/);
+    expect(css).not.toMatch(/\.panel\.process\s*\{/);
+    expect(rule(".selwork__list")).not.toMatch(/margin-inline/);
+    expect(rule(".selwork__head")).not.toMatch(/padding-inline/);
+  });
+
+  it("only uses the site's type sizes (52 / 36 / 18 / 16 / 14 / 13 / 10.5)", () => {
+    expect(rule(".statement__text")).toMatch(/font-size:\s*min\(36px/);
+    expect(rule(".plan__title")).toMatch(/font-size:\s*18px/);
+    expect(rule(".trialstrip__title")).toMatch(/font-size:\s*18px/);
+    expect(rule(".step__title")).toMatch(/font-size:\s*18px/);
+    expect(rule(".tcard2__name")).toMatch(/font-size:\s*18px/);
+  });
+
+  it("cards use the shared radius and the services gap", () => {
+    expect(rule(".case")).toMatch(/border-radius:\s*var\(--radius-card\)/);
+    expect(rule(".selwork__list")).toMatch(/gap:\s*24px/);
   });
 });

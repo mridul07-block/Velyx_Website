@@ -34,7 +34,7 @@ export default function SelectedWork() {
         <h2 className="selwork__title">Selected work.</h2>
         <p className="selwork__sub">Products we designed, built and shipped.</p>
       </div>
-      <div className="selwork__list">
+      <div className="container selwork__list">
         {projects.map((p, i) => (
           <FadeIn key={p.slug}>
             <article className={`case${i % 2 === 0 ? " case--media-first" : ""}`}>
