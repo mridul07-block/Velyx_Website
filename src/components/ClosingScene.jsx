@@ -1,15 +1,15 @@
 import { useEffect, useRef } from "react";
 import { floor } from "./illustrations/isoMatrix";
-import { ARC_D, HORIZON_Y, arcAt, box, disc, domeOutline, lerpAt, meridians, parallels, project, sphereAt } from "../lib/isoScene";
+import { ARC_D, HORIZON_Y, arcAt, box, disc, domeOutline, lerpAt, meridians, parallels, project, scopePose, slitBand } from "../lib/isoScene";
 
-/* Altair's footer scene, matched to the reference recording: a still
+/* Altair's footer scene, matched to the reference recording: an
    observatory (flared plinth with a fanned hatch, a shaded drum, a wireframe
-   dome with its oculus, a slit on the left and a telescope that slowly
-   tilts) on a large, faint diamond floor. Nine still objects stand around
+   dome with its oculus) whose turret turns, carrying its slit and telescope
+   round the dome and out of sight behind it, on a large, faint diamond floor. Nine still objects stand around
    it; four sit in dashed selection frames wired back to the plinth, a dot
    sliding along each wire. A single dot travels the dotted arc; the other
-   dots stay put. While `playing`, one rAF loop moves those dots and CSS
-   tilts the telescope. Otherwise it is a still drawing. */
+   dots stay put. While `playing`, one rAF loop turns the turret and moves
+   those dots. Otherwise it is a still drawing. */
 const O = [600, 388]; // plinth centre on the floor
 const R = 65; // dome radius
 const PLINTH = { b: 120, t: 92, h: 34 }; // bottom / top half-sides, height
@@ -34,19 +34,15 @@ const FAN = Array.from({ length: 72 }, (_, i) => {
   return [x1, y1, x2, y2].map((v) => v.toFixed(1));
 });
 
-// The dome: still, dense wireframe, an oculus on top, a slit down the left.
-const DOME = { outline: domeOutline(R), rings: parallels(R, [14, 28, 42, 56, 68]), meridians: meridians(R, 28, 0.35) };
+// The dome: dense wireframe and an oculus on top. The turret (slit and
+// telescope) starts on the left, as in the reference, and turns once per TURN.
+const MERIDIANS = 28;
+const TURN = 24000; // ms per full turn
+const TH0 = (101 * Math.PI) / 180;
+const SLIT_W = (17 * Math.PI) / 180;
+const DOME = { outline: domeOutline(R), rings: parallels(R, [14, 28, 42, 56, 68]) };
+const merPhase = (th) => (th / (2 * Math.PI)) * MERIDIANS;
 const OCULUS = disc(0, 0, R * Math.sin((80 * Math.PI) / 180), R * Math.cos((80 * Math.PI) / 180), DOME_O);
-const SLIT = (() => {
-  const band = [];
-  const [a, b] = [(93 * Math.PI) / 180, (110 * Math.PI) / 180];
-  const top = (80 * Math.PI) / 180;
-  for (let k = 0; k <= 18; k++) band.push(sphereAt(R + 0.4, (k / 18) * top, a, DOME_O));
-  for (let k = 18; k >= 0; k--) band.push(sphereAt(R + 0.4, (k / 18) * top, b, DOME_O));
-  return band.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`).join("") + "Z";
-})();
-const SCOPE_AT = sphereAt(R, (40 * Math.PI) / 180, (101 * Math.PI) / 180, DOME_O);
-
 // Wires from the plinth to the four framed objects.
 const WIRES = [
   [[499, 321], [436, 281]],
@@ -122,9 +118,18 @@ const STUDS = [[-11, -11], [11, -11], [-11, 11], [11, 11]];
 const CYL_R = [1139, 487];
 const LIGHT_O = [900, 527];
 
+const START_MERIDIANS = meridians(R, MERIDIANS, merPhase(TH0));
+const START_SLIT = slitBand(R + 0.4, TH0, SLIT_W, DOME_O);
+const scopeTransform = (pose) => `translate(${pose.x.toFixed(1)} ${pose.y.toFixed(1)}) rotate(${pose.angle.toFixed(1)})`;
+const START_SCOPE = scopePose(R, TH0, DOME_O);
+
 export default function ClosingScene({ playing }) {
   const arcRef = useRef(null);
   const wireRefs = useRef([]);
+  const merRefs = useRef([]);
+  const slitRef = useRef(null);
+  const scopeRef = useRef(null);
+  const scopeTubeRef = useRef(null);
 
   useEffect(() => {
     if (!playing) return;
@@ -132,6 +137,13 @@ export default function ClosingScene({ playing }) {
     const t0 = performance.now();
     const frame = (now) => {
       const t = now - t0;
+      const th = TH0 + (t / TURN) * Math.PI * 2;
+      meridians(R, MERIDIANS, merPhase(th)).forEach((d, i) => merRefs.current[i]?.setAttribute("d", d));
+      slitRef.current?.setAttribute("d", slitBand(R + 0.4, th, SLIT_W, DOME_O));
+      const pose = scopePose(R, th, DOME_O);
+      scopeRef.current?.setAttribute("transform", scopeTransform(pose));
+      scopeRef.current?.setAttribute("opacity", pose.visible.toFixed(2));
+      scopeTubeRef.current?.setAttribute("transform", `scale(${Math.max(0.35, pose.length).toFixed(2)} 1)`);
       const k = (t / ARC_PERIOD) % 1;
       const [x, y] = arcAt(k);
       arcRef.current?.setAttribute("transform", `translate(${x.toFixed(1)} ${y.toFixed(1)})`);
@@ -282,16 +294,14 @@ export default function ClosingScene({ playing }) {
       <g className="dome" transform={`translate(0 ${DOME_SHIFT})`}>
         <path d={DOME.outline} className="fs-dome" />
         {DOME.rings.map((d, i) => <path key={i} d={d} className="fs-domeline" />)}
-        {DOME.meridians.map((d, i) => <path key={i} d={d} className="fs-domeline" />)}
+        {START_MERIDIANS.map((d, i) => <path key={i} ref={(el) => { merRefs.current[i] = el; }} d={d} className="fs-domeline" />)}
       </g>
       <ellipse cx={OCULUS.cx} cy={OCULUS.cy} rx={OCULUS.rx} ry={OCULUS.ry} className="obs-oculus" />
-      <path d={SLIT} className="obs-slit" />
-      <g transform={`translate(${SCOPE_AT[0].toFixed(1)} ${SCOPE_AT[1].toFixed(1)})`}>
-        <g className="obs-scope">
-          <g transform="rotate(-152)">
-            <rect x="-6" y="-9" width="44" height="18" rx="9" className="fs-top" />
-            <ellipse cx="38" cy="0" rx="5.5" ry="9" className="fs-left" />
-          </g>
+      <path ref={slitRef} d={START_SLIT} className="obs-slit" />
+      <g ref={scopeRef} className="obs-scope" transform={scopeTransform(START_SCOPE)} opacity={START_SCOPE.visible.toFixed(2)}>
+        <g ref={scopeTubeRef} transform={`scale(${START_SCOPE.length.toFixed(2)} 1)`}>
+          <rect x="-6" y="-9" width="44" height="18" rx="9" className="fs-top" />
+          <ellipse cx="38" cy="0" rx="5.5" ry="9" className="fs-left" />
         </g>
       </g>
 

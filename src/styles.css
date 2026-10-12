@@ -733,9 +733,6 @@ a.team__name:hover { text-decoration: underline; text-underline-offset: 3px; }
 .fcta__scene .fs-dome { fill: url(#fs-dome-g); stroke: #b9b9b9; }
 .fcta__scene .fs-domeline { stroke: #cdcdcd; stroke-width: 0.7; }
 .fcta__scene .obs-slit { fill: #cfcfcf; stroke: #6f6f6f; }
-.fcta__scene .obs-scope { transform-box: view-box; transform-origin: 0 0; }
-.fcta__scene.is-playing .obs-scope { animation: obs-sweep 9s ease-in-out infinite; }
-@keyframes obs-sweep { 50% { transform: rotate(9deg); } }
 .fcta__scene .fs-handle { fill: #fff; stroke: #9a9a9a; vector-effect: non-scaling-stroke; }
 .fcta__scene .orbit { stroke: #9f9f9f; stroke-dasharray: 3 4; vector-effect: non-scaling-stroke; }
 .fcta__scene .orbit-dot { fill: var(--ink); stroke: none; }

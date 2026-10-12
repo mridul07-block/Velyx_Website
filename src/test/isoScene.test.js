@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { project, meridians, arcAt, lerpAt } from "../lib/isoScene";
+import { project, meridians, arcAt, lerpAt, slitBand, scopePose } from "../lib/isoScene";
 
 describe("isoScene geometry", () => {
   it("projects the world origin to the scene centre and z straight up", () => {
@@ -36,5 +36,23 @@ describe("isoScene geometry", () => {
 
   it("moves wire dots in a straight line between two points", () => {
     expect(lerpAt([0, 0], [10, 20], 0.5)).toEqual([5, 10]);
+  });
+  it("draws the dome's slit only while it faces the viewer", () => {
+    const front = slitBand(65, Math.PI / 4, 0.25, [600, 300]);
+    const back = slitBand(65, Math.PI / 4 + Math.PI, 0.25, [600, 300]);
+    expect(front.length).toBeGreaterThan(20);
+    // Behind the dome only the part near the top is still in view.
+    expect(back.length).toBeLessThan(front.length / 2);
+  });
+
+  it("turns the telescope around the dome: visible in front, hidden behind", () => {
+    const front = scopePose(65, Math.PI / 4, [600, 300]);
+    const back = scopePose(65, Math.PI / 4 + Math.PI, [600, 300]);
+    expect(front.visible).toBeGreaterThan(0.5);
+    expect(back.visible).toBe(0);
+    // Gone well before it reaches the dome's edge, so it never shows behind it.
+    expect(scopePose(65, Math.PI / 4 + Math.PI * 0.62, [600, 300]).visible).toBe(0);
+    const left = scopePose(65, Math.PI * 0.75, [600, 300]);
+    expect(left.x).toBeLessThan(front.x + 1);
   });
 });

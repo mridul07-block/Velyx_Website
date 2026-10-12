@@ -95,6 +95,38 @@ export function sphereAt(R, e, th, o) {
   return project(R * Math.cos(e) * Math.cos(th), R * Math.cos(e) * Math.sin(th), R * Math.sin(e), o);
 }
 
+/* The dome's slit at azimuth th (width w, radians): the band between two
+   meridians from the equator to near the top, keeping only what faces the
+   viewer, so it slides out of sight as the turret turns away. */
+export function slitBand(R, th, w, o) {
+  const top = (80 * Math.PI) / 180;
+  const side = (a) => {
+    const pts = [];
+    for (let k = 0; k <= 18; k++) {
+      const e = (k / 18) * top;
+      const p3 = [R * Math.cos(e) * Math.cos(a), R * Math.cos(e) * Math.sin(a), R * Math.sin(e)];
+      if (visible(p3)) pts.push(project(...p3, o));
+    }
+    return pts;
+  };
+  const a = side(th - w / 2);
+  const b = side(th + w / 2).reverse();
+  if (a.length < 2 || b.length < 2) return "";
+  return [...a, ...b].map(([x, y], i) => `${i ? "L" : "M"}${f(x)} ${f(y)}`).join("") + "Z";
+}
+
+/* Where the telescope sits on the turning dome (azimuth th): its base on
+   screen, the screen angle it points along, its foreshortened length and
+   how much of it faces the viewer (0 when it is round the back). */
+export function scopePose(R, th, o, e = (40 * Math.PI) / 180) {
+  const n = [Math.cos(e) * Math.cos(th), Math.cos(e) * Math.sin(th), Math.sin(e)];
+  const [x, y] = project(R * n[0], R * n[1], R * n[2], o);
+  const dx = (n[0] - n[1]) * 0.866;
+  const dy = (n[0] + n[1]) * 0.5 - n[2];
+  const facing = (n[0] + n[1] + n[2]) / Math.sqrt(3);
+  return { x, y, angle: (Math.atan2(dy, dx) * 180) / Math.PI, length: Math.hypot(dx, dy), visible: Math.min(1, Math.max(0, (facing - 0.3) / 0.25)) };
+}
+
 /* Box faces visible from the viewer: top, +x side and +y side. */
 export function box(x, y, z, w, d, h, o) {
   const P = (a, b, c) => project(a, b, c, o).map(f).join(" ");
