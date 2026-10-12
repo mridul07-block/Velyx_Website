@@ -1,7 +1,8 @@
-import { describe, it, expect } from "vitest";
-import { fireEvent, screen } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
+import { act, fireEvent, screen } from "@testing-library/react";
 import { renderWithProviders } from "./renderWithProviders";
 import Testimonials from "../components/Testimonials";
+import { AUTO_STEP_MS } from "../lib/drift";
 import TeamGrid from "../components/TeamGrid";
 import { TESTIMONIAL_QUOTES } from "../data/testimonials";
 import { shouldDrift, wrap, roleLine, loopPeriod } from "../lib/drift";
@@ -23,11 +24,18 @@ describe("testimonial drift rules", () => {
     expect(loopPeriod(cards, 2)).toBe(1118 - 200);
   });
 
-  it("turns snapping off while drifting so the drift is smooth", () => {
+  it("auto-advances one whole card at a time, so cards always sit aligned", () => {
+    vi.useFakeTimers();
     const many = Array.from({ length: 6 }, (_, i) => ({ ...TESTIMONIAL_QUOTES[i % 3], name: `N${i}` }));
     renderWithProviders(<Testimonials items={many} />);
-    expect(document.querySelector(".tsec__track")).toHaveClass("is-drifting");
-    expect(document.querySelectorAll(".tcard2").length).toBe(12);
+    const track = document.querySelector(".tsec__track");
+    expect(track).toHaveClass("is-auto");
+    expect(track).not.toHaveClass("is-drifting");
+    let left = 0;
+    track.scrollBy = ({ left: l }) => (left += l);
+    act(() => vi.advanceTimersByTime(AUTO_STEP_MS + 10));
+    expect(left).toBeGreaterThan(0);
+    vi.useRealTimers();
   });
 
   it("formats roles Bricx-style", () => {
@@ -100,5 +108,23 @@ describe("Founders", () => {
   it("titles the team section Founders", () => {
     renderWithProviders(<TeamGrid />);
     expect(screen.getByRole("heading", { level: 2, name: "Founders" })).toBeInTheDocument();
+  });
+});
+
+describe("dummy testimonials (local preview only)", () => {
+  it("fills ten cards in development with seven marked dummies after the real three", async () => {
+    const { quotesFor, DUMMY_QUOTES } = await import("../data/testimonials");
+    const dev = quotesFor(true);
+    expect(dev).toHaveLength(10);
+    expect(dev.slice(0, 3)).toEqual(TESTIMONIAL_QUOTES);
+    expect(DUMMY_QUOTES).toHaveLength(7);
+    for (const q of DUMMY_QUOTES) expect(q.dummy).toBe(true);
+  });
+
+  it("never ships the dummies in a production build", async () => {
+    const { quotesFor } = await import("../data/testimonials");
+    const prod = quotesFor(false);
+    expect(prod).toEqual(TESTIMONIAL_QUOTES);
+    expect(prod.some((q) => q.dummy)).toBe(false);
   });
 });

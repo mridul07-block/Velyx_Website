@@ -1,6 +1,9 @@
-/* Rules for the Bricx-style testimonial drift. */
+/* Rules for the testimonial autoplay. */
 
-/* Drift needs enough cards that the doubled loop never shows the same
+/* Autoplay steps one whole card this often, so cards always rest aligned. */
+export const AUTO_STEP_MS = 3600;
+
+/* Autoplay needs enough cards that the doubled loop never shows the same
    faces twice in view; never under reduced motion. */
 export function shouldDrift(count, reduced) {
   return count >= 6 && !reduced;

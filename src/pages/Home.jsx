@@ -13,7 +13,7 @@ import ProjectsPanel from "../sections/home/ProjectsPanel";
 import Compare from "../sections/home/Compare";
 import Process from "../sections/home/Process";
 import Statement from "../sections/home/Statement";
-import { TESTIMONIAL_QUOTES } from "../data/testimonials";
+import { quotesFor } from "../data/testimonials";
 
 const JSON_LD = {
   "@context": "https://schema.org",
@@ -37,7 +37,7 @@ export default function Home() {
       <Compare />
       <Process />
       <TeamGrid />
-      <Testimonials items={TESTIMONIAL_QUOTES} />
+      <Testimonials items={quotesFor(import.meta.env.DEV)} />
       <Pricing />
       <ToolsStrip />
     </Layout>

@@ -34,6 +34,26 @@ export const TESTIMONIAL_QUOTES = [
   },
 ];
 
+/* DUMMY — seven placeholder quotes so the carousel shows ten cards on the
+   local preview. Fictional people at fictional companies; they are NOT
+   client words. quotesFor(false) — every production build — leaves them
+   out. TO CONFIRM: replace with real quotes, then delete this list. */
+export const DUMMY_QUOTES = !import.meta.env.DEV ? [] : [
+  { name: "Sample Client", role: "Founder · Acme", avatar: "SC", q: "Placeholder quote — the founders were in every call and shipped what they promised, on time." },
+  { name: "Sample Client", role: "CEO · Globex", avatar: "SC", q: "Placeholder quote — clear plan in week one and a working product by week three." },
+  { name: "Sample Client", role: "Founder · Initech", avatar: "SC", q: "Placeholder quote — our WhatsApp follow-ups now run themselves." },
+  { name: "Sample Client", role: "COO · Hooli", avatar: "SC", q: "Placeholder quote — one team for design, AI and code made everything faster." },
+  { name: "Sample Client", role: "Founder · Vandelay", avatar: "SC", q: "Placeholder quote — honest about scope, fast to iterate, easy to work with." },
+  { name: "Sample Client", role: "Head of Product · Wonka", avatar: "SC", q: "Placeholder quote — the AI agent handles our first replies around the clock." },
+  { name: "Sample Client", role: "Founder · Umbrella", avatar: "SC", q: "Placeholder quote — we'd hire them again for the next product." },
+].map((q, i) => ({ kind: "quote", dummy: true, highlights: [], ...q, name: `${q.name} ${i + 1}` }));
+
+/* What the carousel shows: the real quotes, plus the dummies only on a
+   development build (the local preview). */
+export function quotesFor(isDev) {
+  return isDev ? [...TESTIMONIAL_QUOTES, ...DUMMY_QUOTES] : TESTIMONIAL_QUOTES;
+}
+
 export const ENGAGEMENTS = [
   {
     kind: "work",

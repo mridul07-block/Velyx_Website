@@ -2,15 +2,14 @@ import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import useOnScreen from "../lib/useOnScreen";
 import useReducedMotion from "../lib/useReducedMotion";
-import { loopPeriod, roleLine, shouldDrift, wrap } from "../lib/drift";
+import { AUTO_STEP_MS, loopPeriod, roleLine, shouldDrift, wrap } from "../lib/drift";
 import { PROJECTS } from "../data/projects";
-
-const SPEED = 40; // px per second
 
 /* Bricx's testimonials: a two-tone headline, tall cards in a snapping
    horizontal track, arrows at every width. Cards show the client's photo
-   when we have one (`photo`), a large monogram until then. The track only
-   drifts once there are enough real quotes to loop (see shouldDrift). */
+   when we have one (`photo`), a large monogram until then. Once there are
+   enough quotes to loop (see shouldDrift) it steps one card at a time, so
+   cards always rest aligned to the page. */
 export default function Testimonials({ items }) {
   const [sectionRef, onScreen] = useOnScreen("0px");
   const reduced = useReducedMotion();
@@ -19,26 +18,23 @@ export default function Testimonials({ items }) {
   const holdUntil = useRef(0);
   const drift = shouldDrift(items.length, reduced);
 
+  // Without IntersectionObserver (old browsers, tests) treat it as visible.
+  const visible = onScreen || typeof IntersectionObserver === "undefined";
+
   useEffect(() => {
     const el = trackRef.current;
-    if (!drift || !onScreen || !el) return;
-    let frame = 0;
-    let last = performance.now();
-    let pos = el.scrollLeft;
-    const step = (now) => {
-      const dt = Math.min(0.05, (now - last) / 1000);
-      last = now;
-      if (!paused.current && now > holdUntil.current && !document.hidden) {
-        pos = wrap(pos + SPEED * dt, loopPeriod(el.querySelectorAll(".tcard2"), items.length));
-        el.scrollLeft = pos;
-      } else {
-        pos = el.scrollLeft;
-      }
-      frame = requestAnimationFrame(step);
-    };
-    frame = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(frame);
-  }, [drift, onScreen, items.length]);
+    if (!drift || !visible || !el) return;
+    const id = setInterval(() => {
+      if (paused.current || document.hidden || performance.now() < holdUntil.current) return;
+      const cards = el.querySelectorAll(".tcard2");
+      const stepBy = (cards[0]?.offsetWidth ?? 0) + 24;
+      const period = loopPeriod(cards, items.length);
+      // Past the first set? Jump back by one set (looks identical), then step.
+      if (period > 0 && el.scrollLeft + stepBy > period) el.scrollLeft = wrap(el.scrollLeft, period);
+      el.scrollBy({ left: stepBy, behavior: "smooth" });
+    }, AUTO_STEP_MS);
+    return () => clearInterval(id);
+  }, [drift, visible, items.length]);
 
   if (!items.length) return null;
   const cards = drift ? [...items, ...items] : items;
@@ -70,7 +66,7 @@ export default function Testimonials({ items }) {
       <div className="container">
       <div
         ref={trackRef}
-        className={`tsec__track${drift ? " is-drifting" : ""}`}
+        className={`tsec__track${drift ? " is-auto" : ""}`}
         role="region"
         aria-label="Testimonials"
         tabIndex={0}
