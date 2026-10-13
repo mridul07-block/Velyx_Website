@@ -6,7 +6,7 @@ import BtnLabel from "./BtnLabel";
 const LINKS = [
   { label: "Recent Work", to: "/work" },
   { label: "Pricing", to: "/pricing" },
-  { label: "Swipe file", to: "/swipe-file" },
+  { label: "Services", to: "/#services" },
 ];
 
 export default function PillNav() {
@@ -22,7 +22,7 @@ export default function PillNav() {
         <ul className="pnav__links">
           {LINKS.map((l) => (
             <li key={l.to}>
-              <NavLink to={l.to}>{l.label}</NavLink>
+              {l.to.includes("#") ? <Link to={l.to}>{l.label}</Link> : <NavLink to={l.to}>{l.label}</NavLink>}
             </li>
           ))}
         </ul>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import IntroCallButton from "../components/IntroCallButton";
 import BtnLabel from "../components/BtnLabel";
 import useInView from "../lib/useInView";
 import { PLAN_NOTE, PLANS, TRIAL } from "../data/pricing";
@@ -54,7 +55,7 @@ export default function Pricing({ headingLevel = 2, reveal = true }) {
                   {p.price ? (p.unit === "from" ? <>From {p.price}</> : <>{p.price}<span>{p.unit}</span></>) : "Custom"}
                 </p>
               </div>
-              <Link to={`/start-a-project?plan=${p.id}`} className="btn plan__cta"><BtnLabel>Start a project</BtnLabel></Link>
+              <IntroCallButton className="plan__cta">Book a call</IntroCallButton>
               <div>
                 <p className="plan__includes">Plan includes:</p>
                 <ul className="plan__list">

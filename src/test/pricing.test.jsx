@@ -19,13 +19,18 @@ describe("Pricing (925 Studios)", () => {
     for (const [i, p] of PLANS.entries()) expect(plans[i].querySelectorAll(".plan__feature").length).toBe(p.features.length);
   });
 
-  it("never says Book a call, and every CTA starts a project with its plan", () => {
+  it("plan cards book a call (Google Meet icon); the trial strip starts the trial", () => {
     renderWithProviders(<Pricing />);
     const sec = document.querySelector("#pricing");
-    expect(sec.textContent).not.toMatch(/book a call/i);
-    const ctas = [...sec.querySelectorAll("a.btn")];
-    expect(ctas.length).toBe(PLANS.length + 1);
-    for (const a of ctas) expect(a.getAttribute("href")).toMatch(/^\/start-a-project\?plan=/);
+    const plans = [...sec.querySelectorAll("a.plan__cta")];
+    expect(plans.length).toBe(PLANS.length);
+    for (const a of plans) {
+      expect(a).toHaveAttribute("href", "/intro-call");
+      expect(a.textContent).toMatch(/^Book a call/);
+      expect(a.querySelector("svg.meet-icon")).not.toBeNull();
+    }
+    expect(sec.querySelector("a.trialstrip__cta")).toHaveAttribute("href", "/start-a-project?plan=trial");
+    expect(sec.textContent).not.toMatch(/start a project/i);
   });
 
   it("renders Custom for a plan without a confirmed price", () => {
