@@ -13,6 +13,16 @@ describe("/work", () => {
     expect(cards(container)).toHaveLength(PROJECTS.length);
   });
 
+  it("shows product screenshots whole: wide covers are marked to fit, not crop", async () => {
+    const { container } = renderWithProviders(<AppRoutes />, { route: "/work" });
+    await screen.findByRole("heading", { level: 1, name: "Latest projects" });
+    for (const p of PROJECTS.filter((x) => x.cover)) {
+      const img = container.querySelector(`.pcard[href="/work/${p.slug}"] img.cover`);
+      expect(img.classList.contains("cover--shot"), p.slug).toBe(p.cover.w / p.cover.h >= 1.6);
+    }
+    expect(PROJECTS.find((p) => p.slug === "getlandy").cover.src).toBe("/work/getlandy/landing-wide.webp");
+  });
+
   it("filters by type and reflects it in the pressed pill", async () => {
     const { container } = renderWithProviders(<AppRoutes />, { route: "/work" });
     await screen.findByRole("heading", { level: 1 });

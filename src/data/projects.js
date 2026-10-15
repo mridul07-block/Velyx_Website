@@ -18,7 +18,7 @@ export const PROJECTS = [
     types: ["ai", "saas"],
     featured: true,
     logo: "/clients/getlandy-mark.webp",
-    cover: img("/work/getlandy/landing.webp", 1440, 900),
+    cover: img("/work/getlandy/landing-wide.webp", 1440, 720),
     // Spotlight card: the landing page over a dashboard page, stacked, both 2:1 and shown whole.
     shots: [
       { ...img("/work/getlandy/landing-wide.webp", 1440, 720), alt: "landing page" },
@@ -188,7 +188,7 @@ export const PROJECTS = [
     types: ["ai", "saas"],
     featured: true,
     logo: "/clients/plainstate.webp",
-    cover: PS("top"),
+    cover: img("/work/plainstate/hero.webp", 1600, 849),
     shots: [
       { ...PS("top"), alt: "owner statement with its source cells" },
       { ...PS("workflow"), alt: "how a month moves" },

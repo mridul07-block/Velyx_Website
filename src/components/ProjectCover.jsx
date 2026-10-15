@@ -1,5 +1,7 @@
 export default function ProjectCover({ project, className = "" }) {
-  const classes = ["cover", className].filter(Boolean).join(" ");
+  // a wide product screenshot is shown whole in the work grid rather than cropped
+  const shot = project.cover && project.cover.w / project.cover.h >= 1.6;
+  const classes = ["cover", shot && "cover--shot", className].filter(Boolean).join(" ");
   if (!project.cover) {
     return (
       <div className={`${classes} cover--empty`} aria-hidden="true">

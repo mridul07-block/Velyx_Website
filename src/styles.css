@@ -853,7 +853,9 @@ a.filter { display: inline-flex; align-items: center; }
 .pcard__tags { justify-content: center; }
 .pcard__media { position: relative; width: 100%; padding: 4px; background: var(--card); border-radius: 22px; transition: transform 0.3s, box-shadow 0.3s; }
 .pcard:hover .pcard__media { transform: translateY(-4px); box-shadow: 0 14px 34px #00000012; }
-.pcard__media .cover { border-radius: 18px; aspect-ratio: 3 / 2; }
+.pcard__media .cover { border-radius: 18px; aspect-ratio: 16 / 9; }
+/* screenshots fit whole at the top; the name tab sits in the white strip below */
+.pcard__media .cover--shot { object-fit: contain; object-position: top; border-radius: 18px 18px 0 0; }
 .pcard .cover--empty { background-color: var(--page); background-image: radial-gradient(#0000000d 1px, transparent 1px); color: var(--muted); }
 .pcard__name {
   position: absolute;
