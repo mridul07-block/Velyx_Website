@@ -5,6 +5,7 @@
 export const SERVICES = [
   {
     id: "agents",
+    short: "AI agents",
     title: "Agentic AI automation",
     copy: "AI agents that answer, qualify, follow up and file — wired into your CRM, inbox and WhatsApp, with human approval where it matters.",
     tags: ["OpenAI", "Claude", "LangGraph", "n8n", "CRM", "Evals"],
@@ -21,6 +22,7 @@ export const SERVICES = [
   },
   {
     id: "saas",
+    short: "SaaS & MVPs",
     title: "AI SaaS & MVPs",
     copy: "From idea to paying users. Production apps with auth, billing, admin and AI features built on your data — made to grow, not to be rebuilt.",
     tags: ["Next.js", "React", "Node.js", "Supabase", "Postgres", "Stripe"],
@@ -37,6 +39,7 @@ export const SERVICES = [
   },
   {
     id: "whatsapp",
+    short: "WhatsApp + CRM",
     title: "WhatsApp automation + CRM",
     copy: "Bookings, reminders, lead follow-up and re-engagement running on WhatsApp, with a simple CRM so your team sees every conversation.",
     tags: ["WhatsApp API", "CRM", "Webhooks", "Dashboards"],
@@ -53,6 +56,7 @@ export const SERVICES = [
   },
   {
     id: "web",
+    short: "Websites",
     title: "Websites & landing pages",
     copy: "Fast, conversion-focused websites and landing pages with custom visuals and interactions — built to turn visitors into booked calls.",
     tags: ["Figma", "React", "Next.js", "Framer", "SEO", "Analytics"],
@@ -70,6 +74,7 @@ export const SERVICES = [
   },
   {
     id: "mobile",
+    short: "Mobile apps",
     title: "Mobile apps",
     copy: "Cross-platform iOS and Android apps from one codebase — designed, built and shipped to the stores.",
     tags: ["React Native", "Expo", "Firebase", "App Store"],
@@ -87,6 +92,7 @@ export const SERVICES = [
   },
   {
     id: "healthcare",
+    short: "Healthcare",
     title: "Healthcare automation & agents",
     copy: "AI agents for clinics and hospitals that book appointments, send reminders, take intake and chase insurance paperwork, with staff signing off.",
     tags: ["Claude", "Voice AI", "WhatsApp", "n8n", "EHR", "Privacy"],
@@ -103,6 +109,7 @@ export const SERVICES = [
   },
   {
     id: "realestate",
+    short: "Real estate",
     title: "Real estate automation & agents",
     copy: "Agents that answer every portal and ad lead in minutes, qualify buyers, book site visits and keep the CRM current, plus statements and reports that build themselves.",
     tags: ["Claude", "WhatsApp", "CRM", "Voice AI", "n8n", "Dashboards"],
@@ -119,6 +126,7 @@ export const SERVICES = [
   },
   {
     id: "automotive",
+    short: "Automobile",
     title: "Automobile automation & agents",
     copy: "Agentic systems for dealerships and workshops: service bookings, live job tracking, estimate approvals, parts chasing and an AI inbox that answers customers first.",
     tags: ["Claude", "WhatsApp", "DMS", "Dashboards", "Forecasting", "Voice AI"],

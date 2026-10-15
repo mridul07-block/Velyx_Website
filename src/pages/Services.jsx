@@ -71,7 +71,7 @@ export default function Services() {
             sub="What we build, what's included, and the businesses we build it for."
           />
           <nav className="filters svc-jump" aria-label="Jump to a service">
-            {SERVICES.map((s) => <a key={s.id} href={`#${s.id}`} className="filter">{s.title}</a>)}
+            {SERVICES.map((s) => <a key={s.id} href={`#${s.id}`} className="filter">{s.short}</a>)}
           </nav>
         </div>
       </section>

@@ -30,13 +30,20 @@ describe("routes", () => {
   it("/services details every service: what's included and who it's for", async () => {
     const { container } = renderWithProviders(<AppRoutes />, { route: "/services" });
     await screen.findByRole("heading", { level: 1, name: "Services" });
-    for (const id of ["agents", "saas", "whatsapp", "web", "mobile"]) {
+    for (const id of ["agents", "saas", "whatsapp", "web", "mobile", "healthcare", "realestate", "automotive"]) {
       const section = container.querySelector(`section#${id}`);
       expect(section).not.toBeNull();
       expect(section.querySelectorAll(".svc-detail__list li").length).toBeGreaterThan(3);
       expect(section.querySelectorAll(".tags--light .tag").length).toBeGreaterThan(3);
       expect(container.querySelector(`a.filter[href="#${id}"]`)).not.toBeNull();
     }
+  });
+
+  it("/services jump bar uses one short label per service, so it fits on one line", async () => {
+    const { container } = renderWithProviders(<AppRoutes />, { route: "/services" });
+    await screen.findByRole("heading", { level: 1, name: "Services" });
+    const links = [...container.querySelectorAll(".svc-jump a.filter")].map((a) => a.textContent);
+    expect(links).toEqual(["AI agents", "SaaS & MVPs", "WhatsApp + CRM", "Websites", "Mobile apps", "Healthcare", "Real estate", "Automobile"]);
   });
 
   it("/start has no navigation exits", async () => {
