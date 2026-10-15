@@ -18,6 +18,19 @@ describe("Project spotlights (Kargul)", () => {
   });
 });
 
+describe("Spotlight highlights", () => {
+  it("lists a project's highlights as points in place of the build paragraph", () => {
+    renderWithProviders(<ProjectsPanel />);
+    const withPoints = PROJECTS.filter((x) => x.featured && x.highlights);
+    expect(withPoints.map((p) => p.slug)).toEqual(["getlandy", "audi-service-system"]);
+    for (const p of withPoints) {
+      const card = [...document.querySelectorAll(".spot")].find((c) => c.querySelector("h3").textContent === p.name);
+      expect([...card.querySelectorAll(".spot__points li")].map((li) => li.textContent)).toEqual(p.highlights);
+      expect(card.textContent).not.toContain(p.built);
+    }
+  });
+});
+
 describe("GetLandy spotlight screenshots", () => {
   const getlandy = PROJECTS.find((p) => p.slug === "getlandy");
 

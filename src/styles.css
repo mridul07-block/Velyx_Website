@@ -460,8 +460,13 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 .spot--flip .spot__media { order: 2; }
 .spot__media { border-radius: 20px; overflow: hidden; background: var(--panel); min-height: 300px; }
 .spot__body { display: flex; flex-direction: column; justify-content: space-between; gap: 24px; padding: 16px 0; font-size: 14px; line-height: 22px; font-weight: 500; color: var(--on-panel-muted); }
-.spot__text { display: flex; flex-direction: column; gap: 12px; }
+.spot__text { display: flex; flex-direction: column; gap: 12px; flex: 1; }
+.spot__text .tags { margin-top: auto; padding-top: 20px; }
 .spot__body .h3 { color: var(--on-panel); }
+.spot__label { margin-top: 8px; padding-top: 18px; border-top: 1px solid var(--panel-line); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--on-panel-muted); }
+.spot__points { list-style: none; display: flex; flex-direction: column; gap: 14px; font-size: 16px; line-height: 1.45; color: var(--on-panel); }
+.spot__points li { display: flex; gap: 12px; align-items: flex-start; }
+.spot__points svg { flex: none; width: 20px; height: 20px; margin-top: 1px; padding: 4px; border-radius: 50%; background: var(--on-panel); fill: none; stroke: var(--panel); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 .spot__body .btn--panel { margin-top: 6px; }
 /* stacked screenshots: same width, same 2:1 shape, shown whole with even spacing */
 .spot__shots { display: flex; flex-direction: column; justify-content: center; gap: 14px; height: 100%; padding: 20px; }

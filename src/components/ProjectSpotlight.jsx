@@ -23,7 +23,21 @@ export default function ProjectSpotlight({ project, flip = false }) {
         <div className="spot__text">
           <h3 className="h3">{project.name}</h3>
           <p>{project.summary}</p>
-          <p>{project.built}</p>
+          {project.highlights ? (
+            <>
+              <span className="spot__label">What we built</span>
+              <ul className="spot__points">
+                {project.highlights.map((h) => (
+                  <li key={h}>
+                    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" /></svg>
+                    {h}
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <p>{project.built}</p>
+          )}
           <div className="tags">
             <Tag>{project.industry}</Tag>
             <Tag>{project.audience}</Tag>
