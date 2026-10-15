@@ -105,6 +105,15 @@ describe("/work/:slug", () => {
     expect(document.querySelectorAll(".feat")).toHaveLength(audi.features.length);
   });
 
+  it("the Plainstate case study opens on its product film and walks through the product", async () => {
+    const ps = PROJECTS.find((p) => p.slug === "plainstate");
+    renderWithProviders(<AppRoutes />, { route: "/work/plainstate" });
+    await screen.findByRole("heading", { level: 1, name: "Plainstate" });
+    expect(screen.getByRole("img", { name: "Plainstate logo" })).toHaveAttribute("src", ps.logo);
+    expect(document.querySelector(".case__hero video")).toHaveAttribute("src", ps.video.src);
+    expect(document.querySelectorAll(".feat")).toHaveLength(ps.features.length);
+  });
+
   it("an unknown slug shows the 404 page", async () => {
     renderWithProviders(<AppRoutes />, { route: "/work/does-not-exist" });
     expect(await screen.findByRole("heading", { level: 1, name: /page not found/i })).toBeInTheDocument();

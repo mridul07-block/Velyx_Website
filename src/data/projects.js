@@ -5,6 +5,7 @@
    screenshots (client faces/names). TO CONFIRM: product screenshots for each
    project; Kettler and Priya, once described. */
 const img = (src, w = 1600, h = 1040) => ({ src, w, h });
+const PS = (name) => img(`/work/plainstate/${name}.webp`, 1440, 720);
 const AUDI = (name) => img(`/work/audi/${name}.webp`, 1512, 756);
 
 export const PROJECTS = [
@@ -179,13 +180,100 @@ export const PROJECTS = [
     quoteName: null,
   },
   {
+    slug: "plainstate",
+    name: "Plainstate",
+    summary: "Month-end owner statements in under an hour, not three to five days, for residential property managers.",
+    industry: "Proptech",
+    audience: "B2B SaaS",
+    types: ["ai", "saas"],
+    featured: true,
+    logo: "/clients/plainstate.webp",
+    cover: PS("top"),
+    shots: [
+      { ...PS("top"), alt: "owner statement with its source cells" },
+      { ...PS("workflow"), alt: "how a month moves" },
+    ],
+    // The product film from buildplainstate.in.
+    video: { src: "/work/plainstate-film.mp4", poster: "/work/plainstate-film.webp", w: 1600, h: 900 },
+    highlights: [
+      "Drafts every owner's statement from the exports the PMS already runs",
+      "Reconciles to the cent, or refuses to send",
+      "Every figure cites its source file, cell and checksum",
+      "Read-only, with a person approving every statement",
+    ],
+    featuresTitle: "Inside Plainstate",
+    // From buildplainstate.in, section by section.
+    features: [
+      {
+        title: "A statement that explains itself",
+        shot: PS("top"),
+        text: "The owner statement a reviewer sees. Click any figure and Plainstate shows where it came from: the file, the cell, the checksum and the text exactly as printed.",
+        points: ["Provenance panel for every number", "Checks listed on every statement", "What the owner receives, sources and record in one view"],
+      },
+      {
+        title: "How a month moves",
+        shot: PS("workflow"),
+        text: "Nothing changes about how the month runs. The PMS still keeps the books; Plainstate sits between its reports and the statement an owner receives, with a person in the middle.",
+        points: ["Scheduled exports drop in as CSV, XLSX or PDF", "Reconcile and cite, refusing rather than guessing", "A reviewer approves. Nothing is auto-sent"],
+      },
+      {
+        title: "The rollforward",
+        shot: PS("rollforward"),
+        text: "Every owner statement is the same seven figures. The last one matters most: the available balance has to become next month's beginning balance.",
+        points: ["Beginning balance, income, expenses, ending balance, draw, reserve, available", "All three relationships checked to the cent", "Zero tolerance"],
+      },
+      {
+        title: "The engine",
+        shot: PS("engine"),
+        text: "Seven steps from export to statement, and each one can stop the line before anything wrong reaches an owner.",
+        points: ["Store, read, identify, parse, normalise, validate, plan", "Decimal arithmetic, never floating point", "Raw files checksummed and kept"],
+      },
+      {
+        title: "A number that proves itself",
+        shot: PS("trace"),
+        text: "Follow one figure from the ledger to the statement: read the cells, sum them, roll forward, distribute, and carry it into next month.",
+        points: ["Each ledger cell with its locator and checksum", "Totals that agree with the statement's own", "Carried into the next period, or flagged"],
+      },
+      {
+        title: "The exports you already have",
+        shot: PS("sources"),
+        text: "No API keys, no migration and no plan upgrade. Plainstate reads the reports the property management software already produces.",
+        points: ["Buildium and AppFolio formats live", "Rent Manager, Propertyware and Rentvine next", "Identified by content, not by filename"],
+      },
+      {
+        title: "It balances, or it does not go out",
+        shot: PS("checks"),
+        text: "Beginning plus income minus expenses must equal the ending balance. If any check fails, the statement stops and says exactly why.",
+        points: ["Rollforward, totals and period continuity checks", "Anything under 0.85 confidence goes to a person", "About 12,000 fuzz cases across six invariants"],
+      },
+      {
+        title: "Owners' money never touches it",
+        shot: PS("data"),
+        text: "Plainstate is read-only. It has no bank connection, moves no money and sends nothing without approval.",
+        points: ["Read-only from the exports you schedule", "No bank connection, no money movement", "Files deleted on request, with an NDA available"],
+      },
+      {
+        title: "Priced by doors",
+        shot: PS("pricing"),
+        text: "Simple monthly pricing by portfolio size, built for third-party managers with 200 to 800 doors.",
+        points: ["Three tiers, billed monthly", "Start by sending one real export", "Book a call to walk through it"],
+      },
+    ],
+    gallery: [],
+    brief: "Property managers spend three to five days each month rebuilding owner statements by hand, because the statement their software prints is a table nobody can explain. Plainstate drafts those statements from the exports they already have, reconciled to the cent, with proof behind every figure.",
+    built: "Built by Velyx Labs: the Plainstate product and its website, from the reconciliation engine and provenance for every figure to the reviewer's workflow.",
+    stack: [],
+    result: null,
+    quoteName: null,
+  },
+  {
     slug: "sacred-basil",
     name: "Sacred Basil",
     summary: "A complete e-commerce brand, built alongside a deep audit of the business behind it.",
     industry: "E-commerce",
     audience: "B2C",
     types: ["web"],
-    featured: true,
+    featured: false,
     cover: img("/work/sacred-basil.jpg", 619, 549),
     gallery: [],
     brief: "Sacred Basil needed its full e-commerce brand built — and a clear look at how the business itself was running.",
@@ -201,7 +289,7 @@ export const PROJECTS = [
     industry: "Marketplace",
     audience: "B2C",
     types: ["saas", "web"],
-    featured: true,
+    featured: false,
     cover: null,
     gallery: [],
     brief: "Jon Stewart needed an online auction and bidding platform.",

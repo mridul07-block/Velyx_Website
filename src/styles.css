@@ -883,7 +883,7 @@ a.filter { display: inline-flex; align-items: center; }
 .case__hero .cover:not(.cover--empty) { width: auto; max-width: 100%; height: auto; aspect-ratio: auto; margin-inline: auto; }
 .case__hero .cover--empty { aspect-ratio: 16 / 7; background-color: var(--card); background-image: radial-gradient(#0000000d 1px, transparent 1px); background-size: 16px 16px; color: var(--muted); }
 .case__hero--film { background: #f5f4fb; }
-.film { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; }
+.film { display: block; width: 100%; height: auto; }
 /* Feature walkthrough: one card per page, screenshot on a tinted stage beside its story */
 .feats { max-width: 1080px; display: flex; flex-direction: column; gap: 20px; padding-bottom: clamp(48px, 7vw, 88px); }
 .feats__title { text-align: center; margin-bottom: clamp(12px, 2vw, 24px); }

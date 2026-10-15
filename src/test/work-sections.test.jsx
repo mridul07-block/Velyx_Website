@@ -22,7 +22,7 @@ describe("Spotlight highlights", () => {
   it("lists a project's highlights as points in place of the build paragraph", () => {
     renderWithProviders(<ProjectsPanel />);
     const withPoints = PROJECTS.filter((x) => x.featured && x.highlights);
-    expect(withPoints.map((p) => p.slug)).toEqual(["getlandy", "audi-service-system"]);
+    expect(withPoints.map((p) => p.slug)).toEqual(["getlandy", "audi-service-system", "plainstate"]);
     for (const p of withPoints) {
       const card = [...document.querySelectorAll(".spot")].find((c) => c.querySelector("h3").textContent === p.name);
       expect([...card.querySelectorAll(".spot__points li")].map((li) => li.textContent)).toEqual(p.highlights);

@@ -25,9 +25,9 @@ describe("content data", () => {
     expect(STATS[1]).toEqual({ value: "10+", label: "Services under one roof" });
   });
 
-  it("features four projects, every image and film of which exists on disk", () => {
+  it("features three projects, every image and film of which exists on disk", () => {
     const featured = PROJECTS.filter((p) => p.featured);
-    expect(featured.map((p) => p.slug)).toEqual(["getlandy", "audi-service-system", "sacred-basil", "yorkscreenplay"]);
+    expect(featured.map((p) => p.slug)).toEqual(["getlandy", "audi-service-system", "plainstate"]);
     for (const p of PROJECTS) {
       const media = [p.cover, ...p.gallery, ...(p.shots ?? []), ...(p.features ?? []).map((f) => f.shot), p.video && { src: p.video.src }, p.video && { src: p.video.poster }, p.logo && { src: p.logo }];
       for (const img of media.filter(Boolean)) {
