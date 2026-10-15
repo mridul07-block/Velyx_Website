@@ -13,8 +13,8 @@ import { TESTIMONIAL_QUOTES } from "../data/testimonials";
 const BANNED = /\$1B|210M|75\+|95%|SideShift|ZeroLeaks|Agent Arcade|Kargul|Northwind|Sable Health|Halcyon/i;
 
 describe("content data", () => {
-  it("has the five Velyx services in Kargul's 3 + 2 layout", () => {
-    expect(SERVICES.map((s) => s.id)).toEqual(["agents", "saas", "whatsapp", "web", "mobile"]);
+  it("has the Velyx services in a 3 + 2 + 3 layout, the last row by industry", () => {
+    expect(SERVICES.map((s) => s.id)).toEqual(["agents", "saas", "whatsapp", "web", "mobile", "healthcare", "realestate", "automotive"]);
     expect(SERVICES.filter((s) => s.wide).map((s) => s.id)).toEqual(["web", "mobile"]);
     for (const s of SERVICES) expect(s.tags.length).toBeGreaterThanOrEqual(4);
   });

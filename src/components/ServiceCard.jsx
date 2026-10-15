@@ -7,8 +7,9 @@ import SaasArt from "./illustrations/SaasArt";
 import WhatsAppArt from "./illustrations/WhatsAppArt";
 import WebArt from "./illustrations/WebArt";
 import MobileArt from "./illustrations/MobileArt";
+import { HealthcareArt, RealEstateArt, AutomotiveArt } from "./illustrations/IndustryArt";
 
-const ART = { agents: AgentsArt, saas: SaasArt, whatsapp: WhatsAppArt, web: WebArt, mobile: MobileArt };
+const ART = { agents: AgentsArt, saas: SaasArt, whatsapp: WhatsAppArt, web: WebArt, mobile: MobileArt, healthcare: HealthcareArt, realestate: RealEstateArt, automotive: AutomotiveArt };
 
 /* Kargul-style living illustrations: isometric layers float on their own
    rhythm while the card is on screen, spread apart while it is hovered and

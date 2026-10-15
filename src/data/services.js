@@ -1,5 +1,5 @@
-/* The five Velyx services, shown in Kargul's 3 + 2 card layout on the home
-   page. `includes` and `niches` are the detail on /services.
+/* The Velyx services, shown in a 3 + 2 + 3 card layout on the home page;
+   the last row is agentic automation by industry. `includes` and `niches` are the detail on /services.
    TO CONFIRM: tag lists must match the stack Velyx actually uses, and the
    includes/niches lists must match what Velyx actually sells. */
 export const SERVICES = [
@@ -84,5 +84,53 @@ export const SERVICES = [
     ],
     niches: ["Startups", "Fitness", "Food & delivery", "Education", "Healthcare", "Communities"],
     wide: true,
+  },
+  {
+    id: "healthcare",
+    title: "Healthcare automation & agents",
+    copy: "AI agents for clinics and hospitals that book appointments, send reminders, take intake and chase insurance paperwork, with staff signing off.",
+    tags: ["Claude", "Voice AI", "WhatsApp", "n8n", "EHR", "Privacy"],
+    art: "healthcare",
+    includes: [
+      "Appointment booking and reminder agents",
+      "Patient intake forms that file themselves",
+      "Insurance, credentialing and claims follow-up",
+      "Front-desk FAQ and triage assistant",
+      "Patient sites with the hotline one tap away",
+      "Staff sign-off, audit logs and data controls",
+    ],
+    niches: ["Clinics", "Hospitals & ER", "Dental", "Diagnostics labs", "Physiotherapy", "Credentialing & billing"],
+  },
+  {
+    id: "realestate",
+    title: "Real estate automation & agents",
+    copy: "Agents that answer every portal and ad lead in minutes, qualify buyers, book site visits and keep the CRM current, plus statements and reports that build themselves.",
+    tags: ["Claude", "WhatsApp", "CRM", "Voice AI", "n8n", "Dashboards"],
+    art: "realestate",
+    includes: [
+      "Instant lead replies from portals, ads and WhatsApp",
+      "Buyer qualification and site-visit booking",
+      "Follow-up sequences until a lead converts or opts out",
+      "Listing, brochure and project-site content",
+      "Owner statements and portfolio reports",
+      "CRM sync and a pipeline dashboard",
+    ],
+    niches: ["Developers", "Brokerages", "Property managers", "Rentals", "Commercial", "Proptech"],
+  },
+  {
+    id: "automotive",
+    title: "Automobile automation & agents",
+    copy: "Agentic systems for dealerships and workshops: service bookings, live job tracking, estimate approvals, parts chasing and an AI inbox that answers customers first.",
+    tags: ["Claude", "WhatsApp", "DMS", "Dashboards", "Forecasting", "Voice AI"],
+    art: "automotive",
+    includes: [
+      "Service booking and reminder agents",
+      "Live job tracking and promised-time alerts",
+      "Estimate and repair approvals by WhatsApp",
+      "Parts follow-up and waiting-car alerts",
+      "AI-first customer inbox with advisor takeover",
+      "Workshop dashboards and demand forecasting",
+    ],
+    niches: ["Dealerships", "Service centres", "Independent workshops", "Used-car dealers", "Fleet operators", "EV & charging"],
   },
 ];
