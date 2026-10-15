@@ -16,10 +16,10 @@ export const PROJECTS = [
     types: ["ai", "saas"],
     featured: true,
     cover: img("/work/getlandy/landing.webp", 1440, 900),
-    // Spotlight card: the landing page over a dashboard page, stacked.
+    // Spotlight card: the landing page over a dashboard page, stacked, both 2:1 and shown whole.
     shots: [
-      { ...img("/work/getlandy/landing.webp", 1440, 900), alt: "landing page" },
-      { ...img("/work/getlandy/tracker.webp", 1440, 720), alt: "Tracker dashboard" },
+      { ...img("/work/getlandy/landing-wide.webp", 1440, 720), alt: "landing page" },
+      { ...img("/work/getlandy/verification-clean.webp", 1440, 720), alt: "Verification dashboard" },
     ],
     // Case-study film: the landing page, then the product's own recordings, chapter by chapter.
     video: { src: "/work/getlandy-film.mp4", poster: "/work/getlandy-film.webp", w: 1600, h: 1000 },
