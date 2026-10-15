@@ -67,7 +67,7 @@ describe("three full rows", () => {
   it("every tile shows the client's logo mark next to its name", () => {
     renderWithProviders(<TrustedBy />);
     for (const c of CLIENTS) {
-      expect(c.logo).toMatch(/^\/clients\/[a-z]+\.webp$/);
+      expect(c.logo).toMatch(/^\/clients\/[a-z-]+\.webp$/);
       const tile = screen.getByRole("button", { name: c.name });
       expect(tile.querySelector("img.ctile__logo")).toHaveAttribute("src", c.logo);
       expect(tile.querySelector(".ctile__name").textContent).toBe(c.name);
