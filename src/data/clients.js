@@ -2,7 +2,7 @@
    a real engagement behind it. `logo` is a file in public/clients/ (e.g.
    "/clients/getlandy.svg"); until it's set the tile shows the wordmark. */
 export const CLIENTS = [
-  { name: "GetLandy", logo: null },
+  { name: "GetLandy", logo: "/clients/getlandy.webp" },
   { name: "YorkScreenplay", logo: null },
   { name: "Lexicon", logo: null },
   { name: "Orange Production", logo: null },
