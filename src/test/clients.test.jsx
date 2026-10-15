@@ -49,7 +49,7 @@ describe("clients grid (Kargul layout, Bricx popup)", () => {
 describe("three full rows", () => {
   const NAMES = [
     "GetLandy", "YorkScreenplay", "Lexicon", "Orange Production", "Fitoholix", "Ideora",
-    "Sacred Basil", "Overshoot", "Plainstate", "Estatico", "GetCredentialingDone", "Unitas Emergency",
+    "Sacred Basil", "Overshoot", "Plainstate", "Estatico", "GetCredentialingDone", "Scanva & Co",
     "Eavesdrops", "Narayan Kripa", "Aurelle Residence", "Kyrosec", "Tara Ayurvedic",
   ];
 

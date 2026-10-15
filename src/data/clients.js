@@ -13,7 +13,7 @@ export const CLIENTS = [
   { name: "Plainstate", logo: "/clients/plainstate.webp" },
   { name: "Estatico", logo: "/clients/estatico.webp" },
   { name: "GetCredentialingDone", logo: "/clients/gcd-mark.webp" },
-  { name: "Unitas Emergency", logo: "/clients/unitas-mark.webp" },
+  { name: "Scanva & Co", logo: "/clients/scanva.webp" },
   { name: "Eavesdrops", logo: "/clients/eavesdrop.webp" },
   { name: "Narayan Kripa", logo: "/clients/narayan.webp" },
   { name: "Aurelle Residence", logo: "/clients/aurelle.webp" },
