@@ -1,22 +1,22 @@
 /* Real clients and products we've built for. Never add a name here without
-   a real engagement behind it. `logo` is a file in public/clients/ (e.g.
-   "/clients/getlandy.svg"); until it's set the tile shows the wordmark. */
+   a real engagement behind it. `logo` is the client's mark in public/clients/
+   (transparent, 128px tall); the tile sets the name beside it. */
 export const CLIENTS = [
   { name: "GetLandy", logo: "/clients/getlandy.webp" },
-  { name: "YorkScreenplay", logo: null },
-  { name: "Lexicon", logo: null },
-  { name: "Orange Production", logo: null },
-  { name: "Fitoholix", logo: null },
-  { name: "Ideora", logo: null },
-  { name: "Sacred Basil", logo: null },
-  { name: "Overshoot", logo: null },
-  { name: "Plainstate", logo: null },
-  { name: "Estatico", logo: null },
-  { name: "GetCredentialingDone", logo: null },
-  { name: "Unitas Emergency", logo: null },
-  { name: "Eavesdrops", logo: null },
-  { name: "Narayan Kripa", logo: null },
-  { name: "Aurelle Residence", logo: null },
-  { name: "Kyrosec", logo: null },
-  { name: "Tara Ayurvedic", logo: null },
+  { name: "YorkScreenplay", logo: "/clients/york.webp" },
+  { name: "Lexicon", logo: "/clients/lexicon.webp" },
+  { name: "Orange Production", logo: "/clients/orange.webp" },
+  { name: "Fitoholix", logo: "/clients/fitoholix.webp" },
+  { name: "Ideora", logo: "/clients/ideora.webp" },
+  { name: "Sacred Basil", logo: "/clients/sacred.webp" },
+  { name: "Overshoot", logo: "/clients/overshoot.webp" },
+  { name: "Plainstate", logo: "/clients/plainstate.webp" },
+  { name: "Estatico", logo: "/clients/estatico.webp" },
+  { name: "GetCredentialingDone", logo: "/clients/gcd.webp" },
+  { name: "Unitas Emergency", logo: "/clients/unitas.webp" },
+  { name: "Eavesdrops", logo: "/clients/eavesdrop.webp" },
+  { name: "Narayan Kripa", logo: "/clients/narayan.webp" },
+  { name: "Aurelle Residence", logo: "/clients/aurelle.webp" },
+  { name: "Kyrosec", logo: "/clients/kyrosec.webp" },
+  { name: "Tara Ayurvedic", logo: "/clients/tara.webp" },
 ];

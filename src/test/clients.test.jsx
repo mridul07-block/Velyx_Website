@@ -64,12 +64,13 @@ describe("three full rows", () => {
     expect(document.querySelectorAll(".cgrid .ctile").length).toBe(18);
   });
 
-  it("shows a client's logo when it has one, and its wordmark until then", () => {
+  it("every tile shows the client's logo mark next to its name", () => {
     renderWithProviders(<TrustedBy />);
     for (const c of CLIENTS) {
+      expect(c.logo).toMatch(/^\/clients\/[a-z]+\.webp$/);
       const tile = screen.getByRole("button", { name: c.name });
-      if (c.logo) expect(tile.querySelector("img.ctile__logo")).toHaveAttribute("src", c.logo);
-      else expect(tile.querySelector(".ctile__name").textContent).toBe(c.name);
+      expect(tile.querySelector("img.ctile__logo")).toHaveAttribute("src", c.logo);
+      expect(tile.querySelector(".ctile__name").textContent).toBe(c.name);
     }
   });
 });

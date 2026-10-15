@@ -31,7 +31,8 @@ export default function TrustedBy() {
   }, []);
 
   const show = (i, el) => {
-    setActive({ i, x: el.offsetLeft, y: el.offsetTop, w: el.offsetWidth, h: el.offsetHeight });
+    const inner = el.firstElementChild;
+    setActive({ i, x: el.offsetLeft, y: el.offsetTop, w: el.offsetWidth, h: el.offsetHeight, pw: (inner?.offsetWidth || 120) + 36 });
     tick(i % COLS);
   };
   /* Kargul's cursor: over the grid the arrow becomes a dot that follows the mouse. */
@@ -59,7 +60,7 @@ export default function TrustedBy() {
           <span
             className={`cpill${active ? " is-on" : ""}`}
             aria-hidden="true"
-            style={active ? { transform: `translate(${active.x + (active.w - 150) / 2}px, ${active.y + (active.h - 60) / 2}px)` } : undefined}
+            style={active ? { width: active.pw, transform: `translate(${active.x + (active.w - active.pw) / 2}px, ${active.y + (active.h - 56) / 2}px)` } : undefined}
           />
           {CLIENTS.map(({ name, logo }, i) => (
             <button
@@ -71,11 +72,10 @@ export default function TrustedBy() {
               onFocus={(e) => show(i, e.currentTarget)}
               onBlur={() => setActive(null)}
             >
-              {logo ? (
-                <img src={logo} alt="" className="ctile__logo" loading="lazy" decoding="async" />
-              ) : (
+              <span className="ctile__in">
+                <img src={logo} alt="" className="ctile__logo" width="28" height="28" loading="lazy" decoding="async" />
                 <span className={`ctile__name${name.length > 15 ? " ctile__name--long" : ""}`}>{name}</span>
-              )}
+              </span>
             </button>
           ))}
           <span className="ctile ctile--more"><span>15+ More</span></span>
@@ -83,9 +83,12 @@ export default function TrustedBy() {
 
         <div className="trusted__marquee">
           <Marquee label="Clients">
-            {CLIENTS.map(({ name, logo }) =>
-              logo ? <img key={name} src={logo} alt={name} className="trusted__logo" loading="lazy" decoding="async" /> : <span key={name} className="trusted__name">{name}</span>
-            )}
+            {CLIENTS.map(({ name, logo }) => (
+              <span key={name} className="trusted__name">
+                <img src={logo} alt="" className="trusted__logo" width="22" height="22" loading="lazy" decoding="async" />
+                {name}
+              </span>
+            ))}
           </Marquee>
         </div>
       </div>

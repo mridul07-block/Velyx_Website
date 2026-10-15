@@ -313,27 +313,29 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 .trusted__name { font-size: 17px; font-weight: 700; letter-spacing: -0.03em; color: var(--muted); white-space: nowrap; }
 /* Kargul's grid: 6 x 153px cells, one white pill that slides to the
    hovered client. Phones keep the marquee. */
-.cgrid { position: relative; display: none; cursor: none; grid-template-columns: repeat(6, 153px); justify-content: center; }
+.cgrid { position: relative; display: none; cursor: none; grid-template-columns: repeat(6, 178px); justify-content: center; }
 .ctile { position: relative; z-index: 1; display: grid; place-items: center; height: 108px; padding: 0 6px; background: none; cursor: none; }
 .ccursor { position: absolute; left: 0; top: 0; z-index: 4; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: var(--ink); opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
 .ccursor.is-on { opacity: 1; }
-.ctile__name { font-size: 17px; font-weight: 700; letter-spacing: -0.03em; color: #9a9a9a; white-space: nowrap; transition: color 0.2s; }
-.ctile__name--long { font-size: 14px; letter-spacing: -0.035em; }
+.ctile__name { font-size: 15px; font-weight: 700; letter-spacing: -0.03em; color: #9a9a9a; white-space: nowrap; transition: color 0.2s; }
+.ctile__name--long { font-size: 13px; letter-spacing: -0.035em; }
 .ctile.is-active .ctile__name { color: var(--ink); }
-/* Logos sit grey like the wordmarks and turn full ink on the active tile. */
-.ctile__logo { display: block; max-width: 118px; max-height: 34px; width: auto; height: auto; filter: grayscale(1); opacity: 0.45; transition: opacity 0.2s, filter 0.2s; }
-.ctile.is-active .ctile__logo { opacity: 1; filter: grayscale(1) brightness(0.3); }
-.trusted__logo { height: 28px; width: auto; filter: grayscale(1); opacity: 0.55; }
+/* Each tile is the client's mark beside its name: grey at rest, full colour on the active tile. */
+.ctile__in { display: inline-flex; align-items: center; gap: 8px; }
+.ctile__logo { display: block; height: 26px; width: auto; max-width: 44px; object-fit: contain; filter: grayscale(1); opacity: 0.6; transition: opacity 0.2s, filter 0.2s; }
+.ctile.is-active .ctile__logo { filter: none; opacity: 1; }
+.trusted__name { display: inline-flex; align-items: center; gap: 8px; }
+.trusted__logo { height: 22px; width: auto; max-width: 38px; object-fit: contain; filter: grayscale(1); opacity: 0.6; }
 .ctile:focus-visible { outline-offset: -20px; border-radius: var(--radius-pill); }
 .ctile--more span { display: inline-grid; place-items: center; height: 44px; padding: 0 16px; border-radius: var(--radius-pill); background: var(--card); font-size: 14px; font-weight: 700; letter-spacing: -0.01em; color: var(--ink); }
-.cpill { position: absolute; left: 0; top: 0; z-index: 0; width: 150px; height: 60px; border-radius: var(--radius-pill); background: var(--card); opacity: 0; pointer-events: none; transition: transform 0.25s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.2s; }
+.cpill { position: absolute; left: 0; top: 0; z-index: 0; width: 150px; height: 56px; border-radius: var(--radius-pill); background: var(--card); opacity: 0; pointer-events: none; transition: transform 0.25s cubic-bezier(0.65, 0, 0.35, 1), width 0.25s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.2s; }
 .cpill.is-on { opacity: 1; }
 @media (min-width: 761px) {
   .cgrid { display: grid; }
   .trusted__marquee { display: none; }
 }
 @media (min-width: 761px) and (max-width: 1000px) {
-  .cgrid { grid-template-columns: repeat(4, 153px); }
+  .cgrid { grid-template-columns: repeat(4, 178px); }
   }
 
 /* ---------- Services panel ---------- */
