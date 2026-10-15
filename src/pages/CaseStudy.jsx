@@ -22,7 +22,12 @@ export default function CaseStudy() {
       <article className="case">
         <header className="container case__head">
           <Link to="/work" className="case__back">← All work</Link>
-          <h1 className="h1">{p.name}</h1>
+          <div className="case__brand">
+            {p.logo && (
+              <span className="case__logo"><img src={p.logo} alt={`${p.name} logo`} width="44" height="44" /></span>
+            )}
+            <h1 className="h1">{p.name}</h1>
+          </div>
           <p className="lead">{p.summary}</p>
           <div className="tags tags--light">
             <Tag>{p.industry}</Tag>
@@ -71,10 +76,17 @@ export default function CaseStudy() {
                   <img src={f.shot.src} width={f.shot.w} height={f.shot.h} alt={`${p.name} — ${f.title}`} loading="lazy" />
                 </div>
                 <div className="feat__text">
-                  <span className="feat__num">{String(k + 1).padStart(2, "0")}</span>
+                  <span className="feat__num">{String(k + 1).padStart(2, "0")} / {String(p.features.length).padStart(2, "0")}</span>
                   <h3 className="h3">{f.title}</h3>
                   <p>{f.text}</p>
-                  <ul>{f.points.map((pt) => <li key={pt}>{pt}</li>)}</ul>
+                  <ul>
+                    {f.points.map((pt) => (
+                      <li key={pt}>
+                        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" /></svg>
+                        {pt}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             ))}

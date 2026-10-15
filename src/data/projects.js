@@ -15,6 +15,7 @@ export const PROJECTS = [
     audience: "B2C SaaS",
     types: ["ai", "saas"],
     featured: true,
+    logo: "/clients/getlandy-mark.webp",
     cover: img("/work/getlandy/landing.webp", 1440, 900),
     // Spotlight card: the landing page over a dashboard page, stacked, both 2:1 and shown whole.
     shots: [

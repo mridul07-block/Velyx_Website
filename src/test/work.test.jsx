@@ -54,6 +54,7 @@ describe("/work/:slug", () => {
     const getlandy = PROJECTS.find((p) => p.slug === "getlandy");
     renderWithProviders(<AppRoutes />, { route: "/work/getlandy" });
     await screen.findByRole("heading", { level: 1, name: "Getlandy AI" });
+    expect(screen.getByRole("img", { name: "Getlandy AI logo" })).toHaveAttribute("src", getlandy.logo);
     const video = document.querySelector(".case__hero video");
     expect(video).toHaveAttribute("src", getlandy.video.src);
     expect(video).toHaveAttribute("poster", getlandy.video.poster);
