@@ -1,7 +1,8 @@
-import { describe, it, expect } from "vitest";
-import { screen, within } from "@testing-library/react";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { act, screen, within } from "@testing-library/react";
 import { renderWithProviders } from "./renderWithProviders";
 import ProjectsPanel from "../sections/home/ProjectsPanel";
+import ProjectSpotlight from "../components/ProjectSpotlight";
 import Compare from "../sections/home/Compare";
 import { PROJECTS } from "../data/projects";
 import { COMPARE } from "../data/compare";
@@ -15,6 +16,45 @@ describe("Project spotlights (Kargul)", () => {
     expect(cards.length).toBe(featured.length);
     expect(cards[1]).toHaveClass("spot--flip");
     expect([...document.querySelectorAll(".spot a.btn")].map((a) => a.getAttribute("href"))).toEqual(featured.map((p) => `/work/${p.slug}`));
+  });
+});
+
+describe("GetLandy spotlight video", () => {
+  afterEach(() => vi.unstubAllGlobals());
+  const getlandy = PROJECTS.find((p) => p.slug === "getlandy");
+
+  it("leads the spotlights with a muted, looping product video that loads nothing up front", () => {
+    renderWithProviders(<ProjectsPanel />);
+    const first = document.querySelector(".spot");
+    const video = first.querySelector("video.cover");
+    expect(video).not.toBeNull();
+    expect(video).toHaveAttribute("src", getlandy.video.src);
+    expect(video).toHaveAttribute("poster", getlandy.video.poster);
+    expect(video).toHaveAttribute("preload", "none");
+    expect(video.muted).toBe(true);
+    expect(video.loop).toBe(true);
+    expect(video).toHaveAttribute("playsinline");
+    expect(video).toHaveAttribute("aria-label", "Getlandy AI — product walkthrough");
+  });
+
+  it("plays only while on screen, and never with reduced motion", () => {
+    let fire;
+    vi.stubGlobal("IntersectionObserver", class { constructor(cb) { fire = cb; } observe() {} disconnect() {} });
+    const play = vi.spyOn(HTMLMediaElement.prototype, "play").mockImplementation(() => Promise.resolve());
+    const pause = vi.spyOn(HTMLMediaElement.prototype, "pause").mockImplementation(() => {});
+    renderWithProviders(<ProjectSpotlight project={getlandy} />);
+    expect(play).not.toHaveBeenCalled();
+    act(() => fire([{ isIntersecting: true }]));
+    expect(play).toHaveBeenCalledTimes(1);
+    act(() => fire([{ isIntersecting: false }]));
+    expect(pause).toHaveBeenCalled();
+
+    play.mockClear();
+    vi.stubGlobal("matchMedia", (q) => ({ matches: q.includes("reduce"), addEventListener() {}, removeEventListener() {} }));
+    renderWithProviders(<ProjectSpotlight project={getlandy} />);
+    act(() => fire([{ isIntersecting: true }]));
+    expect(play).not.toHaveBeenCalled();
+    play.mockRestore(); pause.mockRestore();
   });
 });
 

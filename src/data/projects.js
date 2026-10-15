@@ -15,7 +15,9 @@ export const PROJECTS = [
     audience: "B2C SaaS",
     types: ["ai", "saas"],
     featured: true,
-    cover: null,
+    cover: img("/work/getlandy-spotlight.webp", 1200, 750),
+    // Spotlight walkthrough: the getlandy.ai landing page, then the product's own recordings (tracker, profile, verification).
+    video: { src: "/work/getlandy-spotlight.mp4", poster: "/work/getlandy-spotlight.webp" },
     gallery: [],
     brief: "Landy helps professionals design their career strategy, hold a credible online presence and build long-term career leverage — beyond job searching.",
     built: "Built by Velyx Labs: the Landy product, from its AI-powered studio to the subscription experience.",
