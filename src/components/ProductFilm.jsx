@@ -4,7 +4,7 @@ import useReducedMotion from "../lib/useReducedMotion";
 
 /* A muted product film that loads and plays only while on screen;
    with reduced motion it stays on its poster frame. */
-export default function ProductFilm({ project }) {
+export default function ProductFilm({ project, className = "film" }) {
   const [ref, onScreen] = useOnScreen("200px");
   const reduced = useReducedMotion();
   const started = useRef(false);
@@ -25,7 +25,7 @@ export default function ProductFilm({ project }) {
   return (
     <video
       ref={ref}
-      className="film"
+      className={className}
       src={src}
       poster={poster}
       width={w}

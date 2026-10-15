@@ -16,11 +16,29 @@ describe("/work", () => {
   it("shows product screenshots whole: wide covers are marked to fit, not crop", async () => {
     const { container } = renderWithProviders(<AppRoutes />, { route: "/work" });
     await screen.findByRole("heading", { level: 1, name: "Latest projects" });
-    for (const p of PROJECTS.filter((x) => x.cover)) {
+    for (const p of PROJECTS.filter((x) => x.cover && !x.cardVideo)) {
       const img = container.querySelector(`.pcard[href="/work/${p.slug}"] img.cover`);
       expect(img.classList.contains("cover--shot"), p.slug).toBe(p.cover.w / p.cover.h >= 1.6);
     }
     expect(PROJECTS.find((p) => p.slug === "getlandy").cover.src).toBe("/work/getlandy/landing-wide.webp");
+  });
+
+  it("lists the client sites, with Aurelle 5th playing its scroll recording", async () => {
+    const { container } = renderWithProviders(<AppRoutes />, { route: "/work" });
+    await screen.findByRole("heading", { level: 1, name: "Latest projects" });
+    const slugs = cards(container).map((h) => h.replace("/work/", ""));
+    for (const s of ["lexicon-one", "yorkscreenplay", "narayankripa", "fitoholix", "orange-productions", "ideora-labs", "overshoot", "estatico", "get-credentialing-done", "unitas-emergency", "eavesdrop", "aurelle-residence"]) {
+      expect(slugs, s).toContain(s);
+    }
+    expect(slugs[4]).toBe("aurelle-residence");
+    expect(slugs).not.toContain("scanva");
+    const aurelle = PROJECTS.find((p) => p.slug === "aurelle-residence");
+    const video = container.querySelector('.pcard[href="/work/aurelle-residence"] video');
+    expect(video).toHaveAttribute("src", aurelle.video.src);
+    expect(video).toHaveAttribute("preload", "none");
+    expect(video.muted).toBe(true);
+    // every client site shows a real hero screenshot, not a placeholder
+    for (const p of PROJECTS.filter((x) => x.slug !== "sparklingtimes")) expect(p.cover, p.slug).toBeTruthy();
   });
 
   it("filters by type and reflects it in the pressed pill", async () => {

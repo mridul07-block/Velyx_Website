@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import Tag from "./Tag";
 import ProjectCover from "./ProjectCover";
+import ProductFilm from "./ProductFilm";
 
-/* Kargul-style card: tags above, cover in a thin white frame, name in a
-   white tab over the cover's bottom-left corner. */
+/* Kargul-style card: tags above, cover in a thin white frame, the name
+   under the cover inside the frame so nothing of the screenshot is hidden. */
 export default function ProjectCard({ project }) {
   return (
     <Link to={`/work/${project.slug}`} className="pcard">
@@ -12,7 +13,7 @@ export default function ProjectCard({ project }) {
         <Tag>{project.audience}</Tag>
       </div>
       <div className="pcard__media">
-        <ProjectCover project={project} />
+        {project.cardVideo ? <ProductFilm project={project} className="cover cover--film" /> : <ProjectCover project={project} />}
         <h2 className="pcard__name">{project.name}</h2>
       </div>
     </Link>
