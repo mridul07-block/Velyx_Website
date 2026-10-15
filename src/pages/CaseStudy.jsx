@@ -29,6 +29,7 @@ export default function CaseStudy() {
             <h1 className="h1">{p.name}</h1>
           </div>
           <p className="lead">{p.summary}</p>
+          {p.note && <p className="case__note">{p.note}</p>}
           <div className="tags tags--light">
             <Tag>{p.industry}</Tag>
             <Tag>{p.audience}</Tag>

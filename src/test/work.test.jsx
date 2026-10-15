@@ -95,6 +95,16 @@ describe("/work/:slug", () => {
     play.mockRestore(); pause.mockRestore(); vi.unstubAllGlobals();
   });
 
+  it("the Audi case study is labelled a concept and walks through every screen of the demo", async () => {
+    const audi = PROJECTS.find((p) => p.slug === "audi-service-system");
+    renderWithProviders(<AppRoutes />, { route: "/work/audi-service-system" });
+    await screen.findByRole("heading", { level: 1, name: "Audi Service System" });
+    expect(screen.getByText("Concept demo on sample data. Not affiliated with Audi.")).toBeInTheDocument();
+    expect(document.querySelector(".case__hero video")).toHaveAttribute("src", audi.video.src);
+    expect(screen.getByRole("heading", { level: 2, name: audi.featuresTitle })).toBeInTheDocument();
+    expect(document.querySelectorAll(".feat")).toHaveLength(audi.features.length);
+  });
+
   it("an unknown slug shows the 404 page", async () => {
     renderWithProviders(<AppRoutes />, { route: "/work/does-not-exist" });
     expect(await screen.findByRole("heading", { level: 1, name: /page not found/i })).toBeInTheDocument();

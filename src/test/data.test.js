@@ -25,11 +25,12 @@ describe("content data", () => {
     expect(STATS[1]).toEqual({ value: "10+", label: "Services under one roof" });
   });
 
-  it("features exactly three projects, all with covers that exist on disk", () => {
+  it("features four projects, every image and film of which exists on disk", () => {
     const featured = PROJECTS.filter((p) => p.featured);
-    expect(featured.map((p) => p.slug)).toEqual(["getlandy", "sacred-basil", "yorkscreenplay"]);
+    expect(featured.map((p) => p.slug)).toEqual(["getlandy", "audi-service-system", "sacred-basil", "yorkscreenplay"]);
     for (const p of PROJECTS) {
-      for (const img of [p.cover, ...p.gallery].filter(Boolean)) {
+      const media = [p.cover, ...p.gallery, ...(p.shots ?? []), ...(p.features ?? []).map((f) => f.shot), p.video && { src: p.video.src }, p.video && { src: p.video.poster }, p.logo && { src: p.logo }];
+      for (const img of media.filter(Boolean)) {
         expect(existsSync(`public${img.src}`), img.src).toBe(true);
       }
     }

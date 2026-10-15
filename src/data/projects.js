@@ -5,6 +5,7 @@
    screenshots (client faces/names). TO CONFIRM: product screenshots for each
    project; Kettler and Priya, once described. */
 const img = (src, w = 1600, h = 1040) => ({ src, w, h });
+const AUDI = (name) => img(`/work/audi/${name}.webp`, 1512, 756);
 
 export const PROJECTS = [
   {
@@ -79,6 +80,88 @@ export const PROJECTS = [
     gallery: [],
     brief: "Landy helps professionals design their career strategy, hold a credible online presence and build long-term career leverage — beyond job searching. The idea: build your professional DNA once, in a simple conversation, and let AI agents keep it organised, verified and ready to turn into CVs, content, outreach and new opportunities.",
     built: "Built by Velyx Labs: the whole Landy product, from the landing page to the AI agents (identity, content and outreach), the verified profile, the evidence engine, the job tracker, long-term memory and the subscription experience.",
+    stack: [],
+    result: null,
+    quoteName: null,
+  },
+  {
+    slug: "audi-service-system",
+    name: "Audi Service System",
+    summary: "A concept service operating system for an Audi dealership: the whole service day, from booking to handover, on one screen.",
+    note: "Concept demo on sample data. Not affiliated with Audi.",
+    industry: "Automotive",
+    audience: "B2B",
+    types: ["ai", "saas"],
+    featured: true,
+    // A neutral gauge mark: the Audi rings appear only inside the product screenshots.
+    logo: "/work/audi/icon.svg",
+    cover: AUDI("command"),
+    shots: [
+      { ...AUDI("command"), alt: "command centre" },
+      { ...AUDI("floor"), alt: "workshop floor board" },
+    ],
+    video: { src: "/work/audi-film.mp4", poster: "/work/audi-film.webp", w: 1600, h: 1000 },
+    featuresTitle: "Inside the system",
+    // Every screen of the live concept demo (sample data).
+    features: [
+      {
+        title: "Command centre",
+        shot: AUDI("command"),
+        text: "One screen for the service manager's day. It opens on what needs attention now, with the action to take, then eight live readings against their targets.",
+        points: ["Promises at risk, stuck approvals and unhappy customers, each with its next step", "Load vs capacity, revenue vs pace, health-check conversion and estimate speed", "Live, or paused at any moment of the day"],
+      },
+      {
+        title: "Promise radar",
+        shot: AUDI("radar"),
+        text: "Every car in today, from check-in to predicted finish, against the time the customer was promised. The ones at risk rise to the top.",
+        points: ["Late and at-risk cars flagged before the customer calls", "New times sent to the customer straight from the row", "Chart or table, keyboard navigable"],
+      },
+      {
+        title: "Floor",
+        shot: AUDI("floor"),
+        text: "The workshop floor as a live board, from checked in and health check to approval, parts, in progress, QC, wash and ready.",
+        points: ["Hours on the board for each stage", "Time in stage, promised time and technician on every card", "Board or bay map"],
+      },
+      {
+        title: "Job card",
+        shot: AUDI("job"),
+        text: "Each car from check-in to handover: the customer's concern in their own words, the stage, promise and predicted finish, and every line of work with its approval.",
+        points: ["Timeline of every stage with its duration", "Repairs found in the health check, each waiting for a customer decision", "Approved so far against the full estimate"],
+      },
+      {
+        title: "Bookings",
+        shot: AUDI("bookings"),
+        text: "The diary for the week, with planned hours against the workshop's capacity so overbooking shows up before the day does.",
+        points: ["Cars and hours for each day ahead", "Planned work against the plan, walk-ins included", "Every booking with its service, advisor and status"],
+      },
+      {
+        title: "AI inbox",
+        shot: AUDI("inbox"),
+        text: "Customer chats for the day. The AI answers first, and an advisor can take any conversation over with one click.",
+        points: ["Each conversation linked to the customer's car and job", "Clear AI or human labels on every reply", "Take over and reply as the advisor"],
+      },
+      {
+        title: "Workshop",
+        shot: AUDI("workshop"),
+        text: "How the workshop is running this month: utilisation, repair orders, promises kept and effective labour rate, each against its target and the period before.",
+        points: ["Trend lines for every reading", "Dials for productivity, efficiency and health-check conversion", "Below-target readings called out"],
+      },
+      {
+        title: "Forecast and AI",
+        shot: AUDI("forecast"),
+        text: "Six months of demand ahead against capacity, and an AI business advisor that says what to act on, most urgent first.",
+        points: ["Expected visits, revenue and loading", "Advice like hiring for a busy month or holding back bookings", "Each item ranked high, medium or low"],
+      },
+      {
+        title: "Revenue and leakage",
+        shot: AUDI("insights"),
+        text: "Revenue this month against pace and target, and where it leaks: declined work, approval rate and health-check conversion.",
+        points: ["Health-check funnel from found to sent, approved and declined", "Weekly approval rate before and after going live", "Declined work kept for a reminder"],
+      },
+    ],
+    gallery: [],
+    brief: "A concept for how an Audi dealership's service department could run its day: one system for the service manager, advisors and workshop, built on sample data to show what the software could do.",
+    built: "Designed and built by Velyx Labs: the command centre, promise radar, live floor board, job cards with approvals, bookings and capacity, an AI-first customer inbox, workshop dashboards, demand forecasting with an AI business advisor, and revenue insights.",
     stack: [],
     result: null,
     quoteName: null,

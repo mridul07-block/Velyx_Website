@@ -15,7 +15,7 @@ describe("Home", () => {
   it("spotlights the featured projects with case-study links, then compares", () => {
     renderWithProviders(<Home />);
     const links = [...document.querySelectorAll("#projects .spot a.btn")].map((a) => a.getAttribute("href"));
-    expect(links).toEqual(["/work/getlandy", "/work/sacred-basil", "/work/yorkscreenplay"]);
+    expect(links).toEqual(["/work/getlandy", "/work/audi-service-system", "/work/sacred-basil", "/work/yorkscreenplay"]);
     expect(document.querySelector("#more-work")).toBeNull();
     expect(document.querySelector("#compare table")).not.toBeNull();
   });
