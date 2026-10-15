@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import Marquee from "../../components/Marquee";
 import VelyxMark from "../../components/VelyxMark";
-import { CLIENTS, CLIENT_PLACEHOLDERS } from "../../data/clients";
+import { CLIENTS } from "../../data/clients";
 import { tick, unlock } from "../../lib/tick";
 
 const COLS = 6;
-const SHOWN = [...CLIENTS, ...CLIENT_PLACEHOLDERS];
 
 /* Kargul's layout: a 6-column wordmark grid where one white pill slides to
    the hovered (or focused) client, a dot for a cursor, a "15+ More" tile and
@@ -62,16 +61,21 @@ export default function TrustedBy() {
             aria-hidden="true"
             style={active ? { transform: `translate(${active.x + (active.w - 150) / 2}px, ${active.y + (active.h - 60) / 2}px)` } : undefined}
           />
-          {SHOWN.map((name, i) => (
+          {CLIENTS.map(({ name, logo }, i) => (
             <button
               key={name}
               type="button"
+              aria-label={name}
               className={`ctile${active?.i === i ? " is-active" : ""}`}
               onPointerEnter={(e) => show(i, e.currentTarget)}
               onFocus={(e) => show(i, e.currentTarget)}
               onBlur={() => setActive(null)}
             >
-              <span className={`ctile__name${name.length > 15 ? " ctile__name--long" : ""}`}>{name}</span>
+              {logo ? (
+                <img src={logo} alt="" className="ctile__logo" loading="lazy" decoding="async" />
+              ) : (
+                <span className={`ctile__name${name.length > 15 ? " ctile__name--long" : ""}`}>{name}</span>
+              )}
             </button>
           ))}
           <span className="ctile ctile--more"><span>15+ More</span></span>
@@ -79,7 +83,9 @@ export default function TrustedBy() {
 
         <div className="trusted__marquee">
           <Marquee label="Clients">
-            {SHOWN.map((c) => <span key={c} className="trusted__name">{c}</span>)}
+            {CLIENTS.map(({ name, logo }) =>
+              logo ? <img key={name} src={logo} alt={name} className="trusted__logo" loading="lazy" decoding="async" /> : <span key={name} className="trusted__name">{name}</span>
+            )}
           </Marquee>
         </div>
       </div>

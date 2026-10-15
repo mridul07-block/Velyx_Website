@@ -1,5 +1,7 @@
-/* The five Velyx services, shown in Kargul's 3 + 2 card layout.
-   TO CONFIRM: tag lists must match the stack Velyx actually uses. */
+/* The five Velyx services, shown in Kargul's 3 + 2 card layout on the home
+   page. `includes` and `niches` are the detail on /services.
+   TO CONFIRM: tag lists must match the stack Velyx actually uses, and the
+   includes/niches lists must match what Velyx actually sells. */
 export const SERVICES = [
   {
     id: "agents",
@@ -7,6 +9,15 @@ export const SERVICES = [
     copy: "AI agents that answer, qualify, follow up and file — wired into your CRM, inbox and WhatsApp, with human approval where it matters.",
     tags: ["OpenAI", "Claude", "LangGraph", "n8n", "CRM", "Evals"],
     art: "agents",
+    includes: [
+      "Lead qualification and follow-up agents",
+      "Support agents trained on your docs and FAQs",
+      "Inbox, document and data-entry automation",
+      "Internal copilots over your company data",
+      "CRM and tool integrations: HubSpot, Zoho, Sheets, Slack",
+      "Human approval steps, logs and evals",
+    ],
+    niches: ["Real estate", "Clinics & healthcare", "Coaching & education", "Agencies", "E-commerce", "B2B services"],
   },
   {
     id: "saas",
@@ -14,6 +25,15 @@ export const SERVICES = [
     copy: "From idea to paying users. Production apps with auth, billing, admin and AI features built on your data — made to grow, not to be rebuilt.",
     tags: ["Next.js", "React", "Node.js", "Supabase", "Postgres", "Stripe"],
     art: "saas",
+    includes: [
+      "Product scoping and a clickable prototype",
+      "MVP with auth, billing and an admin panel",
+      "AI features on your data: chat, search, generation",
+      "Dashboards and product analytics",
+      "Payments with Stripe or Razorpay",
+      "Monitoring, scaling and a clean handover",
+    ],
+    niches: ["First-time founders", "SaaS startups", "AI tools", "Marketplaces", "HR & career tech", "Internal tools"],
   },
   {
     id: "whatsapp",
@@ -21,6 +41,15 @@ export const SERVICES = [
     copy: "Bookings, reminders, lead follow-up and re-engagement running on WhatsApp, with a simple CRM so your team sees every conversation.",
     tags: ["WhatsApp API", "CRM", "Webhooks", "Dashboards"],
     art: "whatsapp",
+    includes: [
+      "Official WhatsApp Business API setup",
+      "Booking and appointment flows",
+      "Reminders, order updates and payment links",
+      "Lead capture from ads, your website and Instagram",
+      "Broadcasts and re-engagement campaigns",
+      "A shared inbox and simple CRM for your team",
+    ],
+    niches: ["Salons & spas", "Clinics", "Gyms & studios", "Restaurants & cafes", "Real estate", "D2C brands"],
   },
   {
     id: "web",
@@ -28,6 +57,15 @@ export const SERVICES = [
     copy: "Fast, conversion-focused websites and landing pages with custom visuals and interactions — built to turn visitors into booked calls.",
     tags: ["Figma", "React", "Next.js", "Framer", "SEO", "Analytics"],
     art: "web",
+    includes: [
+      "Brand websites and landing pages",
+      "E-commerce stores",
+      "SEO setup: speed, schema and Google Business Profile",
+      "AI visibility: showing up in ChatGPT and AI search",
+      "Analytics, pixels and conversion tracking",
+      "Ongoing updates and A/B tests",
+    ],
+    niches: ["Boutiques & fashion", "Cafes & bakeries", "Salons", "Clinics", "D2C brands", "Startups"],
     wide: true,
   },
   {
@@ -36,6 +74,15 @@ export const SERVICES = [
     copy: "Cross-platform iOS and Android apps from one codebase — designed, built and shipped to the stores.",
     tags: ["React Native", "Expo", "Firebase", "App Store"],
     art: "mobile",
+    includes: [
+      "iOS and Android apps from one codebase",
+      "App design in Figma",
+      "Login, payments and push notifications",
+      "Booking, ordering and loyalty apps",
+      "Admin panel and backend",
+      "App Store and Play Store launch",
+    ],
+    niches: ["Startups", "Fitness", "Food & delivery", "Education", "Healthcare", "Communities"],
     wide: true,
   },
 ];

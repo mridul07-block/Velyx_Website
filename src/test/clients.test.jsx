@@ -2,7 +2,7 @@ import { describe, it, expect, vi, afterEach } from "vitest";
 import { fireEvent, screen } from "@testing-library/react";
 import { renderWithProviders } from "./renderWithProviders";
 import TrustedBy from "../sections/home/TrustedBy";
-import { CLIENTS, CLIENT_PLACEHOLDERS } from "../data/clients";
+import { CLIENTS } from "../data/clients";
 
 describe("clients grid (Kargul layout, Bricx popup)", () => {
   afterEach(() => vi.unstubAllGlobals());
@@ -47,15 +47,29 @@ describe("clients grid (Kargul layout, Bricx popup)", () => {
 });
 
 describe("three full rows", () => {
+  const NAMES = [
+    "GetLandy", "YorkScreenplay", "Lexicon", "Orange Production", "Fitoholix", "Ideora",
+    "Sacred Basil", "Overshoot", "Plainstate", "Estatico", "GetCredentialingDone", "Unitas Emergency",
+    "Eavesdrops", "Narayan Kripa", "Aurelle Residence", "Kyrosec", "Tara Ayurvedic",
+  ];
+
+  it("lists the 17 real clients in order, with no dummy names", () => {
+    expect(CLIENTS.map((c) => c.name)).toEqual(NAMES);
+    renderWithProviders(<TrustedBy />);
+    for (const dummy of ["Acme", "Globex", "Initech", "Hooli", "Vandelay", "Wonka"]) expect(screen.queryByText(dummy)).toBeNull();
+  });
+
   it("fills Kargul's 3 x 6 grid: 17 clients and the 15+ More tile", () => {
     renderWithProviders(<TrustedBy />);
     expect(document.querySelectorAll(".cgrid .ctile").length).toBe(18);
   });
 
-  it("keeps the dummy names separate, marked for replacement", () => {
-    expect(CLIENT_PLACEHOLDERS).toHaveLength(6);
-    for (const name of CLIENT_PLACEHOLDERS) {
-      expect(CLIENTS).not.toContain(name);
+  it("shows a client's logo when it has one, and its wordmark until then", () => {
+    renderWithProviders(<TrustedBy />);
+    for (const c of CLIENTS) {
+      const tile = screen.getByRole("button", { name: c.name });
+      if (c.logo) expect(tile.querySelector("img.ctile__logo")).toHaveAttribute("src", c.logo);
+      else expect(tile.querySelector(".ctile__name").textContent).toBe(c.name);
     }
   });
 });

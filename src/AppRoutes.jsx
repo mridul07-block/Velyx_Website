@@ -9,6 +9,7 @@ import StartProject from "./pages/StartProject";
 import IntroCall from "./pages/IntroCall";
 import PricingPage from "./pages/PricingPage";
 
+const Services = lazy(() => import("./pages/Services"));
 const SwipeFile = lazy(() => import("./pages/SwipeFile"));
 const Start = lazy(() => import("./pages/Start"));
 const Privacy = lazy(() => import("./pages/Privacy"));
@@ -27,6 +28,7 @@ export default function AppRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/work" element={<Work />} />
         <Route path="/work/:slug" element={<CaseStudy />} />
+        <Route path="/services" element={<Services />} />
         <Route path="/swipe-file" element={<SwipeFile />} />
         <Route path="/start-a-project" element={<StartProject />} />
         <Route path="/start" element={<Start />} />

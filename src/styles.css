@@ -320,6 +320,10 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 .ctile__name { font-size: 17px; font-weight: 700; letter-spacing: -0.03em; color: #9a9a9a; white-space: nowrap; transition: color 0.2s; }
 .ctile__name--long { font-size: 14px; letter-spacing: -0.035em; }
 .ctile.is-active .ctile__name { color: var(--ink); }
+/* Logos sit grey like the wordmarks and turn full ink on the active tile. */
+.ctile__logo { display: block; max-width: 118px; max-height: 34px; width: auto; height: auto; filter: grayscale(1); opacity: 0.45; transition: opacity 0.2s, filter 0.2s; }
+.ctile.is-active .ctile__logo { opacity: 1; filter: grayscale(1) brightness(0.3); }
+.trusted__logo { height: 28px; width: auto; filter: grayscale(1); opacity: 0.55; }
 .ctile:focus-visible { outline-offset: -20px; border-radius: var(--radius-pill); }
 .ctile--more span { display: inline-grid; place-items: center; height: 44px; padding: 0 16px; border-radius: var(--radius-pill); background: var(--card); font-size: 14px; font-weight: 700; letter-spacing: -0.01em; color: var(--ink); }
 .cpill { position: absolute; left: 0; top: 0; z-index: 0; width: 150px; height: 60px; border-radius: var(--radius-pill); background: var(--card); opacity: 0; pointer-events: none; transition: transform 0.25s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.2s; }
@@ -789,6 +793,48 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 .filter { height: 34px; padding: 0 14px; border-radius: var(--radius-pill); background: transparent; font-size: 13px; font-weight: 500; color: var(--muted); transition: background-color 0.2s, color 0.2s; }
 .filter:hover { color: var(--ink); }
 .filter[aria-pressed="true"] { background: var(--page); color: var(--ink); }
+
+/* ---------- Services page ---------- */
+
+a.filter { display: inline-flex; align-items: center; }
+@media (max-width: 640px) {
+  .svc-jump { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; scrollbar-width: none; }
+  .svc-jump .filter { flex: none; white-space: nowrap; }
+}
+.svc-details { display: grid; gap: 24px; padding-bottom: var(--section-y); }
+.svc-detail {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(24px, 4vw, 56px);
+  padding: clamp(28px, 4vw, 48px);
+  border-radius: var(--radius-panel);
+  background: var(--panel);
+  color: var(--on-panel);
+  scroll-margin-top: calc(var(--nav-h) + 16px);
+}
+.svc-detail .eyebrow { color: var(--on-panel-muted); margin-bottom: 10px; }
+.svc-detail__copy { margin-top: 12px; font-size: 15px; line-height: 24px; font-weight: 500; color: var(--on-panel-muted); }
+.svc-detail__label { margin: 26px 0 10px; font-size: 13px; font-weight: 500; color: var(--on-panel-muted); }
+.svc-detail__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 20px; font-size: 14px; line-height: 21px; font-weight: 500; }
+.svc-detail__list li { position: relative; padding-left: 16px; }
+.svc-detail__list li::before { content: ""; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: var(--ok); }
+.svc-detail .tags .tag { background: var(--panel-card); }
+.svc-detail .tags--light .tag { background: var(--on-panel); color: var(--ink); }
+.svc-detail__cta { margin-top: 32px; }
+.svc-detail .btn--intro { background: var(--on-panel); color: var(--ink); }
+.svc-detail .btn--intro:hover { background: #fff; }
+.svc-detail__art { --mx: 0; --my: 0; height: 100%; min-height: 360px; border-radius: var(--radius-card); background: var(--panel-card); overflow: hidden; }
+.svc-detail:nth-child(even) .svc-detail__art { order: -1; }
+@media (max-width: 900px) {
+  .svc-detail { grid-template-columns: 1fr; }
+  .svc-detail__art, .svc-detail:nth-child(even) .svc-detail__art { order: -1; min-height: 240px; height: 240px; }
+}
+@media (max-width: 640px) {
+  .svc-details { padding-inline: 0; gap: 16px; }
+  .svc-detail { border-radius: 0; padding: 28px var(--gutter); }
+  .svc-detail__list { grid-template-columns: 1fr; }
+}
 
 /* ---------- Work grid ---------- */
 

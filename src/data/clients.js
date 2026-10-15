@@ -1,20 +1,22 @@
-/* Real clients and products we've built for — names only. Never add a
-   name here without a real engagement behind it. */
+/* Real clients and products we've built for. Never add a name here without
+   a real engagement behind it. `logo` is a file in public/clients/ (e.g.
+   "/clients/getlandy.svg"); until it's set the tile shows the wordmark. */
 export const CLIENTS = [
-  "Getlandy AI",
-  "Sacred Basil",
-  "Overshoot",
-  "NarayanKripa",
-  "YorkScreenPlay",
-  "SparklingTimes",
-  "Eavesdrop",
-  "GetCredentialingDone",
-  "Estatico",
-  "Orange Production",
-  "Scanva & Co",
+  { name: "GetLandy", logo: null },
+  { name: "YorkScreenplay", logo: null },
+  { name: "Lexicon", logo: null },
+  { name: "Orange Production", logo: null },
+  { name: "Fitoholix", logo: null },
+  { name: "Ideora", logo: null },
+  { name: "Sacred Basil", logo: null },
+  { name: "Overshoot", logo: null },
+  { name: "Plainstate", logo: null },
+  { name: "Estatico", logo: null },
+  { name: "GetCredentialingDone", logo: null },
+  { name: "Unitas Emergency", logo: null },
+  { name: "Eavesdrops", logo: null },
+  { name: "Narayan Kripa", logo: null },
+  { name: "Aurelle Residence", logo: null },
+  { name: "Kyrosec", logo: null },
+  { name: "Tara Ayurvedic", logo: null },
 ];
-
-/* DUMMY — layout placeholders so the grid shows Kargul's three full rows.
-   These are fictional companies, not clients. TO CONFIRM: replace every
-   name with a real client before launch (then delete this list). */
-export const CLIENT_PLACEHOLDERS = ["Acme", "Globex", "Initech", "Hooli", "Vandelay", "Wonka"];

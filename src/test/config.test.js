@@ -11,7 +11,6 @@ describe("vercel redirects", () => {
     ["/portfolio/:slug*", "/work"],
     ["/case-studies", "/work"],
     ["/case-studies/:slug*", "/work"],
-    ["/services", "/#services"],
     ["/contact", "/start-a-project"],
     ["/blog", "/"],
     ["/blog/:slug*", "/"],
@@ -19,6 +18,10 @@ describe("vercel redirects", () => {
   ])("%s → %s (301)", (source, destination) => {
     const rule = (vercel.redirects || []).find((r) => r.source === source);
     expect(rule).toMatchObject({ destination, permanent: true });
+  });
+
+  it("lets /services through to its own page", () => {
+    expect((vercel.redirects || []).find((r) => r.source === "/services")).toBeUndefined();
   });
 
   it("keeps the SPA rewrite", () => {
@@ -32,6 +35,7 @@ describe("public route list (sitemap + prerender)", () => {
       "/",
       "/work",
       ...PROJECTS.map((p) => `/work/${p.slug}`),
+      "/services",
       "/swipe-file",
       "/start-a-project",
       "/pricing",

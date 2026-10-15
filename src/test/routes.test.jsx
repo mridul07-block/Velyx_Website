@@ -8,6 +8,7 @@ describe("routes", () => {
     ["/", /AI and engineering partner/],
     ["/work", /Latest projects/],
     ["/work/getlandy", /Getlandy AI/],
+    ["/services", /Services/],
     ["/swipe-file", /Swipe file/],
     ["/start-a-project", /Start a project/],
     ["/privacy", /Privacy/],
@@ -19,10 +20,22 @@ describe("routes", () => {
   });
 
   it("removed pages are gone from the app (redirects handle them)", async () => {
-    for (const route of ["/services", "/contact"]) {
+    for (const route of ["/contact"]) {
       const { unmount } = renderWithProviders(<AppRoutes />, { route });
       expect(await screen.findByRole("heading", { level: 1, name: /page not found/i })).toBeInTheDocument();
       unmount();
+    }
+  });
+
+  it("/services details every service: what's included and who it's for", async () => {
+    const { container } = renderWithProviders(<AppRoutes />, { route: "/services" });
+    await screen.findByRole("heading", { level: 1, name: "Services" });
+    for (const id of ["agents", "saas", "whatsapp", "web", "mobile"]) {
+      const section = container.querySelector(`section#${id}`);
+      expect(section).not.toBeNull();
+      expect(section.querySelectorAll(".svc-detail__list li").length).toBeGreaterThan(3);
+      expect(section.querySelectorAll(".tags--light .tag").length).toBeGreaterThan(3);
+      expect(container.querySelector(`a.filter[href="#${id}"]`)).not.toBeNull();
     }
   });
 
