@@ -3,6 +3,7 @@ import Seo from "../components/Seo";
 import Layout from "../components/Layout";
 import Tag from "../components/Tag";
 import ProjectCover from "../components/ProjectCover";
+import ProductFilm from "../components/ProductFilm";
 import NotFound from "./NotFound";
 import { PROJECTS } from "../data/projects";
 import { TESTIMONIAL_QUOTES } from "../data/testimonials";
@@ -29,7 +30,9 @@ export default function CaseStudy() {
           </div>
         </header>
         <div className="container">
-          <div className="case__hero"><ProjectCover project={p} /></div>
+          <div className={`case__hero${p.video ? " case__hero--film" : ""}`}>
+            {p.video ? <ProductFilm project={p} /> : <ProjectCover project={p} />}
+          </div>
         </div>
         <div className="container case__body">
           <section>
@@ -59,6 +62,24 @@ export default function CaseStudy() {
             </figure>
           )}
         </div>
+        {p.features && (
+          <section className="container feats" aria-labelledby="feats-title">
+            <h2 id="feats-title" className="h2 feats__title">{p.featuresTitle}</h2>
+            {p.features.map((f, k) => (
+              <div key={f.title} className={`feat${k % 2 ? " feat--flip" : ""}`}>
+                <div className={`feat__shot${f.shot.w === f.shot.h ? " feat__shot--sq" : ""}`}>
+                  <img src={f.shot.src} width={f.shot.w} height={f.shot.h} alt={`${p.name} — ${f.title}`} loading="lazy" />
+                </div>
+                <div className="feat__text">
+                  <span className="feat__num">{String(k + 1).padStart(2, "0")}</span>
+                  <h3 className="h3">{f.title}</h3>
+                  <p>{f.text}</p>
+                  <ul>{f.points.map((pt) => <li key={pt}>{pt}</li>)}</ul>
+                </div>
+              </div>
+            ))}
+          </section>
+        )}
         {p.gallery.length > 0 && (
           <div className="container case__gallery">
             {p.gallery.map((g) => (

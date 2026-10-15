@@ -15,12 +15,69 @@ export const PROJECTS = [
     audience: "B2C SaaS",
     types: ["ai", "saas"],
     featured: true,
-    cover: img("/work/getlandy-spotlight.webp", 1200, 750),
-    // Spotlight walkthrough: the getlandy.ai landing page, then the product's own recordings (tracker, profile, verification).
-    video: { src: "/work/getlandy-spotlight.mp4", poster: "/work/getlandy-spotlight.webp" },
+    cover: img("/work/getlandy/landing.webp", 1440, 900),
+    // Spotlight card: the landing page over a dashboard page, stacked.
+    shots: [
+      { ...img("/work/getlandy/landing.webp", 1440, 900), alt: "landing page" },
+      { ...img("/work/getlandy/tracker.webp", 1440, 720), alt: "Tracker dashboard" },
+    ],
+    // Case-study film: the landing page, then the product's own recordings, chapter by chapter.
+    video: { src: "/work/getlandy-film.mp4", poster: "/work/getlandy-film.webp", w: 1600, h: 1000 },
+    // Every dashboard page, from getlandy's own product recordings.
+    featuresTitle: "Inside Landy",
+    features: [
+      {
+        title: "Feed",
+        shot: img("/work/getlandy/feed.webp", 1440, 720),
+        text: "The home workspace. Ask the agents anything, upload a file or talk by voice, and drafts land in the feed ready to edit or schedule.",
+        points: ["An activity map of your career momentum", "Calendar and scheduled posts", "Suggested profile updates and your verification score at a glance"],
+      },
+      {
+        title: "Identity agent",
+        shot: img("/work/getlandy/identity.webp", 860, 860),
+        text: "A short conversation that finds the pattern underneath your experience. Landy asks what you want to optimise for, offers a few directions and writes your positioning in your own voice.",
+        points: ["Reads your CV and LinkedIn", "Surfaces the strong signals it found", "Becomes the foundation for your CV, applications, outreach and content"],
+      },
+      {
+        title: "Profile",
+        shot: img("/work/getlandy/profile.webp", 1440, 720),
+        text: "A professional profile that proves itself: headline, professional themes, one timeline across jobs and projects, capabilities with strength scores, evidence and portfolio.",
+        points: ["Live verification score", "Capabilities scored by the evidence behind them", "Shareable as a single link"],
+      },
+      {
+        title: "Verification",
+        shot: img("/work/getlandy/verification.webp", 1440, 720),
+        text: "Every line on the profile has to trace back to something you did. Connect Notion, LinkedIn or GitHub and Landy matches each claim to its sources.",
+        points: ["Claims marked verified, needs review or not yet verified", "Strengthen a claim by talking it through, asking a colleague to confirm it, or adding a document", "Landy reads the file and keeps only what it can trace"],
+      },
+      {
+        title: "Content agent",
+        shot: img("/work/getlandy/content.webp", 860, 860),
+        text: "Posts only you could write. Pick an angle, a format and a tone, refine it, and Landy drafts from what you have actually done.",
+        points: ["Angles like contrarian, founder story or big idea", "Refinements: more provocative, more personal, 20% tighter", "Publish, save as a draft or create another"],
+      },
+      {
+        title: "Outreach agent",
+        shot: img("/work/getlandy/outreach.webp", 860, 860),
+        text: "Tell Landy who you met and what you talked about, and it writes the follow-up in your voice, without it feeling like networking.",
+        points: ["Drawn from your event notes and your own work", "Nothing invented", "Warm intros, follow-ups and reconnects"],
+      },
+      {
+        title: "Tracker",
+        shot: img("/work/getlandy/tracker.webp", 1440, 720),
+        text: "Every role you are chasing, on one board, from saved and applied to interviewing, offer and closed. Move a role and the board keeps up.",
+        points: ["Each role scored against your record", "Notes, interviews, contacts and documents in one place", "Agenda and insights on how the search is really going"],
+      },
+      {
+        title: "Memory",
+        shot: img("/work/getlandy/memory.webp", 1440, 720),
+        text: "Everything Landy knows about you, on one chart: memories clustered by what they are about, from facts and goals to skills and achievements.",
+        points: ["Drop in a document and Landy proposes what it learned", "Click any memory to see where it came from", "Controls for what Landy should and shouldn't remember"],
+      },
+    ],
     gallery: [],
-    brief: "Landy helps professionals design their career strategy, hold a credible online presence and build long-term career leverage — beyond job searching.",
-    built: "Built by Velyx Labs: the Landy product, from its AI-powered studio to the subscription experience.",
+    brief: "Landy helps professionals design their career strategy, hold a credible online presence and build long-term career leverage — beyond job searching. The idea: build your professional DNA once, in a simple conversation, and let AI agents keep it organised, verified and ready to turn into CVs, content, outreach and new opportunities.",
+    built: "Built by Velyx Labs: the whole Landy product, from the landing page to the AI agents (identity, content and outreach), the verified profile, the evidence engine, the job tracker, long-term memory and the subscription experience.",
     stack: [],
     result: null,
     quoteName: null,

@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { fireEvent, screen } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
+import { act, fireEvent, screen, within } from "@testing-library/react";
 import { renderWithProviders } from "./renderWithProviders";
 import AppRoutes from "../AppRoutes";
 import { PROJECTS } from "../data/projects";
@@ -48,6 +48,50 @@ describe("/work/:slug", () => {
     expect(screen.queryByRole("heading", { name: "Stack" })).toBeNull();
     expect(screen.getByRole("link", { name: "← All work" })).toHaveAttribute("href", "/work");
     expect(screen.getByRole("link", { name: /Next project/ })).toBeInTheDocument();
+  });
+
+  it("the GetLandy case study opens on the product film and walks through every dashboard page", async () => {
+    const getlandy = PROJECTS.find((p) => p.slug === "getlandy");
+    renderWithProviders(<AppRoutes />, { route: "/work/getlandy" });
+    await screen.findByRole("heading", { level: 1, name: "Getlandy AI" });
+    const video = document.querySelector(".case__hero video");
+    expect(video).toHaveAttribute("src", getlandy.video.src);
+    expect(video).toHaveAttribute("poster", getlandy.video.poster);
+    expect(video).toHaveAttribute("preload", "none");
+    expect(video.muted).toBe(true);
+    expect(video.loop).toBe(true);
+    expect(video).toHaveAttribute("playsinline");
+    expect(screen.getByRole("heading", { level: 2, name: "Inside Landy" })).toBeInTheDocument();
+    const rows = document.querySelectorAll(".feat");
+    expect(rows).toHaveLength(getlandy.features.length);
+    getlandy.features.forEach((f, i) => {
+      expect(within(rows[i]).getByRole("heading", { level: 3, name: f.title })).toBeInTheDocument();
+      expect(rows[i].querySelector("img")).toHaveAttribute("src", f.shot.src);
+    });
+  });
+
+  it("the product film plays only while on screen, and never with reduced motion", async () => {
+    const watchers = [];
+    vi.stubGlobal("IntersectionObserver", class { constructor(cb) { this.cb = cb; } observe(el) { watchers.push([el, this.cb]); } unobserve() {} disconnect() {} });
+    const fire = (entries) => watchers.filter(([el]) => el.tagName === "VIDEO" && el.isConnected).forEach(([, cb]) => cb(entries));
+    const play = vi.spyOn(HTMLMediaElement.prototype, "play").mockImplementation(() => Promise.resolve());
+    const pause = vi.spyOn(HTMLMediaElement.prototype, "pause").mockImplementation(() => {});
+    const { unmount } = renderWithProviders(<AppRoutes />, { route: "/work/getlandy" });
+    await screen.findByRole("heading", { level: 1, name: "Getlandy AI" });
+    expect(play).not.toHaveBeenCalled();
+    act(() => fire([{ isIntersecting: true }]));
+    expect(play).toHaveBeenCalledTimes(1);
+    act(() => fire([{ isIntersecting: false }]));
+    expect(pause).toHaveBeenCalled();
+    unmount();
+
+    play.mockClear();
+    vi.stubGlobal("matchMedia", (q) => ({ matches: q.includes("reduce"), addEventListener() {}, removeEventListener() {} }));
+    renderWithProviders(<AppRoutes />, { route: "/work/getlandy" });
+    await screen.findByRole("heading", { level: 1, name: "Getlandy AI" });
+    act(() => fire([{ isIntersecting: true }]));
+    expect(play).not.toHaveBeenCalled();
+    play.mockRestore(); pause.mockRestore(); vi.unstubAllGlobals();
   });
 
   it("an unknown slug shows the 404 page", async () => {
