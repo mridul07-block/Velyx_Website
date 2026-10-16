@@ -41,6 +41,11 @@ describe("/work", () => {
     for (const p of PROJECTS) expect(p.cover, p.slug).toBeTruthy();
   });
 
+  it("shows Sacred Basil's hero (the open kit from its hero film), not the logo", () => {
+    const sb = PROJECTS.find((p) => p.slug === "sacred-basil");
+    expect(sb.cover).toMatchObject({ src: "/work/sites/sacred-basil.webp", w: 1600, h: 900 });
+  });
+
   it("no longer lists SparklingTimes", () => {
     expect(PROJECTS.map((p) => p.slug)).not.toContain("sparklingtimes");
   });
