@@ -1,0 +1,28 @@
+# Velyx Labs
+
+> Velyx Labs is an AI and engineering partner for founders and growing businesses. We design and build AI agents, SaaS products and MVPs, WhatsApp automation, websites and mobile apps, end to end and founder-led.
+
+- Website: https://www.velyxlabs.in
+- Email: velyxlabs@gmail.com
+- Founders: Mridul (Founder), Atharv Golait (Co-founder)
+- LinkedIn: https://www.linkedin.com/company/velyx-labs/
+- X: https://x.com/VelyxLabs
+
+## What we build
+
+- Agentic AI automation: agents that answer, qualify, follow up and file, wired into CRM, inbox and WhatsApp
+- AI voice agents: answer every call, book appointments, qualify leads
+- Automated CRM systems
+- AI SaaS and MVPs: production apps with auth, billing, admin and AI features
+- WhatsApp automation with CRM
+- Websites and landing pages with SEO
+- Mobile apps
+- Industry systems for healthcare, real estate and automobile businesses
+
+## Pages
+
+- [Services](https://www.velyxlabs.in/services): every service, what's included and who it's for
+- [Recent work](https://www.velyxlabs.in/work): case studies and client projects
+- [Pricing](https://www.velyxlabs.in/pricing)
+- [Book an intro call](https://www.velyxlabs.in/intro-call)
+- [Start a project](https://www.velyxlabs.in/start-a-project)

@@ -18,7 +18,8 @@ import { quotesFor } from "../data/testimonials";
 const JSON_LD = {
   "@context": "https://schema.org",
   "@graph": [
-    { "@type": "Organization", "@id": `${SITE.url}#org`, name: "Velyx Labs", url: SITE.url, logo: SITE.ogImage, description: SITE.defaultDescription, sameAs: ["https://x.com/VelyxLabs", "https://www.linkedin.com/company/velyx-labs/", "https://github.com/ATHARVISM2804"], founder: { "@id": `${SITE.url}#atharv` } },
+    { "@type": "Organization", "@id": `${SITE.url}#org`, name: "Velyx Labs", url: SITE.url, logo: SITE.logo, image: SITE.ogImage, description: SITE.defaultDescription, email: "velyxlabs@gmail.com", areaServed: "Worldwide", knowsAbout: ["AI agents", "AI voice agents", "SaaS and MVP development", "WhatsApp automation", "CRM automation", "Website development", "SEO", "Mobile app development"], sameAs: ["https://x.com/VelyxLabs", "https://www.linkedin.com/company/velyx-labs/", "https://github.com/ATHARVISM2804"], founder: [{ "@id": `${SITE.url}#mridul` }, { "@id": `${SITE.url}#atharv` }] },
+    { "@type": "Person", "@id": `${SITE.url}#mridul`, name: "Mridul", jobTitle: "Founder", worksFor: { "@id": `${SITE.url}#org` }, sameAs: ["https://www.linkedin.com/in/mridulrahangdale/", "https://x.com/Mridul07_"] },
     { "@type": "Person", "@id": `${SITE.url}#atharv`, name: "Atharv Golait", jobTitle: "Co-founder", worksFor: { "@id": `${SITE.url}#org` }, url: "https://atharvgolait.dev/", sameAs: ["https://atharvgolait.dev/", "https://www.linkedin.com/in/atharv-golait-9048772ab/", "https://x.com/Atharv_Golait"] },
     { "@type": "WebSite", "@id": `${SITE.url}#website`, url: SITE.url, name: "Velyx Labs", publisher: { "@id": `${SITE.url}#org` } },
   ],

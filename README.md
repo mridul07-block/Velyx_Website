@@ -1,6 +1,6 @@
 # Velyx Labs — Agency Website
 
-> Agentic systems & AI-native SaaS for ambitious founders.
+> An AI and engineering partner for founders and growing businesses.
 
 A clean, fast, conversion-focused agency site in a Kargul-style light design. One goal: book a free 30-minute call (Cal.com).
 

@@ -17,5 +17,7 @@ export function renderMeta(template, route) {
     .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${url}$2`)
     .replace(/(<meta property="og:title"\s+content=")[\s\S]*?("\s*\/>)/, `$1${t}$2`)
     .replace(/(<meta property="og:description"\s+content=")[\s\S]*?("\s*\/>)/, `$1${d}$2`)
-    .replace(/(<meta property="og:url"\s+content=")[^"]*(")/, `$1${url}$2`);
+    .replace(/(<meta property="og:url"\s+content=")[^"]*(")/, `$1${url}$2`)
+    .replace(/(<meta name="twitter:title"\s+content=")[\s\S]*?("\s*\/>)/, `$1${t}$2`)
+    .replace(/(<meta name="twitter:description"\s+content=")[\s\S]*?("\s*\/>)/, `$1${d}$2`);
 }
