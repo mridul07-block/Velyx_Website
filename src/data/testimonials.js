@@ -21,7 +21,6 @@ export const TESTIMONIAL_QUOTES = [
   },
   {
     kind: "quote",
-    draft: true,
     name: "Jon Stewart",
     role: "Founder · Lexicon One & YorkScreenPlay",
     avatar: "JS",
@@ -49,7 +48,6 @@ export const TESTIMONIAL_QUOTES = [
   },
   {
     kind: "quote",
-    draft: true,
     name: "Titos Koropoulis",
     role: "Founder · Getlandy AI",
     avatar: "TK",
@@ -59,7 +57,6 @@ export const TESTIMONIAL_QUOTES = [
   },
   {
     kind: "quote",
-    draft: true,
     name: "Rob Vigurrs",
     role: "Co-Founder · Getlandy AI",
     avatar: "RV",
@@ -69,7 +66,6 @@ export const TESTIMONIAL_QUOTES = [
   },
   {
     kind: "quote",
-    draft: true,
     name: "Ikram Ansari",
     role: "Founder · Fitoholix",
     avatar: "IA",
@@ -79,7 +75,6 @@ export const TESTIMONIAL_QUOTES = [
   },
   {
     kind: "quote",
-    draft: true,
     name: "Bianca",
     role: "Founder · Scanva & Co",
     avatar: "B",

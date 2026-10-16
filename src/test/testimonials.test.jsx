@@ -123,11 +123,8 @@ describe("client testimonials", () => {
     for (const t of TESTIMONIAL_QUOTES) expect(existsSync(`public${t.photo}`), t.photo).toBe(true);
   });
 
-  it("shows drafted quotes on the local preview but never in a production build", async () => {
+  it("shows all eight quotes in a production build", async () => {
     const { quotesFor } = await import("../data/testimonials");
-    expect(quotesFor(true)).toEqual(TESTIMONIAL_QUOTES);
-    const prod = quotesFor(false);
-    expect(prod.some((q) => q.draft)).toBe(false);
-    expect(prod.map((q) => q.name)).toEqual(["Prasannata", "Dr. Parita", "Nishant"]);
+    expect(quotesFor(false)).toEqual(TESTIMONIAL_QUOTES);
   });
 });
