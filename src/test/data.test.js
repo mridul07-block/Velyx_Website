@@ -60,7 +60,7 @@ describe("content data", () => {
 
   it("has seven FAQs, the team and tools", () => {
     expect(FAQ_ITEMS).toHaveLength(7);
-    expect(TEAM.map((t) => t.name)).toEqual(["Atharv Golait", "Mridul"]);
+    expect(TEAM.map((t) => t.name)).toEqual(["Mridul", "Atharv Golait"]);
     expect(TOOLS.length).toBeGreaterThanOrEqual(10);
   });
 

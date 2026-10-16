@@ -11,6 +11,7 @@ export const ROUTES = [
   { path: "/", title: null, desc: DEFAULT_DESC, priority: 1.0, changefreq: "weekly" },
   { path: "/work", title: "Recent work", desc: "A selection of Velyx Labs' recent work across AI systems, SaaS products, websites and apps.", priority: 0.9, changefreq: "weekly" },
   ...PROJECTS.map((p) => ({ path: `/work/${p.slug}`, title: `${p.name} — case study`, desc: p.summary, priority: 0.7, changefreq: "monthly" })),
+  { path: "/services", title: "Services", desc: "AI agents, AI SaaS and MVPs, WhatsApp automation, websites with SEO, and mobile apps — what Velyx Labs builds, what's included and who it's for.", priority: 0.9, changefreq: "monthly" },
   { path: "/swipe-file", title: "Swipe file", desc: "A raw look at recent Velyx Labs design work across products, websites and brands.", priority: 0.6, changefreq: "monthly" },
   { path: "/start-a-project", title: "Start a project", desc: "Tell Velyx Labs what you're building — send a brief or book a free 30-minute call.", priority: 0.9, changefreq: "yearly" },
   { path: "/pricing", title: "Pricing", desc: "Start with a $1500 trial week, then a product sprint or a monthly partnership with the Velyx Labs founders.", priority: 0.9, changefreq: "monthly" },

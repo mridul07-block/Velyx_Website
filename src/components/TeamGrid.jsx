@@ -8,9 +8,10 @@ const ICONS = {
   site: { label: "website", d: "M12 2a10 10 0 100 20 10 10 0 000-20zm6.9 6h-3a15.6 15.6 0 00-1.3-4 8 8 0 014.3 4zM12 4c.8 1 1.6 2.4 2 4h-4c.4-1.6 1.2-3 2-4zM4.3 14a8 8 0 010-4h3.3a17 17 0 000 4zm.8 2h3a15.6 15.6 0 001.3 4 8 8 0 01-4.3-4zm3-8h-3a8 8 0 014.3-4 15.6 15.6 0 00-1.3 4zM12 20c-.8-1-1.6-2.4-2-4h4c-.4 1.6-1.2 3-2 4zm2.4-6H9.6a15 15 0 010-4h4.8a15 15 0 010 4zm.3 6a15.6 15.6 0 001.3-4h3a8 8 0 01-4.3 4zm1.7-6a17 17 0 000-4h3.3a8 8 0 010 4z" },
 };
 
-/* The founders as two large cards: a portrait (photo in black and white,
-   colour on hover — or the initials in a dashed selection frame until a
-   photo exists), name, role, a short bio and the profiles we have. */
+/* The founders as two tall portrait cards: the photo (black and white,
+   colour on hover — or, until a photo exists, the initials in a dashed
+   selection frame) with role and name over it, then a short bio and the
+   profiles we have. */
 export default function TeamGrid() {
   return (
     <section id="team" className="section founders">
@@ -26,29 +27,29 @@ export default function TeamGrid() {
                   {m.photo ? (
                     <img src={m.photo} alt={`${m.name}`} className="founder__photo" loading="lazy" />
                   ) : (
-                    <span className="founder__initials" aria-hidden="true">{m.initials}</span>
+                    <>
+                      <span className="founder__initials" aria-hidden="true">{m.initials}</span>
+                      <span className="founder__frame" aria-hidden="true">
+                        {[0, 1, 2, 3].map((i) => <span key={i} className="founder__handle" />)}
+                      </span>
+                    </>
                   )}
-                  <span className="founder__frame" aria-hidden="true">
-                    {[0, 1, 2, 3].map((i) => <span key={i} className="founder__handle" />)}
-                  </span>
+                  <div className="founder__caption">
+                    <p className="founder__role">{m.role}</p>
+                    <h3 className="team__name">{m.name}</h3>
+                  </div>
                 </div>
                 <div className="founder__body">
-                  <div className="founder__head">
-                    <div>
-                      <h3 className="team__name">{m.name}</h3>
-                      <p className="founder__role">{m.role}</p>
-                    </div>
-                    {links.length > 0 && (
-                      <div className="founder__links">
-                        {links.map(([key, href]) => (
-                          <a key={key} href={href} target="_blank" rel="noopener noreferrer" aria-label={`${first} on ${ICONS[key].label}`}>
-                            <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d={ICONS[key].d} /></svg>
-                          </a>
-                        ))}
-                      </div>
-                    )}
-                  </div>
                   <p className="founder__bio">{m.bio}</p>
+                  {links.length > 0 && (
+                    <div className="founder__links">
+                      {links.map(([key, href]) => (
+                        <a key={key} href={href} target="_blank" rel="noopener noreferrer" aria-label={`${first} on ${ICONS[key].label}`}>
+                          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d={ICONS[key].d} /></svg>
+                        </a>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </li>
             );

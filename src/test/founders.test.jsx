@@ -5,6 +5,12 @@ import TeamGrid from "../components/TeamGrid";
 import { TEAM } from "../data/team";
 
 describe("Founders", () => {
+  it("shows Mridul first, then Atharv", () => {
+    renderWithProviders(<TeamGrid />);
+    const names = [...document.querySelectorAll(".founder .team__name")].map((h) => h.textContent);
+    expect(names).toEqual(["Mridul", "Atharv Golait"]);
+  });
+
   it("gives every founder a card with portrait, name, role and bio", () => {
     renderWithProviders(<TeamGrid />);
     const cards = document.querySelectorAll(".founder");
@@ -21,9 +27,13 @@ describe("Founders", () => {
   it("shows initials in a selection frame until a photo exists, and the photo when it does", () => {
     renderWithProviders(<TeamGrid />);
     const [first] = document.querySelectorAll(".founder");
-    if (TEAM[0].photo) expect(first.querySelector("img.founder__photo")).toHaveAttribute("src", TEAM[0].photo);
-    else expect(first.querySelector(".founder__initials").textContent).toBe(TEAM[0].initials);
-    expect(first.querySelectorAll(".founder__frame .founder__handle")).toHaveLength(4);
+    if (TEAM[0].photo) {
+      expect(first.querySelector("img.founder__photo")).toHaveAttribute("src", TEAM[0].photo);
+      expect(first.querySelector(".founder__frame")).toBeNull();
+    } else {
+      expect(first.querySelector(".founder__initials").textContent).toBe(TEAM[0].initials);
+      expect(first.querySelectorAll(".founder__frame .founder__handle")).toHaveLength(4);
+    }
   });
 
   it("only links profiles we have, each with a clear label", () => {
