@@ -1,7 +1,7 @@
 import { Guides, Handles, Layer, Patterns } from "./iso";
 import { floor } from "./isoMatrix";
 
-/* Industry scenes, drawn like AgentsArt: an industry plane hovers over a
+/* Industry and automation scenes, drawn like AgentsArt: an industry plane hovers over a
    hatched shadow and streams work along dotted wires to the tools the
    agents run, each floating on its own rhythm. */
 function HubScene({ id, hub, tools, children }) {
@@ -109,6 +109,47 @@ export function AutomotiveArt() {
       <path className="ln" d="M30 86a20 20 0 0 1 40 0" />
       <path className="ln-bright" d="M50 86l9-9" />
       <circle cx="84" cy="16" r="2.5" className="fill-ok" />
+    </HubScene>
+  );
+}
+
+/* Voice agents: a microphone over a live waveform, feeding calls, bookings
+   and the CRM. */
+export function VoiceArt() {
+  return (
+    <HubScene
+      id="vo"
+      hub={[225, 110]}
+      tools={[
+        { label: "CALLS", c: [95, 135], s: [-6, 2], icon: <><rect x="14" y="8" width="12" height="22" rx="2" /><path d="M18 26h4M29 14a6 6 0 0 1 0 8M32 11a10 10 0 0 1 0 14" /></> },
+        { label: "BOOKING", c: [335, 84], s: [6, -4], icon: calendar },
+        { label: "CRM", c: [325, 196], s: [6, 4], icon: <><ellipse cx="20" cy="12" rx="9" ry="3" /><path d="M11 12v14c0 2 4 3 9 3s9-1 9-3V12M11 19c0 2 4 3 9 3s9-1 9-3" /></> },
+      ]}
+    >
+      <rect x="40" y="10" width="20" height="32" rx="10" className="ln-bright" />
+      <path className="ln-bright" d="M32 32a18 18 0 0 0 36 0M50 50v8M42 58h16" />
+      <path className="ln" d="M14 78v4M22 72v16M30 66v28M38 74v12M46 62v36M54 70v20M62 76v8M70 68v24M78 74v12M86 78v4" />
+      <circle cx="84" cy="16" r="2.5" className="fill-ok" />
+    </HubScene>
+  );
+}
+
+/* Automated CRM: a pipeline board whose cards move themselves, feeding
+   lead capture, follow-ups and reports. */
+export function CrmArt() {
+  return (
+    <HubScene
+      id="cr"
+      hub={[222, 110]}
+      tools={[
+        { label: "LEADS", c: [94, 128], s: [-6, -2], icon: <><circle cx="20" cy="14" r="4.5" /><path d="M11 28a9 9 0 0 1 18 0" /></> },
+        { label: "FOLLOW-UP", c: [332, 82], s: [6, -4], icon: <path d="M14 26v-8a6 6 0 0 1 12 0v8l2 2H12zM18 31h4" /> },
+        { label: "REPORTS", c: [320, 198], s: [6, 4], icon: <path d="M9 30h22M12 29v-8M18 29V15M24 29v-11M30 29V10" /> },
+      ]}
+    >
+      <path className="ln" d="M10 14h22v72H10zM39 14h22v72H39zM68 14h22v72H68z" />
+      <path className="ln-bright" d="M13 20h16v10H13zM13 34h16v10H13zM13 48h16v10H13zM42 20h16v10H42zM42 34h16v10H42zM71 20h16v10H71z" />
+      <circle cx="79" cy="74" r="2.5" className="fill-ok" />
     </HubScene>
   );
 }

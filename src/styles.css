@@ -221,6 +221,15 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 .marquee__group { display: flex; gap: 40px; padding-right: 40px; align-items: center; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
+/* Intro-call page: our work's hero screenshots sliding right to left. */
+.work-strip { margin: 8px 0 96px; }
+.work-strip .marquee__track { animation-duration: 90s; }
+.work-strip .marquee__group { gap: 20px; padding-right: 20px; }
+.work-strip__shot { flex: none; display: block; width: 380px; aspect-ratio: 16 / 10; padding: 4px; border-radius: 18px; background: var(--card); transition: transform 0.3s; }
+.work-strip__shot:hover { transform: translateY(-4px); }
+.work-strip__shot img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 14px; }
+@media (max-width: 640px) { .work-strip__shot { width: 260px; } }
+
 /* ---------- FAQ (pill accordions) ---------- */
 
 .faq { max-width: 540px; margin-inline: auto; display: flex; flex-direction: column; gap: 14px; }
@@ -812,9 +821,9 @@ a.filter { display: inline-flex; align-items: center; }
 /* one line at every width: short labels, scrolling sideways when space runs out */
 .svc-jump { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
 .svc-jump::-webkit-scrollbar { display: none; }
-.svc-jump .filter { flex: none; white-space: nowrap; font-size: 14px; padding: 0 16px; }
+.svc-jump .filter { flex: none; white-space: nowrap; font-size: 14px; padding: 0 12px; }
 .svc-jump .filter:hover { background: var(--page); }
-@media (max-width: 900px) {
+@media (max-width: 1180px) {
   .svc-jump { justify-content: flex-start; -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); }
 }
 .svc-details { display: grid; gap: 24px; padding-bottom: var(--section-y); }
@@ -1010,5 +1019,7 @@ a.filter { display: inline-flex; align-items: center; }
   .marquee__track { width: auto; }
   .marquee__group { flex-wrap: wrap; justify-content: center; gap: 16px 32px; padding: 0; width: 100%; }
   .marquee__dup { display: none; }
+  .work-strip { overflow-x: auto; }
+  .work-strip .marquee__group { flex-wrap: nowrap; justify-content: flex-start; gap: 20px; padding: 0 16px; width: max-content; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }

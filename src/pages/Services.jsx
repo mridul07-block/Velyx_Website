@@ -11,10 +11,10 @@ import SaasArt from "../components/illustrations/SaasArt";
 import WhatsAppArt from "../components/illustrations/WhatsAppArt";
 import WebArt from "../components/illustrations/WebArt";
 import MobileArt from "../components/illustrations/MobileArt";
-import { HealthcareArt, RealEstateArt, AutomotiveArt } from "../components/illustrations/IndustryArt";
+import { HealthcareArt, RealEstateArt, AutomotiveArt, VoiceArt, CrmArt } from "../components/illustrations/IndustryArt";
 import { SERVICES } from "../data/services";
 
-const ART = { agents: AgentsArt, saas: SaasArt, whatsapp: WhatsAppArt, web: WebArt, mobile: MobileArt, healthcare: HealthcareArt, realestate: RealEstateArt, automotive: AutomotiveArt };
+const ART = { agents: AgentsArt, saas: SaasArt, whatsapp: WhatsAppArt, web: WebArt, mobile: MobileArt, healthcare: HealthcareArt, realestate: RealEstateArt, automotive: AutomotiveArt, voice: VoiceArt, crm: CrmArt };
 
 /* One service in full: what it is, what's included, who it's for, the
    stack, and the same living illustration as its home-page card. */

@@ -1,9 +1,14 @@
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Seo from "../components/Seo";
 import Layout from "../components/Layout";
 import SectionHeader from "../components/SectionHeader";
 import CalEmbed from "../components/CalEmbed";
 import { CAL_URL } from "../lib/cal";
+import Marquee from "../components/Marquee";
+import { PROJECTS } from "../data/projects";
+
+// Every project's hero screenshot (wide covers only, not logos).
+const HEROES = PROJECTS.filter((p) => p.cover && p.cover.w / p.cover.h >= 1.6);
 
 /* The booking page every "Intro call" and the free-audit row lead to. */
 export default function IntroCall() {
@@ -26,6 +31,13 @@ export default function IntroCall() {
           </p>
         </div>
       </section>
+      <Marquee label="Our work" className="work-strip">
+        {HEROES.map((p) => (
+          <Link key={p.slug} to={`/work/${p.slug}`} className="work-strip__shot" aria-label={p.name}>
+            <img src={p.cover.src} width={p.cover.w} height={p.cover.h} alt="" loading="lazy" />
+          </Link>
+        ))}
+      </Marquee>
     </Layout>
   );
 }

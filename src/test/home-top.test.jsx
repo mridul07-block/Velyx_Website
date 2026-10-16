@@ -50,11 +50,11 @@ describe("TrustedBy", () => {
 });
 
 describe("ServicesPanel", () => {
-  it("renders eight service cards with tags inside the dark panel", () => {
+  it("renders ten service cards with tags inside the dark panel", () => {
     const { container } = renderWithProviders(<ServicesPanel />);
     expect(container.querySelector("section#services.panel")).not.toBeNull();
-    expect(container.querySelectorAll(".svc-card")).toHaveLength(8);
-    expect(container.querySelectorAll(".svc-card--wide")).toHaveLength(2);
+    expect(container.querySelectorAll(".svc-card")).toHaveLength(10);
+    expect(container.querySelectorAll(".svc-card--wide")).toHaveLength(4);
     expect(screen.getByText("WhatsApp API")).toBeInTheDocument();
   });
 });
