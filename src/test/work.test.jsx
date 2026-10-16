@@ -38,7 +38,27 @@ describe("/work", () => {
     expect(video).toHaveAttribute("preload", "none");
     expect(video.muted).toBe(true);
     // every client site shows a real hero screenshot, not a placeholder
-    for (const p of PROJECTS.filter((x) => x.slug !== "sparklingtimes")) expect(p.cover, p.slug).toBeTruthy();
+    for (const p of PROJECTS) expect(p.cover, p.slug).toBeTruthy();
+  });
+
+  it("no longer lists SparklingTimes", () => {
+    expect(PROJECTS.map((p) => p.slug)).not.toContain("sparklingtimes");
+  });
+
+  it("every card with a live site links to it in a new tab, showing the bare domain", async () => {
+    const { container } = renderWithProviders(<AppRoutes />, { route: "/work" });
+    await screen.findByRole("heading", { level: 1, name: "Latest projects" });
+    const withSite = PROJECTS.filter((p) => p.url);
+    expect(withSite.map((p) => p.slug)).toEqual(PROJECTS.map((p) => p.slug).filter((s) => s !== "sacred-basil"));
+    const links = [...container.querySelectorAll("a.pcard__site")];
+    expect(links.map((a) => a.getAttribute("href"))).toEqual(withSite.map((p) => p.url));
+    for (const a of links) {
+      expect(a).toHaveAttribute("target", "_blank");
+      expect(a.getAttribute("rel")).toMatch(/noopener/);
+      expect(a.textContent).not.toMatch(/https?:|www\./);
+      expect(a.closest(".pcard")).toBeNull(); // never nested inside the case-study link
+    }
+    expect(screen.getByRole("link", { name: /lexiconone\.com/ })).toHaveAttribute("href", "https://lexiconone.com/");
   });
 
   it("filters by type and reflects it in the pressed pill", async () => {

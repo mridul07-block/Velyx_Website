@@ -12,6 +12,7 @@ const AUDI = (name) => img(`/work/audi/${name}.webp`, 1512, 756);
 export const PROJECTS = [
   {
     slug: "getlandy",
+    url: "https://getlandy.ai/",
     name: "Getlandy AI",
     summary: "An AI-powered personal brand studio and career operating system for high-signal professionals.",
     industry: "AI",
@@ -94,6 +95,7 @@ export const PROJECTS = [
   },
   {
     slug: "audi-service-system",
+    url: "https://audi-service-system.up.railway.app/",
     name: "Audi Service System",
     summary: "A concept service operating system for an Audi dealership: the whole service day, from booking to handover, on one screen.",
     note: "Concept demo on sample data. Not affiliated with Audi.",
@@ -182,6 +184,7 @@ export const PROJECTS = [
   },
   {
     slug: "plainstate",
+    url: "https://www.buildplainstate.in/",
     name: "Plainstate",
     summary: "Month-end owner statements in under an hour, not three to five days, for residential property managers.",
     industry: "Proptech",
@@ -285,6 +288,7 @@ export const PROJECTS = [
   },
   {
     slug: "aurelle-residence",
+    url: "https://aurelle-residence.vercel.app/",
     name: "Aurelle Residence",
     summary: "A cinematic scroll site for a luxury residential tower in Al Furjan, Dubai, with every floor plan explorable in 3D.",
     note: "Concept site: Aurelle Residence and Halden Properties are fictional brands.",
@@ -305,6 +309,7 @@ export const PROJECTS = [
   },
   {
     slug: "lexicon-one",
+    url: "https://lexiconone.com/",
     name: "Lexicon One",
     summary: "An asset management firm's site, overseeing financial holdings, real estate and automotive assets.",
     industry: "Asset management",
@@ -321,6 +326,7 @@ export const PROJECTS = [
   },
   {
     slug: "yorkscreenplay",
+    url: "https://yorkscreenplay.com/",
     name: "YorkScreenPlay",
     summary: "YORK, an original feature screenplay, with the script, a sizzle reel and a live auction for the rights.",
     industry: "Film",
@@ -337,6 +343,7 @@ export const PROJECTS = [
   },
   {
     slug: "narayankripa",
+    url: "https://www.narayankripa.in/",
     name: "NarayanKripa",
     summary: "Online pooja and chadhava at famous Indian temples, booked in your name and gotra, with the video on WhatsApp.",
     industry: "Spiritual services",
@@ -353,6 +360,7 @@ export const PROJECTS = [
   },
   {
     slug: "fitoholix",
+    url: "https://www.fitoholix.in/",
     name: "Fitoholix",
     summary: "The Total Transformation Protocol: personalised coaching for busy professionals who are done with quick fixes.",
     industry: "Health and fitness",
@@ -369,6 +377,7 @@ export const PROJECTS = [
   },
   {
     slug: "orange-productions",
+    url: "https://www.orangeproduction.co.in/",
     name: "Orange Productions",
     summary: "A content agency that turns brands into attention magnets: strategy, high-conversion reels and content systems.",
     industry: "Creative agency",
@@ -385,6 +394,7 @@ export const PROJECTS = [
   },
   {
     slug: "ideora-labs",
+    url: "https://www.ideoralabs.com/",
     name: "Ideora Labs",
     summary: "Custom AI automation for service businesses: enquiries, bookings and follow-ups inside the software they already use.",
     industry: "AI automation",
@@ -401,6 +411,7 @@ export const PROJECTS = [
   },
   {
     slug: "overshoot",
+    url: "https://www.overshoot.in/",
     name: "Overshoot Newsletter",
     summary: "A bi-monthly newsletter decoding the business behind streaming, cinema, gaming and culture.",
     industry: "Media",
@@ -417,6 +428,7 @@ export const PROJECTS = [
   },
   {
     slug: "estatico",
+    url: "https://www.estatico.app/",
     name: "Estatico",
     summary: "AI-powered automation for real estate agents: follow-ups, tasks and reminders handled, so they can close more deals.",
     industry: "Proptech",
@@ -433,6 +445,7 @@ export const PROJECTS = [
   },
   {
     slug: "get-credentialing-done",
+    url: "https://getcredentialingdone.com/",
     name: "Get Credentialing Done",
     summary: "Fast, easy insurance credentialing for healthcare providers: Medicare, Medicaid and commercial payers.",
     industry: "Healthcare",
@@ -449,6 +462,7 @@ export const PROJECTS = [
   },
   {
     slug: "unitas-emergency",
+    url: "https://www.emergencymed.co.za/",
     name: "Unitas Emergency",
     summary: "The 24/7 emergency unit at Netcare Unitas Hospital, Centurion: experienced ER doctors, round the clock.",
     industry: "Healthcare",
@@ -465,6 +479,7 @@ export const PROJECTS = [
   },
   {
     slug: "eavesdrop",
+    url: "https://eavesdrop.co.in/",
     name: "Eavesdrop",
     summary: "Buyer-intent lead generation that finds people on Reddit, X and Hacker News who are ready to buy.",
     industry: "Lead generation",
@@ -475,22 +490,6 @@ export const PROJECTS = [
     gallery: [],
     brief: "Eavesdrop needed a product site for B2B SaaS teams that shows how it listens where buyers talk.",
     built: "Velyx Labs built the Eavesdrop site: the lead feed, sources, scoring, pipeline and alerts, a comparison, pricing and a free tier.",
-    stack: [],
-    result: null,
-    quoteName: null,
-  },
-  {
-    slug: "sparklingtimes",
-    name: "SparklingTimes",
-    summary: "A custom web application.",
-    industry: "Web app",
-    audience: "B2C",
-    types: ["web"],
-    featured: false,
-    cover: null,
-    gallery: [],
-    brief: "Elise Q Rao needed a custom web application.",
-    built: "Velyx Labs built SparklingTimes, a custom web application, for Elise Q Rao.",
     stack: [],
     result: null,
     quoteName: null,

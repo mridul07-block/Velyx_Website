@@ -855,7 +855,11 @@ a.filter { display: inline-flex; align-items: center; }
 /* ---------- Work grid ---------- */
 
 .work-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px 20px; max-width: 1200px; margin-inline: auto; }
+.pcard-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
 .pcard { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.pcard-wrap .pcard { width: 100%; }
+.pcard__site { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 14px; border-radius: var(--radius-pill); background: var(--card); font-size: 13px; font-weight: 600; color: var(--muted); transition: background-color 0.15s, color 0.15s; }
+.pcard__site:hover { background: var(--ink); color: var(--page); }
 .pcard__tags { justify-content: center; }
 .pcard__media { position: relative; width: 100%; padding: 4px; background: var(--card); border-radius: 22px; transition: transform 0.3s, box-shadow 0.3s; }
 .pcard:hover .pcard__media { transform: translateY(-4px); box-shadow: 0 14px 34px #00000012; }
