@@ -44,6 +44,13 @@ describe("audit bar + nav + intro call", () => {
     expect(groups[1]).toHaveAttribute("inert"); // the copy's links can't be tabbed to
   });
 
+  it("shows the work screenshots large: 560px cards on desktop, 320px on phones", async () => {
+    const { readFileSync } = await import("node:fs");
+    const css = readFileSync("src/styles.css", "utf8");
+    expect(css).toMatch(/\.work-strip__shot \{[^}]*width: 560px;/);
+    expect(css).toMatch(/max-width: 640px\) \{ \.work-strip__shot \{ width: 320px; \}/);
+  });
+
   it("switches the heading for the free audit", () => {
     renderWithProviders(<IntroCall />, { route: "/intro-call?for=audit" });
     expect(screen.getByRole("heading", { level: 1, name: "Free product audit" })).toBeInTheDocument();
