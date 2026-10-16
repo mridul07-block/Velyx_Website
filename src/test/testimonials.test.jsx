@@ -7,6 +7,9 @@ import TeamGrid from "../components/TeamGrid";
 import { TESTIMONIAL_QUOTES } from "../data/testimonials";
 import { shouldDrift, wrap, roleLine, loopPeriod } from "../lib/drift";
 
+// Three quotes: too few to drift, so each card renders once.
+const FEW = TESTIMONIAL_QUOTES.slice(0, 3);
+
 describe("testimonial drift rules", () => {
   it("only drifts with 6+ cards and never under reduced motion", () => {
     expect(shouldDrift(3, false)).toBe(false);
@@ -46,33 +49,33 @@ describe("testimonial drift rules", () => {
 
 describe("Testimonials (Bricx)", () => {
   it("has the two-tone headline and arrows", () => {
-    renderWithProviders(<Testimonials items={TESTIMONIAL_QUOTES} />);
+    renderWithProviders(<Testimonials items={FEW} />);
     expect(screen.getByRole("heading", { level: 2 }).textContent).toMatch(/Don't take our word\.\s*Take theirs\./);
     expect(screen.getByRole("button", { name: "Previous testimonial" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Next testimonial" })).toBeInTheDocument();
   });
 
   it("renders each real quote exactly once while there are too few to drift", () => {
-    renderWithProviders(<Testimonials items={TESTIMONIAL_QUOTES} />);
-    expect(document.querySelectorAll(".tcard2").length).toBe(TESTIMONIAL_QUOTES.length);
-    for (const t of TESTIMONIAL_QUOTES) expect(screen.getByText(t.name)).toBeInTheDocument();
+    renderWithProviders(<Testimonials items={FEW} />);
+    expect(document.querySelectorAll(".tcard2").length).toBe(FEW.length);
+    for (const t of FEW) expect(screen.getByText(t.name)).toBeInTheDocument();
   });
 
   it("uses a monogram when there is no photo, and the photo when there is", () => {
-    renderWithProviders(<Testimonials items={[TESTIMONIAL_QUOTES[0], { ...TESTIMONIAL_QUOTES[1], photo: "/people/p.jpg" }]} />);
+    renderWithProviders(<Testimonials items={[{ ...FEW[0], photo: undefined }, { ...FEW[1], photo: "/people/p.jpg" }]} />);
     const cards = document.querySelectorAll(".tcard2");
-    expect(cards[0].querySelector(".tcard2__mono").textContent).toBe(TESTIMONIAL_QUOTES[0].avatar);
+    expect(cards[0].querySelector(".tcard2__mono").textContent).toBe(FEW[0].avatar);
     expect(cards[1].querySelector("img.tcard2__img")).toHaveAttribute("src", "/people/p.jpg");
   });
 
   it("links to the client's case study when there is one", () => {
-    renderWithProviders(<Testimonials items={TESTIMONIAL_QUOTES} />);
+    renderWithProviders(<Testimonials items={FEW} />);
     const card = screen.getByText("Dr. Parita").closest(".tcard2");
     expect(card.querySelector('a[href="/work/sacred-basil"]')).toBeTruthy();
   });
 
   it("arrow buttons scroll the track by one card", () => {
-    renderWithProviders(<Testimonials items={TESTIMONIAL_QUOTES} />);
+    renderWithProviders(<Testimonials items={FEW} />);
     const track = document.querySelector(".tsec__track");
     let left = 0;
     track.scrollBy = ({ left: l }) => (left += l);
@@ -111,20 +114,20 @@ describe("Founders", () => {
   });
 });
 
-describe("dummy testimonials (local preview only)", () => {
-  it("fills ten cards in development with seven marked dummies after the real three", async () => {
-    const { quotesFor, DUMMY_QUOTES } = await import("../data/testimonials");
-    const dev = quotesFor(true);
-    expect(dev).toHaveLength(10);
-    expect(dev.slice(0, 3)).toEqual(TESTIMONIAL_QUOTES);
-    expect(DUMMY_QUOTES).toHaveLength(7);
-    for (const q of DUMMY_QUOTES) expect(q.dummy).toBe(true);
+describe("client testimonials", () => {
+  it("lists all eight clients in order, each with a photo on disk", async () => {
+    const { existsSync } = await import("node:fs");
+    expect(TESTIMONIAL_QUOTES.map((t) => t.name)).toEqual([
+      "Prasannata", "Jon Stewart", "Dr. Parita", "Nishant", "Titos Koropoulis", "Rob Vigurrs", "Ikram Ansari", "Bianca",
+    ]);
+    for (const t of TESTIMONIAL_QUOTES) expect(existsSync(`public${t.photo}`), t.photo).toBe(true);
   });
 
-  it("never ships the dummies in a production build", async () => {
+  it("shows drafted quotes on the local preview but never in a production build", async () => {
     const { quotesFor } = await import("../data/testimonials");
+    expect(quotesFor(true)).toEqual(TESTIMONIAL_QUOTES);
     const prod = quotesFor(false);
-    expect(prod).toEqual(TESTIMONIAL_QUOTES);
-    expect(prod.some((q) => q.dummy)).toBe(false);
+    expect(prod.some((q) => q.draft)).toBe(false);
+    expect(prod.map((q) => q.name)).toEqual(["Prasannata", "Dr. Parita", "Nishant"]);
   });
 });

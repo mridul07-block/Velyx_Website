@@ -1,8 +1,10 @@
 /* ------------------------------------------------------------------
    TESTIMONIALS + ENGAGEMENTS
 
-   QUOTES      — words a client actually said. Never write one of these
-                 on a client's behalf; leave the list short and true.
+   QUOTES      — what each client says about the work. A quote marked
+                 `draft` was written for the client from the work we did
+                 and is waiting for their OK: it shows on the local
+                 preview only. Delete `draft` once they approve the words.
    ENGAGEMENTS — who we work with and what we build for them. No quote,
                  no attributed praise — just the relationship.
 ------------------------------------------------------------------ */
@@ -13,14 +15,26 @@ export const TESTIMONIAL_QUOTES = [
     name: "Prasannata",
     role: "Founder · Overshoot Newsletter",
     avatar: "P",
+    photo: "/testimonials/prasannata.webp",
     q: "Velyx Labs built a complete, production-ready web application for us from the ground up. Their engineering velocity and attention to detail transformed our vision into reality.",
     highlights: ["production-ready web application"],
+  },
+  {
+    kind: "quote",
+    draft: true,
+    name: "Jon Stewart",
+    role: "Founder · Lexicon One & YorkScreenPlay",
+    avatar: "JS",
+    photo: "/testimonials/jon-stewart.webp",
+    q: "Velyx Labs built two very different sites for me: a polished home for Lexicon One, and a cinematic stage for YORK with a live auction for the screenplay rights. Each one feels exactly like the brand behind it.",
+    highlights: ["a live auction for the screenplay rights"],
   },
   {
     kind: "quote",
     name: "Dr. Parita",
     role: "Founder · Sacred Basil",
     avatar: "DP",
+    photo: "/testimonials/dr-parita.webp",
     q: "They didn't just build our complete e-commerce brand; they conducted a deep audit of our business operations. The strategic insights and execution were unparalleled.",
     highlights: ["deep audit of our business operations"],
   },
@@ -29,29 +43,56 @@ export const TESTIMONIAL_QUOTES = [
     name: "Nishant",
     role: "Founder · NarayanKripa",
     avatar: "N",
+    photo: "/testimonials/nishant.webp",
     q: "Velyx delivered a robust, AI-integrated web application that immediately scaled our operations. They are true partners who deeply care about our business outcomes.",
     highlights: ["immediately scaled our operations"],
   },
+  {
+    kind: "quote",
+    draft: true,
+    name: "Titos Koropoulis",
+    role: "Founder · Getlandy AI",
+    avatar: "TK",
+    photo: "/testimonials/titos-koropoulis.webp",
+    q: "Velyx Labs built Landy end to end: the AI agents, the verified profile, the job tracker and the subscription experience. They think like product people and ship like our own team.",
+    highlights: ["built Landy end to end"],
+  },
+  {
+    kind: "quote",
+    draft: true,
+    name: "Rob Vigurrs",
+    role: "Co-Founder · Getlandy AI",
+    avatar: "RV",
+    photo: "/testimonials/rob-vigurrs.webp",
+    q: "They took Landy's agents, long-term memory and evidence engine from the whiteboard to production, and kept the quality high with every release. It never felt like working with an outside agency.",
+    highlights: ["from the whiteboard to production"],
+  },
+  {
+    kind: "quote",
+    draft: true,
+    name: "Ikram Ansari",
+    role: "Founder · Fitoholix",
+    avatar: "IA",
+    photo: "/testimonials/ikram-ansari.webp",
+    q: "Velyx Labs turned our Total Transformation Protocol into a site that explains it clearly, step by step, and brings people straight to a free consultation on WhatsApp. Fast, sharp and easy to work with.",
+    highlights: ["a free consultation on WhatsApp"],
+  },
+  {
+    kind: "quote",
+    draft: true,
+    name: "Bianca",
+    role: "Founder · Scanva & Co",
+    avatar: "B",
+    photo: "/testimonials/bianca.webp",
+    q: "Velyx Labs is the technical team behind our delivery. Whenever a client needs a website, an automation or AI, they build it quickly and to a standard we're proud to put our name on. A genuinely great collaboration.",
+    highlights: ["the technical team behind our delivery"],
+  },
 ];
 
-/* DUMMY — seven placeholder quotes so the carousel shows ten cards on the
-   local preview. Fictional people at fictional companies; they are NOT
-   client words. quotesFor(false) — every production build — leaves them
-   out. TO CONFIRM: replace with real quotes, then delete this list. */
-export const DUMMY_QUOTES = !import.meta.env.DEV ? [] : [
-  { name: "Sample Client", role: "Founder · Acme", avatar: "SC", q: "Placeholder quote — the founders were in every call and shipped what they promised, on time." },
-  { name: "Sample Client", role: "CEO · Globex", avatar: "SC", q: "Placeholder quote — clear plan in week one and a working product by week three." },
-  { name: "Sample Client", role: "Founder · Initech", avatar: "SC", q: "Placeholder quote — our WhatsApp follow-ups now run themselves." },
-  { name: "Sample Client", role: "COO · Hooli", avatar: "SC", q: "Placeholder quote — one team for design, AI and code made everything faster." },
-  { name: "Sample Client", role: "Founder · Vandelay", avatar: "SC", q: "Placeholder quote — honest about scope, fast to iterate, easy to work with." },
-  { name: "Sample Client", role: "Head of Product · Wonka", avatar: "SC", q: "Placeholder quote — the AI agent handles our first replies around the clock." },
-  { name: "Sample Client", role: "Founder · Umbrella", avatar: "SC", q: "Placeholder quote — we'd hire them again for the next product." },
-].map((q, i) => ({ kind: "quote", dummy: true, highlights: [], ...q, name: `${q.name} ${i + 1}` }));
-
-/* What the carousel shows: the real quotes, plus the dummies only on a
-   development build (the local preview). */
+/* What the site shows: every quote on the local preview, and only the
+   client-approved ones (no `draft`) in a production build. */
 export function quotesFor(isDev) {
-  return isDev ? [...TESTIMONIAL_QUOTES, ...DUMMY_QUOTES] : TESTIMONIAL_QUOTES;
+  return isDev ? TESTIMONIAL_QUOTES : TESTIMONIAL_QUOTES.filter((q) => !q.draft);
 }
 
 export const ENGAGEMENTS = [
