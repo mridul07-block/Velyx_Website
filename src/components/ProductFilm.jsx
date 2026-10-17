@@ -4,7 +4,7 @@ import useReducedMotion from "../lib/useReducedMotion";
 
 /* A muted product film that loads and plays only while on screen;
    with reduced motion it stays on its poster frame. */
-export default function ProductFilm({ project, className = "film" }) {
+export default function ProductFilm({ project, className = "film", preload = "none" }) {
   const [ref, onScreen] = useOnScreen("200px");
   const reduced = useReducedMotion();
   const started = useRef(false);
@@ -33,7 +33,7 @@ export default function ProductFilm({ project, className = "film" }) {
       muted
       loop
       playsInline
-      preload="none"
+      preload={preload}
       aria-label={`${project.name} — product film`}
     />
   );
