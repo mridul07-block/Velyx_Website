@@ -5,7 +5,7 @@ import { CAL_CONFIG, CAL_LINK, CAL_NAMESPACE } from "../lib/cal";
 /* Inline Cal.com calendar. Mounts only when near the viewport so the
    iframe doesn't slow down first load — or at once (`eager`) on a page
    that exists for it. */
-export default function CalEmbed({ eager = false }) {
+export default function CalEmbed({ eager = false, notes }) {
   const [ref, near] = useInView("300px");
   const inView = eager || near;
   return (
@@ -14,7 +14,7 @@ export default function CalEmbed({ eager = false }) {
         <Cal
           namespace={CAL_NAMESPACE}
           calLink={CAL_LINK}
-          config={CAL_CONFIG}
+          config={notes ? { ...CAL_CONFIG, notes } : CAL_CONFIG}
           style={{ width: "100%", height: "100%", overflow: "auto" }}
         />
       )}

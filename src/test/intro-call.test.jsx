@@ -3,6 +3,7 @@ import { screen } from "@testing-library/react";
 import { renderWithProviders } from "./renderWithProviders";
 import Layout from "../components/Layout";
 import IntroCall from "../pages/IntroCall";
+import CalEmbed from "../components/CalEmbed";
 import { ROUTES } from "../../scripts/routes.mjs";
 import { PROJECTS } from "../data/projects";
 
@@ -69,5 +70,25 @@ describe("Intro call button", () => {
     expect(icon).toHaveAttribute("aria-hidden", "true");
     const fills = [...icon.querySelectorAll("path")].map((p) => p.getAttribute("fill").toLowerCase());
     for (const c of ["#00832d", "#0066da", "#e94235", "#2684fc", "#00ac47", "#ffba00"]) expect(fills).toContain(c);
+  });
+});
+
+describe("intro call about an agent", () => {
+  it("names the agent you asked about and puts it in the booking notes", () => {
+    renderWithProviders(<IntroCall />, { route: "/intro-call?agent=AI%20receptionist" });
+    expect(screen.getByText("About: AI receptionist")).toBeInTheDocument();
+    expect(JSON.parse(screen.getByTestId("cal-embed").dataset.config)).toMatchObject({ layout: "month_view", notes: "Interested in: AI receptionist" });
+  });
+
+  it("ignores an agent name we don't offer", () => {
+    const { container } = renderWithProviders(<IntroCall />, { route: "/intro-call?agent=Free%20money%20bot" });
+    expect(container.textContent).not.toMatch(/Free money bot/);
+    expect(container.querySelector(".intro-call__about")).toBeNull();
+    expect(JSON.parse(screen.getByTestId("cal-embed").dataset.config).notes).toBeUndefined();
+  });
+
+  it("passes notes straight through the embed", () => {
+    renderWithProviders(<CalEmbed eager notes="Interested in: Booking agent" />);
+    expect(JSON.parse(screen.getByTestId("cal-embed").dataset.config).notes).toBe("Interested in: Booking agent");
   });
 });
