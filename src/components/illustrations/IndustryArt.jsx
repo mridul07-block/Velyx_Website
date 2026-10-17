@@ -133,23 +133,3 @@ export function VoiceArt() {
     </HubScene>
   );
 }
-
-/* Automated CRM: a pipeline board whose cards move themselves, feeding
-   lead capture, follow-ups and reports. */
-export function CrmArt() {
-  return (
-    <HubScene
-      id="cr"
-      hub={[222, 110]}
-      tools={[
-        { label: "LEADS", c: [94, 128], s: [-6, -2], icon: <><circle cx="20" cy="14" r="4.5" /><path d="M11 28a9 9 0 0 1 18 0" /></> },
-        { label: "FOLLOW-UP", c: [332, 82], s: [6, -4], icon: <path d="M14 26v-8a6 6 0 0 1 12 0v8l2 2H12zM18 31h4" /> },
-        { label: "REPORTS", c: [320, 198], s: [6, 4], icon: <path d="M9 30h22M12 29v-8M18 29V15M24 29v-11M30 29V10" /> },
-      ]}
-    >
-      <path className="ln" d="M10 14h22v72H10zM39 14h22v72H39zM68 14h22v72H68z" />
-      <path className="ln-bright" d="M13 20h16v10H13zM13 34h16v10H13zM13 48h16v10H13zM42 20h16v10H42zM42 34h16v10H42zM71 20h16v10H71z" />
-      <circle cx="79" cy="74" r="2.5" className="fill-ok" />
-    </HubScene>
-  );
-}

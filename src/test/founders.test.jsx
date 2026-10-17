@@ -53,4 +53,11 @@ describe("Founders", () => {
     renderWithProviders(<TeamGrid />);
     expect(screen.getByRole("link", { name: /Talk to the founders/ })).toHaveAttribute("href", "/intro-call");
   });
+
+  it("keeps the founder cards compact: a 640px pair on desktop, 360px on phones", async () => {
+    const { readFileSync } = await import("node:fs");
+    const css = readFileSync("src/styles.css", "utf8");
+    expect(css).toMatch(/\.founders__list \{[^}]*max-width: 640px;/);
+    expect(css).toMatch(/\.founders__list \{ grid-template-columns: 1fr; max-width: 360px; \}/);
+  });
 });

@@ -11,10 +11,10 @@ import SaasArt from "../components/illustrations/SaasArt";
 import WhatsAppArt from "../components/illustrations/WhatsAppArt";
 import WebArt from "../components/illustrations/WebArt";
 import MobileArt from "../components/illustrations/MobileArt";
-import { HealthcareArt, RealEstateArt, AutomotiveArt, VoiceArt, CrmArt } from "../components/illustrations/IndustryArt";
-import { SERVICES } from "../data/services";
+import { HealthcareArt, RealEstateArt, AutomotiveArt, VoiceArt } from "../components/illustrations/IndustryArt";
+import { CORE_SERVICES } from "../data/services";
 
-const ART = { agents: AgentsArt, saas: SaasArt, whatsapp: WhatsAppArt, web: WebArt, mobile: MobileArt, healthcare: HealthcareArt, realestate: RealEstateArt, automotive: AutomotiveArt, voice: VoiceArt, crm: CrmArt };
+const ART = { agents: AgentsArt, saas: SaasArt, whatsapp: WhatsAppArt, web: WebArt, mobile: MobileArt, healthcare: HealthcareArt, realestate: RealEstateArt, automotive: AutomotiveArt, voice: VoiceArt };
 
 /* One service in full: what it is, what's included, who it's for, the
    stack, and the same living illustration as its home-page card. */
@@ -71,12 +71,12 @@ export default function Services() {
             sub="What we build, what's included, and the businesses we build it for."
           />
           <nav className="filters svc-jump" aria-label="Jump to a service">
-            {SERVICES.map((s) => <a key={s.id} href={`#${s.id}`} className="filter">{s.short}</a>)}
+            {CORE_SERVICES.map((s) => <a key={s.id} href={`#${s.id}`} className="filter">{s.short}</a>)}
           </nav>
         </div>
       </section>
       <div className="container svc-details">
-        {SERVICES.map((s, i) => <ServiceDetail key={s.id} service={s} index={i} />)}
+        {CORE_SERVICES.map((s, i) => <ServiceDetail key={s.id} service={s} index={i} />)}
       </div>
       <TrialCard pricingLink />
     </Layout>

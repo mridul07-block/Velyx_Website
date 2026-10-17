@@ -27,10 +27,12 @@ describe("routes", () => {
     }
   });
 
-  it("/services details every service: what's included and who it's for", async () => {
+  it("/services details the six services, leaving the industries out", async () => {
     const { container } = renderWithProviders(<AppRoutes />, { route: "/services" });
     await screen.findByRole("heading", { level: 1, name: "Services" });
-    for (const id of ["agents", "voice", "crm", "saas", "whatsapp", "web", "mobile", "healthcare", "realestate", "automotive"]) {
+    expect(container.querySelectorAll("section.svc-detail")).toHaveLength(6);
+    for (const id of ["healthcare", "realestate", "automotive", "crm"]) expect(container.querySelector(`section#${id}`)).toBeNull();
+    for (const id of ["agents", "voice", "saas", "whatsapp", "web", "mobile"]) {
       const section = container.querySelector(`section#${id}`);
       expect(section).not.toBeNull();
       expect(section.querySelectorAll(".svc-detail__list li").length).toBeGreaterThan(3);
@@ -43,7 +45,7 @@ describe("routes", () => {
     const { container } = renderWithProviders(<AppRoutes />, { route: "/services" });
     await screen.findByRole("heading", { level: 1, name: "Services" });
     const links = [...container.querySelectorAll(".svc-jump a.filter")].map((a) => a.textContent);
-    expect(links).toEqual(["AI agents", "Voice agents", "Automated CRM", "SaaS & MVPs", "WhatsApp + CRM", "Websites", "Mobile apps", "Healthcare", "Real estate", "Automobile"]);
+    expect(links).toEqual(["AI agents", "Voice agents", "SaaS & MVPs", "WhatsApp + CRM", "Websites", "Mobile apps"]);
   });
 
   it("/start has no navigation exits", async () => {

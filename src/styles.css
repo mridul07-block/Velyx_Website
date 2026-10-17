@@ -579,7 +579,7 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 
 /* ---------- Team ---------- */
 
-.founders__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; max-width: 920px; margin-inline: auto; }
+.founders__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; max-width: 640px; margin-inline: auto; }
 .founder { display: flex; flex-direction: column; padding: 10px; border-radius: 30px; background: var(--card); box-shadow: 0 1px 2px #0000000a; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s; }
 .founder:hover { transform: translateY(-6px); box-shadow: 0 28px 60px #00000017; }
 .founder__portrait { position: relative; display: grid; place-items: center; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 18px; background-color: var(--page); background-image: linear-gradient(#2323230a 1px, transparent 1px), linear-gradient(90deg, #2323230a 1px, transparent 1px); background-size: 24px 24px; background-position: center; }
@@ -598,7 +598,7 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 .founder__handle:nth-child(4) { left: -5px; bottom: -5px; }
 .founder__caption { position: absolute; z-index: 1; left: 22px; right: 22px; bottom: 22px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; color: #fff; }
 .founder__role { padding: 5px 12px; border: 1px solid #ffffff40; border-radius: var(--radius-pill); background: #ffffff1f; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
-.founder .team__name { font-size: clamp(26px, 3vw, 34px); line-height: 1.1; letter-spacing: -0.03em; }
+.founder .team__name { font-size: clamp(22px, 2.4vw, 28px); line-height: 1.1; letter-spacing: -0.03em; }
 .founder__body { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 14px 12px; }
 .founder__bio { font-size: 14px; line-height: 22px; font-weight: 500; color: var(--muted); }
 .founder__links { display: flex; gap: 6px; flex-shrink: 0; }
@@ -606,7 +606,7 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; text-w
 .founder__links a:hover { background: var(--ink); color: var(--page); }
 .founders__cta { margin-top: 24px; text-align: center; }
 @media (max-width: 640px) {
-  .founders__list { grid-template-columns: 1fr; }
+  .founders__list { grid-template-columns: 1fr; max-width: 360px; }
 }
 .team__name { font-size: 18px; line-height: 24px; font-weight: 700; letter-spacing: -0.01em; }
 

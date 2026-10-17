@@ -50,12 +50,12 @@ describe("TrustedBy", () => {
 });
 
 describe("ServicesPanel", () => {
-  it("renders seven service cards with tags inside the dark panel, leaving the industries to /services", () => {
+  it("renders six wide service cards with tags inside the dark panel, without the industries", () => {
     const { container } = renderWithProviders(<ServicesPanel />);
     expect(container.querySelector("section#services.panel")).not.toBeNull();
-    expect(container.querySelectorAll(".svc-card")).toHaveLength(7);
+    expect(container.querySelectorAll(".svc-card")).toHaveLength(6);
     for (const t of ["Healthcare automation & agents", "Real estate", "Automobile"]) expect(container.textContent).not.toMatch(t);
-    expect(container.querySelectorAll(".svc-card--wide")).toHaveLength(4);
+    expect(container.querySelectorAll(".svc-card--wide")).toHaveLength(6);
     expect(screen.getByText("WhatsApp API")).toBeInTheDocument();
   });
 });

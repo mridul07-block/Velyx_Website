@@ -1,10 +1,12 @@
-/* The Velyx services, shown in a 3 + 2 + 3 card layout on the home page;
-   the last row is agentic automation by industry. `includes` and `niches` are the detail on /services.
+/* The Velyx services, shown as six wide cards (2 + 2 + 2) on the home page
+   and /services. The last three are agentic automation by industry, kept for
+   the case studies. `includes` and `niches` are the detail on /services.
    TO CONFIRM: tag lists must match the stack Velyx actually uses, and the
    includes/niches lists must match what Velyx actually sells. */
 export const SERVICES = [
   {
     id: "agents",
+    wide: true,
     short: "AI agents",
     title: "Agentic AI automation",
     copy: "AI agents that answer, qualify, follow up and file — wired into your CRM, inbox and WhatsApp, with human approval where it matters.",
@@ -22,6 +24,7 @@ export const SERVICES = [
   },
   {
     id: "voice",
+    wide: true,
     short: "Voice agents",
     title: "AI voice agents",
     copy: "AI voice agents that pick up every call, answer in a natural voice, book appointments and qualify leads around the clock, then hand off to your team.",
@@ -36,23 +39,6 @@ export const SERVICES = [
       "Warm transfer to a human, with call recordings and transcripts",
     ],
     niches: ["Clinics & healthcare", "Real estate", "Automobile dealers", "Restaurants", "Home services", "B2B sales"],
-  },
-  {
-    id: "crm",
-    short: "Automated CRM",
-    title: "Automated CRM systems",
-    copy: "A CRM that runs itself: every lead captured, scored and followed up automatically, with the pipeline, tasks and reports always up to date.",
-    tags: ["HubSpot", "Zoho", "n8n", "Supabase", "WhatsApp", "AI scoring"],
-    art: "crm",
-    includes: [
-      "Lead capture from ads, forms, calls and WhatsApp",
-      "AI lead scoring and routing to the right person",
-      "Automatic follow-ups, reminders and tasks",
-      "Pipeline stages that move themselves",
-      "Dashboards and weekly reports, sent for you",
-      "Custom CRM builds, or HubSpot and Zoho set up properly",
-    ],
-    niches: ["Real estate", "Agencies", "Coaching & education", "Clinics", "B2B services", "Dealerships"],
   },
   {
     id: "saas",
@@ -178,3 +164,6 @@ export const SERVICES = [
     niches: ["Dealerships", "Service centres", "Independent workshops", "Used-car dealers", "Fleet operators", "EV & charging"],
   },
 ];
+
+export const INDUSTRY_IDS = ["healthcare", "realestate", "automotive"];
+export const CORE_SERVICES = SERVICES.filter((s) => !INDUSTRY_IDS.includes(s.id));
