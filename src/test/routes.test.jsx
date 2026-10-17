@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { screen } from "@testing-library/react";
 import { renderWithProviders } from "./renderWithProviders";
 import AppRoutes from "../AppRoutes";
+import { SERVICES } from "../data/services";
 
 describe("routes", () => {
   it.each([
@@ -38,6 +39,14 @@ describe("routes", () => {
       expect(section.querySelectorAll(".svc-detail__list li").length).toBeGreaterThan(3);
       expect(section.querySelectorAll(".tags--light .tag").length).toBeGreaterThan(3);
       expect(container.querySelector(`a.filter[href="#${id}"]`)).not.toBeNull();
+    }
+  });
+
+  it("/services links each section to its own page", async () => {
+    const { container } = renderWithProviders(<AppRoutes />, { route: "/services" });
+    await screen.findByRole("heading", { level: 1, name: "Services" });
+    for (const s of SERVICES) {
+      expect(container.querySelector(`section#${s.id} a[href="/services/${s.slug}"]`)?.textContent).toMatch(/^Get your agent/);
     }
   });
 

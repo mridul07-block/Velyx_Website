@@ -1,8 +1,10 @@
+import { Link } from "react-router-dom";
 import Seo from "../components/Seo";
 import Layout from "../components/Layout";
 import SectionHeader from "../components/SectionHeader";
 import Tag from "../components/Tag";
 import IntroCallButton from "../components/IntroCallButton";
+import BtnLabel from "../components/BtnLabel";
 import TrialCard from "../components/TrialCard";
 import useOnScreen from "../lib/useOnScreen";
 import useReducedMotion from "../lib/useReducedMotion";
@@ -45,7 +47,10 @@ function ServiceDetail({ service, index }) {
           {service.tags.map((t) => <Tag key={t}>{t}</Tag>)}
         </div>
 
-        <IntroCallButton className="svc-detail__cta">Book an intro call</IntroCallButton>
+        <div className="svc-detail__actions">
+          <Link to={`/services/${service.slug}`} className="btn btn--intro svc-detail__agent"><BtnLabel>Get your agent</BtnLabel></Link>
+          <IntroCallButton className="svc-detail__cta">Book an intro call</IntroCallButton>
+        </div>
       </div>
       <div ref={ref} className={`svc-detail__art${onScreen && !reduced ? " is-playing" : ""}`}>
         <Art />

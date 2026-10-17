@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import Tag from "./Tag";
 import useOnScreen from "../lib/useOnScreen";
 import useReducedMotion from "../lib/useReducedMotion";
@@ -55,6 +56,9 @@ export default function ServiceCard({ service }) {
       <div className="tags">
         {service.tags.map((t) => <Tag key={t}>{t}</Tag>)}
       </div>
+      <Link to={`/services/${service.slug}`} className="svc-card__cta">
+        Get your agent <span aria-hidden="true">→</span>
+      </Link>
     </article>
   );
 }

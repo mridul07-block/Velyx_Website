@@ -58,6 +58,13 @@ describe("ServicesPanel", () => {
     expect(container.querySelectorAll(".svc-card--wide")).toHaveLength(6);
     expect(screen.getByText("WhatsApp API")).toBeInTheDocument();
   });
+
+  it("gives every card a Get your agent link to its service page", () => {
+    const { container } = renderWithProviders(<ServicesPanel />);
+    const links = [...container.querySelectorAll(".svc-card a.svc-card__cta")];
+    expect(links.map((a) => a.getAttribute("href"))).toEqual(SERVICES.map((s) => `/services/${s.slug}`));
+    for (const a of links) expect(a.textContent).toMatch(/^Get your agent/);
+  });
 });
 
 describe("ServiceCard motion", () => {
