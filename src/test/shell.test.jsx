@@ -7,12 +7,14 @@ import Marquee from "../components/Marquee";
 import Panel from "../components/Panel";
 
 describe("PillNav", () => {
-  it("has Recent Work, Pricing, Services and the Start a project CTA", () => {
+  it("has Recent Work, Case Studies, Services, Pricing and the Start a project CTA", () => {
     renderWithProviders(<PillNav />);
     const nav = screen.getByRole("navigation", { name: "Main" });
     expect(within(nav).getAllByRole("link", { name: "Recent Work" })[0]).toHaveAttribute("href", "/work");
     expect(within(nav).getAllByRole("link", { name: "Pricing" })[0]).toHaveAttribute("href", "/pricing");
     expect(within(nav).getAllByRole("link", { name: "Services" })[0]).toHaveAttribute("href", "/services");
+    expect(within(nav).getAllByRole("link", { name: "Case Studies" })[0]).toHaveAttribute("href", "/case-studies");
+    expect([...nav.querySelectorAll(".pnav__links a")].map((a) => a.textContent)).toEqual(["Recent Work", "Case Studies", "Services", "Pricing"]);
     expect(within(nav).queryByRole("link", { name: "Swipe file" })).toBeNull();
     expect(within(nav).getByRole("link", { name: "Start a project" })).toHaveAttribute("href", "/intro-call");
     expect(within(nav).getByRole("link", { name: "Velyx Labs home" })).toHaveAttribute("href", "/");

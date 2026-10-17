@@ -11,6 +11,8 @@ import PricingPage from "./pages/PricingPage";
 
 const Services = lazy(() => import("./pages/Services"));
 const ServicePage = lazy(() => import("./pages/ServicePage"));
+const CaseStudies = lazy(() => import("./pages/CaseStudies"));
+const IndustryPage = lazy(() => import("./pages/IndustryPage"));
 const SwipeFile = lazy(() => import("./pages/SwipeFile"));
 const Start = lazy(() => import("./pages/Start"));
 const Privacy = lazy(() => import("./pages/Privacy"));
@@ -31,6 +33,8 @@ export default function AppRoutes() {
         <Route path="/work/:slug" element={<CaseStudy />} />
         <Route path="/services" element={<Services />} />
         <Route path="/services/:slug" element={<ServicePage />} />
+        <Route path="/case-studies" element={<CaseStudies />} />
+        <Route path="/case-studies/:slug" element={<IndustryPage />} />
         <Route path="/swipe-file" element={<SwipeFile />} />
         <Route path="/start-a-project" element={<StartProject />} />
         <Route path="/start" element={<Start />} />

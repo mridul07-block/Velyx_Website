@@ -5,8 +5,9 @@ import BtnLabel from "./BtnLabel";
 
 const LINKS = [
   { label: "Recent Work", to: "/work" },
-  { label: "Pricing", to: "/pricing" },
+  { label: "Case Studies", to: "/case-studies" },
   { label: "Services", to: "/services" },
+  { label: "Pricing", to: "/pricing" },
 ];
 
 export default function PillNav() {
