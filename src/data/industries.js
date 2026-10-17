@@ -1,6 +1,6 @@
 /* The industries on /case-studies: each has its own page with a film, the
-   problems we solve, the agents we build, the services we use and related
-   work from projects.js. */
+   promise, four before → after outcomes, how we get there and the agents
+   we build. All value, no portfolio. */
 import { filmFor } from "./services.js"; // with extension: scripts/routes.mjs loads this in Node
 
 export const INDUSTRIES = [
@@ -20,11 +20,12 @@ export const INDUSTRIES = [
     ],
     niches: ["Clinics", "Hospitals & ER", "Dental", "Diagnostics labs", "Physiotherapy", "Credentialing & billing"],
     film: filmFor("healthcare"),
-    problems: [
-      "Phones ring all day and missed calls are missed patients",
-      "Intake forms are re-typed by the front desk",
-      "No-shows leave empty slots in the schedule",
-      "Claims and credentialing follow-up eats staff hours",
+    promise: "Answer every patient, fill every slot, and give your staff their hours back.",
+    outcomes: [
+      { from: "Missed calls", to: "Every call answered, day and night" },
+      { from: "Re-typed forms", to: "Intake filled in before the patient arrives" },
+      { from: "Empty slots", to: "Reminders and a waitlist that refill them" },
+      { from: "Claims chasing", to: "Every claim tracked to payment" },
     ],
     agents: [
       { name: "Clinic receptionist", does: "Answers patient calls and WhatsApp messages, books, moves and cancels appointments around the clock.", plugsInto: ["Phone line", "WhatsApp", "Clinic calendar"] },
@@ -33,8 +34,6 @@ export const INDUSTRIES = [
       { name: "Claims & credentialing helper", does: "Tracks every claim and credentialing step, chases what's missing and tells staff what needs them.", plugsInto: ["Billing system", "Email", "Dashboards"] },
       { name: "Reports follow-up", does: "Lets patients know when results are ready and books the follow-up visit in the same message.", plugsInto: ["Lab system", "WhatsApp", "Clinic calendar"] },
     ],
-    services: ["voice-agents", "whatsapp-automation", "ai-agents", "web-apps"],
-    work: ["get-credentialing-done", "unitas-emergency"],
   },
   {
     slug: "real-estate",
@@ -52,11 +51,12 @@ export const INDUSTRIES = [
     ],
     niches: ["Developers", "Brokerages", "Property managers", "Rentals", "Commercial", "Proptech"],
     film: filmFor("real-estate"),
-    problems: [
-      "Portal and ad leads wait hours for a first reply",
-      "Most enquiries aren't qualified before a visit is booked",
-      "Follow-ups stop after the second message",
-      "Owner statements and reports are built by hand",
+    promise: "Reply to every lead in minutes, book more site visits, and close more of them.",
+    outcomes: [
+      { from: "Leads waiting hours", to: "A reply within minutes, at any hour" },
+      { from: "Unqualified visits", to: "Buyers qualified before your team calls" },
+      { from: "Follow-ups that stop", to: "Follow-ups that run until they buy or opt out" },
+      { from: "Hand-built reports", to: "Statements and pipeline reports that build themselves" },
     ],
     agents: [
       { name: "Lead qualifier", does: "Replies to portal, ad and WhatsApp leads in minutes, asks budget, location and timeline, and scores each buyer.", plugsInto: ["Property portals", "Meta ads", "WhatsApp", "CRM"] },
@@ -65,8 +65,6 @@ export const INDUSTRIES = [
       { name: "CRM follow-up agent", does: "Keeps every lead moving with timed follow-ups until they book, buy or opt out, and logs it all in the CRM.", plugsInto: ["CRM", "WhatsApp", "Email"] },
       { name: "New-lead voice caller", does: "Calls fresh leads within minutes in a natural voice, qualifies them and books the visit.", plugsInto: ["Phone line", "CRM", "Calendar"] },
     ],
-    services: ["ai-agents", "voice-agents", "whatsapp-automation", "web-apps"],
-    work: ["aurelle-residence", "plainstate", "estatico"],
   },
   {
     slug: "automobile",
@@ -84,11 +82,12 @@ export const INDUSTRIES = [
     ],
     niches: ["Dealerships", "Service centres", "Independent workshops", "Used-car dealers", "Fleet operators", "EV & charging"],
     film: filmFor("automobile"),
-    problems: [
-      "Service bookings come in by phone and get lost",
-      "Customers call again and again to ask for status",
-      "Repair approvals stall while the car waits",
-      "Parts delays aren't visible until it's too late",
+    promise: "Fill the workshop, approve repairs faster, and deliver every car on time.",
+    outcomes: [
+      { from: "Bookings lost on the phone", to: "Bookings taken on call, WhatsApp and web" },
+      { from: "Customers calling for status", to: "Updates sent at every stage, automatically" },
+      { from: "Cars waiting on approval", to: "Repairs approved in one tap" },
+      { from: "Parts delays found late", to: "Advisors alerted the moment a part slips" },
     ],
     agents: [
       { name: "Service booking agent", does: "Books services by phone, WhatsApp or website, picks the slot and sends reminders before the visit.", plugsInto: ["Phone line", "WhatsApp", "DMS"] },
@@ -97,7 +96,5 @@ export const INDUSTRIES = [
       { name: "Workshop insights agent", does: "Turns the day's jobs into a live dashboard and a morning summary of what's at risk.", plugsInto: ["DMS", "Dashboards", "Email"] },
       { name: "Feedback caller", does: "Calls or messages after delivery, collects a rating and flags unhappy customers to the manager.", plugsInto: ["Phone line", "WhatsApp", "CRM"] },
     ],
-    services: ["ai-agents", "voice-agents", "whatsapp-automation", "web-apps"],
-    work: ["audi-service-system"],
   },
 ];

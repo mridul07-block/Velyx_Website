@@ -43,14 +43,15 @@ describe("content data", () => {
     }
   });
 
-  it("has the three industries, each linking only to real services and projects", () => {
+  it("gives each of the three industries a promise and four before → after outcomes", () => {
     expect(INDUSTRIES.map((i) => i.slug)).toEqual(["healthcare", "real-estate", "automobile"]);
-    const services = new Set(SERVICES.map((s) => s.slug));
-    const projects = new Set(PROJECTS.map((p) => p.slug));
     for (const i of INDUSTRIES) {
-      expect(i.problems.length).toBeGreaterThanOrEqual(3);
-      for (const s of i.services) expect(services.has(s), s).toBe(true);
-      for (const w of i.work) expect(projects.has(w), w).toBe(true);
+      expect(i.promise.length).toBeGreaterThan(30);
+      expect(i.outcomes).toHaveLength(4);
+      for (const o of i.outcomes) {
+        expect(o.from).toBeTruthy();
+        expect(o.to).toBeTruthy();
+      }
     }
   });
 

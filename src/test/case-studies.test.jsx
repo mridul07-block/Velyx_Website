@@ -3,7 +3,6 @@ import { screen } from "@testing-library/react";
 import { renderWithProviders } from "./renderWithProviders";
 import AppRoutes from "../AppRoutes";
 import { INDUSTRIES } from "../data/industries";
-import { SERVICES } from "../data/services";
 
 describe("case studies", () => {
   it("lists the three industries, each linking to its page", async () => {
@@ -13,16 +12,22 @@ describe("case studies", () => {
     expect(links).toEqual(["/case-studies/healthcare", "/case-studies/real-estate", "/case-studies/automobile"]);
   });
 
-  it.each(INDUSTRIES.map((i) => [i.slug, i]))("/case-studies/%s shows film, problems, agents, services and work", async (slug, ind) => {
+  it.each(INDUSTRIES.map((i) => [i.slug, i]))("/case-studies/%s is all value: promise, outcomes, how, agents — no project screenshots", async (slug, ind) => {
     const { container } = renderWithProviders(<AppRoutes />, { route: `/case-studies/${slug}` });
     expect(await screen.findByRole("heading", { level: 1, name: ind.short })).toBeInTheDocument();
+    expect(screen.getByText(ind.promise)).toBeInTheDocument();
     expect(container.querySelector(".offer__film video")).toHaveAttribute("src", ind.film.src);
-    expect(container.querySelectorAll(".problems li")).toHaveLength(ind.problems.length);
+    const outcomes = container.querySelectorAll(".outcomes li");
+    expect(outcomes).toHaveLength(4);
+    ind.outcomes.forEach((o, i) => {
+      expect(outcomes[i].querySelector(".outcome__from").textContent).toBe(o.from);
+      expect(outcomes[i].querySelector(".outcome__to").textContent).toBe(o.to);
+    });
+    expect(container.querySelectorAll(".how li")).toHaveLength(3);
     expect(container.querySelectorAll("#agents li.agent")).toHaveLength(ind.agents.length);
-    const svc = [...container.querySelectorAll(".industry-services a")].map((a) => a.getAttribute("href"));
-    expect(svc).toEqual(ind.services.map((s) => `/services/${s}`));
-    for (const s of ind.services) expect(SERVICES.some((x) => x.slug === s)).toBe(true);
-    expect(container.querySelectorAll(".industry-work .pcard")).toHaveLength(ind.work.length);
+    expect(container.querySelector(".pcard")).toBeNull();
+    expect(container.querySelector(".industry-services")).toBeNull();
+    expect(screen.queryByRole("heading", { name: "Related work" })).toBeNull();
   });
 
   it("sends an unknown industry to the not-found page", async () => {
