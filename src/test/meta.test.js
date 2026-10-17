@@ -15,4 +15,12 @@ describe("prerendered per-route meta", () => {
     expect(og).toBe(route.desc);
     expect(html).toMatch(/<link rel="canonical" href="https:\/\/www\.velyxlabs\.in\/work"/);
   });
+
+  it("lists every service and case-study page for the sitemap and share tags", () => {
+    const paths = ROUTES.map((r) => r.path);
+    for (const p of ["/case-studies", "/case-studies/healthcare", "/case-studies/real-estate", "/case-studies/automobile",
+      "/services/ai-agents", "/services/voice-agents", "/services/ai-saas-mvps", "/services/whatsapp-automation", "/services/web-apps", "/services/mobile-apps"]) {
+      expect(paths, p).toContain(p);
+    }
+  });
 });

@@ -2,6 +2,8 @@ import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { ROUTES } from "../../scripts/routes.mjs";
 import { PROJECTS } from "../data/projects";
+import { SERVICES } from "../data/services";
+import { INDUSTRIES } from "../data/industries";
 
 const vercel = JSON.parse(readFileSync("vercel.json", "utf8"));
 
@@ -36,6 +38,9 @@ describe("public route list (sitemap + prerender)", () => {
       "/work",
       ...PROJECTS.map((p) => `/work/${p.slug}`),
       "/services",
+      ...SERVICES.map((s) => `/services/${s.slug}`),
+      "/case-studies",
+      ...INDUSTRIES.map((i) => `/case-studies/${i.slug}`),
       "/swipe-file",
       "/start-a-project",
       "/pricing",
