@@ -884,6 +884,7 @@ a.filter { display: inline-flex; align-items: center; }
 .industry-card:hover { transform: translateY(-6px); box-shadow: 0 28px 60px #00000017; }
 .industry-card img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; background: var(--panel); }
 .industry-card__body { display: flex; flex-direction: column; gap: 10px; padding: 22px 24px 26px; }
+.industry-card .h3, .industry-services .h3 { font-weight: 700; }
 .industry-card__copy { font-size: 14px; line-height: 22px; font-weight: 500; color: var(--muted); }
 .industry-card__more { margin-top: 6px; font-size: 14px; font-weight: 600; }
 .problems { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; max-width: 920px; margin: 32px auto 0; }
