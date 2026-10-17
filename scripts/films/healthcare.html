@@ -1,0 +1,23 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=block">
+<style>html,body{margin:0;background:#000}canvas{display:block}</style></head><body>
+<canvas id="c" width="1600" height="1000"></canvas>
+<script src="kit.js"></script>
+<script>
+film({ title: "Healthcare",
+  beats: [
+    { head: ["A patient calls", "the clinic."], sub: "Answered at once, even at 8 am on a Sunday." },
+    { head: ["Intake done", "before the visit."], sub: "History, insurance and consent, filled in for staff." },
+    { head: ["Booked, reminded,", "and followed up."], sub: "Fewer no-shows. Claims tracked to the end." } ],
+  items: [
+    { k: "ring", a: 0.4, x: 170, y: 170, until: 4.2, label: "Patient · new appointment" },
+    { k: "bubble", a: 1.2, x: 300, y: 120, w: 500, side: "in", text: "Hi, I need to see a dermatologist this week." },
+    { k: "win", a: 4.2, x: 40, y: 290, w: 480, h: 300, title: "Patient intake" },
+    { k: "row", a: 4.6, x: 60, y: 350, w: 440, label: "Name & date of birth", pill: ["Asking", "Filled"], done: 5.2 },
+    { k: "row", a: 4.9, x: 60, y: 410, w: 440, label: "Medical history", pill: ["Asking", "Filled"], done: 6.0 },
+    { k: "row", a: 5.2, x: 60, y: 470, w: 440, label: "Insurance & consent", pill: ["Asking", "Filled"], done: 6.8 },
+    { k: "cal", a: 8.1, x: 540, y: 290, w: 290, h: 300, slot: [2, 2], pick: 8.7 },
+    { k: "row", a: 9.0, x: 40, y: 620, w: 380, label: "WhatsApp reminder · day before", pill: ["Queued", "Set"], done: 9.6 },
+    { k: "row", a: 9.3, x: 440, y: 620, w: 390, label: "Claim checklist", pill: ["Open", "Ready"], done: 10.0 },
+    { k: "toast", a: 10.1, x: 230, y: 690, w: 420, title: "Wed 4:30 pm · Dr. Mehta", sub: "Intake complete · reminder set" } ] });
+</script></body></html>

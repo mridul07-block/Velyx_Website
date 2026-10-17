@@ -34,6 +34,15 @@ describe("content data", () => {
     }
   });
 
+  it("has every film and poster on disk, each film under 3 MB", async () => {
+    const { existsSync, statSync } = await import("node:fs");
+    for (const x of [...SERVICES, ...INDUSTRIES]) {
+      expect(existsSync(`public${x.film.src}`), x.film.src).toBe(true);
+      expect(existsSync(`public${x.film.poster}`), x.film.poster).toBe(true);
+      expect(statSync(`public${x.film.src}`).size, x.film.src).toBeLessThanOrEqual(3 * 1024 * 1024);
+    }
+  });
+
   it("has the three industries, each linking only to real services and projects", () => {
     expect(INDUSTRIES.map((i) => i.slug)).toEqual(["healthcare", "real-estate", "automobile"]);
     const services = new Set(SERVICES.map((s) => s.slug));

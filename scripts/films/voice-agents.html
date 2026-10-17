@@ -1,0 +1,22 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=block">
+<style>html,body{margin:0;background:#000}canvas{display:block}</style></head><body>
+<canvas id="c" width="1600" height="1000"></canvas>
+<script src="kit.js"></script>
+<script>
+film({ title: "Voice agents",
+  beats: [
+    { head: ["The phone rings", "after hours."], sub: "No missed calls. The agent picks up on the first ring." },
+    { head: ["It talks like", "your best rep."], sub: "Natural voice, live transcript, answers from your info." },
+    { head: ["Booked, logged,", "summarised."], sub: "The slot is in your calendar and the summary in your CRM." } ],
+  items: [
+    { k: "ring", a: 0.4, x: 200, y: 200, until: 4.3, label: "Incoming · +91 98•• ••4410" },
+    { k: "label", a: 0.8, x: 360, y: 190, text: "11:07 pm", size: 34, color: "#efefef", weight: 700 },
+    { k: "label", a: 1.0, x: 360, y: 226, text: "Office closed · agent on", size: 16 },
+    { k: "win", a: 4.2, x: 40, y: 320, w: 790, h: 250, title: "Live call" },
+    { k: "wave", a: 4.4, x: 70, y: 380, w: 300, h: 70, until: 8.2 },
+    { k: "bubble", a: 4.8, x: 400, y: 372, w: 400, side: "in", text: "Hi, can I get a check-up this week?" },
+    { k: "bubble", a: 6.0, x: 400, y: 462, w: 400, side: "out", text: "Of course. Thursday 10 am or Friday 4 pm?" },
+    { k: "cal", a: 8.2, x: 40, y: 600, w: 470, h: 170, slot: [3, 1], pick: 8.9 },
+    { k: "toast", a: 9.6, x: 530, y: 640, w: 300, title: "Booked · Thu 10:00", sub: "Summary saved to CRM" } ] });
+</script></body></html>

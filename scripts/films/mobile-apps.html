@@ -1,0 +1,25 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=block">
+<style>html,body{margin:0;background:#000}canvas{display:block}</style></head><body>
+<canvas id="c" width="1600" height="1000"></canvas>
+<script src="kit.js"></script>
+<script>
+film({ title: "Mobile apps",
+  beats: [
+    { head: ["One codebase,", "iOS and Android."], sub: "Designed, built and shipped to the stores." },
+    { head: ["An assistant", "inside the app."], sub: "Users get answers and tasks done in a tap." },
+    { head: ["Bring users", "back, on time."], sub: "The right nudge at the right moment." } ],
+  items: [
+    { k: "phone", a: 0.3, x: 40, y: 60, w: 250, h: 520, title: "Home" },
+    { k: "phone", a: 0.6, x: 310, y: 20, w: 250, h: 520, title: "Assistant" },
+    { k: "phone", a: 0.9, x: 580, y: 60, w: 250, h: 520, title: "Orders" },
+    { k: "block", a: 1.3, x: 62, y: 110, w: 206, h: 120, fill: "#ffffff10", lines: [[16, 30, 120, 16, "#ffffff4d"], [16, 70, 80, 24, "#22c55e"]] },
+    { k: "block", a: 1.6, x: 62, y: 250, w: 206, h: 70, lines: [[16, 28, 140]] },
+    { k: "block", a: 1.8, x: 602, y: 110, w: 206, h: 70, lines: [[16, 28, 120]] },
+    { k: "block", a: 2.0, x: 602, y: 196, w: 206, h: 70, lines: [[16, 28, 150]] },
+    { k: "bubble", a: 4.4, x: 326, y: 100, w: 218, side: "in", text: "Reorder my usual?" },
+    { k: "bubble", a: 5.4, x: 326, y: 190, w: 218, side: "out", text: "Done. Arrives tomorrow by 10 am." },
+    { k: "chip", a: 6.6, x: 334, y: 310, text: "Order placed", done: 7.2 },
+    { k: "toast", a: 8.4, x: 160, y: 620, w: 550, title: "Your favourites are back in stock", sub: "Tap to reorder in one step" },
+    { k: "cursor", a: 9.4, path: [[700, 760, 9.4], [480, 660, 10.1]], click: 10.2 } ] });
+</script></body></html>

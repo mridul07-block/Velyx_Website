@@ -1,0 +1,26 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=block">
+<style>html,body{margin:0;background:#000}canvas{display:block}</style></head><body>
+<canvas id="c" width="1600" height="1000"></canvas>
+<script src="kit.js"></script>
+<script>
+film({ title: "Web apps",
+  beats: [
+    { head: ["A site built", "section by section."], sub: "Designed for your buyers, fast on every device." },
+    { head: ["A chat that", "captures leads."], sub: "Answers visitors from your content, day and night." },
+    { head: ["Leads land in", "your inbox."], sub: "With the call already booked." } ],
+  items: [
+    { k: "browser", a: 0.3, x: 40, y: 40, w: 560, h: 700, url: "yourbusiness.com" },
+    { k: "block", a: 0.8, x: 64, y: 96, w: 512, h: 200, fill: "#ffffff10", lines: [[28, 50, 300, 22, "#ffffff4d"], [28, 90, 220, 22, "#ffffff4d"], [28, 140, 120, 30, "#22c55e"]] },
+    { k: "block", a: 1.5, x: 64, y: 316, w: 160, h: 150, lines: [[16, 24, 80], [16, 56, 120], [16, 80, 100]] },
+    { k: "block", a: 1.8, x: 240, y: 316, w: 160, h: 150, lines: [[16, 24, 80], [16, 56, 120], [16, 80, 100]] },
+    { k: "block", a: 2.1, x: 416, y: 316, w: 160, h: 150, lines: [[16, 24, 80], [16, 56, 120], [16, 80, 100]] },
+    { k: "block", a: 2.5, x: 64, y: 486, w: 512, h: 230, lines: [[28, 40, 260], [28, 74, 380], [28, 108, 330]] },
+    { k: "win", a: 4.3, x: 420, y: 380, w: 410, h: 340, title: "Chat with us" },
+    { k: "bubble", a: 4.8, x: 440, y: 440, w: 370, side: "in", text: "Do you build booking systems?" },
+    { k: "bubble", a: 5.9, x: 440, y: 520, w: 370, side: "out", text: "Yes! Want a quick call? Leave your email." },
+    { k: "bubble", a: 7.0, x: 440, y: 620, w: 260, side: "in", text: "rahul@studio.in" },
+    { k: "wire", a: 8.1, pts: [[620, 380], [620, 320], [650, 320]] },
+    { k: "win", a: 8.2, x: 650, y: 40, w: 180, h: 300, title: "Inbox" },
+    { k: "toast", a: 8.8, x: 420, y: 140, w: 410, title: "New lead · Rahul", sub: "Call booked for Tue 11:00" } ] });
+</script></body></html>

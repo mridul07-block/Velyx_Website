@@ -1,0 +1,23 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=block">
+<style>html,body{margin:0;background:#000}canvas{display:block}</style></head><body>
+<canvas id="c" width="1600" height="1000"></canvas>
+<script src="kit.js"></script>
+<script>
+film({ title: "Real estate",
+  beats: [
+    { head: ["A portal lead", "arrives."], sub: "Answered in minutes, not hours." },
+    { head: ["Qualified before", "anyone calls."], sub: "Budget, area and timeline, asked and scored." },
+    { head: ["Site visit booked,", "CRM up to date."], sub: "Follow-ups keep going until they buy or opt out." } ],
+  items: [
+    { k: "win", a: 0.3, x: 40, y: 40, w: 420, h: 220, title: "New lead · 99acres" },
+    { k: "label", a: 0.8, x: 64, y: 140, text: "Ananya R.", size: 26, color: "#efefef", weight: 700 },
+    { k: "label", a: 1.0, x: 64, y: 176, text: "3 BHK · Whitefield · enquiry 9:14 pm", size: 16 },
+    { k: "bubble", a: 4.2, x: 480, y: 40, w: 350, side: "out", text: "Hi Ananya! What budget and move-in date are you planning?" },
+    { k: "bubble", a: 5.3, x: 480, y: 150, w: 350, side: "in", text: "Around 1.4 Cr, within 3 months." },
+    { k: "chip", a: 6.2, x: 480, y: 250, text: "Budget fits", done: 6.6 },
+    { k: "chip", a: 6.5, x: 650, y: 250, text: "Ready to buy", done: 6.9 },
+    { k: "kanban", a: 8.1, x: 40, y: 320, w: 790, h: 210, cols: ["New", "Qualified", "Visit booked"], ghosts: [[0, 1], [1, 1]], card: { label: "Ananya R. · 3 BHK", from: 0, to: 2, move: 8.8 } },
+    { k: "cal", a: 9.0, x: 40, y: 560, w: 420, h: 190, slot: [4, 0], pick: 9.6 },
+    { k: "toast", a: 10.0, x: 480, y: 600, w: 350, title: "Site visit · Sat 11 am", sub: "Location pin sent on WhatsApp" } ] });
+</script></body></html>

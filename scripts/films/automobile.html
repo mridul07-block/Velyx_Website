@@ -1,0 +1,25 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=block">
+<style>html,body{margin:0;background:#000}canvas{display:block}</style></head><body>
+<canvas id="c" width="1600" height="1000"></canvas>
+<script src="kit.js"></script>
+<script>
+film({ title: "Automobile",
+  beats: [
+    { head: ["A car checks in", "for service."], sub: "Booked by WhatsApp, tracked from the gate." },
+    { head: ["Approvals in", "one tap."], sub: "The estimate goes out with photos. The customer says yes." },
+    { head: ["Ready, on time.", "Customer told."], sub: "Status updates go out without a single phone call." } ],
+  items: [
+    { k: "win", a: 0.3, x: 40, y: 40, w: 500, h: 330, title: "Job card · KA 03 MN 4410" },
+    { k: "row", a: 0.9, x: 60, y: 100, w: 460, label: "Checked in · 9:02 am", pill: ["Now", "Done"], done: 1.6 },
+    { k: "row", a: 1.4, x: 60, y: 160, w: 460, label: "Inspection", pill: ["Running", "Done"], done: 3.2 },
+    { k: "row", a: 1.8, x: 60, y: 220, w: 460, label: "Repair approval", pill: ["Waiting", "Approved"], done: 6.9 },
+    { k: "row", a: 2.2, x: 60, y: 280, w: 460, label: "Ready for delivery", pill: ["Pending", "Ready"], done: 9.2 },
+    { k: "phone", a: 4.2, x: 570, y: 40, w: 260, h: 520, title: "WhatsApp" },
+    { k: "bubble", a: 4.7, x: 590, y: 120, w: 220, side: "out", text: "Front brake pads worn. Replace for ₹4,200?" },
+    { k: "block", a: 5.2, x: 590, y: 246, w: 220, h: 110, fill: "#ffffff10", lines: [[16, 20, 120], [16, 46, 160, 40, "#ffffff1f"]] },
+    { k: "chip", a: 5.8, x: 600, y: 376, text: "Approve", done: 6.8 },
+    { k: "cursor", a: 6.0, path: [[760, 540, 6.0], [650, 394, 6.6]], click: 6.7 },
+    { k: "bars", a: 8.2, x: 40, y: 400, w: 500, h: 240, title: "Today's workshop", vals: [0.5, 0.65, 0.4, 0.8, 0.7, 0.9] },
+    { k: "toast", a: 9.4, x: 300, y: 670, w: 530, title: "Your car is ready", sub: "Sent to the customer · 4:45 pm, as promised" } ] });
+</script></body></html>

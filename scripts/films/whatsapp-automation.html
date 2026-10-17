@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=block">
+<style>html,body{margin:0;background:#000}canvas{display:block}</style></head><body>
+<canvas id="c" width="1600" height="1000"></canvas>
+<script src="kit.js"></script>
+<script>
+film({ title: "WhatsApp automation",
+  beats: [
+    { head: ["A customer asks", "on WhatsApp."], sub: "Where they already are, any time of day." },
+    { head: ["The agent offers", "real slots."], sub: "Live availability, one tap to pick." },
+    { head: ["Confirmed, with", "a reminder set."], sub: "Your calendar fills itself. No-shows drop." } ],
+  items: [
+    { k: "phone", a: 0.3, x: 60, y: 30, w: 360, h: 720, title: "WhatsApp" },
+    { k: "bubble", a: 0.9, x: 86, y: 110, w: 280, side: "in", text: "Hi! Do you have a slot this Saturday?" },
+    { k: "bubble", a: 4.2, x: 86, y: 220, w: 300, side: "out", text: "Yes! Pick one that suits you:" },
+    { k: "chip", a: 4.9, x: 100, y: 318, text: "Sat 11:00" },
+    { k: "chip", a: 5.1, x: 100, y: 368, text: "Sat 12:30", done: 6.6 },
+    { k: "chip", a: 5.3, x: 100, y: 418, text: "Sat 15:00" },
+    { k: "cursor", a: 5.6, path: [[330, 560, 5.6], [190, 386, 6.4]], click: 6.5 },
+    { k: "bubble", a: 7.0, x: 86, y: 480, w: 300, side: "out", text: "Done ✓ Saturday 12:30. See you then!" },
+    { k: "cal", a: 8.2, x: 470, y: 60, w: 360, h: 300, slot: [4, 1], pick: 8.8 },
+    { k: "row", a: 9.2, x: 470, y: 400, w: 360, label: "Reminder · Fri 18:00", pill: ["Scheduled", "Set"], done: 9.8 },
+    { k: "toast", a: 10.0, x: 470, y: 480, w: 360, title: "New booking", sub: "Saturday 12:30 · via WhatsApp" } ] });
+</script></body></html>
