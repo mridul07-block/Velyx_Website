@@ -11,8 +11,6 @@ describe("vercel redirects", () => {
   it.each([
     ["/portfolio", "/work"],
     ["/portfolio/:slug*", "/work"],
-    ["/case-studies", "/work"],
-    ["/case-studies/:slug*", "/work"],
     ["/contact", "/start-a-project"],
     ["/blog", "/"],
     ["/blog/:slug*", "/"],
@@ -24,6 +22,12 @@ describe("vercel redirects", () => {
 
   it("lets /services through to its own page", () => {
     expect((vercel.redirects || []).find((r) => r.source === "/services")).toBeUndefined();
+  });
+
+  it("lets /case-studies and its industry pages through", () => {
+    for (const source of ["/case-studies", "/case-studies/:slug*"]) {
+      expect((vercel.redirects || []).find((r) => r.source === source), source).toBeUndefined();
+    }
   });
 
   it("keeps the SPA rewrite", () => {

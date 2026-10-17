@@ -25,4 +25,18 @@ describe("service pages", () => {
     renderWithProviders(<AppRoutes />, { route: "/services/teleportation" });
     expect(await screen.findByRole("heading", { level: 1, name: /page not found/i })).toBeInTheDocument();
   });
+
+  it("keeps the /services intro-call button readable on hover", async () => {
+    const { readFileSync } = await import("node:fs");
+    const css = readFileSync("src/styles.css", "utf8");
+    expect(css).toMatch(/\.svc-detail \.svc-detail__actions \.svc-detail__cta:hover \{ background: #000; \}/);
+    expect(css.indexOf(".svc-detail .svc-detail__actions .svc-detail__cta:hover")).toBeGreaterThan(css.indexOf(".svc-detail .btn--intro:hover"));
+  });
+
+  it("keeps home card tags with the copy, leaving the auto margin to the Get your agent button", async () => {
+    const { readFileSync } = await import("node:fs");
+    const css = readFileSync("src/styles.css", "utf8");
+    expect(css).not.toMatch(/\.svc-card \.tags \{[^}]*margin-top: auto/);
+    expect(css).toMatch(/\.svc-card__cta \{[^}]*margin-top: auto/);
+  });
 });

@@ -2,8 +2,6 @@
   "redirects": [
     { "source": "/portfolio", "destination": "/work", "permanent": true },
     { "source": "/portfolio/:slug*", "destination": "/work", "permanent": true },
-    { "source": "/case-studies", "destination": "/work", "permanent": true },
-    { "source": "/case-studies/:slug*", "destination": "/work", "permanent": true },
     { "source": "/contact", "destination": "/start-a-project", "permanent": true },
     { "source": "/blog", "destination": "/", "permanent": true },
     { "source": "/blog/:slug*", "destination": "/", "permanent": true },
