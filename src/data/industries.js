@@ -1,0 +1,103 @@
+/* The industries on /case-studies: each has its own page with a film, the
+   problems we solve, the agents we build, the services we use and related
+   work from projects.js. */
+import { filmFor } from "./services.js"; // with extension: scripts/routes.mjs loads this in Node
+
+export const INDUSTRIES = [
+  {
+    slug: "healthcare",
+    short: "Healthcare",
+    title: "Healthcare automation & agents",
+    copy: "AI agents for clinics and hospitals that book appointments, send reminders, take intake and chase insurance paperwork, with staff signing off.",
+    tags: ["Claude", "Voice AI", "WhatsApp", "n8n", "EHR", "Privacy"],
+    includes: [
+      "Appointment booking and reminder agents",
+      "Patient intake forms that file themselves",
+      "Insurance, credentialing and claims follow-up",
+      "Front-desk FAQ and triage assistant",
+      "Patient sites with the hotline one tap away",
+      "Staff sign-off, audit logs and data controls",
+    ],
+    niches: ["Clinics", "Hospitals & ER", "Dental", "Diagnostics labs", "Physiotherapy", "Credentialing & billing"],
+    film: filmFor("healthcare"),
+    problems: [
+      "Phones ring all day and missed calls are missed patients",
+      "Intake forms are re-typed by the front desk",
+      "No-shows leave empty slots in the schedule",
+      "Claims and credentialing follow-up eats staff hours",
+    ],
+    agents: [
+      { name: "Clinic receptionist", does: "Answers patient calls and WhatsApp messages, books, moves and cancels appointments around the clock.", plugsInto: ["Phone line", "WhatsApp", "Clinic calendar"] },
+      { name: "Patient intake agent", does: "Collects history, insurance and consent before the visit and fills your system, so nobody re-types forms.", plugsInto: ["Forms", "EHR / clinic software", "WhatsApp"] },
+      { name: "Appointment reminders", does: "Confirms each appointment on WhatsApp, reschedules on request and fills cancelled slots from the waitlist.", plugsInto: ["WhatsApp API", "Clinic calendar"] },
+      { name: "Claims & credentialing helper", does: "Tracks every claim and credentialing step, chases what's missing and tells staff what needs them.", plugsInto: ["Billing system", "Email", "Dashboards"] },
+      { name: "Reports follow-up", does: "Lets patients know when results are ready and books the follow-up visit in the same message.", plugsInto: ["Lab system", "WhatsApp", "Clinic calendar"] },
+    ],
+    services: ["voice-agents", "whatsapp-automation", "ai-agents", "web-apps"],
+    work: ["get-credentialing-done", "unitas-emergency"],
+  },
+  {
+    slug: "real-estate",
+    short: "Real estate",
+    title: "Real estate automation & agents",
+    copy: "Agents that answer every portal and ad lead in minutes, qualify buyers, book site visits and keep the CRM current, plus statements and reports that build themselves.",
+    tags: ["Claude", "WhatsApp", "CRM", "Voice AI", "n8n", "Dashboards"],
+    includes: [
+      "Instant lead replies from portals, ads and WhatsApp",
+      "Buyer qualification and site-visit booking",
+      "Follow-up sequences until a lead converts or opts out",
+      "Listing, brochure and project-site content",
+      "Owner statements and portfolio reports",
+      "CRM sync and a pipeline dashboard",
+    ],
+    niches: ["Developers", "Brokerages", "Property managers", "Rentals", "Commercial", "Proptech"],
+    film: filmFor("real-estate"),
+    problems: [
+      "Portal and ad leads wait hours for a first reply",
+      "Most enquiries aren't qualified before a visit is booked",
+      "Follow-ups stop after the second message",
+      "Owner statements and reports are built by hand",
+    ],
+    agents: [
+      { name: "Lead qualifier", does: "Replies to portal, ad and WhatsApp leads in minutes, asks budget, location and timeline, and scores each buyer.", plugsInto: ["Property portals", "Meta ads", "WhatsApp", "CRM"] },
+      { name: "Site-visit booking agent", does: "Offers visit slots that fit the sales team's calendar, confirms on WhatsApp and sends the location pin.", plugsInto: ["WhatsApp API", "Calendar", "Maps"] },
+      { name: "Listing enquiry agent", does: "Answers questions about price, size, amenities and availability from your inventory, at any hour.", plugsInto: ["Inventory sheet", "WhatsApp", "Website"] },
+      { name: "CRM follow-up agent", does: "Keeps every lead moving with timed follow-ups until they book, buy or opt out, and logs it all in the CRM.", plugsInto: ["CRM", "WhatsApp", "Email"] },
+      { name: "New-lead voice caller", does: "Calls fresh leads within minutes in a natural voice, qualifies them and books the visit.", plugsInto: ["Phone line", "CRM", "Calendar"] },
+    ],
+    services: ["ai-agents", "voice-agents", "whatsapp-automation", "web-apps"],
+    work: ["aurelle-residence", "plainstate", "estatico"],
+  },
+  {
+    slug: "automobile",
+    short: "Automobile",
+    title: "Automobile automation & agents",
+    copy: "Agentic systems for dealerships and workshops: service bookings, live job tracking, estimate approvals, parts chasing and an AI inbox that answers customers first.",
+    tags: ["Claude", "WhatsApp", "DMS", "Dashboards", "Forecasting", "Voice AI"],
+    includes: [
+      "Service booking and reminder agents",
+      "Live job tracking and promised-time alerts",
+      "Estimate and repair approvals by WhatsApp",
+      "Parts follow-up and waiting-car alerts",
+      "AI-first customer inbox with advisor takeover",
+      "Workshop dashboards and demand forecasting",
+    ],
+    niches: ["Dealerships", "Service centres", "Independent workshops", "Used-car dealers", "Fleet operators", "EV & charging"],
+    film: filmFor("automobile"),
+    problems: [
+      "Service bookings come in by phone and get lost",
+      "Customers call again and again to ask for status",
+      "Repair approvals stall while the car waits",
+      "Parts delays aren't visible until it's too late",
+    ],
+    agents: [
+      { name: "Service booking agent", does: "Books services by phone, WhatsApp or website, picks the slot and sends reminders before the visit.", plugsInto: ["Phone line", "WhatsApp", "DMS"] },
+      { name: "Repair-approval agent", does: "Sends the estimate with photos on WhatsApp and records the customer's approval in one tap.", plugsInto: ["WhatsApp API", "DMS", "Payments"] },
+      { name: "Status & parts updates", does: "Tells customers where their car is at each stage and alerts advisors when a part is late.", plugsInto: ["DMS", "WhatsApp", "Parts system"] },
+      { name: "Workshop insights agent", does: "Turns the day's jobs into a live dashboard and a morning summary of what's at risk.", plugsInto: ["DMS", "Dashboards", "Email"] },
+      { name: "Feedback caller", does: "Calls or messages after delivery, collects a rating and flags unhappy customers to the manager.", plugsInto: ["Phone line", "WhatsApp", "CRM"] },
+    ],
+    services: ["ai-agents", "voice-agents", "whatsapp-automation", "web-apps"],
+    work: ["audi-service-system"],
+  },
+];

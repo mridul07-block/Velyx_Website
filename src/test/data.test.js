@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { existsSync } from "node:fs";
 import { SERVICES } from "../data/services";
+import { INDUSTRIES } from "../data/industries";
 import { STATS } from "../data/stats";
 import { PROJECTS } from "../data/projects";
 import { TEAM } from "../data/team";
@@ -13,10 +14,35 @@ import { TESTIMONIAL_QUOTES } from "../data/testimonials";
 const BANNED = /\$1B|210M|75\+|95%|SideShift|ZeroLeaks|Agent Arcade|Kargul|Northwind|Sable Health|Halcyon/i;
 
 describe("content data", () => {
-  it("has six Velyx services in a 2 + 2 + 2 layout, AI first, then the industries", () => {
-    expect(SERVICES.map((s) => s.id)).toEqual(["agents", "voice", "saas", "whatsapp", "web", "mobile", "healthcare", "realestate", "automotive"]);
-    expect(SERVICES.filter((s) => s.wide).map((s) => s.id)).toEqual(["agents", "voice", "saas", "whatsapp", "web", "mobile"]);
+  it("has six Velyx services in a 2 + 2 + 2 layout, each with its page slug", () => {
+    expect(SERVICES.map((s) => s.id)).toEqual(["agents", "voice", "saas", "whatsapp", "web", "mobile"]);
+    expect(SERVICES.every((s) => s.wide)).toBe(true);
+    expect(SERVICES.map((s) => s.slug)).toEqual(["ai-agents", "voice-agents", "ai-saas-mvps", "whatsapp-automation", "web-apps", "mobile-apps"]);
     for (const s of SERVICES) expect(s.tags.length).toBeGreaterThanOrEqual(4);
+  });
+
+  it("gives every service and industry 3–5 agents and a film named after its slug", () => {
+    for (const x of [...SERVICES, ...INDUSTRIES]) {
+      expect(x.agents.length, x.slug).toBeGreaterThanOrEqual(3);
+      expect(x.agents.length, x.slug).toBeLessThanOrEqual(5);
+      for (const a of x.agents) {
+        expect(a.name).toBeTruthy();
+        expect(a.does.length).toBeGreaterThan(30);
+        expect(a.plugsInto.length).toBeGreaterThanOrEqual(2);
+      }
+      expect(x.film).toEqual({ src: `/films/${x.slug}.mp4`, poster: `/films/${x.slug}.webp`, w: 1600, h: 1000 });
+    }
+  });
+
+  it("has the three industries, each linking only to real services and projects", () => {
+    expect(INDUSTRIES.map((i) => i.slug)).toEqual(["healthcare", "real-estate", "automobile"]);
+    const services = new Set(SERVICES.map((s) => s.slug));
+    const projects = new Set(PROJECTS.map((p) => p.slug));
+    for (const i of INDUSTRIES) {
+      expect(i.problems.length).toBeGreaterThanOrEqual(3);
+      for (const s of i.services) expect(services.has(s), s).toBe(true);
+      for (const w of i.work) expect(projects.has(w), w).toBe(true);
+    }
   });
 
   it("uses the real client and service figures", () => {
@@ -65,7 +91,7 @@ describe("content data", () => {
   });
 
   it("contains no borrowed or fabricated claims", () => {
-    const all = JSON.stringify([SERVICES, STATS, PROJECTS, TEAM, TOOLS, FAQ_ITEMS, CLIENTS]);
+    const all = JSON.stringify([SERVICES, INDUSTRIES, STATS, PROJECTS, TEAM, TOOLS, FAQ_ITEMS, CLIENTS]);
     expect(all).not.toMatch(BANNED);
   });
 });

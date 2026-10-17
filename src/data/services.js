@@ -1,12 +1,16 @@
-/* The Velyx services, shown as six wide cards (2 + 2 + 2) on the home page
-   and /services. The last three are agentic automation by industry, kept for
-   the case studies. `includes` and `niches` are the detail on /services.
+/* The six Velyx services: wide cards (2 + 2 + 2) on the home page and
+   /services, and one page each at /services/<slug> with its film and the
+   agents we build. `includes` and `niches` are the detail on /services.
    TO CONFIRM: tag lists must match the stack Velyx actually uses, and the
    includes/niches lists must match what Velyx actually sells. */
+export const filmFor = (slug) => ({ src: `/films/${slug}.mp4`, poster: `/films/${slug}.webp`, w: 1600, h: 1000 });
+
 export const SERVICES = [
   {
     id: "agents",
     wide: true,
+    slug: "ai-agents",
+    film: filmFor("ai-agents"),
     short: "AI agents",
     title: "Agentic AI automation",
     copy: "AI agents that answer, qualify, follow up and file — wired into your CRM, inbox and WhatsApp, with human approval where it matters.",
@@ -21,10 +25,19 @@ export const SERVICES = [
       "Human approval steps, logs and evals",
     ],
     niches: ["Real estate", "Clinics & healthcare", "Coaching & education", "Agencies", "E-commerce", "B2B services"],
+    agents: [
+      { name: "Lead qualifier", does: "Replies to every new enquiry in minutes, asks the questions you would, and scores the lead before it reaches you.", plugsInto: ["Website forms", "Email", "WhatsApp", "CRM"] },
+      { name: "Inbox triage agent", does: "Reads the shared inbox, sorts what matters, drafts replies for approval and files the rest.", plugsInto: ["Gmail", "Outlook", "Slack"] },
+      { name: "Follow-up agent", does: "Chases quotes, proposals and unpaid invoices on a schedule, and stops the moment someone replies.", plugsInto: ["Email", "WhatsApp", "CRM"] },
+      { name: "Document & invoice processor", does: "Pulls the fields out of invoices, forms and PDFs, checks them and pushes them into your sheets or accounting tool.", plugsInto: ["Google Drive", "Sheets", "Zoho Books", "Tally"] },
+      { name: "Research & reporting agent", does: "Gathers the numbers from your tools each week and sends a short written report with what changed and why.", plugsInto: ["Sheets", "CRM", "Slack", "Email"] },
+    ],
   },
   {
     id: "voice",
     wide: true,
+    slug: "voice-agents",
+    film: filmFor("voice-agents"),
     short: "Voice agents",
     title: "AI voice agents",
     copy: "AI voice agents that pick up every call, answer in a natural voice, book appointments and qualify leads around the clock, then hand off to your team.",
@@ -39,10 +52,19 @@ export const SERVICES = [
       "Warm transfer to a human, with call recordings and transcripts",
     ],
     niches: ["Clinics & healthcare", "Real estate", "Automobile dealers", "Restaurants", "Home services", "B2B sales"],
+    agents: [
+      { name: "AI receptionist", does: "Answers every call in a natural voice, day or night, handles the common questions and books the appointment.", plugsInto: ["Phone line", "Calendar", "CRM"] },
+      { name: "Outbound lead caller", does: "Calls new leads within minutes of them signing up, qualifies them and books a call with your team.", plugsInto: ["Ads & forms", "CRM", "Calendar"] },
+      { name: "Appointment reminder & rescheduler", does: "Calls or messages before each appointment, confirms it, and moves it if the customer can't make it.", plugsInto: ["Calendar", "WhatsApp", "SMS"] },
+      { name: "Support line agent", does: "Handles order status, FAQs and simple requests on the phone, and hands complex calls to a person with a summary.", plugsInto: ["Phone line", "Helpdesk", "Order system"] },
+      { name: "Feedback & survey caller", does: "Calls customers after a visit or delivery, collects a rating and comments, and flags anyone unhappy.", plugsInto: ["CRM", "Sheets", "Slack"] },
+    ],
   },
   {
     id: "saas",
     wide: true,
+    slug: "ai-saas-mvps",
+    film: filmFor("ai-saas-mvps"),
     short: "SaaS & MVPs",
     title: "AI SaaS & MVPs",
     copy: "From idea to paying users. Production apps with auth, billing, admin and AI features built on your data — made to grow, not to be rebuilt.",
@@ -57,10 +79,18 @@ export const SERVICES = [
       "Monitoring, scaling and a clean handover",
     ],
     niches: ["First-time founders", "SaaS startups", "AI tools", "Marketplaces", "HR & career tech", "Internal tools"],
+    agents: [
+      { name: "AI copilot in your product", does: "An assistant inside your app that answers questions about the user's own data and takes actions for them.", plugsInto: ["Your app", "Your database", "Claude / OpenAI"] },
+      { name: "Onboarding agent", does: "Walks each new user through setup, fills in what it can and nudges them until they reach the first win.", plugsInto: ["Your app", "Email", "Analytics"] },
+      { name: "Support agent", does: "Answers product questions from your docs and the user's account, and opens a ticket when it can't.", plugsInto: ["Your docs", "Helpdesk", "Your app"] },
+      { name: "Analytics agent", does: "Lets your team ask questions about usage and revenue in plain English and get a chart back.", plugsInto: ["Postgres", "Stripe", "Analytics"] },
+    ],
   },
   {
     id: "whatsapp",
     wide: true,
+    slug: "whatsapp-automation",
+    film: filmFor("whatsapp-automation"),
     short: "WhatsApp + CRM",
     title: "WhatsApp automation + CRM",
     copy: "Bookings, reminders, lead follow-up and re-engagement running on WhatsApp, with a simple CRM so your team sees every conversation.",
@@ -75,9 +105,19 @@ export const SERVICES = [
       "A shared inbox and simple CRM for your team",
     ],
     niches: ["Salons & spas", "Clinics", "Gyms & studios", "Restaurants & cafes", "Real estate", "D2C brands"],
+    agents: [
+      { name: "Booking agent", does: "Takes bookings on WhatsApp: offers open slots, confirms the choice and adds it to your calendar.", plugsInto: ["WhatsApp API", "Calendar", "CRM"] },
+      { name: "Lead nurture agent", does: "Replies to every ad and website lead on WhatsApp, answers questions and keeps warm leads moving.", plugsInto: ["WhatsApp API", "Meta ads", "CRM"] },
+      { name: "Order & payment updates", does: "Sends order, payment and delivery updates automatically, and answers 'where is my order?' on its own.", plugsInto: ["WhatsApp API", "Shopify", "Payments"] },
+      { name: "Re-engagement campaigns", does: "Brings back past customers with timed, personal messages and books them straight from the chat.", plugsInto: ["WhatsApp API", "CRM", "Calendar"] },
+      { name: "Support FAQ agent", does: "Answers the questions your team gets every day from your own policies, and hands over to a person when needed.", plugsInto: ["WhatsApp API", "Helpdesk", "Your docs"] },
+    ],
   },
   {
     id: "web",
+    wide: true,
+    slug: "web-apps",
+    film: filmFor("web-apps"),
     short: "Websites",
     title: "Websites & landing pages",
     copy: "Fast, conversion-focused websites and landing pages with custom visuals and interactions — built to turn visitors into booked calls.",
@@ -92,10 +132,17 @@ export const SERVICES = [
       "Ongoing updates and A/B tests",
     ],
     niches: ["Boutiques & fashion", "Cafes & bakeries", "Salons", "Clinics", "D2C brands", "Startups"],
-    wide: true,
+    agents: [
+      { name: "AI chat & lead-capture agent", does: "A chat on your site that answers visitors from your own content, captures their details and books the call.", plugsInto: ["Your website", "CRM", "Calendar"] },
+      { name: "SEO content agent", does: "Drafts and updates service, location and blog pages from your expertise, ready for your review.", plugsInto: ["CMS", "Search Console", "Analytics"] },
+      { name: "Booking agent", does: "Turns your site's contact form into instant booking, with reminders sent by email or WhatsApp.", plugsInto: ["Your website", "Calendar", "WhatsApp"] },
+    ],
   },
   {
     id: "mobile",
+    wide: true,
+    slug: "mobile-apps",
+    film: filmFor("mobile-apps"),
     short: "Mobile apps",
     title: "Mobile apps",
     copy: "Cross-platform iOS and Android apps from one codebase — designed, built and shipped to the stores.",
@@ -110,60 +157,10 @@ export const SERVICES = [
       "App Store and Play Store launch",
     ],
     niches: ["Startups", "Fitness", "Food & delivery", "Education", "Healthcare", "Communities"],
-    wide: true,
-  },
-  {
-    id: "healthcare",
-    short: "Healthcare",
-    title: "Healthcare automation & agents",
-    copy: "AI agents for clinics and hospitals that book appointments, send reminders, take intake and chase insurance paperwork, with staff signing off.",
-    tags: ["Claude", "Voice AI", "WhatsApp", "n8n", "EHR", "Privacy"],
-    art: "healthcare",
-    includes: [
-      "Appointment booking and reminder agents",
-      "Patient intake forms that file themselves",
-      "Insurance, credentialing and claims follow-up",
-      "Front-desk FAQ and triage assistant",
-      "Patient sites with the hotline one tap away",
-      "Staff sign-off, audit logs and data controls",
+    agents: [
+      { name: "In-app AI assistant", does: "An assistant inside your app that answers questions and does tasks for the user in a tap.", plugsInto: ["iOS & Android", "Your backend", "Claude / OpenAI"] },
+      { name: "Push re-engagement agent", does: "Sends the right push notification at the right moment to bring inactive users back.", plugsInto: ["Push", "Analytics", "Your backend"] },
+      { name: "Support agent", does: "Answers help questions in the app from your docs and the user's account, and escalates with context.", plugsInto: ["Your app", "Helpdesk", "Your docs"] },
     ],
-    niches: ["Clinics", "Hospitals & ER", "Dental", "Diagnostics labs", "Physiotherapy", "Credentialing & billing"],
-  },
-  {
-    id: "realestate",
-    short: "Real estate",
-    title: "Real estate automation & agents",
-    copy: "Agents that answer every portal and ad lead in minutes, qualify buyers, book site visits and keep the CRM current, plus statements and reports that build themselves.",
-    tags: ["Claude", "WhatsApp", "CRM", "Voice AI", "n8n", "Dashboards"],
-    art: "realestate",
-    includes: [
-      "Instant lead replies from portals, ads and WhatsApp",
-      "Buyer qualification and site-visit booking",
-      "Follow-up sequences until a lead converts or opts out",
-      "Listing, brochure and project-site content",
-      "Owner statements and portfolio reports",
-      "CRM sync and a pipeline dashboard",
-    ],
-    niches: ["Developers", "Brokerages", "Property managers", "Rentals", "Commercial", "Proptech"],
-  },
-  {
-    id: "automotive",
-    short: "Automobile",
-    title: "Automobile automation & agents",
-    copy: "Agentic systems for dealerships and workshops: service bookings, live job tracking, estimate approvals, parts chasing and an AI inbox that answers customers first.",
-    tags: ["Claude", "WhatsApp", "DMS", "Dashboards", "Forecasting", "Voice AI"],
-    art: "automotive",
-    includes: [
-      "Service booking and reminder agents",
-      "Live job tracking and promised-time alerts",
-      "Estimate and repair approvals by WhatsApp",
-      "Parts follow-up and waiting-car alerts",
-      "AI-first customer inbox with advisor takeover",
-      "Workshop dashboards and demand forecasting",
-    ],
-    niches: ["Dealerships", "Service centres", "Independent workshops", "Used-car dealers", "Fleet operators", "EV & charging"],
   },
 ];
-
-export const INDUSTRY_IDS = ["healthcare", "realestate", "automotive"];
-export const CORE_SERVICES = SERVICES.filter((s) => !INDUSTRY_IDS.includes(s.id));
