@@ -67,8 +67,8 @@ export function tick(step = 0) {
   }
 }
 
-/* Kargul-style click: a 40 ms sine falling 1200 → 560 Hz with a 2 ms
-   attack, layered with a 12 ms high-passed noise burst for the "tik". */
+/* Click "chuk": a 20 ms band-passed noise burst for the "ch", over a
+   triangle falling 320 → 110 Hz in 60 ms for the low, wooden "uk". */
 let noiseBuf = null;
 export function click() {
   if (muted || reducedMotion() || typeof AudioContext === "undefined") return;
@@ -76,33 +76,35 @@ export function click() {
     ctx ??= new AudioContext();
     if (ctx.state === "suspended") ctx.resume?.().catch(() => {});
     const t = ctx.currentTime;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = "sine";
-    osc.frequency.setValueAtTime(1200, t);
-    osc.frequency.exponentialRampToValueAtTime(560, t + 0.04);
-    gain.gain.setValueAtTime(0.0001, t);
-    gain.gain.exponentialRampToValueAtTime(0.045, t + 0.002);
-    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.06);
-    osc.connect(gain).connect(ctx.destination);
-    osc.start(t);
-    osc.stop(t + 0.07);
 
     if (!noiseBuf) {
-      const len = Math.round(0.012 * ctx.sampleRate);
+      const len = Math.round(0.02 * ctx.sampleRate);
       noiseBuf = ctx.createBuffer(1, len, ctx.sampleRate);
       const data = noiseBuf.getChannelData(0);
-      for (let i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (len / 6));
+      for (let i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (len / 5));
     }
     const noise = ctx.createBufferSource();
-    const hp = ctx.createBiquadFilter();
+    const bp = ctx.createBiquadFilter();
     const ng = ctx.createGain();
     noise.buffer = noiseBuf;
-    hp.type = "highpass";
-    hp.frequency.value = 2800;
-    ng.gain.value = 0.05;
-    noise.connect(hp).connect(ng).connect(ctx.destination);
+    bp.type = "bandpass";
+    bp.frequency.value = 1600;
+    bp.Q.value = 0.8;
+    ng.gain.value = 0.09;
+    noise.connect(bp).connect(ng).connect(ctx.destination);
     noise.start(t);
+
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(320, t);
+    osc.frequency.exponentialRampToValueAtTime(110, t + 0.06);
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(0.12, t + 0.004);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.09);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(t);
+    osc.stop(t + 0.1);
   } catch {
     /* audio unavailable: clicks still work silently */
   }
