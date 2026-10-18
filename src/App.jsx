@@ -4,6 +4,7 @@ import { getCalApi } from "@calcom/embed-react";
 import AppRoutes from "./AppRoutes";
 import ScrollManager from "./components/ScrollManager";
 import { initClickTracking, track } from "./lib/analytics";
+import { initClickTick } from "./lib/tick";
 
 export default function App() {
   useEffect(() => {
@@ -19,6 +20,9 @@ export default function App() {
 
   // GA4 conversion + outbound click tracking
   useEffect(() => initClickTracking(), []);
+
+  // Kargul-style "tik" on every mouse press of a link or button
+  useEffect(() => initClickTick(), []);
 
   return (
     <BrowserRouter>
