@@ -27,7 +27,7 @@ const press = (el, pointerType = "mouse", button = 0) => {
 describe("click tick (Kargul-style)", () => {
   afterEach(() => { vi.unstubAllGlobals(); document.body.innerHTML = ""; });
 
-  it("plays a low wooden chuk (noisy ch + falling triangle uk) when a mouse presses a link or button", async () => {
+  it("plays a wood tock (two tuned sines, 1760 and 880 Hz) when a mouse presses a link or button", async () => {
     const { osc, noise, ctx } = fakeCtx();
     vi.stubGlobal("AudioContext", vi.fn(function () { return ctx; }));
     const { initClickTick, setMuted } = await fresh();
@@ -35,16 +35,13 @@ describe("click tick (Kargul-style)", () => {
     document.body.innerHTML = `<a href="/work"><span id="in-link">Work</span></a><button id="b">Go</button><p id="p">text</p>`;
     const stop = initClickTick();
     press(document.getElementById("in-link"));
-    expect(ctx.createOscillator).toHaveBeenCalledTimes(1);
-    expect(osc.type).toBe("triangle");
-    expect(osc.frequency.setValueAtTime).toHaveBeenCalledWith(320, 0);
-    expect(osc.frequency.exponentialRampToValueAtTime).toHaveBeenCalledWith(110, 0.06);
-    expect(noise.start).toHaveBeenCalled();
-    const filter = ctx.createBiquadFilter.mock.results[0].value;
-    expect(filter.type).toBe("bandpass");
-    expect(filter.frequency.value).toBe(1600);
-    press(document.getElementById("b"));
     expect(ctx.createOscillator).toHaveBeenCalledTimes(2);
+    expect(osc.type).toBe("sine");
+    expect(osc.frequency.setValueAtTime).toHaveBeenCalledWith(1760, 0);
+    expect(osc.frequency.setValueAtTime).toHaveBeenCalledWith(880, 0);
+    expect(noise.start).not.toHaveBeenCalled();
+    press(document.getElementById("b"));
+    expect(ctx.createOscillator).toHaveBeenCalledTimes(4);
     stop();
   });
 

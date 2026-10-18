@@ -67,44 +67,29 @@ export function tick(step = 0) {
   }
 }
 
-/* Click "chuk": a 20 ms band-passed noise burst for the "ch", over a
-   triangle falling 320 → 110 Hz in 60 ms for the low, wooden "uk". */
-let noiseBuf = null;
+/* Click "wood tock": two tuned sines, like a small marimba key — a bright
+   1760 Hz ping (50 ms) over a warm 880 Hz body (90 ms), 2 ms attack. */
+function partial(t, freq, dur, peak) {
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(freq, t);
+  gain.gain.setValueAtTime(0.0001, t);
+  gain.gain.exponentialRampToValueAtTime(peak, t + 0.002);
+  gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  osc.connect(gain).connect(ctx.destination);
+  osc.start(t);
+  osc.stop(t + dur + 0.02);
+}
+
 export function click() {
   if (muted || reducedMotion() || typeof AudioContext === "undefined") return;
   try {
     ctx ??= new AudioContext();
     if (ctx.state === "suspended") ctx.resume?.().catch(() => {});
     const t = ctx.currentTime;
-
-    if (!noiseBuf) {
-      const len = Math.round(0.02 * ctx.sampleRate);
-      noiseBuf = ctx.createBuffer(1, len, ctx.sampleRate);
-      const data = noiseBuf.getChannelData(0);
-      for (let i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (len / 5));
-    }
-    const noise = ctx.createBufferSource();
-    const bp = ctx.createBiquadFilter();
-    const ng = ctx.createGain();
-    noise.buffer = noiseBuf;
-    bp.type = "bandpass";
-    bp.frequency.value = 1600;
-    bp.Q.value = 0.8;
-    ng.gain.value = 0.09;
-    noise.connect(bp).connect(ng).connect(ctx.destination);
-    noise.start(t);
-
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = "triangle";
-    osc.frequency.setValueAtTime(320, t);
-    osc.frequency.exponentialRampToValueAtTime(110, t + 0.06);
-    gain.gain.setValueAtTime(0.0001, t);
-    gain.gain.exponentialRampToValueAtTime(0.12, t + 0.004);
-    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.09);
-    osc.connect(gain).connect(ctx.destination);
-    osc.start(t);
-    osc.stop(t + 0.1);
+    partial(t, 1760, 0.05, 0.07);
+    partial(t, 880, 0.09, 0.1);
   } catch {
     /* audio unavailable: clicks still work silently */
   }
