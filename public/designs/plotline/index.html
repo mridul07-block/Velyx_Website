@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plotline Studio</title>
+<meta name="description" content="Plotline is a design studio for startups. We plan, design and ship conversion-ready websites in 14 days.">
+<meta property="og:title" content="Plotline — design that closes the deal">
+<meta property="og:description" content="Conversion-ready startup websites, planned, designed and shipped in 14 days.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#f6f5f0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M2 20 L8 6 L14 14 L20 2' fill='none' stroke='%23151515' stroke-width='2.2'/%3E%3Ccircle cx='20' cy='2' r='2' fill='%230f9d6b'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f6f5f0;--cell:#fbfaf7;--ink:#151515;--line:#e0ddd4;--mute:#8a877f;--em:#0f9d6b;--em2:#d6f0e4;--yel:#ffd84d}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font:15px/1.5 "Inter Tight",sans-serif;overflow-x:hidden}
+.mono{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.page{max-width:1376px;margin:24px auto;border:1px solid var(--line);background:var(--cell)}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+.hl{background:linear-gradient(transparent 58%,var(--yel) 58%,var(--yel) 92%,transparent 92%) no-repeat;background-size:0% 100%;padding:0 4px;transition:background-size 1.1s cubic-bezier(.7,0,.2,1) .35s}
+.in .hl,.rv.in.hl{background-size:100% 100%}
+.btn{display:inline-flex;align-items:center;gap:10px;height:46px;padding:0 20px;font-weight:500;font-size:14px;text-decoration:none;border:1px solid var(--ink);transition:background .25s,color .25s,transform .3s cubic-bezier(.2,.8,.2,1)}
+.btn.em{background:var(--em);border-color:var(--em);color:#fff}
+.btn.em:hover{background:var(--ink);border-color:var(--ink)}
+.btn.line{color:var(--ink)}
+.btn.line:hover{background:var(--ink);color:#fff}
+.btn .k{font-family:"JetBrains Mono",monospace;font-size:11px;border:1px solid currentColor;padding:2px 5px;opacity:.8}
+.cells{display:grid;border-top:1px solid var(--line)}
+.cells>*{border-right:1px solid var(--line);min-width:0}
+.cells>*:last-child{border-right:0}
+.grid-bg{background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:32px 32px;background-position:-1px -1px}
+.tick{position:absolute;color:#c9c5b9;font:13px/1 "JetBrains Mono",monospace}
+
+/* nav */
+nav{display:grid;grid-template-columns:auto 1fr auto auto auto;align-items:center;height:64px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40;background:rgba(251,250,247,.86);backdrop-filter:blur(12px)}
+.logo{display:flex;align-items:center;gap:10px;padding:0 24px;font-weight:600;font-size:18px;letter-spacing:-.03em;height:100%;border-right:1px solid var(--line)}
+.logo svg{display:block}
+.links{display:flex;height:100%}
+.links a{display:flex;align-items:center;padding:0 22px;border-right:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:14px}
+.links a:hover{background:var(--em2)}
+.avail{display:flex;align-items:center;gap:10px;padding:0 22px;height:100%;border-left:1px solid var(--line);color:var(--mute);font-size:13px}
+.avail i{width:8px;height:8px;background:var(--em);border-radius:50%;animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.25}}
+nav .btn{height:100%;border:0;border-left:1px solid var(--line);padding:0 26px}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1fr 1.08fr;border-bottom:1px solid var(--line)}
+.hero-l{padding:64px 48px 48px;display:flex;flex-direction:column;border-right:1px solid var(--line)}
+.chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);padding:6px 10px;background:#fff;align-self:flex-start}
+.chip b{width:6px;height:6px;background:var(--em)}
+h1{font-size:clamp(42px,5.3vw,76px);line-height:.98;letter-spacing:-.05em;font-weight:500;margin:26px 0 22px}
+h1 .em{color:var(--em)}
+.hero-l p{font-size:17px;color:#55534d;max-width:470px}
+.hero-l .ctas{display:flex;gap:10px;margin-top:30px}
+.proof{margin-top:auto;padding-top:46px;display:flex;align-items:center;gap:16px}
+.faces{display:flex}.faces i{width:34px;height:34px;border-radius:50%;border:2px solid var(--cell);margin-left:-8px;background:var(--em2)}
+.faces i:first-child{margin-left:0;background:var(--yel)}.faces i:nth-child(3){background:#e8e4da}
+.proof span{font-size:13px;color:#55534d}
+.hero-r{position:relative;min-height:600px;overflow:hidden}
+#plot{position:absolute;inset:0;width:100%;height:100%}
+.dim{position:absolute;display:flex;align-items:center;gap:8px;color:var(--mute)}
+.dim:before,.dim:after{content:"";height:1px;background:#c9c5b9;flex:1}
+.status{position:absolute;left:24px;bottom:22px;background:#fff;border:1px solid var(--line);padding:10px 14px;min-width:230px}
+.status .r{display:flex;justify-content:space-between;gap:16px;margin-top:4px;font-size:12px}
+.status .bar{height:4px;background:var(--line);margin-top:10px}
+.status .bar i{display:block;height:100%;background:var(--em);width:0}
+
+/* strip */
+.strip{grid-template-columns:repeat(4,1fr);border-top:0}
+.strip>div{display:flex;align-items:center;gap:14px;padding:22px 24px}
+.strip svg{flex:none}
+.strip b{display:block;font-weight:500;font-size:15px}
+.strip span{font-size:12px;color:var(--mute)}
+
+/* section head */
+.sh{display:grid;grid-template-columns:1fr 1fr;padding:84px 48px 40px;gap:40px;align-items:end;border-top:1px solid var(--line)}
+h2{font-size:clamp(34px,3.7vw,52px);line-height:1;letter-spacing:-.045em;font-weight:500}
+h2 .em{color:var(--em)}
+.sh p{color:#55534d;font-size:16px;max-width:430px;justify-self:end}
+.idx{display:block;margin-bottom:16px;color:var(--mute)}
+
+/* problems */
+.probs{grid-template-columns:repeat(3,1fr)}
+.prob{padding:22px;display:flex;flex-direction:column}
+.prob .top{display:flex;justify-content:space-between;align-items:center}
+.sev{display:flex;gap:3px}.sev i{width:14px;height:6px;background:var(--line)}
+.sev i.on{background:#e5484d}
+.prob .vis{height:250px;margin:18px 0;border:1px solid var(--line);background:#fff;position:relative;overflow:hidden}
+.prob h4{font-size:19px;font-weight:500;letter-spacing:-.02em}
+.prob p{font-size:13.5px;color:#55534d;margin-top:6px}
+.fixrow{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);font-size:12px}
+.sw{width:38px;height:20px;border-radius:999px;background:var(--line);position:relative;transition:background .35s}
+.sw:after{content:"";position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .35s}
+.fixed .sw{background:var(--em)}
+.fixed .sw:after{transform:translateX(18px)}
+.scan{position:absolute;left:0;right:0;height:40px;background:linear-gradient(transparent,rgba(15,157,107,.18),transparent);border-bottom:1px solid var(--em);top:-40px;animation:scan 3.2s linear infinite}
+@keyframes scan{to{top:100%}}
+/* p1 choices */
+.ch{position:absolute;display:flex;flex-wrap:wrap;gap:8px;left:24px;right:24px;top:70px;justify-content:center;transition:all .6s}
+.ch span{padding:9px 13px;border:1px solid var(--ink);font-size:11px;font-weight:500;transition:all .5s}
+.fixed .ch span:not(.keep){opacity:0;transform:scale(.6);width:0;padding:9px 0;margin:0 -4px;border-width:0}
+.fixed .ch span.keep{background:var(--em);color:#fff;border-color:var(--em);padding:14px 28px;font-size:13px}
+/* p2 headline */
+.hd{position:absolute;left:24px;right:24px;top:60px}
+.hd .w{font-size:23px;line-height:1.15;letter-spacing:-.03em;font-weight:500;filter:blur(3px);opacity:.5;transition:filter .6s,opacity .6s}
+.hd .w2{position:absolute;inset:0;font-size:26px;line-height:1.1;letter-spacing:-.04em;font-weight:500;opacity:0;transition:opacity .6s .2s}
+.fixed .hd .w{opacity:0}
+.fixed .hd .w2{opacity:1}
+.hd small{display:block;margin-top:14px;color:var(--mute)}
+/* p3 speed */
+.sp{position:absolute;left:24px;right:24px;top:56px}
+.sp .n{font-size:64px;letter-spacing:-.05em;font-weight:500;line-height:1;color:#e5484d;transition:color .4s}
+.fixed .sp .n{color:var(--em)}
+.sp .track{height:10px;background:var(--line);margin-top:18px;position:relative}
+.sp .track i{position:absolute;left:0;top:0;bottom:0;background:#e5484d;width:100%;transition:width .9s cubic-bezier(.7,0,.2,1),background .4s}
+.fixed .sp .track i{width:14%;background:var(--em)}
+.sp .lab{display:flex;justify-content:space-between;margin-top:8px;color:var(--mute)}
+
+/* manifesto */
+.mani{position:relative;height:420px;border-top:1px solid var(--line);overflow:hidden;background:#fff}
+#wave{position:absolute;inset:0;width:100%;height:100%}
+.mani .txt{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;background:rgba(255,255,255,.88);padding:26px 40px;border:1px solid var(--line)}
+.mani .txt p{font-size:38px;letter-spacing:-.04em;line-height:1.08;font-weight:500}
+.mani .txt p span{color:var(--mute)}
+.caret{display:inline-block;width:3px;height:.9em;background:var(--em);vertical-align:-4px;animation:blink 1s steps(1) infinite;margin-left:4px}
+
+/* bento */
+.bento{grid-template-columns:1.1fr 1fr;grid-template-rows:auto auto}
+.bento>div{padding:24px;border-bottom:1px solid var(--line)}
+.bento .tall{grid-row:span 2;border-bottom:0}
+.bento>div:last-child{border-bottom:0}
+.bento h4{font-size:22px;font-weight:500;letter-spacing:-.03em}
+.bento p{font-size:13.5px;color:#55534d;max-width:420px;margin-top:6px}
+.bento svg{display:block;width:100%}
+
+/* process */
+.proc{grid-template-columns:repeat(3,1fr)}
+.proc>div{padding:22px;display:flex;flex-direction:column;min-height:440px}
+.proc .n{display:flex;justify-content:space-between}
+.proc .n b{font-weight:500;background:var(--ink);color:#fff;padding:3px 8px}
+.proc svg{width:100%;height:270px;margin:10px 0}
+.proc h4{font-size:20px;font-weight:500;letter-spacing:-.03em;margin-top:auto}
+.proc p{font-size:13.5px;color:#55534d;margin-top:6px}
+
+/* pricing */
+.plans{grid-template-columns:.8fr 1fr 1fr}
+.plans>div{padding:28px}
+.plan h4{font-size:24px;font-weight:500;letter-spacing:-.03em;margin-top:10px}
+.plan .pr{font-size:60px;letter-spacing:-.05em;font-weight:500;line-height:1;margin-top:18px}
+.plan .pr small{font-size:14px;letter-spacing:0;color:var(--mute);margin-left:4px}
+.plan .spec{margin-top:24px;border-top:1px solid var(--line)}
+.plan .spec div{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.plan .spec div span:first-child{color:var(--mute)}
+.plan .btn{margin-top:24px;width:100%;justify-content:center}
+.plan.hot{background:var(--ink);color:#fff}
+.plan.hot .spec,.plan.hot .spec div{border-color:#333}
+.plan.hot .spec div span:first-child,.plan.hot .pr small{color:#9c9a94}
+.tagy{background:var(--yel);color:var(--ink);padding:3px 8px;margin-left:8px}
+
+/* faq */
+.faqw{grid-template-columns:1fr 1.5fr}
+.faqw>div{padding:28px 48px}
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:28px}
+.contact span{border:1px solid var(--line);padding:11px;text-align:center;font-size:13px;background:#fff}
+.qa{border-bottom:1px solid var(--line);padding:20px 0}
+.qa:first-child{padding-top:0}
+.qa h5{display:flex;gap:16px;font-size:17px;font-weight:500;cursor:pointer;align-items:center}
+.qa h5 i{font-style:normal;width:28px;height:28px;border:1px solid var(--ink);display:grid;place-items:center;flex:none;transition:transform .35s,background .35s}
+.qa p{max-height:0;overflow:hidden;font-size:14px;color:#55534d;padding-left:44px;transition:max-height .45s,margin .45s}
+.qa.open p{max-height:100px;margin-top:8px}
+.qa.open h5 i{transform:rotate(45deg);background:var(--em);border-color:var(--em);color:#fff}
+
+/* slots + cta */
+.book{grid-template-columns:1fr 1.25fr}
+.book>div{padding:48px}
+.week{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:6px}
+.day{border:1px solid var(--line);background:#fff;padding:12px}
+.day b{display:block;font-weight:500}
+.day .t{display:block;margin-top:8px;padding:7px 0;text-align:center;border:1px solid var(--line);font-size:12px}
+.day .t.x{color:#c9c5b9;text-decoration:line-through}
+.day .t.pick{background:var(--em);border-color:var(--em);color:#fff;animation:pick 2.4s ease-in-out infinite}
+@keyframes pick{50%{box-shadow:0 0 0 5px var(--em2)}}
+.final{position:relative;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr;min-height:420px}
+.final .l{padding:56px 48px;border-right:1px solid var(--line)}
+.final h2{font-size:clamp(38px,4.5vw,64px)}
+.final p{color:#55534d;font-size:16px;margin-top:16px;max-width:440px}
+#stack{width:100%;height:100%}
+footer{border-top:1px solid var(--line)}
+.fbar{display:flex;justify-content:space-between;align-items:center;padding:0 0 0 24px;height:60px}
+.fbar .links a{font-size:13px}
+#word{display:block;width:100%;border-top:1px solid var(--line)}
+/* crosshair */
+.xh{position:absolute;inset:0;pointer-events:none;z-index:2}
+.xh .h{position:absolute;left:0;right:0;top:0;height:1px;background:rgba(15,157,107,.45)}
+.xh .v{position:absolute;top:0;bottom:0;left:0;width:1px;background:rgba(15,157,107,.45)}
+.xh span{position:absolute;left:0;top:0;background:var(--em);color:#fff;padding:3px 7px;white-space:nowrap}
+/* ticker */
+.ticker{background:var(--ink);color:var(--paper);overflow:hidden;white-space:nowrap}
+.ticker-in{display:inline-flex;animation:tk 42s linear infinite;padding:15px 0}
+.ticker span{padding:0 22px;font:500 12.5px "JetBrains Mono",monospace;letter-spacing:.06em}
+.ticker b{color:#5fe0a8;font-weight:500}.ticker i{color:var(--yel);font-style:normal}
+@keyframes tk{to{transform:translateX(-50%)}}
+/* odometer stats */
+.odos{grid-template-columns:repeat(4,1fr)}
+.odos>div{padding:30px 28px}
+.odo{display:flex;font-size:clamp(50px,5.3vw,76px);font-weight:500;letter-spacing:-.05em;line-height:1;height:1em;overflow:hidden;margin-top:14px}
+.odo span{display:block;height:1em;line-height:1}
+.odo .col{margin-right:-.045em;display:flex;flex-direction:column;transition:transform 1.8s cubic-bezier(.2,.8,.1,1)}
+.odo .sfx{color:var(--em);font-size:.42em;align-self:flex-end;height:auto;margin:0 0 .16em .14em;letter-spacing:-.02em}
+.odos small{display:block;margin-top:12px;color:#55534d;font-size:14px}
+/* work 3d */
+.work{grid-template-columns:repeat(3,1fr)}
+.wk{padding:22px}
+.stage3d{height:310px;perspective:1100px;display:grid;place-items:center;position:relative;border:1px solid var(--line);overflow:hidden}
+.scr{position:relative;width:250px;height:170px;background:#fff;border:1.3px solid var(--ink);transform-style:preserve-3d;--rx:0deg;--ry:0deg;animation:flo 5s ease-in-out infinite}
+.scr:before{content:"";position:absolute;inset:-1.3px;background:#e3e0d7;border:1.3px solid var(--ink);transform:translateZ(-12px)}
+.scr.dk{background:var(--ink)}
+.ly{position:absolute;border:1.2px solid var(--ink);animation:lift 5s ease-in-out infinite}
+@keyframes flo{0%,100%{transform:rotateX(calc(55deg + var(--rx))) rotateZ(calc(-40deg + var(--ry))) translateZ(0)}50%{transform:rotateX(calc(55deg + var(--rx))) rotateZ(calc(-40deg + var(--ry))) translateZ(24px)}}
+@keyframes lift{0%,100%{transform:translateZ(2px)}50%{transform:translateZ(var(--z))}}
+.shd{position:absolute;left:50%;top:56%;width:260px;height:100px;margin-left:-130px;border-radius:50%;background:radial-gradient(rgba(21,21,21,.16),transparent 65%);animation:shd 5s ease-in-out infinite}
+@keyframes shd{50%{transform:scale(.82);opacity:.55}}
+.wmeta{display:flex;justify-content:space-between;align-items:baseline;margin-top:16px}
+.wmeta b{font-size:20px;font-weight:500;letter-spacing:-.03em}
+.wnum{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:12px;border-top:1px dashed var(--line)}
+.wnum b{color:var(--em);font-size:24px;font-weight:500;letter-spacing:-.03em}
+/* receipt printer */
+.kind{grid-template-columns:1fr 1.1fr}
+.kind>div{padding:40px 48px}
+.rcp{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border:1px solid var(--line);background:#fff;margin-top:10px;transition:border-color .4s,box-shadow .4s,transform .4s}
+.rcp b{font-size:26px;font-weight:500;letter-spacing:-.04em}
+.rcp.on{border-color:var(--em);box-shadow:inset 4px 0 0 var(--em);transform:translateX(6px)}
+.rcp.on b{color:var(--em)}
+.printer{position:relative;width:390px;margin:0 auto}
+.printer .head{height:62px;background:var(--ink);border-radius:12px 12px 4px 4px;position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:0 18px;color:#9c9a94}
+.printer .head i{width:8px;height:8px;border-radius:50%;background:#5fe0a8;animation:blink 1s infinite}
+.printer .slot{height:9px;background:#000;margin:0 14px;position:relative;z-index:2;border-radius:0 0 4px 4px}
+.paper{margin:0 30px;background:#fff;border:1px solid var(--line);border-top:0;height:0;overflow:hidden;position:relative;font:11.5px/1.75 "JetBrains Mono",monospace;color:var(--ink);box-shadow:0 22px 30px -20px rgba(0,0,0,.3)}
+.paper .pin{padding:18px 22px 34px}
+.paper.go{animation:print 3.2s steps(24) forwards}
+@keyframes print{to{height:var(--h)}}
+.paper .q{font:500 19px/1.3 "Inter Tight",sans-serif;letter-spacing:-.02em;margin:12px 0}
+.paper hr{border:0;border-top:1px dashed #c9c5b9;margin:9px 0}
+.paper .row{display:flex;justify-content:space-between}
+.paper:after{content:"";position:absolute;left:0;right:0;bottom:0;height:10px;background:linear-gradient(-45deg,var(--cell) 5px,transparent 0) 0 0/10px 10px,linear-gradient(45deg,var(--cell) 5px,transparent 0) 0 0/10px 10px}
+.stamp{position:absolute;right:18px;bottom:44px;border:2.5px solid var(--em);color:var(--em);padding:5px 11px;font:600 15px "JetBrains Mono",monospace;transform:rotate(-12deg) scale(2.2);opacity:0}
+.paper.done .stamp{animation:stamp .45s cubic-bezier(.3,1.6,.5,1) forwards}
+@keyframes stamp{to{opacity:.92;transform:rotate(-12deg) scale(1)}}
+/* still mode: every animation parked on its best frame, for screenshots */
+.still .rv{opacity:1!important;transform:none!important;transition:none!important}
+.still .hl{background-size:100% 100%!important;transition:none!important}
+.still .scan{display:none}
+.still .ticker-in,.still .caret,.still .avail i,.still .day .t.pick,.still .printer .head i{animation:none!important}
+.still .scr{animation:none!important;transform:rotateX(55deg) rotateZ(-40deg) translateZ(12px)!important}
+.still .ly{animation:none!important;transform:translateZ(var(--z))!important}
+.still .shd{animation:none!important}
+.still .paper{height:auto!important;animation:none!important}
+.still .stamp{opacity:.92;transform:rotate(-12deg)}
+.still .odo .col,.still .ch span,.still .sw,.still .sw:after,.still .hd *,.still .sp *,.still .sp .track i,.still .rcp{transition:none!important}
+/* polish */
+html{scroll-behavior:smooth}
+[id]{scroll-margin-top:72px}
+:focus-visible{outline:2px solid var(--em);outline-offset:3px}
+::selection{background:var(--yel);color:var(--ink)}
+.menu{display:none;place-items:center;gap:5px;width:64px;height:100%;border:0;border-left:1px solid var(--line);background:none;cursor:pointer}
+.menu i{display:block;width:20px;height:1.5px;background:var(--ink);transition:transform .3s}
+nav.open .menu i:first-child{transform:translateY(3.3px) rotate(45deg)}
+nav.open .menu i:last-child{transform:translateY(-3.3px) rotate(-45deg)}
+.contact a{border:1px solid var(--line);padding:11px;text-align:center;font-size:13px;background:#fff;color:var(--ink);text-decoration:none;transition:border-color .25s,background .25s}
+.contact a:hover{border-color:var(--em);background:var(--em2)}
+.day .t:not(.x){cursor:pointer;transition:border-color .2s,background .2s}
+.day .t:not(.x):not(.pick):hover{border-color:var(--em);background:var(--em2)}
+.ticker:hover .ticker-in{animation-play-state:paused}
+.prob,.wk,.plan{transition:background .3s}
+.prob:hover,.wk:hover{background:#fff}
+.fixrow{cursor:pointer}
+@media (max-width:1180px){nav .avail{display:none}}
+@media (max-width:900px){
+  .page{margin:0;border-left:0;border-right:0}
+  nav{grid-template-columns:1fr auto auto}
+  nav .links{display:none}
+  nav.open .links{display:flex;flex-direction:column;position:absolute;left:0;right:0;top:64px;height:auto;background:var(--cell);border-bottom:1px solid var(--line);box-shadow:0 20px 30px -20px rgba(0,0,0,.2)}
+  nav.open .links a{border-right:0;border-top:1px solid var(--line);padding:16px 20px}
+  .menu{display:grid}
+  nav .btn{padding:0 18px}
+  .logo{border-right:0}
+  .hero{grid-template-columns:1fr}
+  .hero-l{padding:40px 20px;border-right:0;border-bottom:1px solid var(--line)}
+  .hero-l .ctas{flex-wrap:wrap}
+  .hero-r{min-height:440px}
+  .status{left:12px;bottom:12px;min-width:200px}
+  .strip,.odos{grid-template-columns:1fr 1fr}
+  .strip>div,.odos>div{border-bottom:1px solid var(--line)}
+  .strip>div:nth-child(2n),.odos>div:nth-child(2n){border-right:0}
+  .probs,.bento,.proc,.work,.plans,.faqw,.book,.kind,.final{grid-template-columns:1fr}
+  .probs>*,.bento>*,.proc>*,.work>*,.plans>*,.faqw>*,.book>*,.kind>*,.final>*{border-right:0!important;border-bottom:1px solid var(--line)}
+  .bento .tall{grid-row:auto}
+  .sh{grid-template-columns:1fr;padding:56px 20px 28px;gap:14px}
+  .sh p{justify-self:start}
+  .faqw>div,.book>div,.final .l,.kind>div,.plans>div{padding:28px 20px}
+  .final>div:last-child{min-height:340px}
+  .week{grid-template-columns:repeat(5,minmax(92px,1fr));overflow-x:auto;padding-bottom:4px}
+  .printer{width:100%;max-width:390px}
+  .mani{height:360px}
+  .mani .txt{width:calc(100% - 40px);padding:20px}
+  .mani .txt p{font-size:28px}
+  .fbar{flex-wrap:wrap;height:auto;padding:16px 20px;gap:10px}
+  .fbar .links{flex-wrap:wrap;border-left:0!important}
+  .fbar .links a{padding:6px 10px 6px 0;border-right:0}
+}
+@media (max-width:480px){.strip,.odos{grid-template-columns:1fr}.strip>div,.odos>div{border-right:0!important}.status{display:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="page">
+
+<nav>
+  <div class="logo"><svg width="22" height="22" viewBox="0 0 22 22"><path d="M2 20 L8 6 L14 14 L20 2" fill="none" stroke="#151515" stroke-width="2.2"/><circle cx="20" cy="2" r="2" fill="#0f9d6b"/></svg>plotline</div>
+  <div class="links"><a href="#problems">Diagnosis</a><a href="#work">Work</a><a href="#benefits">Benefits</a><a href="#process">Process</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a></div>
+  <div class="avail"><i></i>Taking 2 projects in November</div>
+  <a class="btn em" href="#book">Book a call</a>
+  <button class="menu" aria-label="Open menu" aria-expanded="false"><i></i><i></i></button>
+</nav>
+
+<section class="hero">
+  <div class="hero-l">
+    <span class="chip mono rv"><b></b>Design studio for startups</span>
+    <h1 class="rv">Design that <span class="hl">closes the deal</span> before you <span class="em">do.</span></h1>
+    <p class="rv">Plotline plans, designs and ships conversion-ready websites for startups in 14 days, so your first impression does the selling while you build.</p>
+    <div class="ctas rv"><a class="btn em" href="#book">Get a free site diagnosis →</a><a class="btn line" href="#process">How we work <span class="k">2 MIN</span></a></div>
+    <div class="proof rv"><div class="faces"><i></i><i></i><i></i><i></i></div><span><b style="color:var(--ink)">40+ founders</b> launched with us<br>across SaaS, AI and fintech</span></div>
+  </div>
+  <div class="hero-r grid-bg">
+    <svg id="plot" viewBox="0 0 740 600"></svg>
+    <div class="xh" id="xh"><i class="h"></i><i class="v"></i><span class="mono" id="xhl"></span></div>
+    <div class="dim mono" style="left:40px;right:40px;top:22px"><span>Landing / desktop · 1440</span></div>
+    <div class="status mono">
+      <div style="color:var(--em)">● Plotting your site</div>
+      <div class="r"><span style="color:var(--mute)">Layer</span><span id="st-l">Hero</span></div>
+      <div class="r"><span style="color:var(--mute)">Progress</span><span id="st-p">0%</span></div>
+      <div class="bar"><i id="st-b"></i></div>
+    </div>
+  </div>
+</section>
+
+<div class="cells strip">
+  <div class="rv"><svg width="40" height="40" viewBox="0 0 40 40"><rect x="4" y="8" width="32" height="26" fill="none" stroke="#151515" stroke-width="1.5"/><path d="M4 15h32" stroke="#151515" stroke-width="1.5"/><rect x="9" y="20" width="12" height="8" fill="#0f9d6b"><animate attributeName="width" values="4;22;4" dur="3s" repeatCount="indefinite"/></rect></svg><div><b>Design + build</b><span>Figma to live, one team</span></div></div>
+  <div class="rv"><svg width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="21" r="14" fill="none" stroke="#151515" stroke-width="1.5"/><path d="M20 21 L20 11" stroke="#0f9d6b" stroke-width="2.2"><animateTransform attributeName="transform" type="rotate" from="0 20 21" to="360 20 21" dur="4s" repeatCount="indefinite"/></path></svg><div><b>14-day delivery</b><span>Fixed date, in writing</span></div></div>
+  <div class="rv"><svg width="40" height="40" viewBox="0 0 40 40"><path d="M6 32 L16 20 L23 26 L34 10" fill="none" stroke="#0f9d6b" stroke-width="2" stroke-dasharray="44"><animate attributeName="stroke-dashoffset" values="44;0;0;44" dur="3.4s" repeatCount="indefinite"/></path><path d="M6 6v28h28" fill="none" stroke="#151515" stroke-width="1.5"/></svg><div><b>Conversion-first</b><span>Copy + UX before pixels</span></div></div>
+  <div class="rv"><svg width="40" height="40" viewBox="0 0 40 40"><rect x="6" y="6" width="28" height="28" fill="none" stroke="#151515" stroke-width="1.5"/><path d="M14 20h12M20 14v12" stroke="#0f9d6b" stroke-width="2"><animateTransform attributeName="transform" type="rotate" values="0 20 20;90 20 20;90 20 20" dur="2.4s" repeatCount="indefinite"/></path></svg><div><b>Yours to edit</b><span>No developer needed</span></div></div>
+</div>
+
+<div class="ticker"><div class="ticker-in"><span>FOLD — DEMO BOOKINGS <b>+2.4×</b></span><span><i>✦</i></span><span>BREWLINE — ONLINE ORDERS <b>+61%</b></span><span><i>✦</i></span><span>ATLAS AI — SIGN-UPS <b>+38%</b></span><span><i>✦</i></span><span>STRETCH — CLASS BOOKINGS <b>+2.1×</b></span><span><i>✦</i></span><span>LEDGERLY — BOUNCE RATE <b>−44%</b></span><span><i>✦</i></span><span>FOLD — DEMO BOOKINGS <b>+2.4×</b></span><span><i>✦</i></span><span>BREWLINE — ONLINE ORDERS <b>+61%</b></span><span><i>✦</i></span><span>ATLAS AI — SIGN-UPS <b>+38%</b></span><span><i>✦</i></span><span>STRETCH — CLASS BOOKINGS <b>+2.1×</b></span><span><i>✦</i></span><span>LEDGERLY — BOUNCE RATE <b>−44%</b></span><span><i>✦</i></span></div></div>
+
+<div class="sh" id="problems">
+  <div class="rv"><span class="idx mono">01 / Diagnosis</span><h2>Your website is quietly<br><span class="em">losing you deals.</span></h2></div>
+  <p class="rv">We audit dozens of startup sites every month. The same three problems show up again and again. Here's what they look like, and what fixed looks like.</p>
+</div>
+<div class="cells probs">
+  <div class="prob rv" data-fix>
+    <div class="top mono"><span>Symptom 01</span><span class="sev"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div>
+    <div class="vis grid-bg"><div class="scan"></div><div class="ch"><span>Sign up</span><span>Learn more</span><span>Book demo</span><span class="keep">Start free trial →</span><span>Contact</span><span>Watch video</span><span>Pricing</span></div></div>
+    <h4>Seven buttons, zero decisions</h4><p>When every action is "primary", visitors pick none. One clear next step converts.</p>
+    <div class="fixrow mono"><span>Show the fix</span><span class="sw"></span></div>
+  </div>
+  <div class="prob rv" data-fix>
+    <div class="top mono"><span>Symptom 02</span><span class="sev"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></div>
+    <div class="vis grid-bg"><div class="scan" style="animation-delay:-1.2s"></div><div class="hd"><div class="w">Next-generation AI-powered synergy platform for modern teams</div><div class="w2">Close your month-end books in <span class="hl">2 hours,</span> not 2 weeks.</div><small class="mono">5-second test · 1 of 5 understood</small></div></div>
+    <h4>A headline nobody understands</h4><p>If a stranger can't say what you do in 5 seconds, they leave. We write for clarity first.</p>
+    <div class="fixrow mono"><span>Show the fix</span><span class="sw"></span></div>
+  </div>
+  <div class="prob rv" data-fix>
+    <div class="top mono"><span>Symptom 03</span><span class="sev"><i class="on"></i><i class="on"></i><i></i><i></i></span></div>
+    <div class="vis grid-bg"><div class="scan" style="animation-delay:-2.2s"></div><div class="sp"><div class="mono" style="color:var(--mute)">Time to first paint</div><div class="n" data-a="6.2s" data-b="0.9s">6.2s</div><div class="track"><i></i></div><div class="lab mono"><span>0s</span><span>3s</span><span>6s</span></div></div></div>
+    <h4>A page that loads like it's 2012</h4><p>Every extra second drops conversions. We ship lean pages that feel instant.</p>
+    <div class="fixrow mono"><span>Show the fix</span><span class="sw"></span></div>
+  </div>
+</div>
+
+<div class="mani">
+  <canvas id="wave"></canvas>
+  <div class="txt rv"><span class="mono" style="color:var(--mute)">The plotline rule</span><p style="margin-top:10px"><span>Pretty gets a look.</span><br>Clear gets the deal.<i class="caret"></i></p></div>
+</div>
+
+<div class="cells odos">
+  <div class="rv"><span class="mono" style="color:var(--mute)">Avg. delivery</span><div class="odo" data-v="14" data-s=" days"></div><small>from kickoff call to live site</small></div>
+  <div class="rv"><span class="mono" style="color:var(--mute)">Launches</span><div class="odo" data-v="48" data-s="+"></div><small>startup sites shipped since 2023</small></div>
+  <div class="rv"><span class="mono" style="color:var(--mute)">Demo lift</span><div class="odo" data-v="2.3" data-s="×"></div><small>average lift in demo bookings</small></div>
+  <div class="rv"><span class="mono" style="color:var(--mute)">Load time</span><div class="odo" data-v="0.9" data-s="s"></div><small>average first paint, mobile</small></div>
+</div>
+
+<div class="sh" id="benefits">
+  <div class="rv"><span class="idx mono">02 / Benefits</span><h2>Built for founders<br>who <span class="em">measure everything.</span></h2></div>
+  <p class="rv">Strategy, copy, design and build under one roof. You get a site that looks premium and is easy to change.</p>
+</div>
+<div class="cells bento">
+  <div class="tall rv"><h4>Edit it yourself, tonight</h4><p>Change copy, swap images, add sections. Your site runs on a visual editor, so you never wait on a developer.</p><svg id="b1" viewBox="0 0 560 470"></svg></div>
+  <div class="rv"><h4>Live in 14 days, on a fixed date</h4><p>Each day has a deliverable. You always know exactly where your project stands.</p><svg id="b2" viewBox="0 0 520 240"></svg></div>
+  <div class="rv"><h4>Every section has a job</h4><p>Built around one metric: more demos, sign-ups or sales. Not just "looks nice".</p><svg id="b3" viewBox="0 0 520 240"></svg></div>
+</div>
+
+<div class="sh" id="process">
+  <div class="rv"><span class="idx mono">03 / Process</span><h2>One call. Fourteen days.<br><span class="em">Zero chaos.</span></h2></div>
+  <p class="rv">You talk to us once, then watch progress land in a shared board. No status meetings, no surprise invoices.</p>
+</div>
+<div class="cells proc">
+  <div class="rv"><div class="n mono"><span>Step 01</span><b>Day 1–2</b></div><svg id="s1" viewBox="0 0 400 270"></svg><h4>Map the route</h4><p>A 45-min call to map your buyer, your edge and the one action the site must drive.</p></div>
+  <div class="rv"><div class="n mono"><span>Step 02</span><b>Day 3–9</b></div><svg id="s2" viewBox="0 0 400 270"></svg><h4>Plot every block</h4><p>Wireframes, copy and full design in Figma. Comment anywhere, anytime.</p></div>
+  <div class="rv"><div class="n mono"><span>Step 03</span><b>Day 10–14</b></div><svg id="s3" viewBox="0 0 400 270"></svg><h4>Launch and hand over</h4><p>Built, tested, launched. You get the keys plus a 10-minute video on editing it.</p></div>
+</div>
+
+<div class="sh" id="work">
+  <div class="rv"><span class="idx mono">04 / Work</span><h2>Recent launches,<br><span class="em">real numbers.</span></h2></div>
+  <p class="rv">A few sites from this year. Hover a card to tilt it and watch every layer lift off the page.</p>
+</div>
+<div class="cells work">
+  <div class="wk rv"><div class="stage3d grid-bg"><div class="shd"></div><div class="scr">
+    <div class="ly" style="left:14px;top:12px;width:56px;height:10px;background:#151515;--z:8px"></div>
+    <div class="ly" style="left:14px;top:34px;width:128px;height:40px;background:#0f9d6b;--z:30px;animation-delay:-.4s"></div>
+    <div class="ly" style="left:14px;top:84px;width:96px;height:8px;background:#fff;--z:14px;animation-delay:-.8s"></div>
+    <div class="ly" style="left:14px;top:110px;width:64px;height:22px;background:#ffd84d;--z:44px;animation-delay:-1.2s"></div>
+    <div class="ly" style="right:14px;top:30px;width:78px;height:120px;background:#d6f0e4;--z:20px;animation-delay:-1.6s"></div>
+  </div></div><div class="wmeta"><b>Fold</b><span class="mono">Fintech · Landing</span></div><div class="wnum"><span class="mono" style="color:var(--mute)">Demo bookings</span><b>+2.4×</b></div></div>
+  <div class="wk rv"><div class="stage3d grid-bg"><div class="shd" style="animation-delay:-1.6s"></div><div class="scr" style="animation-delay:-1.6s">
+    <div class="ly" style="left:14px;top:12px;width:70px;height:10px;background:#151515;--z:8px"></div>
+    <div class="ly" style="right:18px;top:26px;width:96px;height:96px;border-radius:50%;background:#ffd84d;--z:40px;animation-delay:-.5s"></div>
+    <div class="ly" style="left:14px;top:40px;width:110px;height:30px;background:#fff;--z:22px;animation-delay:-1s"></div>
+    <div class="ly" style="left:14px;top:84px;width:80px;height:8px;background:#e3e0d7;--z:12px;animation-delay:-1.4s"></div>
+    <div class="ly" style="left:14px;top:120px;width:70px;height:22px;background:#0f9d6b;--z:34px;animation-delay:-1.8s"></div>
+  </div></div><div class="wmeta"><b>Brewline</b><span class="mono">D2C coffee · Store</span></div><div class="wnum"><span class="mono" style="color:var(--mute)">Online orders</span><b>+61%</b></div></div>
+  <div class="wk rv"><div class="stage3d grid-bg"><div class="shd" style="animation-delay:-3.2s"></div><div class="scr dk" style="animation-delay:-3.2s">
+    <div class="ly" style="left:14px;top:14px;width:120px;height:26px;background:#2b2b2b;border-color:#5a5a5a;--z:16px"></div>
+    <div class="ly" style="right:14px;top:50px;width:140px;height:34px;background:#0f9d6b;--z:36px;animation-delay:-.6s"></div>
+    <div class="ly" style="left:14px;top:94px;width:110px;height:26px;background:#2b2b2b;border-color:#5a5a5a;--z:22px;animation-delay:-1.1s"></div>
+    <div class="ly" style="left:14px;right:14px;bottom:12px;height:18px;background:#fff;--z:28px;animation-delay:-1.6s"></div>
+  </div></div><div class="wmeta"><b>Atlas AI</b><span class="mono">AI copilot · Product site</span></div><div class="wnum"><span class="mono" style="color:var(--mute)">Sign-ups</span><b>+38%</b></div></div>
+</div>
+
+<div class="sh" id="pricing">
+  <div class="rv"><span class="idx mono">05 / Pricing</span><h2>Spec sheets,<br><span class="em">not sales calls.</span></h2></div>
+  <p class="rv">Two fixed packages. Pick the one that matches your stage. Everything is listed, nothing is hidden.</p>
+</div>
+<div class="cells plans">
+  <div class="rv"><span class="mono" style="color:var(--mute)">Not sure?</span><h4 style="font-size:24px;font-weight:500;letter-spacing:-.03em;margin-top:10px">Start with a free diagnosis</h4><p style="color:#55534d;margin-top:10px;font-size:14px">Send us your URL. We'll record a 5-minute video with the three biggest fixes, free.</p><a class="btn line" href="#book" style="margin-top:22px">Get my diagnosis →</a></div>
+  <div class="plan rv"><span class="mono" style="color:var(--mute)">For founders validating an MVP</span><h4>Launch Page</h4><div class="pr">$1,800<small>fixed</small></div>
+    <div class="spec"><div><span>Pages</span><span>1 landing page</span></div><div><span>Copywriting</span><span>Included</span></div><div><span>Motion</span><span>Basic</span></div><div><span>Revisions</span><span>2 rounds</span></div><div><span>Delivery</span><span>7–10 days</span></div><div><span>Support</span><span>30 days</span></div></div>
+    <a class="btn line" href="#book">Start my launch →</a></div>
+  <div class="plan hot rv"><span class="mono" style="color:#9c9a94">For startups ready to scale<span class="tagy">Popular</span></span><h4>Growth Site</h4><div class="pr">$3,900<small>from</small></div>
+    <div class="spec"><div><span>Pages</span><span>Up to 6 pages + CMS</span></div><div><span>Copywriting</span><span>Full site</span></div><div><span>Motion</span><span>Advanced</span></div><div><span>Revisions</span><span>Unlimited</span></div><div><span>Delivery</span><span>14 days</span></div><div><span>Support</span><span>60 days</span></div></div>
+    <a class="btn em" href="#book">Plan my growth site →</a></div>
+</div>
+
+<div class="sh">
+  <div class="rv"><span class="idx mono">06 / Kind words</span><h2>Receipts,<br><span class="em">not promises.</span></h2></div>
+  <p class="rv">Every project ends with a receipt: what we shipped, when, and what moved. Here are a few, printed fresh.</p>
+</div>
+<div class="cells kind">
+  <div class="rv"><span class="mono" style="color:var(--mute)">Recent receipts</span>
+    <div class="rcp on"><span><b style="font-size:17px;color:var(--ink)">Fold</b><br><span class="mono" style="color:var(--mute)">Fintech · Berlin</span></span><b>+2.4×</b></div>
+    <div class="rcp"><span><b style="font-size:17px;color:var(--ink)">Brewline</b><br><span class="mono" style="color:var(--mute)">D2C coffee · Pune</span></span><b>+61%</b></div>
+    <div class="rcp"><span><b style="font-size:17px;color:var(--ink)">Atlas AI</b><br><span class="mono" style="color:var(--mute)">AI tool · London</span></span><b>+38%</b></div>
+  </div>
+  <div class="grid-bg" style="min-height:560px;padding-top:44px"><div class="printer"><div class="head"><span class="mono">Plot-print 01</span><i></i></div><div class="slot"></div><div class="paper" id="paper"><div class="pin"></div><div class="stamp">SHIPPED ✓</div></div></div></div>
+</div>
+
+<div class="sh" id="faq">
+  <div class="rv"><span class="idx mono">07 / FAQ</span><h2>Questions founders<br><span class="em">actually ask.</span></h2></div>
+  <p class="rv">Straight answers. If yours isn't here, message us. We reply within a few hours.</p>
+</div>
+<div class="cells faqw">
+  <div class="rv"><span class="mono" style="color:var(--mute)">Still unsure? Talk to a human</span><div class="contact"><a href="#">WhatsApp</a><a href="#">X / Twitter</a><a href="mailto:hello@theplotline.studio">Email</a><a href="#">LinkedIn</a></div></div>
+  <div class="rv">
+    <div class="qa open"><h5><i>+</i>How can a good website take only 14 days?</h5><p>Tight scope, one decision-maker on your side and a team that has done this 40+ times. We cut meetings, not quality.</p></div>
+    <div class="qa"><h5><i>+</i>We're pre-revenue. Is this worth it?</h5><p>If you're raising or selling, your site is your first pitch. The Launch Page is built exactly for this stage.</p></div>
+    <div class="qa"><h5><i>+</i>Do you write the copy or do we?</h5><p>We do. Copy comes before design, because words are what convince people. You review everything.</p></div>
+    <div class="qa"><h5><i>+</i>What happens after launch?</h5><p>You get full ownership, a walkthrough video and 30–60 days of support. Many clients keep us on for updates.</p></div>
+    <div class="qa"><h5><i>+</i>Can we see real projects first?</h5><p>Yes. On the call we'll walk you through live sites and their before/after numbers.</p></div>
+  </div>
+</div>
+
+<div class="cells book" id="book">
+  <div class="rv"><span class="idx mono">08 / Book</span><h2>Pick a slot.<br><span class="em">We'll do the rest.</span></h2><p style="color:#55534d;margin-top:16px;max-width:380px">A 20-minute call. Bring your site, leave with a plan, even if we never work together.</p></div>
+  <div class="rv"><div class="mono" style="color:var(--mute);display:flex;justify-content:space-between"><span>Week of Nov 2 · IST</span><span>20 min · Google Meet</span></div>
+    <div class="week">
+      <div class="day"><b>Mon</b><span class="mono" style="color:var(--mute)">02</span><span class="t x">11:00</span><span class="t">15:30</span><span class="t">19:00</span></div>
+      <div class="day"><b>Tue</b><span class="mono" style="color:var(--mute)">03</span><span class="t">10:00</span><span class="t x">14:00</span><span class="t x">18:30</span></div>
+      <div class="day"><b>Wed</b><span class="mono" style="color:var(--mute)">04</span><span class="t">12:00</span><span class="t pick">16:00</span><span class="t">20:00</span></div>
+      <div class="day"><b>Thu</b><span class="mono" style="color:var(--mute)">05</span><span class="t x">09:30</span><span class="t">13:00</span><span class="t">17:30</span></div>
+      <div class="day"><b>Fri</b><span class="mono" style="color:var(--mute)">06</span><span class="t">11:30</span><span class="t">15:00</span><span class="t x">19:30</span></div>
+    </div>
+    <a class="btn em" href="#" style="margin-top:16px;width:100%;justify-content:center">Confirm Wed 04 · 16:00 →</a></div>
+</div>
+
+<div class="final">
+  <div class="l rv"><span class="idx mono">09 / Next</span><h2>Ready to stop<br>losing deals to<br><span class="hl">your website?</span></h2><p>Send your URL today. Tomorrow you'll have a video showing exactly what to fix, free.</p><div style="display:flex;gap:10px;margin-top:26px"><a class="btn em" href="#book">Get my free diagnosis →</a><a class="btn line" href="#pricing">See pricing</a></div></div>
+  <div class="grid-bg" style="position:relative"><svg id="stack" viewBox="0 0 620 460"></svg></div>
+</div>
+
+<footer>
+  <div class="fbar"><div class="logo" style="padding:0;border:0"><svg width="22" height="22" viewBox="0 0 22 22"><path d="M2 20 L8 6 L14 14 L20 2" fill="none" stroke="#151515" stroke-width="2.2"/><circle cx="20" cy="2" r="2" fill="#0f9d6b"/></svg>plotline</div>
+    <div class="links" style="border-left:1px solid var(--line)"><a href="#problems">Diagnosis</a><a href="#work">Work</a><a href="#process">Process</a><a href="#pricing">Pricing</a><a href="mailto:hello@theplotline.studio" style="border-right:0">hello@theplotline.studio</a></div></div>
+  <svg id="word" viewBox="0 0 1376 230"></svg>
+  <div class="fbar mono" style="border-top:1px solid var(--line);color:var(--mute);padding-right:24px"><span>© 2026 Plotline Studio</span><span>Bangalore · Remote</span><span>Privacy · Terms</span></div>
+</footer>
+</div>
+
+<script>
+const INK='#151515',EM='#0f9d6b',EM2='#d6f0e4',YEL='#ffd84d',LINE='#e0ddd4';
+// ---------- isometric helpers ----------
+function iso(ox,oy,k){const C=Math.cos(Math.PI/6);return (x,y,z=0)=>[ox+(x-y)*C*k,oy+(x+y)*.5*k-z*k]}
+const pts=a=>a.map(p=>p.map(v=>v.toFixed(1)).join(',')).join(' ');
+function box(P,x,y,z,w,d,h,o={}){const t=o.top||'#fff',r=o.right||'#efece4',l=o.left||'#e3e0d7',sw=o.sw||1.3;
+  const s=`stroke="${INK}" stroke-width="${sw}" stroke-linejoin="round"`;
+  return `<polygon points="${pts([P(x,y+d,z),P(x+w,y+d,z),P(x+w,y+d,z+h),P(x,y+d,z+h)])}" fill="${l}" ${s}/>`+
+         `<polygon points="${pts([P(x+w,y,z),P(x+w,y+d,z),P(x+w,y+d,z+h),P(x+w,y,z+h)])}" fill="${r}" ${s}/>`+
+         `<polygon points="${pts([P(x,y,z+h),P(x+w,y,z+h),P(x+w,y+d,z+h),P(x,y+d,z+h)])}" fill="${t}" ${s}/>`}
+function flat(P,x,y,z,w,d,fill,o={}){return `<polygon points="${pts([P(x,y,z),P(x+w,y,z),P(x+w,y+d,z),P(x,y+d,z)])}" fill="${fill}" stroke="${o.stroke||INK}" stroke-width="${o.sw||1.2}" ${o.dash?'stroke-dasharray="4 4"':''}/>`}
+function seg(P,a,b,z,o={}){const p=P(a[0],a[1],z),q=P(b[0],b[1],z);return `<line x1="${p[0].toFixed(1)}" y1="${p[1].toFixed(1)}" x2="${q[0].toFixed(1)}" y2="${q[1].toFixed(1)}" stroke="${o.c||INK}" stroke-width="${o.w||1.3}" stroke-linecap="round" ${o.dash?'stroke-dasharray="4 5"':''}/>`}
+function ring(P,cx,cy,z,r,o={}){const a=[];for(let i=0;i<=36;i++){const t=i/36*Math.PI*2;a.push(P(cx+Math.cos(t)*r,cy+Math.sin(t)*r,z))}return `<polygon points="${pts(a)}" fill="${o.fill||'none'}" stroke="${o.c||INK}" stroke-width="${o.w||1.3}"/>`}
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const STILL=new URLSearchParams(location.search).has('still')||matchMedia('(prefers-reduced-motion: reduce)').matches;if(STILL)document.documentElement.classList.add('still');
+// best-looking moment of each scene, in registration order (hero, wave, b1, b2, b3, s1, s2, s3, stack, word, crosshair)
+const STILL_T=[9.6,2,4.2,6.4,5.7,4,4.6,3.8,1.5,5.6,11.4];let li=0;
+// each scene only re-renders while its element is on screen
+const scenes=[];const vis=new IntersectionObserver(es=>es.forEach(e=>{const s=scenes.find(x=>x.el===e.target);if(s)s.on=e.isIntersecting}),{rootMargin:'120px'});
+const loop=(el,fn)=>{scenes.push({el,fn,st:STILL_T[li++]??0,on:true,drawn:false});vis.observe(el)};
+function tick(now){const t=now/1000;for(const s of scenes)if(STILL||s.on||!s.drawn){s.fn(STILL?s.st:t);s.drawn=true}if(!STILL)requestAnimationFrame(tick)}
+
+// ---------- hero: pen plotter drawing a landing page ----------
+(function(){
+  const svg=document.getElementById('plot'),P=iso(318,128,1.42);
+  const R=(x1,y1,x2,y2)=>[[x1,y1],[x2,y1],[x2,y2],[x1,y2],[x1,y1]];
+  const circle=(cx,cy,r)=>{const a=[];for(let i=0;i<=28;i++){const t=i/28*Math.PI*2;a.push([cx+Math.cos(t)*r,cy+Math.sin(t)*r])}return a};
+  const strokes=[
+    {p:R(40,34,72,46),n:'Nav'},{p:[[196,40],[214,40]]},{p:[[224,40],[242,40]]},{p:[[252,40],[284,40]],c:EM,w:3},
+    {p:[[40,70],[176,70]],w:5,n:'Headline'},{p:[[40,84],[150,84]],w:5},{p:[[40,98],[164,98]],w:5,c:EM,tag:['H1 · 76 / 0.98',[164,98],[34,-44]]},
+    {p:[[40,116],[150,116]],n:'Subtext'},{p:[[40,124],[128,124]]},
+    {p:R(40,138,98,154),fill:EM,n:'Button',tag:['CTA · #0F9D6B',[40,154],[-56,62]]},
+    {p:R(188,62,284,168),n:'Hero art',tag:['ART · 96×106',[284,62],[26,-58]]},{p:circle(236,104,24),fill:YEL},{p:[[204,148],[268,148]],w:3},
+    {p:R(40,172,96,192),n:'Cards'},{p:R(106,172,162,192)},{p:R(172,176,284,192),fill:EM2}];
+  strokes.forEach(s=>{let L=0;for(let i=1;i<s.p.length;i++)L+=Math.hypot(s.p[i][0]-s.p[i-1][0],s.p[i][1]-s.p[i-1][1]);s.L=L});
+  const total=strokes.reduce((a,s)=>a+s.L,0),DRAW=9,HOLD=2.4,FADE=.8,CYC=DRAW+HOLD+FADE;
+  const stL=document.getElementById('st-l'),stP=document.getElementById('st-p'),stB=document.getElementById('st-b');
+  const z=18;
+  const pathStr=(p)=>p.map((q,i)=>{const s=P(q[0],q[1],z);return(i?'L':'M')+s[0].toFixed(1)+' '+s[1].toFixed(1)}).join('');
+  loop(svg,t=>{
+    const c=t%CYC,prog=Math.min(1,c/DRAW),fade=c>DRAW+HOLD?1-(c-DRAW-HOLD)/FADE:1;
+    let rem=prog*total,pen=[300,110],layer='Done',out='';const tags=[];
+    // base + paper
+    out+=box(P,-14,-24,0,340,262,14,{top:'#fbfaf7'});
+    out+=box(P,14,14,14,292,192,4,{top:'#fff'});
+    // drawing
+    let g='';
+    for(const s of strokes){
+      if(rem<=0)break;
+      if(s.n)layer=s.n;
+      const part=Math.min(1,rem/s.L);rem-=s.L;
+      let acc=0,drawn=[s.p[0]];
+      for(let i=1;i<s.p.length;i++){const a=s.p[i-1],b=s.p[i],l=Math.hypot(b[0]-a[0],b[1]-a[1]);
+        if(acc+l<=part*s.L){drawn.push(b);acc+=l}else{const k=(part*s.L-acc)/l;drawn.push([a[0]+(b[0]-a[0])*k,a[1]+(b[1]-a[1])*k]);break}}
+      pen=drawn[drawn.length-1];if(s.tag&&part>=1)tags.push(s.tag);
+      if(s.fill&&part>=1)g+=`<path d="${pathStr(s.p)}Z" fill="${s.fill}" stroke="${INK}" stroke-width="1.3"/>`;
+      else g+=`<path d="${pathStr(drawn)}" fill="none" stroke="${s.c||INK}" stroke-width="${s.w||1.4}" stroke-linecap="round" stroke-linejoin="round"/>`;
+    }
+    if(prog>=1){layer='Done ✓';pen=[300+Math.sin(t)*2,110]}
+    out+=`<g opacity="${fade.toFixed(2)}">${g}</g>`;
+    // gantry
+    const bx=Math.max(-4,Math.min(306,pen[0]-6)),cy=pen[1];
+    out+=box(P,-14,-24,14,340,10,8,{top:'#fbfaf7'});
+    out+=box(P,bx,-26,14,12,8,46,{});
+    out+=box(P,bx,-26,60,12,262,10,{top:'#fff'});
+    out+=seg(P,[bx+6,cy],[bx+6,cy],z);
+    const pa=P(bx+6,cy,z),pb=P(bx+6,cy,58);
+    out+=`<line x1="${pa[0]}" y1="${pa[1]}" x2="${pb[0]}" y2="${pb[1]}" stroke="${INK}" stroke-width="2.5"/>`;
+    out+=`<circle cx="${pa[0]}" cy="${pa[1]}" r="3.5" fill="${EM}"/>`;
+    out+=box(P,bx-6,cy-9,50,24,18,20,{top:EM,right:'#0c8159',left:'#0a6d4b'});
+    out+=box(P,bx,226,14,12,8,46,{});
+    out+=box(P,-14,228,14,340,10,8,{top:'#fbfaf7'});
+    for(const [label,[x,y],[dx,dy]] of tags){const a=P(x,y,z),bx2=a[0]+dx,by2=a[1]+dy,w=label.length*6.7+16,rx=dx<0?bx2-w:bx2;
+      out+=`<g opacity="${fade.toFixed(2)}"><line x1="${a[0]}" y1="${a[1]}" x2="${bx2}" y2="${by2}" stroke="${EM}" stroke-dasharray="3 3"/><circle cx="${a[0]}" cy="${a[1]}" r="3.5" fill="${EM}"/><rect x="${rx}" y="${by2-12}" width="${w}" height="24" fill="#fff" stroke="${INK}"/><text x="${rx+8}" y="${by2+4}" font-family="JetBrains Mono" font-size="11" fill="${INK}">${label}</text></g>`}
+    svg.innerHTML=out;
+    stL.textContent=layer;const pc=Math.round(prog*100);stP.textContent=pc+'%';stB.style.width=pc+'%';
+  });
+})();
+
+// ---------- problems: cards toggle between symptom and fix ----------
+const probs=[...document.querySelectorAll('[data-fix]')];
+if(STILL)probs.forEach(p=>{p.classList.add('fixed');const n=p.querySelector('.n');if(n)n.textContent=n.dataset.b});
+const flip=p=>{p.classList.toggle('fixed');const on=p.classList.contains('fixed'),n=p.querySelector('.n');if(n)n.textContent=on?n.dataset.b:n.dataset.a;p.querySelector('.fixrow').setAttribute('aria-checked',on)};
+if(!STILL)probs.forEach((p,i)=>{p._t=setTimeout(()=>p._iv=setInterval(()=>flip(p),3600),i*700)});
+probs.forEach(p=>{const r=p.querySelector('.fixrow');r.setAttribute('role','switch');r.tabIndex=0;r.setAttribute('aria-checked',p.classList.contains('fixed'));
+  const act=()=>{clearTimeout(p._t);clearInterval(p._iv);flip(p)};r.onclick=act;r.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();act()}}});
+
+// ---------- manifesto dot wave ----------
+(function(){
+  const cv=document.getElementById('wave'),g=cv.getContext('2d');
+  const size=()=>{cv.width=cv.clientWidth*2;cv.height=cv.clientHeight*2};size();if(!STILL)addEventListener('resize',size);
+  loop(cv,t=>{const W=cv.width,H=cv.height,cols=96,rows=22;g.clearRect(0,0,W,H);
+    for(let i=0;i<cols;i++)for(let j=0;j<rows;j++){
+      const x=(i+.5)/cols*W,base=(j+.5)/rows*H,ph=Math.sin(i*.16-t*1.3)+Math.sin(i*.07+t*.6)*.8;
+      const crest=H*.5+ph*H*.18,d=Math.abs(base-crest);
+      const on=d<H*.09,r=on?3.6:2.2;
+      g.fillStyle=on?(d<H*.03?EM:'rgba(15,157,107,.55)'):'#e4e1d8';
+      g.beginPath();g.arc(x,base,r,0,7);g.fill()}});
+})();
+
+// ---------- bento 1: iso editor, a block gets dragged into place ----------
+(function(){
+  const svg=document.getElementById('b1'),P=iso(280,70,1.15);
+  loop(svg,t=>{const c=(t%6)/6,k=ease(Math.min(1,Math.max(0,(c-.15)/.45))),lift=Math.sin(Math.min(1,Math.max(0,(c-.15)/.45))*Math.PI)*26;
+    let o=box(P,-10,-10,0,250,270,10,{top:'#fbfaf7'});
+    o+=flat(P,10,10,10,210,22,'#fff');o+=ring(P,22,21,10,4,{fill:EM});o+=ring(P,34,21,10,4);o+=ring(P,46,21,10,4);
+    o+=flat(P,10,40,10,60,200,'#fff');
+    for(let i=0;i<6;i++)o+=seg(P,[20,58+i*28],[60,58+i*28],10,{w:2,c:i===2?EM:INK});
+    o+=flat(P,80,40,10,140,200,'#fff');
+    o+=box(P,92,52,10,116,40,6,{top:'#fff'});
+    o+=box(P,92,150,10,116,40,6,{top:'#fff'});
+    o+=flat(P,92,100,10,116,42,'none',{dash:1,stroke:EM});
+    const sx=92+(1-k)*-150,sy=100+(1-k)*120;
+    o+=box(P,sx,sy,10+lift*.6,116,42,8,{top:EM,right:'#0c8159',left:'#0a6d4b'});
+    const cp=P(sx+70,sy+24,26+lift*.6);
+    o+=`<path d="M${cp[0]} ${cp[1]} l15 8 -7 2 -3 7z" fill="#fff" stroke="${INK}" stroke-width="1.5"/>`;
+    o+=`<rect x="${cp[0]+14}" y="${cp[1]+16}" width="62" height="20" fill="${YEL}" stroke="${INK}"/><text x="${cp[0]+20}" y="${cp[1]+30}" font-family="JetBrains Mono" font-size="10">PRICING</text>`;
+    svg.innerHTML=o});
+})();
+
+// ---------- bento 2: 14-day iso calendar fills up ----------
+(function(){
+  const svg=document.getElementById('b2'),P=iso(250,36,1);
+  loop(svg,t=>{const n=Math.floor((t%8)/8*18);let o='';
+    for(let d=0;d<14;d++){const r=Math.floor(d/7),c=d%7,on=d<n;const h=on?(d===13?22:10):4;
+      o+=box(P,c*30,r*34,0,24,26,h,{top:on?(d===13?YEL:EM):'#fff',right:on?'#0c8159':'#efece4',left:on?'#0a6d4b':'#e3e0d7'})}
+    const tp=P(210,0,30);o+=`<text x="${tp[0]+10}" y="${tp[1]}" font-family="JetBrains Mono" font-size="11" fill="${INK}">DAY ${String(Math.min(14,n)).padStart(2,'0')} / 14</text>`;
+    svg.innerHTML=o});
+})();
+
+// ---------- bento 3: funnel bars rise toward the goal ----------
+(function(){
+  const svg=document.getElementById('b3'),P=iso(150,40,1);
+  const H=[18,30,44,62,86];
+  loop(svg,t=>{const c=(t%6)/6;let o='';
+    o+=flat(P,-10,-10,0,190,70,'#fbfaf7');
+    H.forEach((h,i)=>{const k=ease(Math.min(1,Math.max(0,c*1.6-i*.12)));o+=box(P,i*34,10,0,24,30,h*k+2,{top:i===4?EM:'#fff',right:i===4?'#0c8159':'#efece4',left:i===4?'#0a6d4b':'#e3e0d7'})});
+    const p=P(160,10,100);o+=`<text x="${p[0]+12}" y="${p[1]}" font-family="JetBrains Mono" font-size="11" fill="${EM}">+2.3× DEMOS</text>`;
+    svg.innerHTML=o});
+})();
+
+// ---------- process scenes ----------
+(function(){ // 01 map: route drawn between pins
+  const svg=document.getElementById('s1'),P=iso(200,40,1.1);
+  const route=[[20,140],[60,100],[110,120],[140,60],[170,20]];
+  loop(svg,t=>{const c=(t%5)/5,k=Math.min(1,c*1.4);let o=box(P,0,0,0,190,170,10,{top:'#fbfaf7'});
+    for(let i=1;i<6;i++){o+=seg(P,[i*32,4],[i*32,166],10,{c:LINE});o+=seg(P,[4,i*28],[186,i*28],10,{c:LINE})}
+    let L=0;const segs=[];for(let i=1;i<route.length;i++){const l=Math.hypot(route[i][0]-route[i-1][0],route[i][1]-route[i-1][1]);segs.push(l);L+=l}
+    let rem=k*L,d=`M${P(...route[0],10).join(' ')}`;for(let i=1;i<route.length&&rem>0;i++){const f=Math.min(1,rem/segs[i-1]);rem-=segs[i-1];
+      const a=route[i-1],b=route[i];const q=P(a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,10);d+=`L${q.join(' ')}`}
+    o+=`<path d="${d}" fill="none" stroke="${EM}" stroke-width="2.5" stroke-dasharray="6 5"/>`;
+    [[20,140,0],[110,120,.4],[170,20,.9]].forEach(([x,y,at],i)=>{const up=k>at?1:0,b=Math.sin(t*3+i)*2;
+      o+=box(P,x-5,y-5,10,10,10,(i===2?34:20)*up+b*up+2,{top:i===2?YEL:(up?EM:'#fff')})});
+    svg.innerHTML=o});
+})();
+(function(){ // 02 plot blocks: layout blocks rise into place
+  const svg=document.getElementById('s2'),P=iso(200,46,1.05);
+  const B=[[10,10,170,26,EM2],[10,46,100,60,'#fff'],[120,46,60,60,YEL],[10,116,52,40,'#fff'],[70,116,52,40,'#fff'],[130,116,50,40,EM]];
+  loop(svg,t=>{const c=(t%5)/5;let o=box(P,0,0,0,190,166,8,{top:'#fbfaf7'});
+    B.forEach((b,i)=>{const k=ease(Math.min(1,Math.max(0,c*2.2-i*.18)));o+=flat(P,b[0],b[1],8,b[2],b[3],'none',{dash:1,stroke:'#c9c5b9'});
+      if(k>0)o+=box(P,b[0],b[1],8+(1-k)*60,b[2],b[3],6,{top:b[4]})});
+    svg.innerHTML=o});
+})();
+(function(){ // 03 launch: site slab lifts off a pad with a trail
+  const svg=document.getElementById('s3'),P=iso(200,92,1.05);
+  loop(svg,t=>{const c=(t%4.5)/4.5,up=c<.25?0:ease(Math.min(1,(c-.25)/.55))*70;let o=box(P,0,0,0,170,130,10,{top:'#fbfaf7'});
+    o+=ring(P,85,65,10,46,{c:'#c9c5b9'});o+=ring(P,85,65,10,30,{c:EM,w:2});
+    for(let i=0;i<5;i++){const h=up*(i+1)/5;if(up>4){const p=P(85,65,10+h);o+=`<circle cx="${p[0]}" cy="${p[1]}" r="${2+i*.6}" fill="${EM}" opacity="${.15+i*.12}"/>`}}
+    o+=box(P,45,35,16+up,80,60,10,{top:'#fff'});
+    o+=flat(P,52,42,26+up,66,10,EM2,{sw:1});o+=flat(P,52,58,26+up,40,6,'#fff',{sw:1});o+=flat(P,52,70,26+up,26,10,EM,{sw:1});
+    const tp=P(140,0,20);o+=`<text x="${tp[0]}" y="${tp[1]}" font-family="JetBrains Mono" font-size="11" fill="${up>60?EM:'#8a877f'}">${up>60?'● LIVE':'○ STAGING'}</text>`;
+    svg.innerHTML=o});
+})();
+
+// ---------- final: page layers separate and snap back ----------
+(function(){
+  const svg=document.getElementById('stack'),P=iso(300,215,1.1);
+  const labels=['Strategy','Copy','Design','Build'];
+  loop(svg,t=>{const c=(t%6)/6,s=Math.sin(c*Math.PI*2)*.5+.5,gap=14+s*44;let o='';
+    for(let i=0;i<4;i++){const z=i*gap;o+=box(P,0,0,z,170,130,8,{top:i===3?'#fff':(i===2?EM2:'#fbfaf7')});
+      if(i===3){o+=flat(P,14,12,z+8,90,12,EM,{sw:1});o+=flat(P,14,32,z+8,60,8,'#fff',{sw:1});o+=flat(P,14,50,z+8,40,14,YEL,{sw:1});o+=flat(P,112,12,z+8,46,100,EM2,{sw:1})}
+      const lp=P(170,0,z+4);o+=`<line x1="${lp[0]}" y1="${lp[1]}" x2="${lp[0]+60}" y2="${lp[1]}" stroke="#c9c5b9"/><text x="${lp[0]+66}" y="${lp[1]+4}" font-family="JetBrains Mono" font-size="11" fill="${i===3?EM:'#8a877f'}">${labels[i].toUpperCase()}</text>`}
+    svg.innerHTML=o});
+})();
+
+// ---------- footer wordmark plotted with a pen ----------
+(function(){
+  const svg=document.getElementById('word');
+  svg.innerHTML=`<text id="wt" x="688" y="200" text-anchor="middle" font-family="Inter Tight" font-weight="600" font-size="250" letter-spacing="-14" fill="none" stroke="${INK}" stroke-width="1.6">plotline</text>`;
+  const wt=document.getElementById('wt');wt.style.strokeDasharray=900;
+  loop(svg,t=>{const c=(t%7)/7;wt.style.strokeDashoffset=(900*(1-Math.min(1,c*1.5))).toFixed(0);wt.setAttribute('fill',c>.7?'rgba(15,157,107,'+Math.min(.12,(c-.7)*.6)+')':'none')});
+})();
+
+// ---------- hero crosshair: follows the mouse, drifts when idle ----------
+(function(){
+  const host=document.querySelector('.hero-r'),xh=document.getElementById('xh'),h=xh.querySelector('.h'),v=xh.querySelector('.v'),lb=document.getElementById('xhl');let mx=null,my=null;
+  host.addEventListener('mousemove',e=>{const r=host.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top});
+  host.addEventListener('mouseleave',()=>mx=null);
+  loop(host,t=>{const W=host.clientWidth,H=host.clientHeight;let x,y;
+    if(mx!==null&&!STILL){x=mx;y=my}else{x=W*(.72+Math.sin(t*.5)*.18);y=H*(.3+Math.sin(t*.37+1)*.14)}
+    h.style.transform=`translateY(${y}px)`;v.style.transform=`translateX(${x}px)`;
+    lb.style.transform=`translate(${Math.min(x+10,W-130)}px,${y+10}px)`;lb.textContent=`X ${Math.round(x*2)} · Y ${Math.round(y*2)}`});
+})();
+
+// ---------- odometer stats ----------
+document.querySelectorAll('.odo').forEach(el=>{const v=el.dataset.v,digits=v.replace(/\D/g,'');
+  el.innerHTML=[...v].map(ch=>/\d/.test(ch)?`<span class="col">${[...'0123456789'].map(d=>`<span>${d}</span>`).join('')}</span>`:`<span>${ch}</span>`).join('')+`<span class="sfx">${el.dataset.s||''}</span>`;
+  const go=()=>[...el.querySelectorAll('.col')].forEach((c,i)=>{const m=document.createElement('span');m.style.cssText='position:absolute;visibility:hidden';m.textContent=digits[i];el.appendChild(m);c.style.width=m.getBoundingClientRect().width+'px';m.remove();c.style.transitionDelay=(i*.15)+'s';c.style.transform=`translateY(-${digits[i]}em)`});
+  if(STILL)go();else{const o=new IntersectionObserver(es=>{if(es[0].isIntersecting){go();o.disconnect()}},{threshold:.5});o.observe(el)}});
+
+// ---------- 3d work cards tilt toward the mouse ----------
+document.querySelectorAll('.wk').forEach(w=>{const sc=w.querySelector('.scr');
+  w.addEventListener('mousemove',e=>{const r=w.getBoundingClientRect();sc.style.setProperty('--rx',(((e.clientY-r.top)/r.height-.5)*-16).toFixed(1)+'deg');sc.style.setProperty('--ry',(((e.clientX-r.left)/r.width-.5)*18).toFixed(1)+'deg')});
+  w.addEventListener('mouseleave',()=>{sc.style.setProperty('--rx','0deg');sc.style.setProperty('--ry','0deg')})});
+
+// ---------- receipt printer ----------
+(function(){
+  const Q=[{p:'FOLD / LANDING',d:'DAY 13 OF 14',m:['DEMO BOOKINGS','+2.4×'],q:'“We finally have a page that sounds like us. Demo calls doubled in month one.”',w:'FOUNDER · FINTECH · BERLIN'},
+           {p:'BREWLINE / STORE',d:'DAY 12 OF 14',m:['ONLINE ORDERS','+61%'],q:'“They rewrote our story in a day. The new site paid for itself in three weeks.”',w:'CO-FOUNDER · D2C COFFEE · PUNE'},
+           {p:'ATLAS AI / PRODUCT',d:'DAY 14 OF 14',m:['SIGN-UPS','+38%'],q:'“Sharper questions than our investors. The design was the easy part after that.”',w:'CEO · AI TOOL · LONDON'}];
+  const paper=document.getElementById('paper'),pin=paper.querySelector('.pin'),rows=[...document.querySelectorAll('.rcp')];let qi=0;
+  function printQ(){const i=qi%3,x=Q[i];
+    pin.innerHTML=`<div class="row"><b>PLOTLINE STUDIO</b><span>NO. 00${41+i}</span></div><div style="color:#8a877f">BANGALORE · REMOTE</div><hr>
+      <div class="row"><span>PROJECT</span><span>${x.p}</span></div><div class="row"><span>DELIVERED</span><span>${x.d}</span></div>
+      <div class="row"><span>${x.m[0]}</span><b style="color:#0f9d6b">${x.m[1]}</b></div><hr><div class="q">${x.q}</div><div>— ${x.w}</div><hr>
+      <div class="row"><span>THANK YOU FOR SHIPPING</span><span>✦</span></div>`;
+    rows.forEach((r,k)=>r.classList.toggle('on',k===i));
+    paper.classList.remove('go','done');paper.style.setProperty('--h',pin.scrollHeight+'px');
+    if(STILL){paper.classList.add('done');return}
+    void paper.offsetWidth;paper.classList.add('go');setTimeout(()=>paper.classList.add('done'),3300);qi++}
+  printQ();if(!STILL)setInterval(printQ,9000);
+})();
+
+// ---------- magnetic buttons ----------
+if(!STILL)document.querySelectorAll('.btn.em').forEach(b=>{if(b.closest('nav'))return;
+  b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();b.style.transform=`translate(${((e.clientX-r.left-r.width/2)*.15).toFixed(1)}px,${((e.clientY-r.top-r.height/2)*.3).toFixed(1)}px)`});
+  b.addEventListener('mouseleave',()=>b.style.transform='')});
+
+// ---------- still mode: park svg icon animations on a good frame ----------
+if(STILL)document.querySelectorAll('svg').forEach(sv=>{if(sv.pauseAnimations){sv.pauseAnimations();sv.setCurrentTime(1.5)}});
+
+// ---------- reveal + faq ----------
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>STILL?el.classList.add('in'):io.observe(el));
+// faq: keyboard + screen-reader friendly
+document.querySelectorAll('.qa h5').forEach(h=>{const q=h.parentElement;h.setAttribute('role','button');h.tabIndex=0;h.setAttribute('aria-expanded',q.classList.contains('open'));
+  const tg=()=>{q.classList.toggle('open');h.setAttribute('aria-expanded',q.classList.contains('open'))};h.onclick=tg;h.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tg()}}});
+// booking: pick any open slot, the confirm button follows
+const confirmBtn=document.querySelector('.book .btn.em');
+document.querySelectorAll('.day .t:not(.x)').forEach(t=>{t.setAttribute('role','button');t.tabIndex=0;
+  const pick=()=>{document.querySelectorAll('.day .t.pick').forEach(x=>x.classList.remove('pick'));t.classList.add('pick');const d=t.parentElement;
+    confirmBtn.textContent=`Confirm ${d.querySelector('b').textContent} ${d.querySelector('.mono').textContent} · ${t.textContent} →`};
+  t.onclick=pick;t.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick()}}});
+// mobile menu
+const nav=document.querySelector('nav'),menu=nav.querySelector('.menu');
+menu.onclick=()=>{nav.classList.toggle('open');menu.setAttribute('aria-expanded',nav.classList.contains('open'))};
+nav.querySelectorAll('.links a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');menu.setAttribute('aria-expanded','false')}));
+// decorative drawings are hidden from screen readers
+document.querySelectorAll('#plot,#b1,#b2,#b3,#s1,#s2,#s3,#stack,#wave,.strip svg,.xh,.stage3d').forEach(e=>e.setAttribute('aria-hidden','true'));
+document.getElementById('word').setAttribute('role','img');document.getElementById('word').setAttribute('aria-label','plotline');
+document.fonts.ready.then(()=>requestAnimationFrame(tick));
+</script>
+</body>
+</html>

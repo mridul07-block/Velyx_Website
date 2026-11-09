@@ -1,0 +1,346 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Tidewatch</title>
+<style>
+@font-face{font-family:Mono;src:url(assets/IBMPlexMono-Medium.ttf)}
+@font-face{font-family:Inter;src:url(assets/Inter.ttf);font-weight:100 900}
+:root{--bg:#0d0f0e;--panel:#141716;--line:#2a2e2c;--ink:#e8ece9;--mute:#7d847f;--acc:#c6ff3d;--acc2:#1f2a12}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1440px;background:var(--bg);color:var(--ink);font:13px/1.5 Mono,monospace;letter-spacing:.02em;text-transform:uppercase}
+.sans{font-family:Inter,sans-serif;text-transform:none;letter-spacing:-.02em}
+.mute{color:var(--mute)} .acc{color:var(--acc)}
+.panel{background:var(--panel);border:1px solid var(--line)}
+.hatch{height:22px;background:repeating-linear-gradient(135deg,transparent 0 5px,#1f2321 5px 6px)}
+.plus{position:absolute;color:#4a514c;font-size:18px;line-height:1}
+.btn{display:inline-flex;align-items:center;gap:10px;height:40px;padding:0 18px;border:1px solid var(--ink);font-size:12px}
+.btn.acc{background:var(--acc);border-color:var(--acc);color:#0d0f0e}
+
+/* nav */
+nav{height:56px;display:flex;align-items:center;gap:28px;padding:0 24px;border-bottom:1px solid var(--line);background:#111312}
+.logo{display:flex;align-items:center;gap:10px;font-size:14px}
+.logo i{width:16px;height:16px;background:var(--acc);clip-path:polygon(0 100%,50% 0,100% 100%,72% 100%,50% 52%,28% 100%)}
+.crumb{text-transform:none;color:var(--mute)} .crumb b{color:var(--ink);font-weight:inherit}
+nav .sp{flex:1}
+nav .links{display:flex;gap:26px}
+nav .meta{display:flex;gap:18px;text-transform:none;font-size:12px}
+
+/* hero */
+.hero{display:grid;grid-template-columns:400px 1fr;height:820px}
+.side{border-right:1px solid var(--line);background:var(--panel);display:flex;flex-direction:column}
+.side .head{padding:32px 28px 0}
+.tag{display:inline-flex;gap:8px;align-items:center;font-size:11px;padding:5px 9px;border:1px solid var(--line);background:#191c1b}
+.tag i{width:7px;height:7px;background:var(--acc);border-radius:50%}
+h1{font:300 54px/1.02 Inter,sans-serif;letter-spacing:-.045em;text-transform:none;margin:22px 0 18px}
+h1 em{font-style:normal;color:var(--acc)}
+.side p{text-transform:none;color:#a3aaa5;font-size:13px;line-height:1.6}
+.ctas{display:flex;gap:10px;margin-top:26px}
+.layers{padding:0 28px}
+.layers h4{font-weight:inherit;font-size:14px;margin:18px 0 14px;display:flex;justify-content:space-between}
+.chk{display:flex;align-items:center;gap:14px;padding:7px 0;font-size:13px}
+.chk i{width:18px;height:18px;border:1.5px solid #56692a;display:grid;place-items:center}
+.chk.on i{background:var(--acc);border-color:var(--acc)}
+.chk.on i:after{content:"";width:8px;height:4px;border:solid #0d0f0e;border-width:0 0 2px 2px;transform:rotate(-45deg) translate(1px,-1px)}
+.stage{position:relative;overflow:hidden;background:linear-gradient(#121514,#0a0c0b)}
+#terrain{position:absolute;inset:0;width:100%;height:100%}
+.hud{position:absolute;font-size:15px;color:#c9cfcb}
+.vscale{left:36px;top:300px;display:grid;gap:62px}
+.vscale span:after{content:"";display:inline-block;width:16px;height:1.5px;background:#c9cfcb;vertical-align:middle;margin-left:12px}
+.compass{left:50%;bottom:34px;transform:translateX(-50%);text-align:center}
+.ticks{display:flex;gap:28px;justify-content:center;align-items:flex-end;height:20px}
+.ticks b{width:2px;height:10px;background:#c9cfcb} .ticks b.l{height:20px}
+.compass .nums{display:flex;gap:40px;margin:10px 0 6px}
+.target{position:absolute;width:150px;height:110px;border:0}
+.target:before,.target:after{content:"";position:absolute;inset:0;border:2px solid var(--acc);clip-path:polygon(0 0,22% 0,22% 3px,3px 3px,3px 22%,0 22%,0 0,78% 0,100% 0,100% 22%,calc(100% - 3px) 22%,calc(100% - 3px) 3px,78% 3px,78% 0,100% 78%,100% 100%,78% 100%,78% calc(100% - 3px),calc(100% - 3px) calc(100% - 3px),calc(100% - 3px) 78%,100% 78%,22% 100%,0 100%,0 78%,3px 78%,3px calc(100% - 3px),22% calc(100% - 3px),22% 100%)}
+.target:after{display:none}
+.callout{position:absolute;background:#191c1b;border:1px solid var(--line);padding:10px 12px;font-size:11px;min-width:190px;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.callout .r{display:flex;justify-content:space-between;gap:20px}
+.callout .t{color:var(--acc);margin-bottom:6px;display:flex;justify-content:space-between}
+.alert{position:absolute;right:24px;top:22px;background:var(--acc);color:#0d0f0e;font-size:12px;padding:9px 14px;display:flex;gap:10px}
+.coords{position:absolute;right:24px;bottom:30px;text-align:right;font-size:11px;color:#9aa19c;line-height:1.8}
+
+/* console */
+.sec{padding:0 24px}
+.label{display:flex;justify-content:space-between;align-items:center;padding:56px 0 18px;font-size:12px}
+.console{display:grid;grid-template-columns:1.05fr 1fr 1fr;position:relative}
+.console>div{padding:24px 28px;border-right:1px dashed #2f3431;position:relative}
+.console>div:last-child{border-right:0}
+.console h5{font-weight:inherit;font-size:13px;margin-bottom:18px;display:flex;justify-content:space-between}
+.kv{display:grid;grid-template-columns:90px 1fr 90px 1fr;row-gap:12px;font-size:12.5px}
+.kv .k{color:var(--mute)}
+.big{display:grid;grid-template-columns:repeat(4,1fr);margin-bottom:18px}
+.big b{font:300 50px/1 Inter,sans-serif;letter-spacing:-.04em;display:block}
+.big b sup{font:10px Mono,monospace;color:var(--mute);vertical-align:top;margin-left:4px}
+.big span{font-size:12px;display:block;margin-top:8px}
+.cells{display:flex;gap:5px;margin:14px 0 6px}
+.cells i{flex:1;height:14px;border:1.5px solid #6a716c;border-radius:3px}
+.cells i.a{background:#3d5214;border-color:var(--acc)}
+.feed .row{display:grid;grid-template-columns:54px 1fr auto;gap:10px;padding:11px 10px;border-top:1px solid var(--line);font-size:12px;align-items:start}
+.feed .row.hot{background:var(--acc2);border-left:2px solid var(--acc)}
+.feed .pill{font-size:9.5px;border:1px solid currentColor;padding:1px 6px;color:var(--mute)}
+.feed .hot .pill{color:var(--acc)}
+.feed small{display:block;font-size:10.5px;color:#9aa19c}
+
+/* logos */
+.logos{display:flex;justify-content:space-between;align-items:center;padding:30px 40px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:56px}
+.logos span{font-size:15px;color:#5d645f;letter-spacing:.12em}
+
+/* features */
+.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.feat .panel{padding:26px;position:relative;min-height:400px;display:flex;flex-direction:column}
+.feat .num{font-size:12px;display:flex;justify-content:space-between}
+.feat h3{font:300 30px/1.1 Inter,sans-serif;letter-spacing:-.035em;text-transform:none;margin:0 0 12px;min-height:66px}
+.feat p{text-transform:none;color:#a3aaa5;font-size:12.5px;line-height:1.6}
+.viz{height:170px;margin:26px 0 22px;border:1px solid var(--line);background:#191c1b;position:relative;overflow:hidden}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);margin-top:56px}
+.stats div{padding:34px 28px;border-right:1px solid var(--line)}
+.stats div:last-child{border-right:0}
+.stats b{font:300 72px/1 Inter,sans-serif;letter-spacing:-.05em;display:block}
+.stats b sup{font:12px Mono,monospace;color:var(--acc);vertical-align:top;margin-left:6px}
+.stats span{display:block;margin-top:14px;font-size:12px;color:#a3aaa5}
+
+/* cta */
+.cta{position:relative;height:560px;margin:0 24px;overflow:hidden;border:1px solid var(--line)}
+#terrain2{position:absolute;inset:0;width:100%;height:100%}
+.cta .box{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(20,23,22,.92);border:1px solid var(--line);padding:42px 56px;text-align:center;width:640px}
+.cta h2{font:300 52px/1.05 Inter,sans-serif;letter-spacing:-.045em;text-transform:none;margin:18px 0 14px}
+.cta p{text-transform:none;color:#a3aaa5}
+footer{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:20px;padding:56px 24px 28px;font-size:12px}
+footer h6{font-weight:inherit;color:var(--mute);margin-bottom:12px;font-size:11px}
+footer a{display:block;color:var(--ink);text-decoration:none;margin-bottom:7px}
+.fbar{display:flex;justify-content:space-between;padding:18px 24px 26px;border-top:1px solid var(--line);font-size:11px;color:var(--mute)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><i></i>TIDEWATCH</div>
+  <div class="crumb">Watch/Gulf Coast/<b>Basin 04</b></div>
+  <div class="sp"></div>
+  <div class="links"><span>Platform</span><span>Sensors</span><span>Cities</span><span>Docs</span></div>
+  <div class="meta"><span>14:30:07 UTC-7</span><span class="mute">Latency: 82ms</span></div>
+  <span class="btn acc">Book a demo →</span>
+</nav>
+
+<section class="hero">
+  <aside class="side">
+    <div class="head">
+      <span class="tag"><i></i>LIVE · 24 BASINS WATCHED</span>
+      <h1 class="sans">See the flood<br>before it <em>rises.</em></h1>
+      <p>Tidewatch fuses river gauges, rainfall radar and tide data into one live map of every basin you manage — and flags flood risk hours before the water moves.</p>
+      <div class="ctas"><span class="btn acc">Book a demo →</span><span class="btn">See the console</span></div>
+    </div>
+    <div class="hatch" style="margin-top:36px"></div>
+    <div class="layers">
+      <h4>LAYERS <span class="mute">5</span></h4>
+      <div class="chk on"><i></i>RIVER GAUGES</div>
+      <div class="chk on"><i></i>RAINFALL RADAR</div>
+      <div class="chk on"><i></i>TIDE LEVEL</div>
+      <div class="chk"><i></i>SOIL MOISTURE</div>
+      <div class="chk"><i></i>STORM SURGE</div>
+    </div>
+    <div class="hatch" style="margin-top:auto"></div>
+  </aside>
+  <div class="stage">
+    <canvas id="terrain"></canvas>
+    <div class="alert">▲ ALERTS · 3</div>
+    <div class="hud vscale"><span>02</span><span>01</span><span>00</span><span>-01</span></div>
+    <div class="target" id="tgt"></div>
+    <div class="callout" id="call">
+      <div class="t"><span>● FLOOD RISK</span><span>G-14</span></div>
+      <div class="r"><span class="mute">ELEV</span><span>3.1 M</span></div>
+      <div class="r"><span class="mute">RAIN</span><span>42 MM/H</span></div>
+      <div class="r"><span class="mute">SOIL</span><span>SAT · 0.91</span></div>
+      <div class="r"><span class="mute">SCORE</span><span class="acc">91 /100</span></div>
+    </div>
+    <div class="hud compass">
+      <div class="ticks"><b></b><b></b><b></b><b></b><b class="l"></b><b></b><b></b><b></b><b></b></div>
+      <div class="nums"><span>34</span><span>35</span><span>00</span><span>01</span><span>02</span></div>
+      <div>↑<br>003°T</div>
+    </div>
+    <div class="coords">29.7604° N · 95.3698° W<br>BASIN 04 · GAUGE G-14<br><span class="acc">LAST SCAN 00:00:41 AGO</span></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="label"><span>[01] THE CONSOLE</span><span class="mute">ONE SCREEN FOR EVERY BASIN YOU RUN</span></div>
+  <div class="console panel">
+    <span class="plus" style="left:-9px;top:-10px">+</span><span class="plus" style="right:-9px;top:-10px">+</span>
+    <span class="plus" style="left:-9px;bottom:-10px">+</span><span class="plus" style="right:-9px;bottom:-10px">+</span>
+    <div>
+      <h5>SENSOR INSPECTOR <span class="mute">G-14</span></h5>
+      <svg width="100%" height="58" viewBox="0 0 460 58" style="margin-bottom:22px">
+        <rect x="1" y="16" width="440" height="26" fill="none" stroke="#6a716c" stroke-width="1.5"/>
+        <g fill="none" stroke="#6a716c" stroke-width="1.2">
+          <rect x="12" y="21" width="30" height="16"/><rect x="50" y="21" width="30" height="16"/><rect x="88" y="21" width="30" height="16"/>
+          <rect x="126" y="21" width="30" height="16"/><rect x="278" y="21" width="30" height="16"/><rect x="316" y="21" width="30" height="16"/>
+          <rect x="354" y="21" width="30" height="16"/><rect x="392" y="21" width="38" height="16"/></g>
+        <g fill="#3d5214" stroke="#c6ff3d" stroke-width="1.5"><rect x="164" y="21" width="30" height="16"/><rect x="202" y="21" width="30" height="16"/><rect x="240" y="21" width="30" height="16"/></g>
+        <path d="M441 22 L458 29 L441 36" fill="none" stroke="#6a716c" stroke-width="1.5"/>
+        <line x1="217" y1="4" x2="217" y2="16" stroke="#c6ff3d" stroke-width="1.5"/><circle cx="217" cy="4" r="3" fill="#c6ff3d"/>
+      </svg>
+      <div class="kv">
+        <span class="k">STATION</span><span>GAUGE G-14</span><span class="k">ELEV</span><span>3.1 M</span>
+        <span class="k">TYPE</span><span>RIVER GAUGE</span><span class="k">BASIN</span><span>LOWER DELTA</span>
+        <span class="k">RAIN</span><span>42 MM/H</span><span class="k">LEVEL</span><span class="acc">4.8 M</span>
+        <span class="k">TIDE</span><span>+1.2 M</span><span class="k">RISE</span><span class="acc">+0.6 M/H</span>
+        <span class="k">HDG</span><span>003°T</span><span class="k">SCORE</span><span class="acc">91 /100</span>
+      </div>
+    </div>
+    <div>
+      <h5>RISK QUEUE <span class="mute">LAST 6H</span></h5>
+      <div class="big">
+        <div><b>14<sup>STN</sup></b><span>WATCH</span></div>
+        <div><b>6<sup>STN</sup></b><span>ELEVATED</span></div>
+        <div><b>3<sup>STN</sup></b><span>CRITICAL</span></div>
+        <div><b>+2<sup>HRS</sup></b><span>LEAD</span></div>
+      </div>
+      <div class="cells"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i></div>
+      <div class="mute" style="font-size:10px;display:flex;justify-content:space-between"><span>14 STN · BASIN 04</span><span class="acc">▌ CRITICAL 3</span></div>
+      <svg width="100%" height="86" viewBox="0 0 400 86" style="margin-top:14px" id="area"></svg>
+      <div class="mute" style="font-size:9.5px;display:flex;justify-content:space-between"><span>08 AM</span><span>11 AM</span><span>02 PM</span><span>NOW</span></div>
+    </div>
+    <div class="feed">
+      <h5>ALERT FEED <span class="mute">3 ACTIVE · <span class="acc">1 CRIT</span></span></h5>
+      <svg width="100%" height="56" viewBox="0 0 400 56" id="wave" style="margin-bottom:10px"></svg>
+      <div class="row hot"><span>14:12</span><span>LEVEL SPIKE · +0.6 M<small>GAUGE G-14</small></span><span class="pill">CRIT</span></div>
+      <div class="row"><span>14:05</span><span>RAIN BAND · 42 MM/H<small>BASIN 04</small></span><span class="pill" style="color:#ffb02e">WARN</span></div>
+      <div class="row"><span>13:58</span><span>TIDE TURN · +1.2 M<small>GAUGE G-09</small></span><span class="pill">INFO</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="logos sec" style="margin:56px 24px 0;padding:30px 16px">
+  <span class="mute" style="font-size:11px;letter-spacing:.04em">TRUSTED BY 40+ CITIES AND PORTS</span>
+  <span>BAYPORT CITY</span><span>DELTA WATER</span><span>GULFSIDE PORTS</span><span>HARBOR COUNTY</span><span>LOWLAND TRANSIT</span>
+</div>
+
+<section class="sec">
+  <div class="label"><span>[02] HOW IT WORKS</span><span class="mute">SENSE → PREDICT → DISPATCH</span></div>
+  <div class="feat">
+    <div class="panel">
+      <div class="num"><span>01 / SENSE</span><span class="acc">●</span></div>
+      <div class="viz"><svg width="100%" height="100%" viewBox="0 0 420 170" id="v1"></svg></div>
+      <h3>Every basin, read every 60 seconds.</h3>
+      <p>River gauges, rain radar and tide stations stream into one live layer. No more checking five dashboards.</p>
+    </div>
+    <div class="panel">
+      <div class="num"><span>02 / PREDICT</span><span class="acc">●</span></div>
+      <div class="viz"><svg width="100%" height="100%" viewBox="0 0 420 170" id="v2"></svg></div>
+      <h3>Risk scored before water rises.</h3>
+      <p>Our model weighs rainfall, soil, river level and tide to score flood risk per street — with hours of lead time, not minutes.</p>
+    </div>
+    <div class="panel">
+      <div class="num"><span>03 / DISPATCH</span><span class="acc">●</span></div>
+      <div class="viz"><svg width="100%" height="100%" viewBox="0 0 420 170" id="v3"></svg></div>
+      <h3>The right crew, already moving.</h3>
+      <p>Critical alerts route to the nearest crew with the map, water depth and safe route attached. One tap to acknowledge.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="stats">
+    <div><b>6.5<sup>HRS</sup></b><span>OF LEAD TIME, ON AVERAGE</span></div>
+    <div><b>38K<sup>KM²</sup></b><span>OF FLOODPLAIN WATCHED LIVE</span></div>
+    <div><b>92<sup>%</sup></b><span>FEWER FALSE ALARMS</span></div>
+    <div><b>24/7<sup>LIVE</sup></b><span>NO SHIFT GAPS, EVER</span></div>
+  </div>
+</section>
+
+<section style="margin-top:56px">
+  <div class="cta">
+    <canvas id="terrain2"></canvas>
+    <div class="box">
+      <span class="tag"><i></i>[03] GET STARTED</span>
+      <h2 class="sans">Know where the water<br>goes next.</h2>
+      <p>We'll map your service area and show you live risk in a 30-minute call.</p>
+      <div class="ctas" style="justify-content:center"><span class="btn acc">Book a demo →</span><span class="btn">Talk to an engineer</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div><div class="logo" style="margin-bottom:14px"><i></i>TIDEWATCH</div><span class="mute" style="text-transform:none;font-size:12px">Live flood risk for the people<br>who keep cities dry.</span></div>
+  <div><h6>PLATFORM</h6><a>Console</a><a>Sensors</a><a>Alerts</a><a>API</a></div>
+  <div><h6>COMPANY</h6><a>About</a><a>Careers</a><a>Field notes</a><a>Contact</a></div>
+  <div><h6>STATUS</h6><a><span class="acc">●</span> All systems live</a><a>24 basins</a><a>Latency 82ms</a></div>
+</footer>
+<div class="fbar"><span>© 2026 TIDEWATCH</span><span>29.7604° N · 95.3698° W</span><span>PRIVACY · TERMS</span></div>
+
+<script>
+// deterministic value noise
+function hash(i,j){let h=(i*374761393+j*668265263)|0;h=Math.imul(h^(h>>>13),1274126177);return ((h^(h>>>16))>>>0)/4294967295}
+function sm(t){return t*t*(3-2*t)}
+function noise(x,y){const i=Math.floor(x),j=Math.floor(y),fx=sm(x-i),fy=sm(y-j);
+  const a=hash(i,j),b=hash(i+1,j),c=hash(i,j+1),d=hash(i+1,j+1);return a+(b-a)*fx+(c-a)*fy+(a-b-c+d)*fx*fy}
+function fbm(x,y){let s=0,a=.5,f=1;for(let o=0;o<6;o++){s+=a*noise(x*f,y*f);a*=.5;f*=2.03}return s}
+function ridged(x,y){let s=0,a=.5,f=1;for(let o=0;o<5;o++){s+=a*(1-Math.abs(noise(x*f,y*f)*2-1))**2;a*=.5;f*=2.1}return s}
+
+function terrain(cv,opt){
+  const W=cv.clientWidth,H=cv.clientHeight,dpr=2;cv.width=W*dpr;cv.height=H*dpr;
+  const g=cv.getContext('2d');g.scale(dpr,dpr);
+  const grd=g.createLinearGradient(0,0,0,H);grd.addColorStop(0,'#131615');grd.addColorStop(1,'#0a0b0b');g.fillStyle=grd;g.fillRect(0,0,W,H);
+  const river=z=>opt.rx+.16*Math.sin(z*2.1+.6)+.05*Math.sin(z*5.3);
+  const height=(x,z)=>{const d=Math.abs(x-river(z));const bank=sm(Math.min(1,Math.max(0,(d-opt.ww)/.42)));
+    return bank*opt.amp*(.25+ridged(x*1.7+7,z*1.7+3)*.9+fbm(x*5,z*5)*.35)-.012};
+  const F=H*opt.f,camH=opt.camH,hz=H*opt.hz;
+  const pts=[];
+  for(let zi=0;zi<opt.rows;zi++){const z=opt.z0+zi/opt.rows*opt.zd;const Z=z+1;
+    for(let xi=0;xi<opt.cols;xi++){
+      const x=-opt.xr+xi/opt.cols*opt.xr*2+(hash(xi,zi)-.5)*.006;const zz=z+(hash(zi,xi)-.5)*.006;
+      const h=height(x,zz);if(h<=0)continue;
+      const sx=W/2+x*W*.62/Z+opt.shift*W,sy=hz+(camH-h)*F/Z;
+      if(sx<-5||sx>W+5||sy<-5||sy>H+5)continue;
+      const dx=height(x+.01,zz)-height(x-.01,zz),dz=height(x,zz+.01)-height(x,zz-.01);
+      const lit=Math.max(0,Math.min(1,.5-dx*26+dz*14));
+      const hd=Math.hypot(x-opt.hot[0],zz-opt.hot[1]);
+      pts.push([Z,sx,sy,lit,hd,h])}}
+  pts.sort((a,b)=>b[0]-a[0]);
+  for(const [Z,sx,sy,lit,hd] of pts){
+    const r=Math.max(.5,1.15/Z);
+    if(hd<opt.hr&&hash(Math.round(sx*7),Math.round(sy*7))<1-hd/opt.hr){g.fillStyle=`rgba(198,255,61,${.55+.45*(1-hd/opt.hr)})`}
+    else{const c=Math.round(60+lit*175);g.fillStyle=`rgba(${c-6},${c},${c-3},${.35+lit*.6})`}
+    g.fillRect(sx-r,sy-r,r*2,r*2)}
+  // project hotspot centre for HUD
+  const [hx,hz2]=opt.hot,hh=height(hx,hz2),HZ=hz2+1;
+  return {x:W/2+hx*W*.62/HZ+opt.shift*W,y:hz+(camH-hh)*F/HZ};
+}
+const hp=terrain(document.getElementById('terrain'),{rx:.02,ww:.22,f:.8,camH:1.4,hz:-.17,z0:-.4,zd:2.9,rows:640,cols:1100,xr:2.9,amp:.26,shift:0,hot:[.75,1.1],hr:.12});
+const tg=document.getElementById('tgt');tg.style.left=(hp.x-75)+'px';tg.style.top=(hp.y-62)+'px';
+const cl=document.getElementById('call');cl.style.left=(hp.x-300)+'px';cl.style.top=(hp.y-178)+'px';
+terrain(document.getElementById('terrain2'),{rx:-.05,ww:.1,f:.75,camH:1.2,hz:-.2,z0:-.4,zd:2.8,rows:480,cols:1200,xr:3.2,amp:.32,shift:0,hot:[-1.2,1.3],hr:.12});
+
+// small deterministic charts
+function rnd(s){return()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const NS='http://www.w3.org/2000/svg';
+function path(svg,d,attrs){const p=document.createElementNS(NS,'path');p.setAttribute('d',d);for(const k in attrs)p.setAttribute(k,attrs[k]);svg.appendChild(p);return p}
+(function(){const r=rnd(3),s=document.getElementById('area');let d='M0 86',top='';
+  for(let i=0;i<=100;i++){const x=i*4,y=70-(r()*14+(i>86?(i-86)*3.6:0)+Math.sin(i/6)*5);d+=` L${x} ${y}`;top+=(i?' L':'M')+x+' '+y}
+  path(s,d+' L400 86 Z',{fill:'#1d2220'});path(s,top,{fill:'none',stroke:'#59605b','stroke-width':1});
+  path(s,'M0 30 H400',{stroke:'#3a403c','stroke-dasharray':'3 4'});
+  const c=document.createElementNS(NS,'circle');c.setAttribute('cx',400);c.setAttribute('cy',20);c.setAttribute('r',3.5);c.setAttribute('fill','#c6ff3d');s.appendChild(c)})();
+(function(){const r=rnd(9),s=document.getElementById('wave');let d='';
+  for(let i=0;i<=160;i++){const x=i*2.5,a=i>118?16:7;d+=(i?' L':'M')+x+' '+(28+(r()-.5)*2*a)}
+  path(s,'M300 0 H400 V56 H300 Z',{fill:'#1f2a12'});path(s,d,{fill:'none',stroke:'#e8ece9','stroke-width':1});
+  path(s,'M300 0 V56',{stroke:'#c6ff3d','stroke-width':1.5});path(s,'M0 28 H400',{stroke:'#c6ff3d','stroke-dasharray':'2 4','stroke-width':.8,opacity:.6})})();
+(function(){const s=document.getElementById('v1'),r=rnd(5);
+  for(let j=0;j<9;j++)for(let i=0;i<22;i++){const c=document.createElementNS(NS,'rect');const hot=(i>13&&i<18&&j>2&&j<6);
+    c.setAttribute('x',18+i*18);c.setAttribute('y',14+j*17);c.setAttribute('width',10);c.setAttribute('height',10);
+    c.setAttribute('fill',hot?'#c6ff3d':`rgba(232,236,233,${.08+r()*.25})`);s.appendChild(c)}})();
+(function(){const s=document.getElementById('v2');
+  path(s,'M0 130 H420',{stroke:'#2a2e2c'});path(s,'M0 85 H420',{stroke:'#2a2e2c','stroke-dasharray':'3 4'});
+  path(s,'M10 140 L70 140 L95 60 L160 60 L185 120 L250 120 L270 140 L300 140 L320 95 L410 95',{fill:'none',stroke:'#e8ece9','stroke-width':2});
+  path(s,'M10 132 L72 132 L98 52 L156 52 L190 112 L254 112 L274 132 L304 132 L324 86 L410 86',{fill:'none',stroke:'#59605b','stroke-width':1.2,'stroke-dasharray':'4 4'});
+  path(s,'M185 120 L250 120 L270 140 L300 140',{fill:'none',stroke:'#c6ff3d','stroke-width':2.5});
+  path(s,'M235 0 V170',{fill:'none',stroke:'#2f3431'});})();
+(function(){const s=document.getElementById('v3');
+  path(s,'M40 130 C120 130 120 50 210 50 S300 110 380 40',{fill:'none',stroke:'#e8ece9','stroke-width':1.5,'stroke-dasharray':'5 5'});
+  for(const [x,y,acc] of [[40,130,0],[210,50,0],[380,40,1]]){const c=document.createElementNS(NS,'rect');c.setAttribute('x',x-8);c.setAttribute('y',y-8);c.setAttribute('width',16);c.setAttribute('height',16);c.setAttribute('fill',acc?'#c6ff3d':'#191c1b');c.setAttribute('stroke',acc?'#c6ff3d':'#e8ece9');c.setAttribute('stroke-width',1.5);s.appendChild(c)}
+  const t=document.createElementNS(NS,'text');t.setAttribute('x',288);t.setAttribute('y',96);t.setAttribute('font-size',11);t.setAttribute('font-family','Mono');t.setAttribute('fill','#c6ff3d');t.textContent='CREW 4 · 6 MIN';s.appendChild(t)})();
+</script>
+</body>
+</html>

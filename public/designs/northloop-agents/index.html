@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>northloop agents</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#dcdcd9;--side:#f7f7f5;--card:#fff;--ink:#121212;--mut:#5c5c58;--faint:#8c8c88;--line:#e6e6e3;--acc:#f26b38;--accs:#fff1ea;--ok:#1d9a57;--oks:#e9f7ef;--warn:#c98a0b;--warns:#fdf5e2}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);font-family:Inter,system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;font-feature-settings:"cv11","ss01"}
+svg.i{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* ---------- post frame ---------- */
+.frame{width:1520px;height:1360px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:44px}
+.frame h1{font-size:84px;font-weight:500;letter-spacing:-.03em}
+.after .frame h1{font-family:"Instrument Serif",serif;font-style:italic;font-weight:400;font-size:100px;letter-spacing:-.01em}
+.bare .frame{width:auto;height:auto;display:block}.bare .frame h1{display:none}
+
+/* ---------- app shell ---------- */
+.app{width:1440px;height:940px;background:var(--card);border-radius:22px;display:grid;grid-template-columns:232px 1fr 344px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04),0 30px 60px -30px rgba(0,0,0,.18)}
+.bare .app{border-radius:0;box-shadow:none}
+
+/* sidebar */
+.side{background:var(--side);border-right:1px solid var(--line);padding:18px 14px;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:9px;padding:4px 6px 18px;font-weight:600;font-size:15px;letter-spacing:-.01em}
+.brand .mk{width:24px;height:24px;border-radius:7px;background:var(--ink);display:grid;place-items:center}
+.brand .mk i{width:11px;height:11px;border:2.2px solid #fff;border-radius:50%;border-top-color:var(--acc)}
+.brand .sw{margin-left:auto;color:var(--faint)}
+.grp{font-size:11px;font-weight:500;color:var(--faint);padding:14px 8px 6px;letter-spacing:.02em}
+.nav a{display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:8px;font-size:13.5px;color:#3b3b39;text-decoration:none;font-weight:450}
+.nav a svg{color:#8b8b88}
+.nav a.on{background:#fff;box-shadow:0 0 0 1px var(--line),0 1px 2px rgba(0,0,0,.04);color:var(--ink);font-weight:550}
+.nav a.on svg{color:var(--acc)}
+.nav .bd{margin-left:auto;font-size:11px;font-weight:600;background:var(--acc);color:#fff;border-radius:6px;padding:1px 6px}
+.usage{margin-top:auto;background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px}
+.usage .t{font-size:12px;color:var(--mut);display:flex;justify-content:space-between}
+.usage .v{font-size:13px;font-weight:600;margin:6px 0 9px}.usage .v span{color:var(--faint);font-weight:450}
+.bar{height:6px;border-radius:9px;background:#f0f0ee;overflow:hidden}.bar i{display:block;height:100%;width:64%;background:var(--ink);border-radius:9px}
+.me{display:flex;align-items:center;gap:10px;padding:14px 6px 2px}
+.av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#f9b48e,#f26b38);color:#fff;font-size:12px;font-weight:600;display:grid;place-items:center}
+.me b{font-size:13px;font-weight:550;display:block}.me small{font-size:11.5px;color:var(--mut)}
+.me .pro{margin-left:auto;font-size:10.5px;font-weight:600;background:var(--ink);color:#fff;border-radius:6px;padding:2px 7px}
+
+/* main */
+.main{display:flex;flex-direction:column;min-width:0}
+.top{height:54px;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 22px;gap:14px;font-size:13px}
+.crumb{color:var(--mut)}.crumb b{color:var(--ink);font-weight:550}
+.search{margin-left:auto;width:260px;height:32px;border-radius:9px;background:var(--side);border:1px solid var(--line);display:flex;align-items:center;gap:8px;padding:0 10px;color:var(--faint)}
+.search kbd{margin-left:auto;font:500 11px Inter;background:#fff;border:1px solid var(--line);border-radius:5px;padding:1px 5px;color:var(--mut)}
+.ib{width:32px;height:32px;border-radius:9px;border:1px solid var(--line);display:grid;place-items:center;color:#55554f;position:relative}
+.ib .dot{position:absolute;top:7px;right:8px;width:6px;height:6px;border-radius:50%;background:var(--acc);box-shadow:0 0 0 2px #fff}
+.body{padding:22px 24px;display:flex;flex-direction:column;gap:16px;overflow:hidden}
+.hd{display:flex;align-items:flex-start;gap:12px}
+.hd h2{font-size:22px;font-weight:600;letter-spacing:-.02em;display:flex;align-items:center;gap:10px}
+.hd p{font-size:13.5px;color:var(--mut);margin-top:5px}
+.live{font-size:11.5px;font-weight:550;color:var(--ok);background:var(--oks);border-radius:20px;padding:3px 9px 3px 8px;display:inline-flex;align-items:center;gap:6px}
+.live:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px rgba(29,154,87,.18)}
+.btns{margin-left:auto;display:flex;gap:8px}
+.btn{height:34px;padding:0 13px;border-radius:9px;border:1px solid var(--line);font-size:13px;font-weight:500;display:flex;align-items:center;gap:7px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.btn.pr{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpi{border:1px solid var(--line);border-radius:14px;padding:15px 16px}
+.kpi .l{font-size:12.5px;color:var(--mut);display:flex;align-items:center;gap:7px}
+.kpi .l svg{width:15px;height:15px;color:var(--acc)}
+.kpi .n{font-size:28px;font-weight:600;letter-spacing:-.03em;margin:10px 0 6px;font-variant-numeric:tabular-nums}
+.kpi .n small{font-size:15px;color:var(--faint);font-weight:500;margin-left:2px}
+.kpi .s{font-size:12px;color:var(--mut)}.kpi .s b{color:var(--ok);font-weight:600}
+
+.card{border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.ch{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.ch h3{font-size:14px;font-weight:600}
+.lg{display:flex;gap:14px;font-size:12px;color:var(--mut)}.lg span{display:flex;align-items:center;gap:6px}.lg i{width:8px;height:8px;border-radius:3px;background:var(--ink)}.lg i.r{background:var(--acc)}
+.seg{margin-left:auto;display:flex;background:var(--side);border:1px solid var(--line);border-radius:9px;padding:2px;font-size:12px}
+.seg span{padding:4px 10px;border-radius:7px;color:var(--mut)}.seg .on{background:#fff;color:var(--ink);font-weight:550;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.chart{display:grid;grid-template-columns:34px 1fr;gap:8px;height:150px}
+.ax{display:flex;flex-direction:column;justify-content:space-between;font-size:10.5px;color:var(--faint);text-align:right;padding-bottom:18px}
+.plot{position:relative;display:flex;flex-direction:column}
+.grid{position:absolute;inset:0 0 18px;display:flex;flex-direction:column;justify-content:space-between}.grid i{border-top:1px dashed #efefed}
+.bars{position:relative;flex:1;display:flex;align-items:flex-end;gap:5px;padding:0 2px}
+.bars .b{flex:1;display:flex;flex-direction:column-reverse;gap:2px}
+.bars .b i{display:block;border-radius:4px;background:var(--ink)}.bars .b i.r{background:var(--acc)}
+.bars .b i:not(.r){background:#cfcfca}.bars .b.hl i:not(.r){background:var(--ink)}
+.xl{height:18px;display:flex;justify-content:space-between;font-size:10.5px;color:var(--faint);padding:5px 2px 0}
+.tip{position:absolute;left:65%;top:-4px;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:9px;padding:7px 10px;font-size:11.5px;white-space:nowrap;box-shadow:0 8px 20px -6px rgba(0,0,0,.35)}
+.tip b{font-weight:600}.tip span{color:#b7b7b2}
+
+.flow{display:flex;align-items:center;gap:0}
+.node{border:1px solid var(--line);border-radius:11px;padding:8px 10px 8px 8px;display:flex;align-items:center;gap:8px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.03);white-space:nowrap}
+.node .ic{width:24px;height:24px;border-radius:8px;background:var(--side);border:1px solid var(--line);display:grid;place-items:center;color:#44443f}
+.node .ic svg{width:14px;height:14px}
+.node b{font-size:12px;font-weight:550;display:block}.node small{font-size:11px;color:var(--mut)}
+.node.ag .ic{background:var(--ink);border-color:var(--ink);color:#fff}
+.node.run{border-color:#f7c6b0;box-shadow:0 0 0 3px var(--accs)}
+.node.run small{color:var(--acc);font-weight:500}
+.node.hu .ic{background:var(--accs);border-color:#f9d6c6;color:var(--acc)}
+.cn{flex:1;min-width:8px;height:1px;background:repeating-linear-gradient(90deg,#cfcfcb 0 4px,transparent 4px 8px);position:relative}
+.cn:after{content:"";position:absolute;right:-1px;top:-3px;border:3.5px solid transparent;border-left:5px solid #cfcfcb}
+
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{font-size:11px;font-weight:500;color:var(--faint);text-align:left;padding:0 10px 9px;letter-spacing:.03em;text-transform:uppercase;border-bottom:1px solid var(--line)}
+td{padding:10px;border-bottom:1px solid #f3f3f1;font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+th.r,td.r{text-align:right}
+.who{display:flex;align-items:center;gap:9px;font-weight:500}
+.who .a{width:24px;height:24px;border-radius:50%;font-size:10.5px;font-weight:600;display:grid;place-items:center;color:#fff}
+.who small{color:var(--mut);font-weight:400}
+.st{font-size:11.5px;font-weight:550;border-radius:20px;padding:3px 9px;display:inline-flex;align-items:center;gap:5px}
+.st:before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor}
+.st.ok{color:var(--ok);background:var(--oks)}.st.rv{color:var(--acc);background:var(--accs)}.st.rn{color:#5b5bd6;background:#efeffd}
+.steps{display:flex;gap:3px}.steps i{width:14px;height:5px;border-radius:3px;background:var(--ink)}.steps i.o{background:#e6e6e3}.steps i.r{background:var(--acc)}
+td.m{color:var(--mut)}
+
+/* agent panel */
+.agent{border-left:1px solid var(--line);display:flex;flex-direction:column;background:#fff}
+.agent .top{gap:8px}
+.agent .top b{font-weight:550}
+.apad{padding:18px;display:flex;flex-direction:column;gap:12px;flex:1;overflow:hidden}
+.aq{display:flex;align-items:center;font-size:13px;font-weight:600;gap:8px}
+.aq .c{font-size:11px;background:var(--acc);color:#fff;border-radius:6px;padding:1px 6px}
+.aq a{margin-left:auto;font-size:12px;color:var(--mut);font-weight:450}
+.ap{border:1px solid var(--line);border-radius:13px;padding:13px;display:flex;flex-direction:column;gap:9px}
+.ap .h{display:flex;align-items:center;gap:8px;font-size:12.5px}
+.ap .h b{font-weight:550}.ap .h small{margin-left:auto;color:var(--faint);font-size:11px}
+.ap p{font-size:12.5px;line-height:1.5;color:#4a4a46;background:var(--side);border-radius:9px;padding:9px 10px}
+.ap .why{font-size:11.5px;color:var(--mut);display:flex;gap:6px;align-items:center}.ap .why svg{width:13px;height:13px;color:var(--acc)}
+.ap .row{display:flex;gap:7px}
+.ap .row span{height:30px;flex:1;border-radius:8px;font-size:12px;font-weight:550;display:grid;place-items:center;border:1px solid var(--line)}
+.ap .row .y{background:var(--ink);color:#fff;border-color:var(--ink)}
+.greet{margin-top:auto;text-align:center;padding:4px 0 2px}
+.greet .sp{width:34px;height:34px;margin:0 auto 10px;border-radius:11px;background:var(--accs);display:grid;place-items:center;color:var(--acc)}
+.greet b{font-size:15px;font-weight:600;display:block;letter-spacing:-.01em}
+.greet small{font-size:12px;color:var(--mut)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:12px}
+.chips span{font-size:11.5px;border:1px solid var(--line);border-radius:8px;padding:5px 9px;display:flex;align-items:center;gap:6px;color:#3d3d39}
+.chips svg{width:12px;height:12px;color:var(--acc)}
+.inp{margin:0 18px 18px;border:1px solid var(--line);border-radius:13px;padding:12px;height:84px;display:flex;flex-direction:column;font-size:12.5px;color:var(--faint);box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.inp .r{margin-top:auto;display:flex;align-items:center;gap:8px;color:#8b8b88}
+.inp .go{margin-left:auto;width:26px;height:26px;border-radius:8px;background:var(--ink);color:#fff;display:grid;place-items:center}
+
+/* ---------- BEFORE: same product, default styling ---------- */
+.before{--side:#f3f4f6;--ink:#111827;--mut:#6b7280;--faint:#6b7280;--line:#e5e7eb;--acc:#2563eb;--accs:#eff6ff;--ok:#16a34a;--oks:#fff}
+.before body,.before .app,.before .frame h1{font-family:Arial,Helvetica,sans-serif}
+.before .app{border-radius:10px;box-shadow:none}
+.before svg.i{display:none}
+.before .nav a:before,.before .kpi .l:before,.before .node .ic:before{content:"";width:14px;height:14px;border-radius:3px;background:#d1d5db;flex:none}
+.before .node .ic{background:none;border:0;width:auto;height:auto}
+.before .nav a.on{background:#dbeafe;box-shadow:none;color:#1d4ed8}
+.before .nav a.on:before{background:#2563eb}
+.before .brand .mk{background:#2563eb;border-radius:4px}.before .brand .mk i{border-top-color:#fff}
+.before .usage,.before .me .pro,.before .lg,.before .seg,.before .tip,.before .ap .why,.before .greet .sp,.before .chips svg,.before .steps,.before .live:before,.before .st:before,.before .cn:after,.before .ib .dot{display:none}
+.before .grp{text-transform:uppercase;font-size:10px;letter-spacing:.06em}
+.before .me{margin-top:auto}
+.before .av{background:#9ca3af}
+.before .kpi,.before .card,.before .ap,.before .node,.before .inp{border-radius:6px;box-shadow:none}
+.before .kpi .n{font-weight:700;font-size:26px;letter-spacing:0}
+.before .kpi .s b{color:inherit;font-weight:400}
+.before .bars .b i,.before .bars .b i.r,.before .bars .b i:not(.r),.before .bars .b.hl i:not(.r){background:#2563eb;border-radius:0}
+.before .bars .b{gap:0}
+.before .grid i{border-top:1px solid #f0f0f0}
+.before .live{background:none;padding:0;color:#16a34a;font-weight:400}
+.before .node.run{box-shadow:none;border-color:#e5e7eb}.before .node.run small{color:var(--mut)}
+.before .cn{background:#d1d5db}
+.before .btn,.before .search,.before .ib{border-radius:4px;box-shadow:none}
+.before .btn.pr{background:#2563eb;border-color:#2563eb}
+.before th{text-transform:none;letter-spacing:0;font-size:12px;font-weight:700;color:#374151}
+.before .st{background:none;padding:0;font-weight:400}
+.before .who .a{background:#9ca3af!important}
+.before .ap p{background:none;padding:0}
+.before .ap .row span{border-radius:4px}.before .ap .row .y{background:#2563eb;border-color:#2563eb}
+.before .chips span{border-radius:4px}
+.before .inp .go{background:#e5e7eb;color:#6b7280;border-radius:4px}
+.before .aq .c,.before .nav .bd{background:#ef4444;border-radius:9px}
+/* ---------- AFTER: lighter pass ---------- */
+.after .app{box-shadow:0 1px 2px rgba(0,0,0,.03),0 24px 48px -32px rgba(0,0,0,.12)}
+.after .hd h2{font-weight:550}
+.after .btn{box-shadow:none}
+.after .kpis{border:1px solid var(--line);border-radius:14px;gap:0}
+.after .kpi{border:0;border-radius:0;border-left:1px solid var(--line);padding:16px 18px}.after .kpi:first-child{border-left:0}
+.after .kpi .n{font-weight:500;letter-spacing:-.035em}
+.after .kpi .l svg{color:var(--faint)}
+.after .ch h3{font-weight:550}
+.after .node{box-shadow:none}
+.after .node.ag .ic{background:var(--side);border-color:var(--line);color:#44443f}
+.after .node.run .ic{background:var(--accs);border-color:#f9d6c6;color:var(--acc)}
+.after .steps i{background:#c9c9c4;height:4px}.after .steps i.o{background:#eeeeec}.after .steps i.r{background:var(--acc)}
+.after .who .a{opacity:.85}
+.after .ap{gap:10px}
+.after .ap .row .y{background:#fff;color:var(--ink);border-color:var(--line)}
+.after .apad .ap:nth-child(2) .row .y{background:var(--ink);color:#fff;border-color:var(--ink)}
+.after .apad .ap:nth-child(4){display:none}
+.after .me .pro{background:none;color:var(--mut);border:1px solid var(--line)}
+.after .bar{height:4px}
+.after .inp .go{background:var(--side);color:var(--mut);border:1px solid var(--line)}
+.after .nav .bd{background:var(--accs);color:var(--acc)}
+.after .aq .c{background:var(--accs);color:var(--acc)}
+/* ---------- AFTER: hero KPI, flow counts, live feed ---------- */
+.node small em{font-style:normal;font-weight:600;color:var(--ink)}
+.after .kpis{grid-template-columns:1fr 1.35fr 1fr 1fr}
+.after .kpi.hero{position:relative;background:linear-gradient(180deg,#fff,var(--accs))}
+.after .kpi.hero .n{font-size:34px;margin:8px 0 5px}
+.kpi .spark{display:none}
+.after .kpi .spark{display:block;position:absolute;right:16px;top:44px;width:96px;height:34px;fill:none;stroke:var(--acc);stroke-width:1.8;stroke-linejoin:round}
+.after .kpi .spark .ar{fill:var(--acc);opacity:.1;stroke:none}
+.after .body{gap:14px}
+.after td{padding:8px 10px}
+.feed{display:flex;flex-direction:column;gap:2px;border-top:1px solid var(--line);padding-top:12px}
+.fh{font-size:13px;font-weight:600;display:flex;align-items:center;margin-bottom:6px}
+.fh span{margin-left:auto;font-size:11.5px;font-weight:450;color:var(--mut)}
+.fi{display:flex;align-items:center;gap:9px;font-size:12.5px;color:#4a4a46;padding:5px 0}
+.fi b{font-weight:550;color:var(--ink)}.fi small{margin-left:auto;font-size:11px;color:var(--faint)}
+.fi i{width:7px;height:7px;border-radius:50%;background:#d4d4d0;flex:none}
+.fi i.pl{background:var(--acc);box-shadow:0 0 0 3px var(--accs)}.fi i.okd{background:var(--ok)}
+.after .greet{padding-top:0}
+.after .greet .sp{display:none}
+.before .feed{display:none}.before .fi i{border-radius:0;box-shadow:none}
+/* ---------- AFTER, blue accent variant (?accent=blue) ---------- */
+.blue{--acc:#2b5cf6;--accs:#eef2ff}
+.blue .node.run{border-color:#bccbfc}.blue .node.hu .ic,.blue .node.run .ic{border-color:#cfdafd}
+.blue .av{background:linear-gradient(135deg,#8ea8ff,#2b5cf6)}
+.blue .st.rn{color:#5c5c58;background:#f1f1ef}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+ <symbol id="home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
+ <symbol id="bot" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 8V4M9 13v1M15 13v1M2 14h2M20 14h2"/></symbol>
+ <symbol id="play" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m10 8.5 5 3.5-5 3.5z"/></symbol>
+ <symbol id="check" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-5-8.06"/><path d="m8.5 11.5 3 3L21 5"/></symbol>
+ <symbol id="flow" viewBox="0 0 24 24"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="15" y="15" width="6" height="6" rx="1.5"/><path d="M6 9v4a3 3 0 0 0 3 3h6"/></symbol>
+ <symbol id="plug" viewBox="0 0 24 24"><path d="M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4"/></symbol>
+ <symbol id="book" viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/></symbol>
+ <symbol id="list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></symbol>
+ <symbol id="gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-2.7-1.1l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.1-2.7l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 2.7-1.1V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0 1.1 2.7H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1.3z"/></symbol>
+ <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+ <symbol id="bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"/></symbol>
+ <symbol id="help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/></symbol>
+ <symbol id="ud" viewBox="0 0 24 24"><path d="m7 15 5 5 5-5M7 9l5-5 5 5"/></symbol>
+ <symbol id="spark" viewBox="0 0 24 24"><path d="M12 3c.6 4.6 2.4 6.4 7 7-4.6.6-6.4 2.4-7 7-.6-4.6-2.4-6.4-7-7 4.6-.6 6.4-2.4 7-7z"/></symbol>
+ <symbol id="mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
+ <symbol id="cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></symbol>
+ <symbol id="user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+ <symbol id="zap" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></symbol>
+ <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+ <symbol id="coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.7 0-3 .8-3 2s1.3 1.7 3 2 3 .8 3 2-1.3 2-3 2c-1.4 0-2.5-.5-3-1.5M12 6v2M12 16v2"/></symbol>
+ <symbol id="target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+ <symbol id="pause" viewBox="0 0 24 24"><path d="M9 5v14M15 5v14"/></symbol>
+ <symbol id="pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/></symbol>
+ <symbol id="db" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></symbol>
+ <symbol id="hand" viewBox="0 0 24 24"><path d="M12 11V5a1.5 1.5 0 0 1 3 0v6M15 7a1.5 1.5 0 0 1 3 0v7a7 7 0 0 1-7 7c-3 0-4.5-1.5-6-4l-2.2-3.8a1.5 1.5 0 0 1 2.6-1.5L7 13V6a1.5 1.5 0 0 1 3 0v5M10 4.5a1.5 1.5 0 0 1 2 0"/></symbol>
+ <symbol id="send" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
+ <symbol id="clip" viewBox="0 0 24 24"><path d="m21 11-8.5 8.5a5 5 0 0 1-7-7L14 4a3.5 3.5 0 0 1 5 5l-8.5 8.5a2 2 0 0 1-3-3L15 7"/></symbol>
+ <symbol id="expand" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></symbol>
+</svg>
+
+<div class="frame">
+<h1 id="ttl" hidden>After</h1>
+<div class="app">
+
+ <aside class="side">
+  <div class="brand"><div class="mk"><i></i></div>northloop<svg class="i sw"><use href="#ud"/></svg></div>
+  <nav class="nav">
+   <a><svg class="i"><use href="#home"/></svg>Home</a>
+   <a><svg class="i"><use href="#spark"/></svg>Ask agent</a>
+   <div class="grp">Automate</div>
+   <a class="on"><svg class="i"><use href="#bot"/></svg>Agents</a>
+   <a><svg class="i"><use href="#flow"/></svg>Flows</a>
+   <a><svg class="i"><use href="#play"/></svg>Runs</a>
+   <a><svg class="i"><use href="#check"/></svg>Approvals<span class="bd">3</span></a>
+   <div class="grp">Data</div>
+   <a><svg class="i"><use href="#plug"/></svg>Integrations</a>
+   <a><svg class="i"><use href="#book"/></svg>Knowledge</a>
+   <a><svg class="i"><use href="#list"/></svg>Logs</a>
+   <div class="grp">Workspace</div>
+   <a><svg class="i"><use href="#user"/></svg>Team</a>
+   <a><svg class="i"><use href="#gear"/></svg>Settings</a>
+  </nav>
+  <div class="usage"><div class="t">Agent minutes<span>Oct</span></div><div class="v">6,420 <span>/ 10,000</span></div><div class="bar"><i></i></div></div>
+  <div class="me"><div class="av">AG</div><div><b>Atharv</b><small>Velyx Labs</small></div><span class="pro">Pro</span></div>
+ </aside>
+
+ <section class="main">
+  <div class="top">
+   <div class="crumb">Agents &nbsp;/&nbsp; <b>Lead Desk</b></div>
+   <div class="search"><svg class="i"><use href="#search"/></svg>Search runs, agents…<kbd>⌘K</kbd></div>
+   <div class="ib"><svg class="i"><use href="#bell"/></svg><span class="dot"></span></div>
+   <div class="ib"><svg class="i"><use href="#help"/></svg></div>
+  </div>
+  <div class="body">
+   <div class="hd">
+    <div><h2>Lead Desk <span class="live">Live</span></h2><p>Qualifies every inbound lead, drafts the reply and books the call.</p></div>
+    <div class="btns"><span class="btn"><svg class="i"><use href="#pause"/></svg>Pause</span><span class="btn pr"><svg class="i"><use href="#pen"/></svg>Edit flow</span></div>
+   </div>
+
+   <div class="kpis">
+    <div class="kpi"><div class="l"><svg class="i"><use href="#zap"/></svg>Runs</div><div class="n">12,480</div><div class="s"><b>↑ 18%</b> vs last 30 days</div></div>
+    <div class="kpi hero"><div class="l"><svg class="i"><use href="#clock"/></svg>Hours saved</div><div class="n">312<small>h</small></div><div class="s"><b>↑ 41h</b> this month · ≈ 2 hires</div><svg class="spark" viewBox="0 0 120 40" preserveAspectRatio="none"><path class="ar" d="M0 34 L12 31 L24 32 L36 27 L48 28 L60 22 L72 20 L84 16 L96 13 L108 9 L120 4 L120 40 L0 40Z"/><path d="M0 34 L12 31 L24 32 L36 27 L48 28 L60 22 L72 20 L84 16 L96 13 L108 9 L120 4"/></svg></div>
+    <div class="kpi"><div class="l"><svg class="i"><use href="#target"/></svg>Calls booked</div><div class="n">186</div><div class="s"><b>↑ 23%</b> vs last 30 days</div></div>
+    <div class="kpi"><div class="l"><svg class="i"><use href="#coin"/></svg>Cost per run</div><div class="n">$0.04</div><div class="s"><b>↓ 12%</b> after model routing</div></div>
+   </div>
+
+   <div class="card">
+    <div class="ch"><h3>Runs</h3><div class="lg"><span><i></i>Fully automated</span><span><i class="r"></i>Needed a human</span></div>
+     <div class="seg"><span>7d</span><span class="on">30d</span><span>90d</span></div></div>
+    <div class="chart">
+     <div class="ax"><span>750</span><span>500</span><span>250</span><span>0</span></div>
+     <div class="plot"><div class="grid"><i></i><i></i><i></i><i></i></div><div class="bars" id="bars"></div>
+      <div class="xl"><span>Sep 24</span><span>Oct 1</span><span>Oct 8</span><span>Oct 15</span><span>Oct 23</span></div>
+      <div class="tip"><b>Oct 13</b> &nbsp;<span>512 runs · 9 needed you</span></div></div>
+    </div>
+   </div>
+
+   <div class="card">
+    <div class="ch"><h3>Flow</h3><div class="lg"><span>Today · 6 steps · avg 41s per lead</span></div></div>
+    <div class="flow">
+     <div class="node"><div class="ic"><svg class="i"><use href="#mail"/></svg></div><div><b>New lead</b><small><em>412</em> today</small></div></div><div class="cn"></div>
+     <div class="node"><div class="ic"><svg class="i"><use href="#db"/></svg></div><div><b>Enrich</b><small><em>398</em> done</small></div></div><div class="cn"></div>
+     <div class="node ag run"><div class="ic"><svg class="i"><use href="#bot"/></svg></div><div><b>Qualify</b><small><em>187</em> · 4 live</small></div></div><div class="cn"></div>
+     <div class="node ag"><div class="ic"><svg class="i"><use href="#pen"/></svg></div><div><b>Draft reply</b><small><em>187</em> drafted</small></div></div><div class="cn"></div>
+     <div class="node hu"><div class="ic"><svg class="i"><use href="#hand"/></svg></div><div><b>You approve</b><small><em>9</em> needed you</small></div></div><div class="cn"></div>
+     <div class="node"><div class="ic"><svg class="i"><use href="#cal"/></svg></div><div><b>Book call</b><small><em>6</em> booked</small></div></div>
+    </div>
+   </div>
+
+   <div class="card" style="padding-bottom:6px">
+    <div class="ch" style="margin-bottom:8px"><h3>Recent runs</h3></div>
+    <table>
+     <tr><th>Lead</th><th>Steps</th><th>Status</th><th class="r">Time</th><th class="r">Cost</th></tr>
+     <tr><td><div class="who"><span class="a" style="background:#7c6cf0">SM</span>Sarah Mills <small>· Acme</small></div></td><td><div class="steps"><i></i><i></i><i></i><i></i><i class="r"></i><i class="o"></i></div></td><td><span class="st rv">Needs you</span></td><td class="r m">38s</td><td class="r m">$0.05</td></tr>
+     <tr><td><div class="who"><span class="a" style="background:#1d9a57">RK</span>Rohan Kapoor <small>· Finly</small></div></td><td><div class="steps"><i></i><i></i><i></i><i></i><i></i><i></i></div></td><td><span class="st ok">Call booked</span></td><td class="r m">44s</td><td class="r m">$0.04</td></tr>
+     <tr><td><div class="who"><span class="a" style="background:#e0a21a">JL</span>Julia Lee <small>· Northwind</small></div></td><td><div class="steps"><i></i><i></i><i></i><i class="o"></i><i class="o"></i><i class="o"></i></div></td><td><span class="st rn">Running</span></td><td class="r m">12s</td><td class="r m">$0.02</td></tr>
+     <tr><td><div class="who"><span class="a" style="background:#2f8fd8">PS</span>Priya Shah <small>· Loopwise</small></div></td><td><div class="steps"><i></i><i></i><i></i><i></i><i class="r"></i><i class="o"></i></div></td><td><span class="st rv">Needs you</span></td><td class="r m">41s</td><td class="r m">$0.05</td></tr>
+     <tr><td><div class="who"><span class="a" style="background:#d65c8a">MO</span>Marco Oliveira <small>· Brightdesk</small></div></td><td><div class="steps"><i></i><i></i><i></i><i></i><i></i><i></i></div></td><td><span class="st ok">Call booked</span></td><td class="r m">39s</td><td class="r m">$0.04</td></tr>
+    </table>
+   </div>
+  </div>
+ </section>
+
+ <aside class="agent">
+  <div class="top"><svg class="i" style="color:var(--acc)"><use href="#spark"/></svg><b>Lead Desk</b><div class="ib" style="margin-left:auto"><svg class="i"><use href="#expand"/></svg></div></div>
+  <div class="apad">
+   <div class="aq">Waiting on you <span class="c">3</span><a>View all</a></div>
+   <div class="ap">
+    <div class="h"><span class="who"><span class="a" style="background:#7c6cf0">SM</span></span><b>Sarah Mills</b><small>2m ago</small></div>
+    <p>Hi Sarah, thanks for reaching out. Happy to walk you through how we'd automate your onboarding. Does Tue 3pm work?</p>
+    <div class="why"><svg class="i"><use href="#spark"/></svg>Flagged: $12k deal, above your $5k limit</div>
+    <div class="row"><span>Edit</span><span class="y">Approve & send</span></div>
+   </div>
+   <div class="ap">
+    <div class="h"><span class="who"><span class="a" style="background:#d65c8a">DT</span></span><b>David Tan</b><small>9m ago</small></div>
+    <div class="why"><svg class="i"><use href="#spark"/></svg>Asked about pricing. Not in knowledge base yet.</div>
+    <div class="row"><span>Skip</span><span class="y">Answer once</span></div>
+   </div>
+   <div class="ap">
+    <div class="h"><span class="who"><span class="a" style="background:#2f8fd8">PS</span></span><b>Priya Shah</b><small>14m ago</small></div>
+    <div class="why"><svg class="i"><use href="#spark"/></svg>Wants a call this week. No free slots left.</div>
+    <div class="row"><span>Next week</span><span class="y">Open a slot</span></div>
+   </div>
+   <div class="feed">
+    <div class="fh">Live activity<span>4 agents running</span></div>
+    <div class="fi"><i class="pl"></i><span>Qualifying lead from <b>Stripe</b></span><small>now</small></div>
+    <div class="fi"><i class="okd"></i><span>Booked a call with <b>Rohan Kapoor</b></span><small>1m</small></div>
+    <div class="fi"><i></i><span>Drafted a reply to <b>Julia Lee</b></span><small>3m</small></div>
+    <div class="fi"><i></i><span>Enriched <b>12 new leads</b></span><small>5m</small></div>
+    <div class="fi"><i class="okd"></i><span>Booked a call with <b>Marco Oliveira</b></span><small>8m</small></div>
+    <div class="fi"><i></i><span>Followed up with <b>3 cold leads</b></span><small>11m</small></div>
+   </div>
+   <div class="greet">
+    <div class="sp"><svg class="i"><use href="#spark"/></svg></div>
+    <b>Good evening, Atharv</b><small>Lead Desk handled 412 leads today.</small>
+    <div class="chips"><span><svg class="i"><use href="#zap"/></svg>Why did runs drop?</span><span><svg class="i"><use href="#flow"/></svg>Add a step</span><span><svg class="i"><use href="#coin"/></svg>Cut cost</span></div>
+   </div>
+  </div>
+  <div class="inp">Tell Lead Desk what to change…<div class="r"><svg class="i"><use href="#clip"/></svg><svg class="i"><use href="#spark"/></svg><span class="go"><svg class="i"><use href="#send"/></svg></span></div></div>
+ </aside>
+
+</div>
+</div>
+<script>
+const q=new URLSearchParams(location.search),mode=q.get('mode')||'after';
+document.documentElement.className=mode+(q.has('bare')?' bare':'')+(q.get('accent')==='blue'?' blue':'');
+document.getElementById('ttl').textContent=mode==='before'?'Before':'After';
+let s=11;const r=()=>(s=s*16807%2147483647)/2147483647,B=document.getElementById('bars');
+for(let d=0;d<30;d++){const wk=(d+2)%7>4?.55:1,t=Math.round((260+d*6+r()*170)*wk),h=Math.round(t*(.02+r()*.05)),el=document.createElement('div');
+ el.className='b'+(d===19?' hl':'');const px=v=>v/750*132;
+ el.innerHTML=`<i style="height:${px(t-h)}px"></i><i class="r" style="height:${Math.max(3,px(h))}px"></i>`;B.appendChild(el)}
+</script>
+</body>
+</html>

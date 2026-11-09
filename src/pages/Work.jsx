@@ -1,9 +1,13 @@
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Seo from "../components/Seo";
 import Layout from "../components/Layout";
 import SectionHeader from "../components/SectionHeader";
 import FilterPills from "../components/FilterPills";
 import ProjectCard from "../components/ProjectCard";
+import DesignFrame from "../components/DesignFrame";
+import DesignViewer from "../components/DesignViewer";
+import { DESIGNS } from "../data/designs";
 import { PROJECTS } from "../data/projects";
 import { WORK_FILTERS, pickFilter } from "../data/filters";
 
@@ -11,6 +15,7 @@ export default function Work() {
   const [params, setParams] = useSearchParams();
   const type = pickFilter(WORK_FILTERS, params.get("type"));
   const list = type === "all" ? PROJECTS : PROJECTS.filter((p) => p.types.includes(type));
+  const [open, setOpen] = useState(null);
 
   return (
     <Layout>
@@ -40,6 +45,19 @@ export default function Work() {
           {list.map((p) => <ProjectCard key={p.slug} project={p} />)}
         </div>
         {list.length === 0 && <p className="container muted center">No projects in this category yet.</p>}
+      </section>
+      <section id="designs" className="section">
+        <div className="container">
+          <SectionHeader
+            align="center"
+            title="Design lab"
+            sub="Landing pages, hero sections and dashboards we designed and built in code. Each one is live: scroll inside it, or open it full screen."
+          />
+          <div className="work-grid design-grid">
+            {DESIGNS.map((d, i) => <DesignFrame key={d.slug} design={d} onOpen={() => setOpen(i)} />)}
+          </div>
+        </div>
+        {open !== null && <DesignViewer items={DESIGNS} index={open} onIndex={setOpen} onClose={() => setOpen(null)} />}
       </section>
     </Layout>
   );

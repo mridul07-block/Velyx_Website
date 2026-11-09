@@ -1,0 +1,319 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Saffra</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1d1410;--mut:#8a7a6e;--line:#efe6dc;--soft:#fbf7f2;--sun:#e8862f;--sienna:#9c3d14;--deep:#6e2a0e;--pale:#d9a27a;--cream:#f7efe4}
+*{box-sizing:border-box;margin:0}
+body{background:#cfcac4;font-family:Inter,sans-serif;color:var(--ink);width:1480px}
+.pg{position:relative;width:1480px;height:2000px;background:#d9d5d0;overflow:hidden;margin-bottom:40px}
+.wh{position:absolute;left:18px;right:18px;top:0;bottom:0;background:#fff}
+.abs{position:absolute}
+svg.i{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.serif{font-family:Newsreader,serif;font-weight:400;letter-spacing:-.025em}
+.pale{color:var(--pale)}
+.pill{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:999px;padding:9px 16px;font:500 17px Inter;background:#fff}
+.btnw{display:inline-flex;align-items:center;background:#fff;color:var(--ink);border-radius:999px;padding:16px 30px;font:500 16px Inter;box-shadow:0 8px 24px -10px rgba(60,20,0,.4)}
+.btnd{display:inline-flex;align-items:center;background:#241812;color:#fff;border-radius:999px;padding:20px 36px;font:500 18px Inter}
+.photo{background-size:cover;background-repeat:no-repeat}
+/* dashboard */
+.dash{position:absolute;display:flex;overflow:hidden;background:#fff;border-radius:16px 16px 0 0}
+.sb{width:280px;flex:none;background:linear-gradient(180deg,rgba(158,62,20,.92),rgba(110,42,14,.95));color:#fde9d8;padding:20px 16px;position:relative}
+.sb .sr{background:#fff;border-radius:999px;height:36px;display:flex;align-items:center;gap:8px;padding:0 14px;color:#a8988c;font:400 13px Inter}
+.sb .sr kbd{margin-left:auto;font:600 11px Inter;color:#5a4a40}
+.sb h6{font:600 11.5px Inter;letter-spacing:.04em;margin:22px 0 10px 4px;color:#ffd9bd}
+.sb .it{display:flex;align-items:center;gap:11px;height:35px;padding:0 14px;border-radius:999px;font:500 14px Inter;color:#fff3ea}
+.sb .it.on{background:#fff;color:var(--deep)}
+.sb .it .dd{margin-left:auto;opacity:.7}
+.sb .plus{margin-left:auto;width:22px;height:22px;border-radius:50%;background:#fff;color:var(--sienna);display:grid;place-items:center;font:600 16px Inter}
+.mn{flex:1;padding:22px 30px;position:relative}
+.bc{display:flex;align-items:center;gap:10px;font:400 14px Inter;color:#a8988c}.bc b{color:var(--ink);font-weight:500}
+.tr{position:absolute;right:28px;top:16px;display:flex;gap:10px;align-items:center}
+.cb{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:#5a4a40}
+.ai{background:#f6ead9;border-radius:999px;padding:8px 14px;font:500 13.5px Inter;color:var(--deep);display:flex;gap:6px;align-items:center}
+.kp{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:40px}
+.k{background:var(--soft);border-radius:12px;padding:16px 16px;height:132px;position:relative}
+.k .t{font:500 13px Inter;display:flex;gap:6px;align-items:center}.k .t i{width:10px;height:10px;border-radius:50%;border:1.4px solid #c9bcb0;display:inline-block}
+.k .s{font:400 11.5px Inter;color:var(--mut);margin-top:3px}
+.k .v{position:absolute;left:16px;bottom:18px;font:500 30px Inter;letter-spacing:-.02em}.k .v small{font-size:17px;color:var(--mut);font-weight:400}
+.k .ck{position:absolute;right:14px;top:14px;width:16px;height:16px;border-radius:50%;border:1.4px solid #d8ccc0}
+.k .ck.on{background:var(--sienna);border-color:var(--sienna)}
+.k canvas{position:absolute;right:12px;bottom:12px}
+.wave{position:relative}
+.tip{position:absolute;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 24px -12px rgba(0,0,0,.3);padding:9px 12px;font:500 12px Inter;width:136px}
+.tip div{display:flex;justify-content:space-between;margin-top:7px;color:#5a4a40}.tip div:last-child{color:#c5b8ac}
+table{border-collapse:collapse;width:100%;font:400 13.5px Inter}
+th{font:500 12px Inter;color:var(--mut);text-align:left;padding:12px 14px;background:var(--soft)}
+td{padding:16px 14px;border-bottom:1px solid var(--line)}
+.st{display:inline-flex;gap:6px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:3px 10px;font:500 12px Inter;color:var(--sienna)}
+.st:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--sun)}
+.tg{width:36px;height:20px;border-radius:999px;background:var(--sienna);position:relative;display:inline-block;vertical-align:middle}
+.tg:after{content:"";position:absolute;right:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#fff}
+#p1 .k canvas{display:none}
+#p2 .k canvas.gauge{transform:scale(.62)!important}
+#p2 .k canvas{transform:scale(.8);transform-origin:right bottom}
+/* network */
+.nc{position:absolute;background:#fff;border:1.5px solid #f0e4d8;border-radius:18px;padding:18px 18px 16px;box-shadow:0 10px 30px -20px rgba(110,42,14,.4)}
+.nc .h{display:flex;align-items:center;gap:10px;font:500 21px Inter;color:var(--deep)}
+.nc .h .ic{width:30px;height:30px;border-radius:8px;background:var(--sienna);display:grid;place-items:center}
+.nc .h .ic:after{content:"";width:12px;height:12px;border-radius:3px;border:2.5px solid #fff}
+.nc .h .ac{margin-left:auto;font:500 16px Inter;background:#f8ede2;border-radius:10px;padding:6px 12px;color:var(--sienna)}
+.nc .bar{display:flex;gap:4px;margin:18px 0 14px}.nc .bar i{flex:1;height:6px;border-radius:3px;background:#ece4dc}.nc .bar i.on{background:var(--sienna)}
+.nc .f{font:400 18px Inter;color:#4a3a30}
+.chk{position:absolute;display:inline-flex;align-items:center;gap:11px;background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:10px 18px 10px 12px;font:400 19px Inter;box-shadow:0 8px 20px -14px rgba(0,0,0,.3)}
+.chk b{width:22px;height:22px;border-radius:50%;background:var(--ink);display:grid;place-items:center;color:#fff;font:700 12px Inter}
+/* stat cards */
+.sc4{position:absolute;top:1530px;width:294px;height:325px;border:1.5px solid var(--line);border-radius:16px;padding:26px 26px;box-shadow:0 10px 30px -24px rgba(0,0,0,.3)}
+.sc4 .n{position:absolute;right:24px;top:24px;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font:500 13px Inter}
+.sc4 .big{font:300 54px Newsreader;letter-spacing:-.03em;margin-top:58px;color:var(--deep)}
+.sc4 p{font:400 16.5px/1.38 Inter;margin-top:56px}
+/* feature photo cards */
+.fc{position:absolute;width:386px;height:556px;border-radius:16px;overflow:hidden;border:5px solid #f4f1ee}
+.fc .bg{position:absolute;inset:0;background-size:cover}
+.fc .bg:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(80,24,4,.05) 40%,rgba(70,20,4,.55) 70%,rgba(60,16,2,.88))}
+.fc .cap{position:absolute;left:24px;right:24px;bottom:28px;color:#fff}
+.fc .cap h5{font:500 22px Inter;margin-bottom:10px}.fc .cap p{font:400 17px/1.6 Inter;color:#ffe9d9}
+.fc .rule{position:absolute;left:0;right:0;top:374px;height:1px;background:rgba(255,255,255,.35)}
+.fc .ui{position:absolute;background:#fff;border-radius:12px;box-shadow:0 20px 40px -20px rgba(0,0,0,.5)}
+.row{display:flex;align-items:center;gap:12px;background:var(--soft);border-radius:8px;padding:10px 12px;margin-bottom:9px}
+.row .lg{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;color:#fff;font:700 12px Inter}
+.row b{font:500 14px Inter;display:block}.row small{font:400 11.5px Inter;color:var(--mut)}
+/* list cards */
+.lc{position:absolute;width:646px;border:1.5px solid #ece7e2;border-radius:16px;box-shadow:0 6px 18px -14px rgba(0,0,0,.25);background:#fff;overflow:hidden}
+.lc .hd{padding:26px 30px 24px;border-bottom:1.5px solid #ece7e2}
+.lc .hd svg{width:28px;height:28px;color:#b4a79c;stroke-width:1.5}
+.lc .hd h5{font:500 25px Inter;margin-top:12px}
+.lc .li{padding:22px 34px 20px;border-bottom:1.5px solid #ece7e2;display:flex;gap:16px}
+.lc .li:last-child{border:0}
+.lc .li i{width:20px;height:20px;border-radius:50%;border:2.6px solid var(--ink);flex:none;margin-top:4px}
+.lc .li b{font:500 25px Inter;display:block}.lc .li small{font:400 18.5px Inter;color:#c2b5aa;display:block;margin-top:8px}
+/* footer */
+.ft a{display:block;font:400 18px Inter;color:#fff;margin-top:20px;text-decoration:none}
+.ft h5{font:600 20px Inter;color:#fff}
+</style></head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="logo" viewBox="0 0 40 40"><g fill="currentColor"><circle cx="20" cy="20" r="3.4"/><g id="pt"><ellipse cx="20" cy="8.5" rx="3" ry="6.2"/></g><use href="#pt" transform="rotate(45 20 20)"/><use href="#pt" transform="rotate(90 20 20)"/><use href="#pt" transform="rotate(135 20 20)"/><use href="#pt" transform="rotate(180 20 20)"/><use href="#pt" transform="rotate(225 20 20)"/><use href="#pt" transform="rotate(270 20 20)"/><use href="#pt" transform="rotate(315 20 20)"/></g></symbol>
+<symbol id="home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+<symbol id="bot" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4M9 13v1M15 13v1"/></symbol>
+<symbol id="flow" viewBox="0 0 24 24"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="15" y="15" width="6" height="6" rx="1.5"/><path d="M6 9v3a3 3 0 0 0 3 3h6"/></symbol>
+<symbol id="inbox" viewBox="0 0 24 24"><path d="M3 13h5l2 3h4l2-3h5M5 5h14l2 8v6H3v-6z"/></symbol>
+<symbol id="chart" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M7 13l3-3 3 2 4-4"/></symbol>
+<symbol id="db" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></symbol>
+<symbol id="link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
+<symbol id="grip" viewBox="0 0 24 24"><path d="M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01"/></symbol>
+<symbol id="dn" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="srch" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+<symbol id="bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 21h4"/></symbol>
+<symbol id="msg" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+<symbol id="spark" viewBox="0 0 24 24"><path d="M12 3c.5 4.5 2.5 6.5 7 7-4.5.5-6.5 2.5-7 7-.5-4.5-2.5-6.5-7-7 4.5-.5 6.5-2.5 7-7z"/></symbol>
+<symbol id="cal" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></symbol>
+<symbol id="q" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5V14M12 17h.01"/></symbol>
+<symbol id="tgt" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></symbol>
+<symbol id="cp" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="1"/><path d="M4 16V5a1 1 0 0 1 1-1h11"/></symbol>
+<symbol id="plug" viewBox="0 0 24 24"><path d="M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4"/></symbol>
+<symbol id="shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/></symbol>
+<symbol id="glb" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.8 2.5 15.2 0 18M12 3c-2.5 2.8-2.5 15.2 0 18"/></symbol>
+<symbol id="srv" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="7" rx="2"/><rect x="4" y="13" width="16" height="7" rx="2"/><path d="M8 7.5h.01M8 16.5h.01"/></symbol>
+<symbol id="ext" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-8 8M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+<symbol id="crown" viewBox="0 0 24 24"><path d="m3 8 4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></symbol>
+</defs></svg>
+
+<!-- ============ PAGE 1 ============ -->
+<div class="pg" id="p1"><div class="wh">
+  <div class="abs photo" id="hero" style="left:4px;top:20px;width:1436px;height:992px;border-radius:22px;background-image:url(img/hero.jpg);background-position:right center"></div>
+  <div class="dash" style="left:28px;top:520px;width:1100px;height:492px;border-radius:0 18px 0 0;background:#fff">
+    <div class="sb" style="border-radius:0"><div class="sr"><svg class="i" style="width:13px"><use href="#srch"/></svg>Search…<kbd>⌘ F</kbd></div>
+      <h6>OVERVIEW</h6>
+      <div class="it"><svg class="i"><use href="#home"/></svg>Home</div><div class="it"><svg class="i"><use href="#bot"/></svg>Agents</div><div class="it"><svg class="i"><use href="#flow"/></svg>Pipeline</div><div class="it"><svg class="i"><use href="#inbox"/></svg>Inbox</div><div class="it on"><svg class="i"><use href="#chart"/></svg>Revenue</div>
+      <h6 style="display:flex;align-items:center">PLAYBOOKS<span class="plus">+</span></h6>
+      <div class="it"><svg class="i"><use href="#grip"/></svg>Inbound Desk<svg class="i dd" style="width:13px;margin-left:4px"><use href="#dn"/></svg></div><div class="it"><svg class="i"><use href="#grip"/></svg>Outbound SDR<svg class="i dd" style="width:13px;margin-left:4px"><use href="#dn"/></svg></div><div class="it"><svg class="i"><use href="#grip"/></svg>Renewals<svg class="i dd" style="width:13px;margin-left:4px"><use href="#dn"/></svg></div><div class="it"><svg class="i"><use href="#grip"/></svg>Expansion<svg class="i dd" style="width:13px;margin-left:4px"><use href="#dn"/></svg></div>
+    </div>
+    <div class="mn">
+      <div class="bc">Overview <span>/</span> <b>Revenue</b></div>
+      <div class="tr"><div class="cb"><svg class="i" style="width:14px"><use href="#msg"/></svg></div><div class="cb"><svg class="i" style="width:14px"><use href="#bell"/></svg></div><div class="ai">Ask Saffra <svg class="i" style="width:13px"><use href="#spark"/></svg></div></div>
+      <div class="kp" style="grid-template-columns:repeat(4,1fr)">
+        <div class="k"><div class="t">Pipeline created <i></i></div><div class="s">last 7 days</div><div class="v">$1.24<small>M</small></div><canvas class="gauge" width="170" height="80" style="width:170px;height:80px"></canvas><div class="ck"></div></div>
+        <div class="k"><div class="t">Meetings booked <i></i></div><div class="s">last 7 days</div><div class="v">186<small>/200</small></div><canvas class="ticks" data-n="16" width="150" height="56" style="width:150px;height:56px"></canvas><div class="ck on"></div></div>
+        <div class="k"><div class="t">Reply rate <i></i></div><div class="s">last 7 days</div><div class="v">38<small>%</small></div><canvas class="comb" width="150" height="40" style="width:150px;height:40px"></canvas><div class="ck"></div></div>
+        <div class="k"><div class="t">Leads handled <i></i></div><div class="s">last 7 days</div><div class="v">4,812</div><div class="ck"></div></div>
+      </div>
+      <div style="margin-top:34px;font:500 14px Inter">Revenue Trend</div><div style="font:400 12.5px Inter;color:var(--mut);margin-top:4px">Booked vs. lost, daily</div>
+      <div style="margin-top:22px;font:500 13.5px Inter;display:flex;gap:7px;align-items:center"><svg class="i" style="width:14px"><use href="#cal"/></svg>October 2026<svg class="i" style="width:13px"><use href="#dn"/></svg></div>
+      <canvas class="wavec" data-hi="12" width="760" height="190" style="width:760px;height:190px;margin-top:12px"></canvas>
+      <div class="tip" style="left:190px;top:300px"><span style="display:flex;gap:6px;align-items:center"><svg class="i" style="width:12px"><use href="#cal"/></svg>Oct 24, 2026</span><div><span>● Booked</span><b>137/182</b></div><div><span>● Lost</span><b>45/182</b></div></div>
+    </div>
+  </div>
+  <div class="abs" id="lgs" style="left:200px;top:448px;width:1000px;display:flex;justify-content:space-between;align-items:center;color:#fff;opacity:.95"></div>
+  <div class="abs" style="left:4px;top:20px;width:1436px;height:992px;filter:drop-shadow(-8px 6px 14px rgba(50,14,0,.4));clip-path:inset(0 round 22px)"><div class="abs photo" id="cliff" style="inset:0;border-radius:22px;background-image:url(img/cliff.png);background-position:right center"></div></div>
+  <!-- nav + hero copy -->
+  <div class="abs" style="left:32px;top:42px;display:flex;align-items:center;gap:12px;color:#fff;font:500 24px Inter"><svg style="width:30px;height:30px;color:#fff"><use href="#logo"/></svg>Saffra</div>
+  <div class="abs" style="right:22px;top:36px;display:flex;align-items:center;gap:34px;color:#fff;font:500 17px Inter">Sign up<span class="btnw" style="padding:16px 30px;font-size:17px">Sign in</span></div>
+  <div class="abs" style="left:0;right:0;top:90px;text-align:center;color:#fff">
+    <span class="pill" style="background:rgba(80,24,4,.35);border-color:rgba(255,255,255,.25);color:#fff;font-size:14px;padding:7px 14px 7px 8px;backdrop-filter:blur(6px)"><b style="width:24px;height:24px;border-radius:50%;background:#fff;display:grid;place-items:center;color:var(--sienna)"><svg class="i" style="width:13px"><use href="#spark"/></svg></b>Meet your AI revenue team</span>
+    <h1 class="serif" style="font-size:72px;line-height:.92;margin-top:26px;font-weight:300">AI agents that turn<br>leads into revenue</h1>
+    <p style="font:400 16.5px Inter;margin-top:24px;opacity:.95">Deploy agents that research, qualify, follow up and book meetings while you sleep.</p>
+    <span class="btnw" style="margin-top:30px">Try Saffra Free</span>
+  </div>
+
+  <!-- agent network -->
+  <div class="abs" style="left:693px;top:1094px;width:96px;height:96px;border-radius:20px;background:#fff;border:1.5px solid var(--line);box-shadow:0 14px 30px -18px rgba(110,42,14,.45);display:grid;place-items:center;color:var(--sienna)"><svg style="width:46px;height:46px"><use href="#logo"/></svg></div>
+  <svg class="abs" style="left:0;top:0;width:1444px;height:2000px;pointer-events:none" fill="none" stroke="#e9e0d6" stroke-width="2"><path d="M724 1190v40q0 18-18 18H552q-18 0-18 18v56"/><path d="M758 1190v40q0 18 18 18H928q18 0 18 18v56"/></svg>
+  <div class="chk" style="left:130px;top:1162px"><b>✓</b>Researched 48 accounts</div>
+  <div class="chk" style="left:984px;top:1158px"><b>✓</b>Drafted 31 personal replies</div>
+  <div class="chk" style="left:186px;top:1496px"><b>✓</b>Booked 6 meetings</div>
+  <div class="chk" style="left:1050px;top:1490px"><b>✓</b>Synced 212 deals to CRM</div>
+  <div class="nc" style="left:358px;top:1302px;width:350px"><div class="h"><span class="ic"></span>Inbound Desk<span class="ac">Active</span></div><div class="bar"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div><div class="f">3 of 4 stages done</div></div>
+  <div class="nc" style="left:770px;top:1302px;width:350px"><div class="h"><span class="ic"></span>Outbound SDR<span class="ac">Active</span></div><div class="bar"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div><div class="f">Emails: 8,096 sent / 10,000</div></div>
+  <div class="nc" style="left:539px;top:1448px;width:400px"><div class="h"><span class="ic"></span>Renewal Watch V1.2<span class="ac">Active</span></div><div class="bar"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div><div class="f">98% accuracy, 5,490 accounts</div></div>
+  <div class="abs" style="left:0;right:0;top:1768px;text-align:center"><span class="pill"><svg class="i" style="width:16px"><use href="#flow"/></svg>How It Works</span>
+    <h2 class="serif" style="font-size:64px;line-height:.95;margin-top:40px">How Saffra agents<br><span class="pale">close the loop</span></h2></div>
+</div></div>
+
+<!-- ============ PAGE 2 ============ -->
+<div class="pg" id="p2"><div class="wh">
+  <div class="abs photo" style="left:12px;top:16px;width:1420px;height:1286px;border-radius:22px;background-image:url(img/petra.jpg);background-position:right top;background-size:auto 100%"></div>
+  <div class="abs" style="left:72px;top:98px;color:#fff">
+    <span class="pill" style="background:rgba(80,24,4,.3);border-color:rgba(255,255,255,.3);color:#fff;font-size:17px"><svg class="i" style="width:20px;height:20px;fill:#fff;stroke:var(--sienna)"><use href="#q"/></svg>Why Saffra Agents?</span>
+    <h2 class="serif" style="font-size:62px;line-height:.98;margin-top:28px;font-weight:300">Why revenue teams<br>choose Saffra agents</h2>
+    <div style="margin-top:30px;display:flex;align-items:center;gap:36px"><span class="btnw" style="padding:17px 30px;font-size:17px">Try Saffra Free</span><span style="font:500 17px Inter">Explore Capabilities</span></div>
+  </div>
+  <div class="dash" style="left:72px;top:440px;width:1300px;height:862px;border-radius:18px 18px 0 0">
+    <div class="sb" style="width:230px"><div class="sr"><svg class="i" style="width:13px"><use href="#srch"/></svg>Search…<kbd>⌘ F</kbd></div>
+      <h6>OVERVIEW</h6>
+      <div class="it"><svg class="i"><use href="#home"/></svg>Home</div><div class="it"><svg class="i"><use href="#bot"/></svg>Agents</div><div class="it"><svg class="i"><use href="#flow"/></svg>Pipeline</div><div class="it"><svg class="i"><use href="#inbox"/></svg>Inbox</div><div class="it on"><svg class="i"><use href="#chart"/></svg>Revenue</div>
+      <h6 style="display:flex;align-items:center">PLAYBOOKS<span class="plus">+</span></h6>
+      <div class="it"><svg class="i"><use href="#grip"/></svg>Inbound Desk</div><div class="it"><svg class="i"><use href="#grip"/></svg>Outbound SDR</div><div class="it"><svg class="i"><use href="#grip"/></svg>Renewals</div><div class="it"><svg class="i"><use href="#grip"/></svg>Expansion</div>
+      <div style="position:absolute;left:16px;right:16px;top:640px"><h6>TOOLS</h6><div class="it"><svg class="i"><use href="#plug"/></svg>Integrations</div><div class="it"><svg class="i"><use href="#db"/></svg>CRM Sync</div><div class="it"><svg class="i"><use href="#q"/></svg>Help Centre</div></div>
+      <div style="position:absolute;left:16px;right:16px;top:800px;background:#fff;border-radius:12px;padding:8px 12px;display:flex;gap:10px;align-items:center;color:var(--ink)"><b style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#f3b06a,#9c3d14)"></b><div><div style="font:500 13px Inter">Northwind</div><div style="font:400 11px Inter;color:var(--mut)">Revenue team</div></div></div>
+    </div>
+    <div class="mn">
+      <div class="bc">Overview <span>/</span> <b>Revenue</b></div>
+      <div class="tr"><div class="cb"><svg class="i" style="width:14px"><use href="#msg"/></svg></div><div class="cb"><svg class="i" style="width:14px"><use href="#bell"/></svg></div><div class="ai">Ask Saffra <svg class="i" style="width:13px"><use href="#spark"/></svg></div><b style="width:30px;height:30px;border-radius:50%;background:url(img/hero.jpg) 82% 30%/600% auto"></b></div>
+      <div class="kp" style="margin-top:38px">
+        <div class="k"><div class="t" style="color:var(--deep)">Pipeline created <i></i></div><div class="s">last 7 days</div><div class="v" style="color:var(--deep)">$1.24<small>M</small></div><canvas class="gauge" width="150" height="72" style="width:150px;height:72px"></canvas><div class="ck"></div></div>
+        <div class="k"><div class="t" style="color:var(--deep)">Meetings booked <i></i></div><div class="s">last 7 days</div><div class="v" style="color:var(--deep)">186<small>/200</small></div><canvas class="ticks" data-n="14" width="120" height="56" style="width:120px;height:56px"></canvas><div class="ck on"></div></div>
+        <div class="k"><div class="t" style="color:var(--deep)">Reply rate <i></i></div><div class="s">last 7 days</div><div class="v" style="color:var(--deep)">38<small>%</small></div><canvas class="comb" width="130" height="40" style="width:130px;height:40px"></canvas><div class="ck"></div></div>
+        <div class="k"><div class="t" style="color:var(--deep)">Leads handled <i></i></div><div class="s">last 7 days</div><div class="v" style="color:var(--deep)">4,812</div><canvas class="steps" width="110" height="56" style="width:110px;height:56px"></canvas><div class="ck"></div></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;margin-top:34px"><div><div style="font:500 15px Inter;color:var(--deep)">Revenue Trend</div><div style="font:400 12.5px Inter;color:var(--mut);margin-top:4px">Booked vs. lost, monthly</div></div>
+        <div style="margin-left:auto;display:flex;gap:8px"><span class="pill" style="font-size:13px;padding:6px 12px">Yearly <svg class="i" style="width:12px"><use href="#dn"/></svg></span><span class="cb" style="width:30px;height:30px"><svg class="i" style="width:12px"><use href="#ext"/></svg></span></div></div>
+      <div style="display:flex;margin-top:20px;font:500 13.5px Inter;color:var(--deep);align-items:center;gap:7px"><svg class="i" style="width:14px"><use href="#cal"/></svg>October 2026<svg class="i" style="width:13px"><use href="#dn"/></svg><span style="margin-left:auto;font:400 12.5px Inter;color:#5a4a40;display:flex;gap:18px"><span><b style="color:var(--sienna)">●</b> Booked</span><span><b style="color:#d94a5a">●</b> Lost</span></span></div>
+      <canvas class="wavec" data-hi="45" width="980" height="210" style="width:980px;height:210px;margin-top:16px"></canvas>
+      <div style="display:flex;justify-content:space-between;font:400 11.5px Inter;color:#b8aa9e;padding:14px 24px 0">
+        <span>JAN</span><span>FEB</span><span>MAR</span><span>APR</span><span>MAY</span><span>JUN</span><span>JUL</span><span>AUG</span><span>SEP</span><span style="background:#fff;border:1px solid var(--line);border-radius:999px;padding:2px 8px;margin:-3px 0;color:var(--deep);font-weight:600">OCT</span><span>NOV</span><span>DEC</span></div>
+      <div class="tip" style="left:752px;top:352px"><span style="display:flex;gap:6px;align-items:center;color:var(--deep)"><svg class="i" style="width:12px"><use href="#cal"/></svg>October 2026</span><div><span>● Booked</span><b>137/182</b></div><div><span>● Lost</span><b>45/182</b></div></div>
+      <div style="display:flex;align-items:center;margin-top:36px"><b style="font:500 15px Inter;color:var(--deep)">All Playbooks</b>
+        <div style="margin-left:auto;display:flex;gap:8px;align-items:center;font:400 13px Inter"><span class="pill" style="font-size:13px;padding:7px 14px;width:200px;color:#b8aa9e"><svg class="i" style="width:13px"><use href="#srch"/></svg>Search playbooks…</span><span class="pill" style="font-size:13px;padding:7px 12px;color:var(--deep)">Export</span><span class="pill" style="font-size:13px;padding:7px 12px;color:var(--deep)">Latest <svg class="i" style="width:12px"><use href="#dn"/></svg></span></div></div>
+      <table style="margin-top:14px"><tr><th style="border-radius:10px 0 0 10px">Playbook</th><th>Agent</th><th>Status</th><th>Trigger</th><th>Owner</th><th>Last run</th><th style="border-radius:0 10px 10px 0">Action</th></tr>
+        <tr><td style="color:var(--deep);font-weight:500">Inbound Desk</td><td style="color:var(--deep)">Lead → Meeting</td><td><span class="st">Active</span></td><td style="color:var(--deep)">Webhook</td><td>Alicia Moreno</td><td style="color:var(--mut)">Today, 10:42</td><td><span class="tg"></span></td></tr>
+        <tr><td style="color:var(--deep);font-weight:500">Outbound SDR</td><td style="color:var(--deep)">Research + Sequence</td><td><span class="st">Active</span></td><td style="color:var(--deep)">Schedule</td><td>Dev Patel</td><td style="color:var(--mut)">Today, 10:18</td><td><span class="tg"></span></td></tr>
+        <tr><td style="color:var(--deep);font-weight:500">Renewal Watch</td><td style="color:var(--deep)">Churn risk alerts</td><td><span class="st">Active</span></td><td style="color:var(--deep)">CRM update</td><td>Sara Lindqvist</td><td style="color:var(--mut)">Today, 09:55</td><td><span class="tg"></span></td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="abs" style="left:0;right:0;top:1350px;text-align:center"><div style="font-size:30px;letter-spacing:12px;color:#f0a03c">★★★★★</div>
+    <p style="font:400 22px/1.45 Inter;margin:26px auto 0;width:760px">Built for autonomous selling and zero-fluff follow-up. Saffra agents remove the busywork so your team spends its time closing, not chasing.</p></div>
+  <div class="sc4" style="left:108px"><svg class="i" style="width:30px;height:30px;color:var(--ink)"><use href="#tgt"/></svg><div class="n">1</div><div class="big">47s</div><p>Average time from a new lead to a personal reply, day or night.</p></div>
+  <div class="sc4" style="left:418px"><svg class="i" style="width:30px;height:30px"><use href="#cp"/></svg><div class="n">2</div><div class="big">24/7</div><p>Agents research, follow up and book meetings around the clock.</p></div>
+  <div class="sc4" style="left:728px"><svg class="i" style="width:30px;height:30px"><use href="#plug"/></svg><div class="n">3</div><div class="big">50+</div><p>Integrations with your CRM, inbox, calendar and Slack, out of the box.</p></div>
+  <div class="sc4" style="left:1038px"><svg class="i" style="width:30px;height:30px"><use href="#flow"/></svg><div class="n">4</div><div class="big">Zero</div><p>Leads left waiting. Every inbound gets researched and answered.</p></div>
+</div></div>
+
+<!-- ============ PAGE 3 ============ -->
+<div class="pg" id="p3"><div class="wh">
+  <div class="abs" style="left:78px;top:60px">
+    <span class="pill"><svg class="i" style="width:19px;height:19px"><use href="#ext"/></svg>Features</span>
+    <h2 class="serif" style="font-size:76px;line-height:.98;margin-top:34px">Agent<br><span class="pale">capabilities</span></h2>
+    <p style="font:400 20px/1.55 Inter;color:#6f5e52;width:470px;margin-top:40px">Go beyond a chatbot. Saffra agents research accounts, qualify leads and run your follow-up end to end, inside the tools you already use.</p>
+    <div class="btnd" style="margin-top:36px">Try Saffra Free</div>
+  </div>
+  <!-- card 1: integrations -->
+  <div class="fc" style="left:588px;top:58px"><div class="bg" style="background-image:url(img/caravan.jpg);background-position:72% 30%;background-size:auto 130%"></div>
+    <div class="ui" style="left:24px;right:24px;top:30px;padding:10px;background:rgba(255,255,255,.55);backdrop-filter:blur(10px)"><div style="background:#fff;border-radius:9px;padding:12px 14px;display:flex;align-items:center;gap:12px"><svg style="width:20px;height:20px;color:var(--sienna)"><use href="#logo"/></svg><div><div style="font:500 15px Inter">Saffra Agent</div><div style="font:400 12px Inter;color:var(--mut)">Revenue agent</div></div><b style="margin-left:auto;letter-spacing:2px">···</b></div>
+      <div style="background:#fff;border-radius:9px;padding:10px;margin-top:8px">
+        <div class="row"><div class="lg" style="background:#2d7ff9">C</div><div><b>CRM</b><small>Deals + contacts</small></div></div>
+        <div class="row"><div class="lg" style="background:#e8562f">G</div><div><b>Gmail</b><small>Inbox + sending</small></div></div>
+        <div class="row"><div class="lg" style="background:#611f69">S</div><div><b>Slack</b><small>Team alerts</small></div></div>
+        <div class="row" style="margin:0"><div class="lg" style="background:#1a73e8">31</div><div><b>Calendar</b><small>Meeting booking</small></div></div></div></div>
+    <div class="rule"></div><div class="cap"><h5>Plug into your stack</h5><p>Connect your CRM, inbox and calendar in minutes. No new tool for your team to learn.</p></div></div>
+  <!-- card 2: playbooks -->
+  <div class="fc" style="left:998px;top:58px"><div class="bg" style="background-image:url(img/petra.jpg);background-position:62% 40%;background-size:auto 115%"></div>
+    <div class="ui" style="left:24px;right:-20px;top:30px;padding:26px 22px 14px;border-radius:12px 0 0 12px">
+      <div style="font:400 17px Inter">let's <span style="background:#fbeee2;color:var(--sienna);padding:2px 6px;border-radius:4px">/qualify-lead and</span> <span style="border-left:2px solid var(--ink);margin-left:6px"></span></div>
+      <div style="margin-top:20px;border:1px solid var(--line);border-radius:10px;padding:10px;box-shadow:0 10px 24px -14px rgba(0,0,0,.3);margin-right:24px">
+        <div class="row" style="display:block"><b>/qualify-lead</b><small>Score the lead against your ICP and route it</small></div>
+        <div class="row" style="display:block"><b>/draft-follow-up</b><small>Write a personal reply from fresh research</small></div>
+        <div class="row" style="display:block;margin:0"><b>/book-meeting</b><small>Find a free slot and send the invite</small></div></div></div>
+    <div class="rule"></div><div class="cap"><h5>Revenue playbooks</h5><p>Give your agent your sales motion, your tone and your ICP, then run it with one command.</p></div></div>
+  <!-- card 3: live research -->
+  <div class="fc" style="left:588px;top:638px"><div class="bg" style="background-image:url(img/hero.jpg);background-position:30% 70%;background-size:auto 150%"></div>
+    <div class="ui" style="left:24px;right:-20px;top:36px;height:340px;border-radius:12px 0 0 0;overflow:hidden">
+      <div style="background:#efe9e3;padding:14px 18px 0;display:flex;gap:8px;align-items:center"><i style="width:14px;height:14px;border-radius:50%;background:#ff5f57"></i><i style="width:14px;height:14px;border-radius:50%;background:#febc2e"></i><i style="width:14px;height:14px;border-radius:50%;background:#28c840"></i>
+        <div style="margin-left:18px;background:#fff;border-radius:10px 10px 0 0;padding:10px 16px;font:400 17px Inter;display:flex;gap:10px;align-items:center"><svg style="width:18px;height:18px;color:var(--sienna)"><use href="#logo"/></svg>northwind.co<span style="margin-left:22px">×</span></div></div>
+      <div style="padding:14px 18px;border-bottom:1px solid var(--line);display:flex;gap:18px;align-items:center;font:400 18px Inter;color:#5a4a40">←&nbsp; → &nbsp;↻<span style="background:#f3efeb;border-radius:999px;padding:7px 16px;font-size:17px;flex:1">🔒 northwind.co/careers</span></div>
+      <div style="padding:18px;display:flex;gap:14px;align-items:center"><b style="width:52px;height:52px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font:700 20px Inter">N</b><div style="font:600 22px Inter">Northwind</div></div>
+      <div style="padding:0 18px"><div style="font:400 14px/1.6 Inter;color:#5a4a40;border-top:1px solid var(--line);padding-top:14px"><span style="background:#fbeee2">Hiring 4 dispatch coordinators</span> · Columbus, OH<br>Series A · <span style="background:#fbeee2">$12M raised Aug 2026</span></div></div></div>
+    <div class="rule"></div><div class="cap"><h5>Live research</h5><p>Agents browse company sites, news and job boards to find the reason to reach out today.</p></div></div>
+  <!-- card 4: channels -->
+  <div class="fc" style="left:998px;top:638px"><div class="bg" style="background-image:url(img/caravan.jpg);background-position:20% 60%;background-size:auto 140%"></div>
+    <div class="abs" id="orbs" style="left:-20px;top:40px;width:440px"></div>
+    <div class="rule"></div><div class="cap"><h5>Every channel</h5><p>Email, LinkedIn, chat and SMS, all in one thread per lead, so nothing slips.</p></div></div>
+
+  <div class="abs" style="left:0;right:0;top:1404px;text-align:center"><span class="pill"><svg class="i" style="width:17px"><use href="#crown"/></svg>More about features</span>
+    <h2 class="serif" style="font-size:62px;line-height:.98;margin-top:34px">More features<br><span class="pale">in Saffra</span></h2>
+    <p style="font:400 20px/1.55 Inter;margin:36px auto 0;width:470px">Everything you need to run a revenue team of agents, safely and at scale.</p></div>
+  <div class="lc" style="left:58px;top:1742px"><div class="hd"><svg class="i"><use href="#srv"/></svg><h5>Pipeline</h5></div><div class="li"><i></i><div><b>Lead Scoring</b><small>ICP fit + intent, 0–100</small></div></div><div class="li"><i></i><div><b>Follow-up Sequences</b><small>Stops the moment they reply</small></div></div></div>
+  <div class="lc" style="left:740px;top:1742px"><div class="hd"><svg class="i"><use href="#db"/></svg><h5>Data</h5></div><div class="li"><i></i><div><b>Enrichment</b><small>Company + contact signals</small></div></div><div class="li"><i></i><div><b>Call Notes</b><small>Summaries pushed to every deal</small></div></div></div>
+</div></div>
+
+<!-- ============ PAGE 4 ============ -->
+<div class="pg" id="p4"><div class="wh">
+  <div class="lc" style="left:58px;top:-232px"><div class="hd"><svg class="i"><use href="#srv"/></svg><h5>Pipeline</h5></div><div class="li"><i></i><div><b>Lead Scoring</b><small>ICP fit + intent, 0–100</small></div></div><div class="li"><i></i><div><b>Follow-up Sequences</b><small>Stops the moment they reply</small></div></div></div>
+  <div class="lc" style="left:740px;top:-232px"><div class="hd"><svg class="i"><use href="#db"/></svg><h5>Data</h5></div><div class="li"><i></i><div><b>Enrichment</b><small>Company + contact signals</small></div></div><div class="li"><i></i><div><b>Call Notes</b><small>Summaries pushed to every deal</small></div></div></div>
+  <div class="lc" style="left:58px;top:126px"><div class="hd"><svg class="i"><use href="#shield"/></svg><h5>Trust & Safety</h5></div>
+    <div class="li"><i></i><div><b>Approval Mode</b><small>Review before anything sends</small></div></div><div class="li"><i></i><div><b>Brand Guardrails</b><small>Tone, claims and banned words</small></div></div><div class="li"><i></i><div><b>Audit Log</b><small>Replay every agent decision</small></div></div><div class="li"><i></i><div><b>SSO & Roles</b><small>Enterprise access control</small></div></div><div class="li"><i></i><div><b>Data Privacy</b><small>Never used to train models</small></div></div></div>
+  <div class="lc" style="left:740px;top:126px"><div class="hd"><svg class="i"><use href="#glb"/></svg><h5>Deliverability</h5></div>
+    <div class="li"><i></i><div><b>Inbox Warm-up</b><small>Healthy sender reputation</small></div></div><div class="li"><i></i><div><b>Send Windows</b><small>Their timezone, not yours</small></div></div><div class="li"><i></i><div><b>Bounce Guard</b><small>Verified emails only</small></div></div><div class="li"><i></i><div><b>Reply Detection</b><small>Auto-pause on any reply</small></div></div><div class="li"><i></i><div><b>Spam Check</b><small>Scored before every send</small></div></div></div>
+
+  <div class="abs photo" style="left:60px;top:932px;width:1326px;height:232px;border-radius:6px;background-image:linear-gradient(90deg,rgba(90,28,6,.55),rgba(90,28,6,.15) 45%,rgba(60,16,2,.35)),url(img/caravan.jpg);background-position:center 60%;overflow:hidden">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:44px 44px;-webkit-mask-image:linear-gradient(90deg,#000 30%,transparent 55%)"></div>
+    <div style="position:absolute;left:56px;top:56px;color:#fff;display:flex;gap:14px;align-items:center;font:500 26px Inter"><svg style="width:34px;height:34px"><use href="#logo"/></svg>Saffra</div>
+    <div style="position:absolute;left:56px;top:118px;color:#fff;font:400 20px/1.5 Inter">88 Market Street, San Francisco<br>CA 94105</div>
+    <div style="position:absolute;left:696px;top:50px;color:#fff"><div style="font:600 27px Inter">Newsletter</div><div style="font:400 18px Inter;margin-top:12px;opacity:.95">Get the latest Saffra updates and revenue playbooks</div>
+      <div style="display:flex;gap:14px;margin-top:20px"><div style="width:432px;height:52px;background:#fff;color:#8a7a6e;font:400 16px Inter;display:flex;align-items:center;padding:0 18px">What's your work email?</div><div style="height:52px;background:var(--cream);color:var(--ink);font:500 16px Inter;display:flex;align-items:center;padding:0 26px">Subscribe</div></div></div>
+  </div>
+
+  <div class="abs photo ft" style="left:6px;top:1294px;width:1432px;height:706px;border-radius:24px 24px 0 0;background-image:linear-gradient(180deg,rgba(70,20,4,.45),rgba(70,20,4,.1) 45%,rgba(50,14,2,.55)),url(img/caravan.jpg);background-position:right 40%;background-size:cover">
+    <div style="position:absolute;left:74px;top:70px;display:grid;grid-template-columns:repeat(4,275px)">
+      <div><h5>Resources</h5><a>Help Docs</a><a>API Reference</a><a>System Status</a><a>Contact Us</a><a>Pricing Plans</a></div>
+      <div><h5>Product</h5><a>Inbound Agent</a><a>Outbound SDR</a><a>Lead Scoring</a><a>Enterprise Security</a></div>
+      <div><h5>Learn</h5><a>Revenue Blog</a><a>Playbook Library</a><a>Guides & Tutorials</a><a>Community</a><a>Podcast</a></div>
+      <div><h5>Company</h5><a>Press Kit</a><a>Careers</a><a>About Us</a><a>Security & Trust</a><a>Partners</a></div></div>
+    <p style="position:absolute;left:74px;top:422px;width:1290px;font:400 18px/1.6 Inter;color:#fff">© 2026 Saffra AI, Inc. "Saffra" and the Saffra logo are trademarks of the company. Saffra is committed to data privacy: every lead, email and call note is encrypted and never used to train public models. See the Platform Agreement and Data Processing Addendum for details.</p>
+    <div id="soc" style="position:absolute;left:0;right:0;top:584px;display:flex;justify-content:center;gap:24px"></div>
+    <div style="position:absolute;left:0;right:0;top:664px;text-align:center;color:#fff;font:400 16px Inter">Saffra 2026. All Rights Reserved</div>
+  </div>
+</div></div>
+
+<script>
+// logos strip
+const LG=[['northwind','600 22px Inter','-.02em'],['KOVA','700 20px Inter','.18em'],['Parcelpoint','italic 400 25px Newsreader','0'],['brightlane','500 22px "JetBrains Mono"','-.04em'],['Meridian','600 21px Inter','0'],['halcyon','300 26px Newsreader','.02em'],['TIDEWATCH','600 15px Inter','.25em']];
+document.getElementById('lgs').innerHTML=LG.map(([n,f,ls])=>`<span style="font:${f};letter-spacing:${ls}">${n}</span>`).join('');
+// mini charts
+const SI='#9c3d14',GR='#d9cfc5';
+document.querySelectorAll('canvas.gauge').forEach(c=>{const x=c.getContext('2d');const w=c.width,h=c.height;for(let i=0;i<40;i++){const a=Math.PI+i/39*Math.PI;const r1=h*.78,r2=h*(i%5?0.92:0.98);x.strokeStyle=i<30?'#5a3a28':GR;x.lineWidth=1.4;x.beginPath();x.moveTo(w/2+Math.cos(a)*r1,h-2+Math.sin(a)*r1);x.lineTo(w/2+Math.cos(a)*r2,h-2+Math.sin(a)*r2);x.stroke()}});
+document.querySelectorAll('canvas.ticks').forEach(c=>{const x=c.getContext('2d');const n=+c.dataset.n;for(let i=0;i<n;i++){const hh=10+((i*37)%30);x.fillStyle=i%3===0?SI:'#e8d5c4';x.fillRect(i*(c.width/n),c.height/2-hh/2+(i%2?6:-6),2,hh)}});
+document.querySelectorAll('canvas.comb').forEach(c=>{const x=c.getContext('2d');for(let i=0;i<34;i++){x.fillStyle=i===28?'#1d1410':i<28?'#a99a8e':GR;x.fillRect(i*3.8,i===28?0:8,1.4,i===28?40:24)}});
+document.querySelectorAll('canvas.steps').forEach(c=>{const x=c.getContext('2d');const g=x.createLinearGradient(0,0,0,56);g.addColorStop(0,'#d8cfc6');g.addColorStop(1,'#fff');x.fillStyle=g;x.fillRect(0,22,30,34);x.fillRect(30,32,30,24);x.fillRect(60,6,30,50);x.fillStyle='#9a8a7e';x.fillRect(0,21,30,1.5);x.fillRect(30,31,30,1.5);x.fillRect(60,5,30,1.5)});
+document.querySelectorAll('canvas.wavec').forEach(c=>{const x=c.getContext('2d');const n=Math.floor(c.width/17.5),mid=c.height*.56,hi=+c.dataset.hi;
+ for(let i=0;i<n;i++){const X=i*17.5+4;const u=60+((i*53)%70)+(i%4===0?-30:0),d=30+((i*29)%45);const act=i>=hi-1&&i<=hi+1;
+  x.fillStyle=act?'#f3e2cc':'#ddd5ce';if(i>=hi-1&&i<=hi+1)x.fillStyle='#f6e7d6';x.fillRect(X,mid-u,2.2,u-6);
+  x.fillStyle=act?SI:'#ddd5ce';x.fillRect(X,mid+4,act?3:2.2,act?d+10:d)}});
+// channel orbs
+const OR=[['in','#0a66c2'],['✉','#e8562f'],['G','#fff'],['S','#611f69'],['','#fff'],['Z','#2d8cff'],['✦','#9c3d14'],['W','#25d366'],['N','#fff'],['T','#5059c9'],['$','#1f9d62'],['O','#0078d4'],['H','#ff7a59'],['','#fff']];
+const pos=[[0,0],[100,0],[200,0],[300,0],[400,0],[50,96],[150,96],[250,96],[350,96],[-10,190],[90,190],[190,190],[290,190],[390,190]];
+document.getElementById('orbs').innerHTML=OR.map(([g,b],i)=>{const [l,t]=pos[i];const dark=b!=='#fff'&&b!=='#f6c344';return `<div style="position:absolute;left:${l}px;top:${t}px;width:84px;height:84px;border-radius:50%;background:${b};border:6px solid rgba(255,255,255,.9);display:grid;place-items:center;font:700 26px Inter;color:${dark?'#fff':'#1d1410'};box-shadow:0 10px 20px -10px rgba(0,0,0,.5)">${g}</div>`}).join('');
+// socials
+document.getElementById('soc').innerHTML=['f','◎','in','𝕏','▶','♪'].map(s=>`<b style="width:30px;height:30px;border-radius:50%;background:#fff;color:#7a2e10;display:grid;place-items:center;font:700 14px Inter">${s}</b>`).join('');
+</script>
+</body></html>

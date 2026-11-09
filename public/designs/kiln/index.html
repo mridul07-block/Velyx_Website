@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kiln Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bone:#f4efe6;--bone2:#ebe4d7;--plum:#22102e;--plum2:#3a2149;--violet:#6b4bff;--violet2:#e4dcff;--peach:#ffb38a;--peach2:#ffe4d3;--mint:#c9f2d8;--line:#ddd4c4;--mute:#7a6f80}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bone);color:var(--plum);font:16px/1.5 "Inter Tight",sans-serif;overflow-x:hidden}
+.mono{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+.serif{font-family:"Instrument Serif",serif;font-style:italic;font-weight:400;letter-spacing:-.01em}
+.wrap{max-width:1360px;margin:0 auto;padding:0 32px}
+.rv{opacity:0;transform:translateY(34px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+.btn{display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;transition:transform .3s,background .3s}
+.btn.dark{background:var(--plum);color:var(--bone)}
+.btn.ghost{border:1.5px solid var(--plum);color:var(--plum)}
+.btn .ar{width:26px;height:26px;border-radius:50%;background:var(--violet);display:grid;place-items:center;color:#fff;font-size:13px;transition:transform .3s}
+.btn:hover .ar{transform:rotate(-45deg)}
+
+/* nav */
+nav{position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:50;display:flex;align-items:center;gap:6px;padding:7px 7px 7px 20px;background:rgba(244,239,230,.82);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:999px;box-shadow:0 10px 30px rgba(34,16,46,.06)}
+.logo{display:flex;align-items:center;gap:9px;font-weight:600;font-size:19px;letter-spacing:-.03em;margin-right:18px}
+.logo i{width:22px;height:22px;border-radius:7px 7px 11px 11px;background:linear-gradient(160deg,var(--violet),var(--plum));position:relative}
+.logo i:after{content:"";position:absolute;left:6px;right:6px;bottom:4px;height:5px;border-radius:3px;background:var(--peach)}
+nav a{color:var(--plum);text-decoration:none;font-size:14px;padding:9px 14px;border-radius:999px}
+nav a:hover{background:var(--bone2)}
+.slot{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mute);margin:0 10px 0 14px}
+.slot b{width:8px;height:8px;border-radius:50%;background:#25c26e;box-shadow:0 0 0 4px rgba(37,194,110,.18);animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 8px rgba(37,194,110,0)}}
+nav .btn{height:42px;padding:0 18px;font-size:14px}
+
+/* hero */
+.hero{padding:150px 0 40px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;padding:7px 14px;border:1px solid var(--line);border-radius:999px;background:#fff8}
+.eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--violet)}
+h1{font-size:112px;line-height:.92;letter-spacing:-.055em;font-weight:500;margin:26px 0 0}
+h1 .serif{font-size:1.08em;letter-spacing:-.03em}
+.roll{display:inline-block;height:1.02em;overflow:hidden;vertical-align:bottom;color:var(--violet)}
+.roll span{display:block;height:1.02em}
+.roll-in{display:block;animation:roll 10s cubic-bezier(.8,0,.2,1) infinite}
+@keyframes roll{0%,18%{transform:translateY(0)}25%,43%{transform:translateY(-1.02em)}50%,68%{transform:translateY(-2.04em)}75%,93%{transform:translateY(-3.06em)}100%{transform:translateY(-4.08em)}}
+.hero-row{display:flex;justify-content:space-between;align-items:flex-end;margin-top:34px;gap:40px}
+.hero-row p{max-width:430px;font-size:18px;color:#4d4256}
+.ctas{display:flex;gap:12px}
+
+/* canvas */
+.canvas{margin-top:46px;height:600px;border-radius:28px;background:var(--plum);padding:12px;position:relative;box-shadow:0 40px 80px -30px rgba(34,16,46,.45)}
+.cv-top{height:44px;display:flex;align-items:center;gap:16px;padding:0 14px;color:#cdbfd8;font-size:13px}
+.cv-top .dots{display:flex;gap:6px}.cv-top .dots i{width:11px;height:11px;border-radius:50%;background:#4a3359}
+.tools{display:flex;gap:4px;margin-left:10px}.tools i{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-style:normal;color:#cdbfd8}
+.tools i.on{background:var(--violet);color:#fff}
+.cv-top .sp{flex:1}
+.av{display:flex}.av span{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:600;border:2px solid var(--plum);margin-left:-6px}
+.share{background:var(--violet);color:#fff;border-radius:8px;padding:6px 14px;font-size:13px}
+.cv-body{display:grid;grid-template-columns:210px 1fr 230px;gap:12px;height:calc(100% - 44px)}
+.pnl{background:#2d1a3a;border-radius:16px;padding:16px;color:#cdbfd8;font-size:13px}
+.pnl h6{font:500 11px "JetBrains Mono",monospace;letter-spacing:.06em;color:#8f7ea0;margin-bottom:12px}
+.layer{display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:8px}
+.layer i{width:12px;height:12px;border:1.5px solid #8f7ea0;border-radius:3px}
+.layer.on{background:#3e2850;color:#fff}
+.board{background:#120818 radial-gradient(#3a2449 1px,transparent 1px) 0 0/18px 18px;border-radius:16px;position:relative;overflow:hidden}
+.frame{position:absolute;left:50%;top:50%;width:640px;height:400px;transform:translate(-50%,-50%);background:var(--bone);border-radius:14px;overflow:hidden}
+.flabel{position:absolute;left:calc(50% - 320px);top:calc(50% - 222px);font:12px "JetBrains Mono",monospace;color:#8f7ea0}
+.fnav{display:flex;justify-content:space-between;align-items:center;padding:18px 26px}
+.fnav b{width:58px;height:12px;border-radius:6px;background:var(--plum)}
+.fnav span{display:flex;gap:10px}.fnav span i{width:34px;height:7px;border-radius:4px;background:#d3c9b8}
+.el{position:absolute}
+#e-head{left:26px;top:92px;width:320px}
+.skel{background:#ddd3c3;border-radius:8px}
+#e-head .skel{height:30px;margin-bottom:10px}#e-head .skel+.skel{width:70%}
+#e-head .txt{position:absolute;inset:0;font-size:38px;line-height:1.02;letter-spacing:-.045em;font-weight:500;opacity:0}
+#e-head .txt em{font-family:"Instrument Serif",serif;color:var(--violet)}
+#e-sub{left:26px;top:200px;width:260px}
+#e-sub i{display:block;height:8px;border-radius:4px;background:#ddd3c3;margin-bottom:8px}
+#e-btn{left:26px;top:262px;width:150px;height:42px;border-radius:999px;background:#ddd3c3;display:grid;place-items:center;font-size:13px;font-weight:500;color:transparent}
+#e-img{right:26px;top:80px;width:240px;height:280px;border-radius:20px;background:#ddd3c3;overflow:hidden}
+#e-img .art{position:absolute;inset:0;opacity:0;background:linear-gradient(160deg,var(--peach),var(--violet))}
+#e-img .art:before{content:"";position:absolute;width:150px;height:150px;border-radius:50%;left:46px;top:40px;background:var(--bone);opacity:.9}
+#e-img .art:after{content:"";position:absolute;left:24px;right:24px;bottom:24px;height:54px;border-radius:14px;background:rgba(34,16,46,.85)}
+#sel{position:absolute;border:1.5px solid var(--violet);pointer-events:none;opacity:0}
+#sel i{position:absolute;width:8px;height:8px;background:#fff;border:1.5px solid var(--violet)}
+#sel i:nth-child(1){left:-5px;top:-5px}#sel i:nth-child(2){right:-5px;top:-5px}#sel i:nth-child(3){left:-5px;bottom:-5px}#sel i:nth-child(4){right:-5px;bottom:-5px}
+#sel b{position:absolute;left:-1px;bottom:-24px;background:var(--violet);color:#fff;font:500 10px "JetBrains Mono",monospace;padding:3px 6px;border-radius:4px;white-space:nowrap}
+.cur{position:absolute;left:0;top:0;pointer-events:none;z-index:5}
+.cur svg{display:block}
+.cur span{position:absolute;left:16px;top:18px;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:600;white-space:nowrap}
+#cmt{position:absolute;opacity:0;background:#fff;border-radius:14px 14px 14px 4px;padding:9px 12px;font-size:12px;box-shadow:0 10px 24px rgba(0,0,0,.25);width:190px;z-index:4}
+#cmt small{display:block;color:var(--mute);font-size:10px;margin-bottom:2px}
+#toast{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);background:var(--mint);color:var(--plum);padding:10px 18px;border-radius:999px;font-size:13px;font-weight:600;opacity:0}
+.sw{display:flex;gap:8px;margin-bottom:18px}.sw i{width:30px;height:30px;border-radius:9px;border:2px solid transparent}
+.sw i.on{border-color:#fff}
+.prop{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #3e2850}
+.prop b{font-weight:500;color:#fff}
+
+/* marquee */
+.mq{overflow:hidden;padding:46px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:90px;white-space:nowrap}
+.mq-in{display:inline-flex;animation:mq 34s linear infinite}
+.mq span{font-size:88px;font-weight:500;letter-spacing:-.05em;padding:0 28px;line-height:1}
+.mq span.o{color:transparent;-webkit-text-stroke:1.5px var(--plum)}
+.mq span.s{color:var(--violet);font-size:60px;transform:translateY(-6px);display:inline-block;animation:spin 6s linear infinite}
+@keyframes mq{to{transform:translateX(-50%)}}
+@keyframes spin{to{transform:translateY(-6px) rotate(360deg)}}
+
+/* section heads */
+.sec{padding:120px 0 0}
+.shead{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;margin-bottom:48px}
+h2{font-size:72px;line-height:.96;letter-spacing:-.05em;font-weight:500}
+h2 .serif{color:var(--violet)}
+.shead p{max-width:380px;color:#4d4256;font-size:17px}
+.num{color:var(--mute);margin-bottom:18px;display:block}
+
+/* before / after */
+.ba{position:relative;height:520px;border-radius:28px;overflow:hidden;border:1px solid var(--line);--p:50}
+.ba .side{position:absolute;inset:0;padding:38px}
+.messy{background:#fffbe9}
+.messy .m1{font:700 44px/1 "Comic Sans MS","Chalkboard SE",cursive;color:#e0362c;transform:rotate(-2deg);width:520px}
+.messy .m2{margin-top:18px;font:15px Georgia,serif;color:#333;width:430px;text-align:justify}
+.messy .m3{display:flex;gap:6px;margin-top:22px}
+.messy .m3 span{padding:12px 16px;font:bold 13px Arial;color:#fff}
+.messy .m4{position:absolute;right:60px;top:60px;width:330px;height:240px;background:repeating-linear-gradient(45deg,#7bd389 0 18px,#5ec472 18px 36px);transform:rotate(4deg);border:6px dashed #1d4ed8}
+.messy .m5{position:absolute;right:120px;bottom:60px;font:900 64px Impact,sans-serif;color:#ff00aa;transform:rotate(-8deg)}
+.messy .m6{position:absolute;left:38px;bottom:40px;display:flex;gap:10px}
+.messy .m6 i{width:70px;height:70px;border-radius:50%;background:#ffd400;border:4px solid #000}
+.clean{background:var(--plum);color:var(--bone);clip-path:inset(0 0 0 calc(var(--p)*1%))}
+.clean .c1{font-size:56px;line-height:.98;letter-spacing:-.05em;font-weight:500;width:560px}
+.clean .c1 em{font-family:"Instrument Serif",serif;color:var(--peach)}
+.clean .c2{margin-top:20px;color:#cdbfd8;width:420px;font-size:17px}
+.clean .c3{margin-top:28px;display:inline-flex;align-items:center;gap:10px;background:var(--bone);color:var(--plum);padding:14px 22px;border-radius:999px;font-weight:500}
+.clean .c4{position:absolute;right:60px;top:56px;width:360px;height:400px;border-radius:26px;background:linear-gradient(160deg,var(--violet),#3c1f8f);overflow:hidden}
+.clean .c4 i{position:absolute;left:30px;right:30px;height:62px;border-radius:16px;background:rgba(255,255,255,.14)}
+.clean .c4 i:nth-child(1){top:40px;background:var(--peach)}.clean .c4 i:nth-child(2){top:116px}.clean .c4 i:nth-child(3){top:192px}
+.clean .c4 b{position:absolute;left:30px;bottom:36px;font-size:48px;letter-spacing:-.05em;font-weight:500}
+.ba .bar{position:absolute;top:0;bottom:0;left:calc(var(--p)*1%);width:2px;background:var(--bone);z-index:3}
+.ba .knob{position:absolute;top:50%;left:calc(var(--p)*1%);transform:translate(-50%,-50%);width:58px;height:58px;border-radius:50%;background:var(--bone);display:grid;place-items:center;z-index:4;box-shadow:0 10px 30px rgba(0,0,0,.25);font-size:18px}
+.ba .tag{position:absolute;top:22px;z-index:4;padding:6px 12px;border-radius:999px}
+.ba .t1{left:22px;background:#fff;border:1px solid var(--line)}
+.ba .t2{right:22px;background:var(--violet);color:#fff}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);margin-top:24px;gap:16px}
+.stat{padding:28px;border-radius:22px;background:#fff8;border:1px solid var(--line)}
+.stat b{font-size:64px;letter-spacing:-.05em;font-weight:500;line-height:1;display:block}
+.stat span{color:#4d4256;display:block;margin-top:10px}
+
+/* process */
+.track{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.prog{position:absolute;left:0;right:0;top:-26px;height:3px;background:var(--line);border-radius:3px;overflow:hidden}
+.prog i{position:absolute;inset:0;background:linear-gradient(90deg,var(--violet),var(--peach));transform-origin:left;transform:scaleX(.12)}
+.step{border-radius:26px;background:#fff8;border:1px solid var(--line);padding:26px;min-height:470px;display:flex;flex-direction:column}
+.step .day{display:flex;justify-content:space-between}
+.step .day b{font-weight:500;background:var(--plum);color:var(--bone);padding:5px 10px;border-radius:999px}
+.stage{height:230px;display:grid;place-items:center;margin:20px 0}
+.blob{width:170px;height:150px;background:linear-gradient(150deg,#c9a98f,#9c7a63);animation:blob 7s ease-in-out infinite;box-shadow:inset -14px -18px 30px rgba(0,0,0,.18)}
+@keyframes blob{0%,100%{border-radius:58% 42% 61% 39%/45% 55% 45% 55%;transform:rotate(0)}33%{border-radius:40% 60% 42% 58%/60% 38% 62% 40%;transform:rotate(8deg)}66%{border-radius:63% 37% 48% 52%/38% 62% 38% 62%;transform:rotate(-6deg)}}
+.wire{width:220px;height:170px}
+.wire *{fill:none;stroke:var(--plum);stroke-width:1.6;stroke-dasharray:420;stroke-dashoffset:420;animation:draw 5s ease-in-out infinite}
+.wire .v{stroke:var(--violet)}
+@keyframes draw{0%{stroke-dashoffset:420}45%,80%{stroke-dashoffset:0}100%{stroke-dashoffset:-420}}
+.fired{width:200px;height:190px;border-radius:24px;background:linear-gradient(160deg,var(--violet),#3c1f8f);position:relative;animation:glow 3s ease-in-out infinite;padding:18px;color:#fff}
+.fired i{display:block;height:12px;border-radius:6px;background:rgba(255,255,255,.25);margin-bottom:9px}
+.fired i:first-child{width:60%;background:var(--peach)}
+.fired b{position:absolute;left:18px;bottom:16px;right:18px;height:40px;border-radius:12px;background:var(--bone)}
+@keyframes glow{50%{box-shadow:0 0 0 14px rgba(107,75,255,.12),0 30px 60px -10px rgba(255,179,138,.7)}}
+.step h3{font-size:30px;letter-spacing:-.04em;font-weight:500;margin-top:auto}
+.step p{color:#4d4256;margin-top:8px}
+
+/* work */
+.work{overflow:hidden;margin-top:0;padding:10px 0 20px}
+.work-in{display:flex;gap:22px;width:max-content;animation:mq 48s linear infinite}
+.proj{width:440px;flex:none}
+.proj .shot{height:330px;border-radius:26px;position:relative;overflow:hidden;transition:transform .5s}
+.proj:hover .shot{transform:rotate(-1.5deg) scale(1.02)}
+.proj .meta{display:flex;justify-content:space-between;margin-top:14px;align-items:baseline}
+.proj .meta b{font-size:22px;letter-spacing:-.03em;font-weight:500}
+.p1{background:var(--violet)}.p2{background:var(--peach)}.p3{background:var(--plum)}.p4{background:var(--mint)}
+.phone{position:absolute;left:50%;top:44px;width:190px;height:360px;margin-left:-95px;border-radius:30px;background:var(--bone);padding:16px;box-shadow:0 30px 50px rgba(0,0,0,.25)}
+.phone .bal{font-size:30px;letter-spacing:-.04em;font-weight:500;margin-top:16px}
+.phone i{display:block;height:44px;border-radius:12px;background:var(--bone2);margin-top:10px}
+.phone i.v{background:var(--violet2)}
+.cup{position:absolute;left:50%;top:60px;width:150px;height:190px;margin-left:-75px;background:var(--bone);border-radius:14px 14px 40px 40px;display:grid;place-items:center;font:italic 40px "Instrument Serif",serif;color:var(--plum)}
+.cup:before{content:"";position:absolute;right:-36px;top:50px;width:40px;height:60px;border:10px solid var(--bone);border-left:0;border-radius:0 30px 30px 0}
+.cup:after{content:"BREWLINE";position:absolute;bottom:-60px;font:500 13px "JetBrains Mono",monospace;letter-spacing:.3em}
+.dash{position:absolute;left:30px;right:30px;top:40px;bottom:-20px;border-radius:18px;background:#2d1a3a;padding:18px;color:#cdbfd8}
+.dash .chat{background:#3e2850;border-radius:12px;padding:10px;margin-bottom:10px;font-size:12px}
+.dash .chat.me{background:var(--violet);color:#fff;margin-left:60px}
+.cal{position:absolute;left:34px;right:34px;top:40px;bottom:-20px;border-radius:18px;background:#fff;padding:16px;display:grid;grid-template-columns:repeat(5,1fr);gap:7px;align-content:start}
+.cal span{height:44px;border-radius:10px;background:#eef8f1;font-size:10px;padding:6px;color:#2e6b47}
+.cal span.b{background:#2e6b47;color:#fff}
+.cal h5{grid-column:1/-1;font-size:15px;font-weight:600;margin-bottom:4px;color:var(--plum)}
+
+/* services */
+.svc .row{display:grid;grid-template-columns:90px 1fr auto 70px;align-items:center;padding:30px 24px;border-top:1px solid var(--line);border-radius:22px;transition:background .45s,color .45s}
+.svc .row:last-child{border-bottom:1px solid var(--line)}
+.svc .row b{font-size:52px;letter-spacing:-.05em;font-weight:500}
+.svc .row .tags{display:flex;gap:8px}
+.svc .row .tags span{padding:7px 13px;border:1px solid currentColor;border-radius:999px;font-size:13px;opacity:.7}
+.svc .row .go{width:52px;height:52px;border-radius:50%;border:1.5px solid currentColor;display:grid;place-items:center;font-size:20px;justify-self:end;transition:transform .45s}
+.svc .row.on{background:var(--plum);color:var(--bone);border-color:transparent}
+.svc .row.on .go{transform:rotate(-45deg);background:var(--violet);border-color:var(--violet)}
+.svc .row.on b .serif{color:var(--peach)}
+
+/* pricing */
+.tix{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.tik{position:relative;border-radius:28px;padding:34px;background:#fff;border:1px solid var(--line);overflow:hidden}
+.tik.hot{background:var(--plum);color:var(--bone);border-color:var(--plum)}
+.tik .perf{position:absolute;left:0;right:0;top:250px;border-top:2px dashed var(--line)}
+.tik.hot .perf{border-color:#4a3359}
+.tik .perf:before,.tik .perf:after{content:"";position:absolute;top:-17px;width:32px;height:32px;border-radius:50%;background:var(--bone)}
+.tik .perf:before{left:-17px}.tik .perf:after{right:-17px}
+.tik h4{font-size:30px;letter-spacing:-.04em;font-weight:500;margin-top:14px}
+.tik .price{font-size:84px;letter-spacing:-.06em;font-weight:500;line-height:1;margin-top:22px}
+.tik .price small{font-size:16px;letter-spacing:0;color:var(--mute);margin-left:6px}
+.tik.hot .price small{color:#b9a8c7}
+.tik ul{list-style:none;margin-top:62px;display:grid;grid-template-columns:1fr 1fr;gap:12px 20px}
+.tik li{display:flex;gap:10px;font-size:15px}
+.tik li:before{content:"✦";color:var(--violet)}
+.tik.hot li:before{color:var(--peach)}
+.tik .btn{margin-top:30px}
+.tik.hot .btn{background:var(--bone);color:var(--plum)}
+.badge{position:absolute;right:30px;top:30px;background:var(--peach);color:var(--plum);padding:7px 13px;border-radius:999px;transform:rotate(6deg)}
+
+/* quotes */
+.quotes{display:grid;grid-template-columns:1fr 1.3fr;gap:40px;align-items:center}
+.stack{position:relative;height:330px}
+.q{position:absolute;inset:0;border-radius:28px;padding:38px;background:#fff;border:1px solid var(--line);display:flex;flex-direction:column;transition:transform .8s cubic-bezier(.7,0,.2,1),opacity .8s}
+.q p{font-size:30px;line-height:1.15;letter-spacing:-.03em}
+.q p em{font-family:"Instrument Serif",serif;color:var(--violet)}
+.q .who{margin-top:auto;display:flex;align-items:center;gap:12px}
+.q .who i{width:44px;height:44px;border-radius:50%}
+.q[data-i="0"]{z-index:3}
+.q[data-i="1"]{transform:translate(18px,-18px) rotate(2deg);z-index:2;opacity:.75}
+.q[data-i="2"]{transform:translate(36px,-36px) rotate(4deg);z-index:1;opacity:.45}
+
+/* faq */
+.faq{display:grid;grid-template-columns:1fr 1.4fr;gap:60px}
+.qa{border-top:1px solid var(--line);padding:24px 0}
+.qa:last-child{border-bottom:1px solid var(--line)}
+.qa h5{display:flex;justify-content:space-between;font-size:22px;font-weight:500;letter-spacing:-.03em;cursor:pointer}
+.qa h5 i{font-style:normal;width:34px;height:34px;border-radius:50%;background:var(--bone2);display:grid;place-items:center;transition:transform .4s,background .4s;flex:none}
+.qa p{max-height:0;overflow:hidden;color:#4d4256;transition:max-height .5s,margin .5s}
+.qa.open p{max-height:120px;margin-top:12px}
+.qa.open h5 i{transform:rotate(45deg);background:var(--violet);color:#fff}
+
+/* cta */
+.cta{margin:120px 20px 0;border-radius:40px;background:var(--plum);color:var(--bone);padding:130px 60px 70px;position:relative;overflow:hidden}
+.heat{position:absolute;width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,rgba(255,179,138,.85),rgba(107,75,255,.55) 45%,transparent 70%);filter:blur(30px);left:55%;top:-10%;animation:float 9s ease-in-out infinite;pointer-events:none}
+@keyframes float{50%{transform:translate(-120px,80px) scale(1.15)}}
+.cta h2{font-size:140px;line-height:.88;letter-spacing:-.06em;position:relative}
+.cta h2 .serif{color:var(--peach)}
+.cta .row{display:flex;justify-content:space-between;align-items:flex-end;margin-top:60px;position:relative}
+.cta p{max-width:420px;color:#cdbfd8;font-size:18px}
+.cta .btn.dark{background:var(--bone);color:var(--plum);height:64px;padding:0 32px;font-size:17px}
+footer{padding:60px 32px 0;overflow:hidden}
+.fgrid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:20px;max-width:1360px;margin:0 auto}
+.fgrid h6{color:var(--mute);margin-bottom:14px;font-weight:400}
+.fgrid a{display:block;color:var(--plum);text-decoration:none;margin-bottom:8px}
+.word{font-size:420px;line-height:.8;letter-spacing:-.07em;font-weight:500;text-align:center;margin-top:40px;background:linear-gradient(180deg,var(--plum) 30%,var(--bone) 95%);-webkit-background-clip:text;color:transparent;transform:translateY(12%)}
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><i></i>kiln</div>
+  <a href="#work">Work</a><a href="#process">Process</a><a href="#services">Services</a><a href="#pricing">Pricing</a>
+  <span class="slot"><b></b>2 slots open in November</span>
+  <a class="btn dark" href="#cta">Book a call</a>
+</nav>
+
+<header class="hero wrap">
+  <span class="eyebrow mono rv"><i></i>Design studio for founders</span>
+  <h1 class="rv">Raw ideas in.<br>Products people <span class="roll"><span class="roll-in serif"><span>remember</span><span>trust</span><span>pay for</span><span>brag about</span><span>remember</span></span></span><br>come out.</h1>
+  <div class="hero-row rv">
+    <p>Kiln designs brands, websites and product UI for startups that can't afford to look like everyone else. Strategy to launch in 10 days.</p>
+    <div class="ctas"><a class="btn dark" href="#cta">Book a 20-min call <span class="ar">→</span></a><a class="btn ghost" href="#work">See our work</a></div>
+  </div>
+
+  <div class="canvas rv" id="canvas">
+    <div class="cv-top">
+      <div class="dots"><i></i><i></i><i></i></div>
+      <div class="tools"><i class="on">↖</i><i>▢</i><i>T</i><i>✎</i><i>◯</i></div>
+      <span class="mono" style="color:#8f7ea0">Fold / Landing / <span style="color:#fff">v3</span></span>
+      <span class="sp"></span>
+      <div class="av"><span style="background:var(--violet);color:#fff">AG</span><span style="background:var(--peach);color:var(--plum)">KL</span><span style="background:var(--mint);color:var(--plum)">AR</span></div>
+      <span class="share">Share</span>
+    </div>
+    <div class="cv-body">
+      <div class="pnl">
+        <h6>LAYERS</h6>
+        <div class="layer"><i></i>Landing — Hero</div>
+        <div class="layer" data-l="head"><i></i>Headline</div>
+        <div class="layer" data-l="sub"><i></i>Subtext</div>
+        <div class="layer" data-l="btn"><i></i>Button / Primary</div>
+        <div class="layer" data-l="img"><i></i>Hero art</div>
+        <h6 style="margin-top:26px">COMPONENTS</h6>
+        <div class="layer"><i style="border-radius:50%"></i>Avatar</div>
+        <div class="layer"><i></i>Card / Stat</div>
+        <div class="layer"><i></i>Nav / Pill</div>
+      </div>
+      <div class="board" id="board">
+        <div class="flabel">Fold — Hero / Desktop</div>
+        <div class="frame" id="frame">
+          <div class="fnav"><b></b><span><i></i><i></i><i></i></span></div>
+          <div class="el" id="e-head"><div class="skel"></div><div class="skel"></div><div class="txt">Banking that feels <em>human.</em></div></div>
+          <div class="el" id="e-sub"><i></i><i style="width:85%"></i><i style="width:60%"></i></div>
+          <div class="el" id="e-btn">Get early access →</div>
+          <div class="el" id="e-img"><div class="art"></div></div>
+        </div>
+        <div id="sel"><i></i><i></i><i></i><i></i><b>Headline · 320×86</b></div>
+        <div id="cmt"><small>Arjun · founder</small><span id="cmt-t">can the button pop more? 👀</span></div>
+        <div id="toast">✓ Shipped to staging</div>
+        <div class="cur" id="cur1"><svg width="18" height="20" viewBox="0 0 18 20"><path d="M1 1l15 8-7 2-3 7z" fill="#6b4bff" stroke="#fff" stroke-width="1.5"/></svg><span style="background:var(--violet);color:#fff">you</span></div>
+        <div class="cur" id="cur2"><svg width="18" height="20" viewBox="0 0 18 20"><path d="M1 1l15 8-7 2-3 7z" fill="#ffb38a" stroke="#fff" stroke-width="1.5"/></svg><span style="background:var(--peach)">kiln</span></div>
+      </div>
+      <div class="pnl">
+        <h6>FILL</h6>
+        <div class="sw"><i style="background:#ddd3c3" class="on" id="sw0"></i><i style="background:var(--violet)" id="sw1"></i><i style="background:var(--peach)"></i><i style="background:var(--mint)"></i><i style="background:var(--bone)"></i></div>
+        <h6>TYPE</h6>
+        <div class="prop"><span>Font</span><b>Inter Tight</b></div>
+        <div class="prop"><span>Size</span><b id="p-size">—</b></div>
+        <div class="prop"><span>Tracking</span><b>-4.5%</b></div>
+        <h6 style="margin-top:22px">LAYOUT</h6>
+        <div class="prop"><span>W</span><b id="p-w">320</b></div>
+        <div class="prop"><span>H</span><b id="p-h">86</b></div>
+        <div class="prop"><span>Radius</span><b id="p-r">8</b></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="mq"><div class="mq-in">
+  <span>Brand identity</span><span class="s">✺</span><span class="o">Landing pages</span><span class="s">✺</span><span>Product UI</span><span class="s">✺</span><span class="o">Design systems</span><span class="s">✺</span><span>Motion</span><span class="s">✺</span>
+  <span>Brand identity</span><span class="s">✺</span><span class="o">Landing pages</span><span class="s">✺</span><span>Product UI</span><span class="s">✺</span><span class="o">Design systems</span><span class="s">✺</span><span>Motion</span><span class="s">✺</span>
+</div></div>
+
+<section class="sec wrap">
+  <div class="shead rv">
+    <div><span class="num mono">(01) The problem</span><h2>Your product is great.<br>Your website <span class="serif">isn't saying it.</span></h2></div>
+    <p>Founders lose deals in the first 5 seconds. A confusing page makes a great product look risky. We fix the first impression.</p>
+  </div>
+  <div class="ba rv" id="ba">
+    <div class="side messy">
+      <div class="m1">WELCOME TO OUR AMAZING INNOVATIVE PLATFORM!!!</div>
+      <div class="m2">We are a leading provider of synergistic solutions leveraging cutting-edge technology to empower businesses of all sizes across multiple verticals and paradigms worldwide.</div>
+      <div class="m3"><span style="background:#e0362c">SIGN UP</span><span style="background:#1d4ed8">LEARN MORE</span><span style="background:#16a34a">CONTACT</span><span style="background:#9333ea">DEMO</span></div>
+      <div class="m4"></div><div class="m5">NEW!!</div>
+      <div class="m6"><i></i><i></i><i></i></div>
+    </div>
+    <div class="side clean">
+      <div class="c1">Close your books in <em>hours,</em> not weeks.</div>
+      <div class="c2">One clear promise. One clear action. Everything else gets out of the way.</div>
+      <span class="c3">Start free →</span>
+      <div class="c4"><i></i><i></i><i></i><b>-82% time</b></div>
+    </div>
+    <span class="tag t1 mono">Before</span><span class="tag t2 mono">After Kiln</span>
+    <div class="bar"></div><div class="knob">⟷</div>
+  </div>
+  <div class="stats">
+    <div class="stat rv"><b data-count="10">0</b><span>days from kickoff to launch</span></div>
+    <div class="stat rv"><b data-count="48" data-suffix="+">0</b><span>products shipped with founders</span></div>
+    <div class="stat rv"><b data-count="2.4" data-suffix="×" data-dec="1">0</b><span>average lift in demo bookings</span></div>
+  </div>
+</section>
+
+<section class="sec wrap" id="process">
+  <div class="shead rv">
+    <div><span class="num mono">(02) Process</span><h2>From raw to fired<br>in <span class="serif">ten days.</span></h2></div>
+    <p>No 6-week discovery. No endless revision loops. One call, one plan, and you watch it take shape every day.</p>
+  </div>
+  <div class="track" id="track">
+    <div class="prog"><i id="progbar"></i></div>
+    <div class="step rv"><div class="day mono"><span>Stage 01</span><b>Day 1–2</b></div>
+      <div class="stage"><div class="blob"></div></div>
+      <h3>Raw</h3><p>A 45-min call to dig into your users, your edge and what the page must make people do.</p></div>
+    <div class="step rv"><div class="day mono"><span>Stage 02</span><b>Day 3–6</b></div>
+      <div class="stage"><svg class="wire" viewBox="0 0 220 170"><rect x="2" y="2" width="216" height="166" rx="14"/><path d="M20 30h70"/><path class="v" d="M20 60h120M20 78h90"/><rect x="20" y="102" width="70" height="22" rx="11" class="v"/><rect x="140" y="34" width="62" height="96" rx="10"/><path d="M150 112h42"/></svg></div>
+      <h3>Shape</h3><p>Wireframes, then full design. You review live in Figma and comment on anything, any time.</p></div>
+    <div class="step rv"><div class="day mono"><span>Stage 03</span><b>Day 7–10</b></div>
+      <div class="stage"><div class="fired"><i></i><i></i><i style="width:80%"></i><b></b></div></div>
+      <h3>Fired</h3><p>Built, animated and launched. Fast, responsive, and yours to edit without calling us.</p></div>
+  </div>
+</section>
+
+<section class="sec" id="work">
+  <div class="wrap"><div class="shead rv">
+    <div><span class="num mono">(03) Selected work</span><h2>Things we've <span class="serif">fired.</span></h2></div>
+    <p>Fintech, consumer brands, AI tools and fitness. Different worlds, same rule: make it impossible to ignore.</p>
+  </div></div>
+  <div class="work"><div class="work-in" id="workin">
+    <div class="proj"><div class="shot p1"><div class="phone"><span class="mono" style="font-size:10px;color:var(--mute)">Balance</span><div class="bal">$12,480</div><i class="v"></i><i></i><i></i></div></div><div class="meta"><b>Fold</b><span class="mono">Fintech · Brand + App</span></div></div>
+    <div class="proj"><div class="shot p2"><div class="cup">Brew</div></div><div class="meta"><b>Brewline</b><span class="mono">Coffee · Identity</span></div></div>
+    <div class="proj"><div class="shot p3"><div class="dash"><div class="chat">Summarise Q3 churn by plan</div><div class="chat me">Churn fell 18% on Pro after onboarding v2 shipped.</div><div class="chat">Draft the board update</div></div></div><div class="meta"><b>Atlas AI</b><span class="mono">AI tool · Product UI</span></div></div>
+    <div class="proj"><div class="shot p4"><div class="cal"><h5>This week · Pole & Pilates</h5><span>Mon<br>Pole L1</span><span class="b">Tue<br>Reformer</span><span>Wed<br>Flow</span><span class="b">Thu<br>Pole L2</span><span>Fri<br>Mat</span><span>7am</span><span class="b">9am</span><span>6pm</span><span>7pm</span><span class="b">8pm</span></div></div><div class="meta"><b>Stretch</b><span class="mono">Fitness · Booking app</span></div></div>
+  </div></div>
+</section>
+
+<section class="sec wrap svc" id="services">
+  <div class="shead rv">
+    <div><span class="num mono">(04) Services</span><h2>What goes <span class="serif">in the kiln.</span></h2></div>
+    <p>Pick one, or let us run all of it as your design partner.</p>
+  </div>
+  <div class="rv">
+    <div class="row"><span class="mono">01</span><b>Brand <span class="serif">identity</span></b><span class="tags"><span>Logo</span><span>Type</span><span>Voice</span></span><span class="go">↗</span></div>
+    <div class="row on"><span class="mono">02</span><b>Landing <span class="serif">pages</span></b><span class="tags"><span>Copy</span><span>Design</span><span>Build</span></span><span class="go">↗</span></div>
+    <div class="row"><span class="mono">03</span><b>Product <span class="serif">UI</span></b><span class="tags"><span>Web app</span><span>Mobile</span><span>Flows</span></span><span class="go">↗</span></div>
+    <div class="row"><span class="mono">04</span><b>Design <span class="serif">systems</span></b><span class="tags"><span>Tokens</span><span>Components</span></span><span class="go">↗</span></div>
+    <div class="row"><span class="mono">05</span><b>Motion <span class="serif">&amp; 3D</span></b><span class="tags"><span>Micro-interactions</span><span>Launch films</span></span><span class="go">↗</span></div>
+  </div>
+</section>
+
+<section class="sec wrap" id="pricing">
+  <div class="shead rv">
+    <div><span class="num mono">(05) Pricing</span><h2>Two tickets.<br><span class="serif">No surprises.</span></h2></div>
+    <p>Fixed scope, fixed price, fixed date. You know exactly what you get before we start.</p>
+  </div>
+  <div class="tix">
+    <div class="tik rv"><span class="mono" style="color:var(--mute)">Ticket 01</span><h4>Launch Sprint</h4><div class="price">$2,500<small>fixed</small></div><div class="perf"></div>
+      <ul><li>Strategy call</li><li>Landing page design</li><li>Copy that converts</li><li>Built + responsive</li><li>Motion details</li><li>Live in 10 days</li></ul>
+      <a class="btn dark" href="#cta">Book the sprint <span class="ar">→</span></a></div>
+    <div class="tik hot rv"><span class="badge mono">Most picked</span><span class="mono" style="color:#b9a8c7">Ticket 02</span><h4>Design Partner</h4><div class="price">$4,800<small>/ month</small></div><div class="perf"></div>
+      <ul><li>Unlimited requests</li><li>Brand + product UI</li><li>Design system</li><li>Weekly drops</li><li>Slack access</li><li>Pause anytime</li></ul>
+      <a class="btn dark" href="#cta">Become a partner <span class="ar">→</span></a></div>
+  </div>
+</section>
+
+<section class="sec wrap">
+  <div class="quotes">
+    <div class="rv"><span class="num mono">(06) Founders say</span><h2>Less talk.<br><span class="serif">More shipped.</span></h2></div>
+    <div class="stack rv" id="stack">
+      <div class="q" data-i="0"><p>We had a page in 9 days that finally <em>sounded like us.</em> Demo calls doubled the first month.</p><div class="who"><i style="background:var(--violet)"></i><div><b>Founder</b><br><span class="mono" style="color:var(--mute)">Fintech · Berlin</span></div></div></div>
+      <div class="q" data-i="1"><p>They asked better questions than our investors. The design was the <em>easy part</em> after that.</p><div class="who"><i style="background:var(--peach)"></i><div><b>CEO</b><br><span class="mono" style="color:var(--mute)">AI tool · London</span></div></div></div>
+      <div class="q" data-i="2"><p>It feels like having a <em>senior design team</em> on Slack, without hiring one.</p><div class="who"><i style="background:var(--mint)"></i><div><b>Co-founder</b><br><span class="mono" style="color:var(--mute)">SaaS · Bangalore</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec wrap faq">
+  <div class="rv"><span class="num mono">(07) FAQ</span><h2>Before you <span class="serif">book.</span></h2></div>
+  <div class="rv">
+    <div class="qa open"><h5>How can you ship in 10 days?<i>+</i></h5><p>Tight scope, one decision-maker, and daily async updates. We cut the meetings, not the craft.</p></div>
+    <div class="qa"><h5>Do you also build, or only design?<i>+</i></h5><p>Both. We design in Figma and build in Framer or Next.js, depending on what your team needs.</p></div>
+    <div class="qa"><h5>What if I don't like the direction?<i>+</i></h5><p>You review at every stage. If day 3 isn't right, we change course before anything gets built.</p></div>
+    <div class="qa"><h5>Can I edit the site myself later?<i>+</i></h5><p>Yes. You get full ownership and a short video walkthrough of how to update everything.</p></div>
+  </div>
+</section>
+
+<section class="cta" id="cta">
+  <div class="heat" id="heat"></div>
+  <span class="mono" style="color:#b9a8c7;position:relative">(08) Next step</span>
+  <h2>Let's put your idea<br>in the <span class="serif">kiln.</span></h2>
+  <div class="row">
+    <p>20 minutes. Tell us what you're building, and we'll tell you exactly how we'd make it stand out. Free, even if we don't work together.</p>
+    <a class="btn dark" href="#">Book a 20-min call <span class="ar">→</span></a>
+  </div>
+</section>
+
+<footer>
+  <div class="fgrid">
+    <div><div class="logo"><i></i>kiln</div><p style="color:var(--mute);margin-top:12px;max-width:260px">Design studio for founders who refuse to look ordinary.</p></div>
+    <div><h6 class="mono">Studio</h6><a>Work</a><a>Process</a><a>Pricing</a></div>
+    <div><h6 class="mono">Social</h6><a>X / Twitter</a><a>LinkedIn</a><a>Dribbble</a></div>
+    <div><h6 class="mono">Say hi</h6><a>hello@kiln.studio</a><a>Bangalore · Remote</a></div>
+  </div>
+  <div class="word">kiln</div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
+<script>
+// reveal on scroll
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+// count-up stats
+const co=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const b=e.target,to=+b.dataset.count,dec=+(b.dataset.dec||0),suf=b.dataset.suffix||'';
+  const t0=performance.now();(function f(t){const k=Math.min(1,(t-t0)/1400),v=to*(1-Math.pow(1-k,3));b.textContent=v.toFixed(dec)+suf;if(k<1)requestAnimationFrame(f)})(t0);co.unobserve(b)}),{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(b=>co.observe(b));
+
+// process progress bar follows scroll
+const track=document.getElementById('track'),bar=document.getElementById('progbar');
+addEventListener('scroll',()=>{const r=track.getBoundingClientRect(),k=Math.min(1,Math.max(.12,(innerHeight*.8-r.top)/(r.height+innerHeight*.3)));bar.style.transform=`scaleX(${k})`},{passive:true});
+
+// services: auto-highlight rows, hover takes over
+const rows=[...document.querySelectorAll('.svc .row')];let ri=1,hov=false;
+rows.forEach((r,i)=>{r.onmouseenter=()=>{hov=true;rows.forEach(x=>x.classList.remove('on'));r.classList.add('on');ri=i};r.onmouseleave=()=>hov=false});
+setInterval(()=>{if(hov)return;rows[ri].classList.remove('on');ri=(ri+1)%rows.length;rows[ri].classList.add('on')},2200);
+
+// testimonials card stack
+const qs=[...document.querySelectorAll('.q')];
+setInterval(()=>qs.forEach(q=>q.dataset.i=(+q.dataset.i+2)%3),4200);
+
+// faq
+document.querySelectorAll('.qa h5').forEach(h=>h.onclick=()=>h.parentElement.classList.toggle('open'));
+
+// cta heat follows cursor
+const cta=document.getElementById('cta'),heat=document.getElementById('heat');
+cta.addEventListener('mousemove',e=>{const r=cta.getBoundingClientRect();heat.style.left=(e.clientX-r.left-310)+'px';heat.style.top=(e.clientY-r.top-310)+'px'});
+
+if(window.gsap){
+  // before/after slider sweeps on its own
+  gsap.fromTo('#ba',{'--p':72},{'--p':28,duration:3.2,ease:'sine.inOut',yoyo:true,repeat:-1});
+
+  // live design canvas: a hero section designs itself
+  const board=document.getElementById('board'),frame=document.getElementById('frame');
+  const pos=id=>{const b=board.getBoundingClientRect(),r=document.getElementById(id).getBoundingClientRect();return{x:r.left-b.left,y:r.top-b.top,w:r.width,h:r.height}};
+  const selTo=(tl,id,label,t)=>{const p=pos(id);tl.to('#sel',{x:p.x-4,y:p.y-4,width:p.w+8,height:p.h+8,opacity:1,duration:.5,ease:'power3.inOut'},t).set('#sel b',{textContent:label},t)};
+  const curTo=(tl,c,id,dx,dy,t,d=.9)=>{const p=pos(id);tl.to(c,{x:p.x+p.w*dx,y:p.y+p.h*dy,duration:d,ease:'power2.inOut'},t)};
+  const layer=(tl,l,t)=>tl.add(()=>document.querySelectorAll('.layer').forEach(x=>x.classList.toggle('on',x.dataset.l===l)),t);
+  const build=()=>{
+    const tl=gsap.timeline({repeat:-1,repeatDelay:1.4});
+    tl.set('#e-head .skel',{opacity:1}).set('#e-head .txt',{opacity:0}).set('#e-btn',{background:'#ddd3c3',color:'transparent',scale:1})
+      .set('#e-img .art',{opacity:0}).set('#e-sub i',{background:'#ddd3c3'}).set('#cmt,#toast',{opacity:0}).set('#sel',{opacity:0})
+      .set('#cur1',{x:60,y:420}).set('#cur2',{x:800,y:60}).set('#p-size',{textContent:'—'}).set('#sw0',{className:'on'}).set('#sw1',{className:''});
+    // headline
+    curTo(tl,'#cur1','e-head',.4,.5,.2); layer(tl,'head',.9); selTo(tl,'e-head','Headline · 320×86',.9);
+    tl.to('#e-head .skel',{opacity:0,duration:.3},1.5).to('#e-head .txt',{opacity:1,duration:.5},1.6).set('#p-size',{textContent:'38 / 0.98'},1.6);
+    // kiln drops in the hero art
+    curTo(tl,'#cur2','e-img',.6,.4,1.2,1.1); layer(tl,'img',2.4); selTo(tl,'e-img','Hero art · 240×280',2.4);
+    tl.to('#e-img .art',{opacity:1,duration:.6},2.8).set('#p-w',{textContent:240},2.4).set('#p-h',{textContent:280},2.4).set('#p-r',{textContent:20},2.4);
+    // sub copy
+    curTo(tl,'#cur1','e-sub',.5,.5,3.4); layer(tl,'sub',4.1); selTo(tl,'e-sub','Subtext · 260×40',4.1);
+    tl.to('#e-sub i',{background:'#b8acbf',duration:.4,stagger:.08},4.4);
+    // founder comment on the button, kiln fixes it
+    const pb=pos('e-btn');
+    tl.set('#cmt',{x:pb.x+pb.w+18,y:pb.y-56,textContent:''},5.0).to('#cmt',{opacity:1,y:pb.y-62,duration:.4},5.0)
+      .add(()=>{document.getElementById('cmt').innerHTML='<small>Arjun · founder</small>can the button pop more? 👀'},5.0);
+    curTo(tl,'#cur2','e-btn',.5,.5,5.4); layer(tl,'btn',6.2); selTo(tl,'e-btn','Button / Primary · 150×42',6.2);
+    tl.set('#sw0',{className:''},6.6).set('#sw1',{className:'on'},6.6).set('#p-r',{textContent:'999'},6.6)
+      .to('#e-btn',{background:'#6b4bff',color:'#ffffff',duration:.4},6.7).to('#e-btn',{scale:1.08,duration:.2,yoyo:true,repeat:1},7.1)
+      .add(()=>{document.getElementById('cmt').innerHTML='<small>kiln</small>done ✦ violet + pill shape'},7.4);
+    // ship
+    tl.to('#sel',{opacity:0,duration:.3},8.4).to('#cmt',{opacity:0,duration:.3},8.6).to('#toast',{opacity:1,y:-6,duration:.4},8.7)
+      .to('#cur1',{x:'+=60',y:'+=40',duration:1},8.6).to('#cur2',{x:'+=80',y:'-=60',duration:1},8.6).to('#toast',{opacity:0,duration:.4},10.6);
+  };
+  document.fonts.ready.then(build);
+}
+</script>
+</body>
+</html>

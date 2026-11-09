@@ -1,0 +1,123 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Nocta Card</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--violet:#2A1F5E;--lav:#B9A8F0;--blush:#F2B8D8;--mint:#7CF5D0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1600px;height:1000px;overflow:hidden;font-family:Outfit,sans-serif;color:#fff;background:#2a2070}
+.hero{position:relative;width:1600px;height:1000px;overflow:hidden}
+canvas{position:absolute;inset:0;width:1600px;height:1000px}
+.glass{background:rgba(255,255,255,.1);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.22)}
+nav{position:absolute;left:60px;right:60px;top:34px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:12px;font-size:19px}
+.logo svg{width:24px;height:24px}
+.links{display:flex;gap:40px;padding:14px 34px;border-radius:999px;font-size:14.5px;color:rgba(255,255,255,.88)}
+.btn{display:flex;align-items:center;gap:12px;padding:13px 24px;border-radius:999px;font-size:14.5px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 10px var(--mint)}
+
+h1{position:absolute;left:60px;top:128px;font-weight:300;font-size:62px;line-height:1.04;letter-spacing:-.02em}
+h1 span,.big span{color:rgba(226,216,255,.62)}
+.side{position:absolute;top:520px;font-size:14px;line-height:1.55;color:rgba(255,255,255,.85);font-weight:300}
+.side.l{left:60px;width:300px}
+.side.r{right:60px;text-align:right}
+.big{position:absolute;right:60px;bottom:48px;text-align:right;font-weight:300;font-size:60px;line-height:1.04;letter-spacing:-.02em}
+.ctas{position:absolute;left:60px;bottom:52px;display:flex;gap:12px}
+.ctas .main{background:linear-gradient(180deg,#3a2c86,#251a5c);border:1px solid rgba(185,168,240,.4);box-shadow:0 10px 30px rgba(20,10,60,.45)}
+
+.stage{position:absolute;left:50%;top:248px;width:330px;height:500px;margin-left:-165px;perspective:1600px}
+.card{position:absolute;inset:0;border-radius:20px;overflow:hidden;transform:rotateY(-5deg) rotateX(2deg);
+ background:linear-gradient(200deg,#5f4fd0 0%,#3a2d9e 30%,#1c1460 62%,#2b1f7a 100%);
+ box-shadow:0 0 120px rgba(242,184,216,.45),0 30px 70px rgba(15,8,50,.55),inset 0 0 0 1px rgba(255,255,255,.28),inset 0 1px 0 rgba(255,255,255,.55)}
+/* the light beam across the card */
+.card .beam{position:absolute;left:-30%;top:-10%;width:160%;height:120%;
+ background:linear-gradient(118deg,transparent 38%,rgba(210,200,255,.1) 44%,rgba(235,228,255,.55) 50%,rgba(242,184,216,.25) 54%,transparent 62%)}
+.card .sheen{position:absolute;inset:0;background:radial-gradient(80% 50% at 85% 0%,rgba(255,255,255,.28),transparent 60%),radial-gradient(70% 40% at 20% 100%,rgba(242,184,216,.3),transparent 70%)}
+.chip{position:absolute;right:24px;top:24px;width:42px;height:50px;border-radius:7px;background:linear-gradient(135deg,#fff,#d9d2f5)}
+.chip{width:46px;height:38px;background:linear-gradient(135deg,#f6f2ff,#cfc6ee 60%,#e9e3fb)}
+.chip:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 32%,rgba(42,31,94,.35) 32% 34%,transparent 34% 66%,rgba(42,31,94,.35) 66% 68%,transparent 68%),linear-gradient(0deg,transparent 48%,rgba(42,31,94,.35) 48% 52%,transparent 52%);border-radius:7px}
+.chip:after{content:"";position:absolute;left:34%;right:34%;top:22%;bottom:22%;border:1px solid rgba(42,31,94,.35);border-radius:3px}
+.mark{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);width:110px;height:110px}
+.name{position:absolute;left:24px;bottom:22px;font-size:30px;font-weight:300;letter-spacing:.01em}
+.mintline{position:absolute;left:24px;width:90px;bottom:68px;height:1.5px;background:linear-gradient(90deg,var(--mint),rgba(124,245,208,0))}
+.refl{position:absolute;left:50%;top:748px;width:330px;height:500px;margin-left:-165px;transform:scaleY(-1);transform-origin:top;
+ opacity:.3;filter:url(#ripple) blur(1px);-webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,0) 72%,#000 100%);mask-image:linear-gradient(180deg,rgba(0,0,0,0) 72%,#000 100%)}
+.refl .card{transform:none}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><filter id="ripple"><feTurbulence type="fractalNoise" baseFrequency="0.003 0.12" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="26"/></filter></svg>
+<div class="hero">
+  <canvas id="c"></canvas>
+  <nav>
+    <div class="logo"><svg viewBox="0 0 26 26"><path d="M17 3a10 10 0 1 0 6 17A11 11 0 0 1 17 3z" fill="none" stroke="#fff" stroke-width="1.6"/><circle cx="20.5" cy="6" r="2" fill="#7CF5D0"/></svg>Nocta</div>
+    <div class="links glass"><span>Card</span><span>How it Works</span><span>Rewards</span><span>Contact</span></div>
+    <div class="btn glass">Get your card <span class="dot"></span></div>
+  </nav>
+  <h1>Money that glows<br><span>after dark</span></h1>
+  <div class="side l">Pay, save and send with zero hidden fees — all in one app that's always within reach.</div>
+  <div class="side r">No monthly fees<br>Issued in 2 minutes</div>
+
+  <div class="refl"><div class="card"><div class="beam"></div></div></div>
+  <div class="stage"><div class="card">
+    <div class="beam"></div><div class="sheen"></div>
+    <div class="chip"></div>
+    <svg class="mark" viewBox="0 0 110 110"><path d="M40 22a40 40 0 0 0 0 66" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="5" stroke-linecap="round"/><path d="M70 22a40 40 0 0 1 0 66" fill="none" stroke="rgba(242,184,216,.7)" stroke-width="5" stroke-linecap="round"/></svg>
+    <div class="mintline"></div>
+    <div class="name">Nocta</div>
+  </div></div>
+
+  <div class="ctas"><div class="btn main">Get your card <span class="dot"></span></div><div class="btn glass">How it works</div></div>
+  <div class="big">The card that<br><span>never sleeps</span></div>
+</div>
+<script>
+const W=1600,H=1000,HZ=600,CX=800,R=372,dpr=window.devicePixelRatio||1;
+const c=document.getElementById('c');c.width=W*dpr;c.height=H*dpr;const x=c.getContext('2d');x.scale(dpr,dpr);
+let seed=11;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+
+// 01 base: sky
+let g=x.createLinearGradient(0,0,0,HZ);
+g.addColorStop(0,'#2d2483');g.addColorStop(.35,'#4a3fae');g.addColorStop(.68,'#7c6fd6');g.addColorStop(.9,'#b9a0e6');g.addColorStop(1,'#f0bfe0');
+x.fillStyle=g;x.fillRect(0,0,W,HZ);
+// hazy clouds
+x.save();x.filter='blur(46px)';
+for(let i=0;i<34;i++){const cx=rnd()*W,cy=rnd()*260+(i%3?0:300),rx=140+rnd()*260,ry=40+rnd()*70;
+ x.fillStyle=`rgba(${190+rnd()*40|0},${175+rnd()*40|0},255,${.08+rnd()*.12})`;x.beginPath();x.ellipse(cx,cy,rx,ry,0,0,7);x.fill();}
+x.restore();
+// stars
+for(let i=0;i<260;i++){const sx=rnd()*W,sy=rnd()*HZ*.8,a=rnd()*.7*(1-sy/HZ);x.fillStyle=`rgba(255,255,255,${a})`;x.fillRect(sx,sy,rnd()<.08?1.8:1,rnd()<.08?1.8:1);}
+
+// 03 moon glow on the horizon
+x.save();x.globalCompositeOperation='screen';
+g=x.createRadialGradient(CX,HZ,0,CX,HZ,520);g.addColorStop(0,'rgba(255,236,246,.95)');g.addColorStop(.22,'rgba(245,190,224,.6)');g.addColorStop(.6,'rgba(200,150,230,.18)');g.addColorStop(1,'rgba(200,150,230,0)');
+x.fillStyle=g;x.beginPath();x.ellipse(CX,HZ,820,420,0,0,7);x.fill();
+g=x.createRadialGradient(CX,HZ,0,CX,HZ,320);g.addColorStop(0,'rgba(255,250,252,1)');g.addColorStop(.35,'rgba(250,200,230,.75)');g.addColorStop(1,'rgba(242,184,216,0)');x.fillStyle=g;x.beginPath();x.ellipse(CX,HZ,520,300,0,0,7);x.fill();
+x.restore();
+
+// water
+g=x.createLinearGradient(0,HZ,0,H);g.addColorStop(0,'#8a73cf');g.addColorStop(.12,'#5a4aa8');g.addColorStop(.5,'#33287a');g.addColorStop(1,'#1d1652');
+x.fillStyle=g;x.fillRect(0,HZ,W,H-HZ);
+// ripples + moon path
+const rc=document.createElement('canvas');rc.width=W*dpr;rc.height=H*dpr;const rx_=rc.getContext('2d');rx_.scale(dpr,dpr);
+{const x=rx_;for(let i=0;i<950;i++){const t=rnd(),y=HZ+4+t*t*(H-HZ),d=Math.abs(rnd()-.5)*2,sx=CX+(rnd()-.5)*(80+t*520)*(d<.6?1:2.6),len=6+t*60*rnd();
+ const near=Math.max(0,1-Math.abs(sx-CX)/(120+t*260));
+ x.strokeStyle=near>0?`rgba(255,${200+near*40|0},240,${.12+near*.55*(1-t*.5)})`:`rgba(200,185,255,${.03+rnd()*.05})`;
+ x.lineWidth=.8+t*1.4;x.beginPath();x.moveTo(sx-len/2,y);x.lineTo(sx+len/2,y);x.stroke();}}
+x.save();x.filter='blur(0.8px)';x.drawImage(rc,0,0,W,H);x.restore();
+// moon light on the water
+x.save();x.globalCompositeOperation='screen';g=x.createRadialGradient(CX,HZ,0,CX,HZ,300);g.addColorStop(0,'rgba(255,215,236,.55)');g.addColorStop(1,'rgba(255,215,236,0)');x.fillStyle=g;x.beginPath();x.ellipse(CX,HZ,560,120,0,0,7);x.fill();x.restore();
+// horizon line
+g=x.createLinearGradient(0,0,W,0);g.addColorStop(0,'rgba(255,220,240,0)');g.addColorStop(.5,'rgba(255,240,250,.95)');g.addColorStop(1,'rgba(255,220,240,0)');
+x.fillStyle=g;x.fillRect(0,HZ-1,W,1.6);
+
+// 02 ring + its wobbly reflection
+x.save();x.shadowColor='rgba(242,184,216,.9)';x.shadowBlur=14;x.strokeStyle='rgba(248,230,255,.9)';x.lineWidth=1.8;
+x.beginPath();x.arc(CX,HZ,R,Math.PI,2*Math.PI);x.stroke();
+{const rg=x.createLinearGradient(0,HZ,0,HZ+R);rg.addColorStop(0,'rgba(240,215,250,.6)');rg.addColorStop(1,'rgba(240,215,250,.06)');x.strokeStyle=rg;}x.lineWidth=1.4;x.shadowBlur=8;
+for(const side of[-1,1]){x.beginPath();for(let a=0;a<=Math.PI/2;a+=.006){const yy=HZ+Math.sin(a)*R*.95,depth=(yy-HZ)/(R*.95);
+ const xx=CX+side*Math.cos(a)*R+Math.sin(yy*.085)*(3+depth*16)+Math.sin(yy*.031)*depth*10;a?x.lineTo(xx,yy):x.moveTo(xx,yy);}x.stroke();}
+x.restore();
+
+// glints on the ring
+for(const [px,py] of [[CX-R*.71,HZ-R*.71],[CX+R*.86,HZ-R*.5]]){x.save();x.globalCompositeOperation='screen';g=x.createRadialGradient(px,py,0,px,py,26);g.addColorStop(0,'rgba(255,255,255,.9)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.fillRect(px-26,py-26,52,52);x.restore();}
+
+document.fonts.ready.then(()=>setTimeout(()=>window.ready=true,300));
+</script>
+</body></html>

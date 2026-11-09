@@ -7,6 +7,7 @@ import Testimonials from "../components/Testimonials";
 import ToolsStrip from "../components/ToolsStrip";
 import TrialCard from "../components/TrialCard";
 import Hero from "../sections/home/Hero";
+import DesignWall from "../sections/home/DesignWall";
 import TrustedBy from "../sections/home/TrustedBy";
 import ServicesPanel from "../sections/home/ServicesPanel";
 import ProjectsPanel from "../sections/home/ProjectsPanel";
@@ -32,6 +33,7 @@ export default function Home() {
       <Hero />
       <TrustedBy />
       <ServicesPanel />
+      <DesignWall />
       <Statement />
       <Stats />
       <ProjectsPanel />

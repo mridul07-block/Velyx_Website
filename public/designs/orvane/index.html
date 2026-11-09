@@ -1,0 +1,177 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Orvane Blueprint</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,800&family=Inter+Tight:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1600px;height:1000px;overflow:hidden;background:#0a0a0b}
+svg{display:block}
+.mono{font-family:'JetBrains Mono',monospace}
+.h{font-family:'Inter Tight',sans-serif;font-weight:500}
+.l{font-family:'Inter Tight',sans-serif;font-weight:400}
+</style></head><body>
+<canvas id="cv" style="position:absolute;inset:0;width:1600px;height:1000px"></canvas>
+<svg id="s" style="position:absolute;inset:0" width="1600" height="1000" viewBox="0 0 1600 1000"></svg>
+<script>
+const S=document.getElementById('s'),W=1600,H=1000,CY=470,R=44;
+const OR='#ff4f1f',INK='rgba(240,238,232,.88)',DIM='rgba(240,238,232,.38)',BG='#0a0a0b';
+let out='';const A=s=>out+=s;
+const ln=(x1,y1,x2,y2,c=INK,w=1,extra='')=>A(`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="${w}" ${extra}/>`);
+const tx=(x,y,t,cls,sz,fill,extra='')=>A(`<text x="${x}" y="${y}" class="${cls}" font-size="${sz}" fill="${fill}" ${extra}>${t}</text>`);
+
+// defs
+A(`<defs>
+<pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="rgba(255,255,255,.035)"/></pattern>
+<pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="rgba(240,238,232,.35)" stroke-width=".7"/></pattern>
+<pattern id="hatchO" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="4" stroke="rgba(255,79,31,.55)" stroke-width=".7"/></pattern>
+<pattern id="lattice" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M0 0L4 4M4 0L0 4" stroke="rgba(240,238,232,.6)" stroke-width=".5"/></pattern>
+<linearGradient id="wm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a1a1d"/><stop offset="1" stop-color="#0d0d0e"/></linearGradient>
+<clipPath id="lowerHalf"><rect x="0" y="${CY}" width="${W}" height="200"/></clipPath>
+</defs>`);
+A(`<rect width="${W}" height="${H}" fill="url(#dots)"/>`);
+
+
+// ---------- exhaust: flow field ----------
+let seed=3;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
+const plume=[];
+const N=520;
+for(let i=0;i<N;i++){
+ const f=i/(N-1), y0=CY+(f-.5)*76+(rnd()-.5)*2;
+ let x=268,y=y0,pts=[[x,y]];
+ const spread=(f-.5);
+ let sd=0;const Ls=470+(1-f)*560,TM=2.82;
+ for(let k=0;k<900;k++){
+  const u=Math.min(1,sd/Ls),e=u*u*(3-2*u);
+  const ang=Math.PI - spread*.45*(1-e) - TM*e
+   +.05*Math.sin(x*.011+f*9)+.03*Math.sin(y*.02+x*.004);
+  x+=3*Math.cos(ang);y+=3*Math.sin(ang);sd+=3;pts.push([x,y]);
+  if(x<-60||y>H+40||x>W+40)break;
+ }
+ plume.push({pts,f});
+}
+const STOPS=[[0,[255,246,228]],[.06,[255,180,100]],[.2,[255,79,31]],[.55,[205,38,28]],[1,[80,12,20]]];
+const cAt=t=>{for(let i=0;i<STOPS.length-1;i++){const[a,ca]=STOPS[i],[b,cb]=STOPS[i+1];if(t<=b){const u=(t-a)/(b-a);return ca.map((v,j)=>Math.round(v+(cb[j]-v)*u))}}return STOPS[STOPS.length-1][1]};
+window.paintPlume=()=>{
+ const D=2,cv=document.getElementById('cv');cv.width=W*D;cv.height=H*D;const g=cv.getContext('2d');g.scale(D,D);
+ const mk=()=>{const c=document.createElement('canvas');c.width=W*D;c.height=H*D;const x=c.getContext('2d');x.scale(D,D);return[c,x]};
+ g.fillStyle=BG;g.fillRect(0,0,W,H);
+ const WM=x=>{x.font='800 342px Archivo';x.fontStretch='expanded';x.textAlign='center';x.letterSpacing='-6px';x.fillText('ORVANE',800,1078)};
+ let gr=g.createLinearGradient(0,830,0,1000);gr.addColorStop(0,'#1b1b1e');gr.addColorStop(1,'#0e0e0f');g.fillStyle=gr;WM(g);
+ // plume strokes on their own layer
+ const [pc,p]=mk();p.lineCap='round';
+ for(const L of plume){const n=L.pts.length,edge=1-Math.pow(Math.abs(L.f-.5)*2,3);
+  for(let i=1;i<n;i+=2){const t=i/n,col=cAt(t),al=(.6-.42*t)*(.3+.7*edge);
+   p.strokeStyle=`rgba(${col},${al})`;p.lineWidth=.5+.35*(1-t);p.beginPath();p.moveTo(...L.pts[i-1]);p.lineTo(...L.pts[Math.min(n-1,i+1)]);p.stroke()}}
+ // exhaust light falling on the giant letters
+ const [lc,l]=mk();const og=l.createLinearGradient(0,0,900,0);og.addColorStop(0,'#ff8a3a');og.addColorStop(.5,'#ff4f1f');og.addColorStop(1,'#5a140f');l.fillStyle=og;WM(l);
+ l.globalCompositeOperation='destination-in';l.setTransform(1,0,0,1,0,0);l.filter='blur(40px)';l.drawImage(pc,0,0);l.drawImage(pc,0,0);l.drawImage(pc,0,0);l.filter='none';
+ g.setTransform(1,0,0,1,0,0);g.globalAlpha=.95;g.drawImage(lc,0,0);
+ g.globalCompositeOperation='lighter';g.filter='blur(18px)';g.globalAlpha=.7;g.drawImage(pc,0,0);g.filter='blur(4px)';g.globalAlpha=.5;g.drawImage(pc,0,0);
+ g.filter='none';g.globalAlpha=1;g.drawImage(pc,0,0);g.globalCompositeOperation='source-over';
+ g.setTransform(D,0,0,D,0,0);
+ g.font='800 342px Archivo';g.fontStretch='expanded';g.textAlign='center';g.letterSpacing='-6px';g.strokeStyle='rgba(240,238,232,.10)';g.lineWidth=.8;g.strokeText('ORVANE',800,1078);
+ // sparks shed from the plume edge
+ let sd2=91;const r2=()=>{sd2=(sd2*16807)%2147483647;return sd2/2147483647};
+ for(let i=0;i<220;i++){const L=plume[Math.floor(r2()*plume.length)],k=Math.floor(r2()*L.pts.length*.75),q=L.pts[k],t=k/L.pts.length;
+  const off=(L.f<.5?-1:1)*(4+r2()*r2()*60),col=cAt(Math.min(1,t+.05));
+  g.fillStyle=`rgba(${col},${(.9-t*.6)*(.4+.6*r2())})`;const sz=.6+r2()*1.6;g.fillRect(q[0]+(r2()-.5)*20,q[1]+off*(L.f<.5?1:.6),sz,sz)}
+ // grain
+ const id=g.getImageData(0,0,W*D,H*D),d=id.data;for(let i=0;i<d.length;i+=4){const n=(r2()-.5)*10;d[i]+=n;d[i+1]+=n;d[i+2]+=n}g.putImageData(id,0,0);
+};
+// hot core + mach diamonds
+A(`<ellipse cx="236" cy="${CY}" rx="60" ry="10" fill="rgba(255,240,220,.10)"/>`);
+[[248,13,8],[220,11,6.5],[195,9,5],[173,7,4]].forEach(([x,rx,ry])=>A(`<path d="M${x-rx} ${CY}L${x} ${CY-ry}L${x+rx} ${CY}L${x} ${CY+ry}Z" fill="rgba(255,250,240,.55)" stroke="rgba(150,40,12,.85)" stroke-width=".9"/>`));
+
+// ---------- rocket (exploded side view, nose right) ----------
+A(`<g fill="${BG}" stroke="${INK}" stroke-width="1">`);
+// engine bells
+[-26,0,26].forEach(o=>A(`<path d="M318 ${CY+o-6}C300 ${CY+o-7} 285 ${CY+o-11} 268 ${CY+o-13}L268 ${CY+o+13}C285 ${CY+o+11} 300 ${CY+o+7} 318 ${CY+o+6}Z"/>`));
+// thrust section
+A(`<path d="M318 ${CY-34}L350 ${CY-44}L350 ${CY+44}L318 ${CY+34}Z"/>`);
+// stage 1
+A(`<rect x="366" y="${CY-R}" width="492" height="${2*R}"/>`);
+A('</g>');
+// stage 1 cutaway window: LOX + RP-1 tanks
+A(`<g clip-path="url(#lowerHalf)"><rect x="590" y="${CY}" width="250" height="${R}" fill="${BG}"/>
+<path d="M606 ${CY}A14 40 0 0 0 606 ${CY+40}L826 ${CY+40}A14 40 0 0 0 826 ${CY}" fill="url(#hatch)" stroke="${INK}" stroke-width=".8"/></g>`);
+ln(590,CY,840,CY,INK,.8);ln(590,CY,590,CY+R,INK,.8,'stroke-dasharray="3 3"');ln(840,CY,840,CY+R,INK,.8,'stroke-dasharray="3 3"');
+A(`<path d="M386 ${CY-38}A12 38 0 0 0 386 ${CY+38}M570 ${CY-38}A12 38 0 0 1 570 ${CY+38}" fill="none" stroke="${DIM}" stroke-width=".8" stroke-dasharray="4 3"/>`);
+ln(366,CY-31,858,CY-31,DIM,.7);
+// legs
+A(`<path d="M372 ${CY-44}L540 ${CY-46}L372 ${CY-50}Z M372 ${CY+44}L540 ${CY+46}L372 ${CY+50}Z" fill="${BG}" stroke="${INK}" stroke-width=".9"/>`);
+// grid fins
+A(`<rect x="826" y="${CY-62}" width="18" height="14" fill="url(#lattice)" stroke="${INK}" stroke-width=".9"/><rect x="826" y="${CY+48}" width="18" height="14" fill="url(#lattice)" stroke="${INK}" stroke-width=".9"/>`);
+// stage 1 lettering
+A(`<text x="400" y="${CY+6}" font-family="Archivo" font-stretch="125%" font-weight="800" font-size="19" letter-spacing="9" fill="${INK}">ORVANE</text>`);
+A(`<rect x="404" y="${CY+18}" width="26" height="9" fill="${OR}"/>`);
+// interstage
+A(`<path d="M858 ${CY-R}L890 ${CY-R}L890 ${CY+R}L858 ${CY+R}" fill="${BG}" stroke="${INK}"/>`);
+ln(868,CY-R,868,CY+R,DIM,.6);ln(878,CY-R,878,CY+R,DIM,.6);
+// stage 2 vacuum bell
+A(`<path d="M948 ${CY-9}C930 ${CY-12} 916 ${CY-24} 906 ${CY-34}L906 ${CY+34}C916 ${CY+24} 930 ${CY+12} 948 ${CY+9}Z" fill="${BG}" stroke="${INK}"/>`);
+for(let i=1;i<6;i++){const x=948-i*7;const r=9+(34-9)*Math.pow(i/6,1.3);ln(x,CY-r,x,CY+r,DIM,.5)}
+// stage 2
+A(`<rect x="948" y="${CY-R}" width="166" height="${2*R}" fill="${BG}" stroke="${INK}"/>`);
+ln(948,CY-31,1114,CY-31,DIM,.7);ln(1030,CY-R,1030,CY+R,DIM,.6);
+A(`<rect x="960" y="${CY-6}" width="58" height="12" fill="url(#hatchO)" stroke="${OR}" stroke-width=".8"/>`);
+// payload adapter
+A(`<path d="M1128 ${CY-R}L1150 ${CY-26}L1150 ${CY+26}L1128 ${CY+R}Z" fill="${BG}" stroke="${INK}"/>`);
+// satellite (visible through fairing cutaway)
+A(`<g stroke="${INK}" fill="${BG}" stroke-width=".9">
+<rect x="1166" y="${CY-24}" width="62" height="50"/>
+<rect x="1172" y="${CY+4}" width="50" height="16" fill="url(#hatch)"/>
+<path d="M1228 ${CY+2}L1252 ${CY+2}M1252 ${CY-10}A14 14 0 0 1 1252 ${CY+14}" fill="none"/>
+<line x1="1166" y1="${CY+26}" x2="1166" y2="${CY+34}"/><line x1="1228" y1="${CY+26}" x2="1228" y2="${CY+34}"/></g>`);
+// fairing: upper half solid, lower half phantom
+const fair=(s)=>`M1156 ${CY}L1156 ${CY+s*48}L1262 ${CY+s*48}C1330 ${CY+s*46} 1392 ${CY+s*26} 1430 ${CY}`;
+A(`<path d="${fair(-1)}Z" fill="${BG}" stroke="${OR}" stroke-width="1.3"/>`);
+A(`<path d="${fair(1)}" fill="none" stroke="${INK}" stroke-width=".9" stroke-dasharray="5 4"/>`);
+ln(1156,CY,1430,CY,INK,.9);
+ln(1262,CY-48,1262,CY,DIM,.6);
+A(`<path d="M1300 ${CY-30}L1360 ${CY-30}" stroke="${OR}" stroke-width="2"/>`);
+// centreline
+ln(240,CY,1460,CY,'rgba(255,79,31,.5)',.6,'stroke-dasharray="18 4 3 4"');
+
+// ---------- dimension line ----------
+const DY=560;
+ln(268,DY,1430,DY,DIM,.7);
+[[268,1],[1430,-1]].forEach(([x,d])=>{A(`<path d="M${x} ${DY}l${7*d} -3l0 6z" fill="${DIM}"/>`);ln(x,DY-8,x,DY+8,DIM,.7)});
+A(`<rect x="806" y="${DY-8}" width="88" height="16" fill="${BG}"/>`);tx(850,DY+4,'70.0 m','mono',11,INK,'text-anchor="middle"');
+// diameter callout at the nose end
+ln(1452,CY-48,1452,CY+48,DIM,.7);ln(1446,CY-48,1458,CY-48,DIM,.7);ln(1446,CY+48,1458,CY+48,DIM,.7);
+tx(1464,CY+4,'Ø 3.7 m','mono',10,DIM);
+
+// ---------- callouts (the footer links) ----------
+function callout(px,py,bx,by,up,no,part,head,links,hot=-1){
+ const blockH=16+26+links.length*21;
+ const ly=up?by+blockH+8:by-12;
+ A(`<circle cx="${px}" cy="${py}" r="3" fill="${OR}"/><circle cx="${px}" cy="${py}" r="7" fill="none" stroke="${OR}" stroke-width=".7" opacity=".6"/>`);
+ if(bx===px)ln(px,py+(up?-7:7),px,ly,hot>=0?OR:DIM,hot>=0?1.1:.75);
+ else{A(`<path d="M${px} ${py+(up?-7:7)}L${px} ${ly}L${bx} ${ly}" fill="none" stroke="${DIM}" stroke-width=".75"/>`)}
+ tx(bx,by+10,`${no} — ${part}`,'mono',10,OR,'letter-spacing="1.2"');
+ tx(bx,by+36,head,'h',17,'#f4f2ec');
+ links.forEach((t,i)=>{if(i===hot){const y=by+62+i*21;tx(bx,y,t+'  →','l',13.5,OR);ln(bx,y+5,bx+92,y+5,OR,1);
+  A(`<g transform="translate(${bx+100} ${y-9}) scale(.85)"><path d="M0 0L0 15L4 11.5L6.8 17.5L9.2 16.4L6.5 10.6L11.5 10.6Z" fill="#f4f2ec" stroke="#0a0a0b" stroke-width="1"/></g>`)}
+ else tx(bx,by+62+i*21,t,'l',13.5,'rgba(240,238,232,.62)')});
+}
+callout(1330,CY-40,1330,236,true,'01','PAYLOAD FAIRING','Launch',['Dedicated Missions','Rideshare','Payload Guide'],1);
+callout(1040,CY-R,1010,236,true,'02','UPPER STAGE','Company',['About','Careers','Press']);
+callout(1196,CY+26,1196,612,false,'03','PAYLOAD','Resources',['Mission Updates','Docs','Media Kit']);
+callout(715,CY+R,715,612,false,'04','FIRST STAGE','Legal',['Privacy Policy','Terms of Service','Export Compliance']);
+callout(334,CY-34,420,236,true,'05','ENGINES ×3','Contact',['hello@orvane.space','Launch Desk','Investors']);
+// ---------- header ----------
+A(`<g transform="translate(80,72)"><circle cx="16" cy="16" r="9" fill="none" stroke="#f4f2ec" stroke-width="2.6"/><ellipse cx="16" cy="16" rx="17" ry="6" fill="none" stroke="${OR}" stroke-width="1.6" transform="rotate(-28 16 16)"/></g>`);
+tx(126,99,'Orvane','h',28,'#f4f2ec','letter-spacing="-.5"');
+tx(80,140,'Reliable rides to orbit for the next','l',14.5,'rgba(240,238,232,.6)');
+tx(80,160,'generation of satellites.','l',14.5,'rgba(240,238,232,.6)');
+['X','IG','IN','YT'].forEach((s,i)=>{const x=80+i*46;A(`<rect x="${x}" y="184" width="36" height="22" rx="11" fill="none" stroke="rgba(240,238,232,.35)"/>`);tx(x+18,199,s,'mono',9.5,'#f4f2ec','text-anchor="middle"')});
+tx(1520,92,'OR-1  ·  DWG OR-FTR-001  ·  1:44','mono',9.5,'rgba(240,238,232,.38)','text-anchor="end" letter-spacing="1"');
+// ---------- bottom bar ----------
+ln(560,770,1520,770,'rgba(240,238,232,.22)',1);
+tx(560,795,'© 2026 Orvane Aerospace. All rights reserved.','l',13,'rgba(240,238,232,.6)');
+tx(1060,795,'28.5729° N  ·  80.6490° W','mono',11.5,'rgba(240,238,232,.5)','text-anchor="middle"');
+A(`<circle id="nd" cx="1352" cy="791" r="3.5" fill="${OR}"/>`);
+tx(1520,795,'Next launch  T−12d 04h 31m','mono',11.5,'#f4f2ec','text-anchor="end" id="nl"');
+
+S.innerHTML=out;
+document.fonts.load('800 342px Archivo').then(()=>document.fonts.ready).then(()=>{paintPlume();const b=document.getElementById('nl').getBBox();document.getElementById('nd').setAttribute('cx',b.x-12);window.ready=true});
+</script></body></html>

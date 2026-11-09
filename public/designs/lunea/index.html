@@ -1,0 +1,130 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Lunea Homes</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#8DB9F0;--lav:#E9E8F8;--peach:#F5B69E;--ink:#2B2A5E}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1600px;height:1000px;overflow:hidden;font-family:"Plus Jakarta Sans",sans-serif;color:var(--ink);background:#cfd8f3}
+.hero{position:relative;width:1600px;height:1000px;background:url(bg.png) center 62%/cover;overflow:hidden}
+/* powder-blue + lavender wash so the scene sits in the palette */
+.hero:before{content:"";position:absolute;inset:0;background:
+ linear-gradient(180deg,rgba(141,185,240,.55) 0%,rgba(141,185,240,.18) 32%,rgba(233,232,248,0) 55%),
+ linear-gradient(90deg,rgba(233,232,248,.25),rgba(233,232,248,0) 45%),
+ linear-gradient(0deg,rgba(233,232,248,.35),rgba(233,232,248,0) 30%),
+ radial-gradient(520px 340px at 380px 340px,rgba(110,128,205,.32),rgba(110,128,205,0))}
+.glass{background:linear-gradient(135deg,rgba(255,255,255,.58),rgba(238,236,252,.38) 55%,rgba(233,232,248,.46));
+ backdrop-filter:blur(26px) saturate(1.6);-webkit-backdrop-filter:blur(26px) saturate(1.6);
+ border:1px solid rgba(255,255,255,.85);box-shadow:0 10px 40px rgba(43,42,94,.14),inset 0 1px 0 rgba(255,255,255,1),inset 0 -1px 0 rgba(255,255,255,.35),inset 1px 0 0 rgba(255,255,255,.5)}
+.pill{position:absolute;border-radius:999px;display:flex;align-items:center}
+svg{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+.buy{left:96px;top:34px;width:206px;height:62px;padding:0 26px;gap:54px;font-weight:600;font-size:17px}
+.buy svg,.rent svg{width:20px;height:20px;color:#e88a66}
+.rent{right:96px;top:34px;width:206px;height:62px;padding:0 26px;justify-content:space-between;font-weight:600;font-size:17px}
+.search{left:50%;transform:translateX(-50%);top:26px;height:78px;padding:0 14px 0 36px;gap:0}
+.field{display:flex;align-items:center;gap:14px;padding-right:44px;margin-right:40px;position:relative}
+.field:not(:last-child):after{content:"";position:absolute;right:0;top:4px;bottom:4px;width:1px;background:rgba(43,42,94,.12)}
+.field .ic{width:20px;height:20px;color:#5d5c8f}
+.field small{display:block;white-space:nowrap;font-size:12px;color:#7a79a3;font-weight:500}
+.field b{display:block;white-space:nowrap;font-size:17px;font-weight:600;margin-top:1px}
+.field .chev{width:18px;height:18px;margin-left:26px}
+
+.rail{position:absolute;left:44px;top:250px;width:78px;border-radius:40px;padding:16px 0;display:flex;flex-direction:column;align-items:center;gap:14px}
+.rail i{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;color:#4b4a7c}
+.rail i svg{width:22px;height:22px}
+.rail i.on{background:#fff;box-shadow:0 4px 14px rgba(43,42,94,.12);color:var(--ink)}
+.rail i.on svg{fill:var(--ink);stroke:none}
+.rail hr{width:34px;border:0;border-top:1px solid rgba(43,42,94,.14);margin:8px 0}
+.rail i.moon{background:linear-gradient(140deg,#fff,#fde6dc);color:#e88a66;box-shadow:0 4px 14px rgba(245,182,158,.5)}
+
+.copy{position:absolute;left:212px;top:186px;width:640px;color:#fff}
+.eyebrow{font-size:14px;letter-spacing:.32em;font-weight:500;display:flex;align-items:center;gap:18px;opacity:.95}
+.eyebrow:after{content:"";width:70px;height:1px;background:rgba(255,255,255,.85)}
+h1{font-size:78px;line-height:1.04;padding-bottom:.14em;margin-bottom:-.14em;font-weight:600;letter-spacing:-.025em;margin-top:22px;
+ background:linear-gradient(180deg,#fff 30%,#ecebfb 100%);-webkit-background-clip:text;color:transparent;
+ filter:drop-shadow(0 4px 24px rgba(43,42,94,.18))}
+.copy p{font-size:18px;line-height:1.5;margin-top:22px;width:340px;color:rgba(255,255,255,.92);text-shadow:0 1px 12px rgba(43,42,94,.25)}
+
+.find{position:absolute;left:156px;bottom:30px;width:490px;border-radius:40px;padding:34px 36px 32px}
+.find h3{font-size:32px;line-height:1.12;font-weight:600;letter-spacing:-.015em}
+.sbar{margin-top:22px;height:56px;border-radius:999px;background:#fff;display:flex;align-items:center;padding:0 7px 0 22px;gap:14px;font-size:14.5px;color:#8b8aae}
+.sbar svg{width:19px;height:19px;color:#5d5c8f}
+.sbar .go{margin-left:auto;width:44px;height:44px;border-radius:50%;background:var(--ink);display:grid;place-items:center;color:#fff}
+.stat{display:flex;align-items:center;gap:14px;margin-top:22px}
+.thumbs{display:flex;gap:9px}
+.thumbs span{width:56px;height:56px;border-radius:14px;background:center/cover no-repeat;border:2px solid #fff;box-shadow:0 4px 12px rgba(43,42,94,.15)}
+.thumbs span:nth-child(1){background-image:url(t1.png)}
+.thumbs span:nth-child(2){background-image:url(t2.png)}
+.thumbs span:nth-child(3){background-image:url(t3.png)}
+.stat b{font-size:30px;font-weight:700;margin-left:10px;letter-spacing:-.02em}
+.stat small{display:block;font-size:14px;color:#6c6b97;font-weight:500}
+
+.villa{position:absolute;right:56px;bottom:30px;width:460px;border-radius:40px;padding:34px 34px 30px}
+.villa .top{display:flex;justify-content:space-between}
+.villa h3{font-size:31px;font-weight:600;letter-spacing:-.015em}
+.villa .addr{display:flex;gap:9px;margin-top:10px;font-size:15px;color:#5d5c8f;line-height:1.4}
+.villa .addr svg{width:17px;height:17px;flex:none;margin-top:2px}
+.villa .arrow{width:52px;height:52px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 4px 14px rgba(43,42,94,.12)}
+.villa .arrow svg{width:22px;height:22px}
+.specs{display:flex;margin-top:26px;border-top:1px solid rgba(43,42,94,.12);padding-top:22px}
+.specs div{flex:1;text-align:center;font-size:14.5px;color:#4b4a7c;position:relative}
+.specs div:not(:last-child):after{content:"";position:absolute;right:0;top:4px;bottom:4px;width:1px;background:rgba(43,42,94,.12)}
+.specs svg{width:24px;height:24px;display:block;margin:0 auto 9px;color:#5d5c8f}
+.cta{margin-top:26px;height:60px;border-radius:999px;background:linear-gradient(180deg,#3c3a7a,var(--ink));color:#fff;
+ display:flex;align-items:center;justify-content:center;gap:12px;font-weight:600;font-size:17px;box-shadow:0 10px 26px rgba(43,42,94,.35),inset 0 1px 0 rgba(255,255,255,.18)}
+.cta svg{width:20px;height:20px}
+.logo{position:absolute;left:96px;bottom:0}
+</style></head><body>
+<div class="hero">
+  <div class="pill glass buy"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Buy</div>
+
+  <div class="pill glass search">
+    <div class="field"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+      <div><small>Location</small><b>Joshua Tree</b></div><svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+    <div class="field"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7M5 9.5V20h14V9.5"/><path d="M10 20v-5h4v5"/></svg>
+      <div><small>Property Type</small><b>Villa</b></div><svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+    <div class="field"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg>
+      <div><small>Price Range</small><b>$400K – $900K</b></div><svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+  </div>
+
+  <div class="pill glass rent">Rent<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+
+  <div class="rail glass">
+    <i class="on"><svg viewBox="0 0 24 24"><path d="M3.5 11.2L12 4l8.5 7.2V20a1 1 0 0 1-1 1H15v-6H9v6H4.5a1 1 0 0 1-1-1z"/></svg></i>
+    <i><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg></i>
+    <i><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg></i>
+    <i><svg viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10A4.2 4.2 0 0 1 12 7.6 4.2 4.2 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"/></svg></i>
+    <i><svg viewBox="0 0 24 24"><path d="M6.5 4h11v16l-5.5-4-5.5 4z"/></svg></i>
+    <hr>
+    <i><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/></svg></i>
+    <i class="moon"><svg viewBox="0 0 24 24"><path d="M19.5 14.5A8 8 0 0 1 9.5 4.5a8 8 0 1 0 10 10z"/></svg></i>
+  </div>
+
+  <div class="copy">
+    <div class="eyebrow">MODERN DESERT LIVING</div>
+    <h1>Homes Shaped<br>by the Light</h1>
+    <p>Discover handpicked homes where soft curves, open glass and quiet evenings come together.</p>
+  </div>
+
+  <div class="find glass">
+    <h3>Find Your<br>Dream Home</h3>
+    <div class="sbar"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>Search by location, type or feature
+      <span class="go"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+    <div class="stat"><div class="thumbs"><span></span><span></span><span></span></div>
+      <div><b>12K+</b><small style="margin-left:10px">Curated Properties</small></div></div>
+  </div>
+
+  <div class="villa glass">
+    <div class="top"><div><h3>Halo Dune Villa</h3>
+      <div class="addr"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>2210 Mesa Ridge Rd,<br>Joshua Tree, California</div></div>
+      <span class="arrow"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M8 7h9v9"/></svg></span></div>
+    <div class="specs">
+      <div><svg viewBox="0 0 24 24"><path d="M3 18v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6M3 15h18M5 10V6h14v4M3 18v2M21 18v2"/></svg>4 Beds</div>
+      <div><svg viewBox="0 0 24 24"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4zM6 12V5a2 2 0 0 1 3.5-1.3M8 19l-1 2M16 19l1 2"/></svg>3 Baths</div>
+      <div><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 4v5H4M15 20v-5h5"/></svg>2,480 sq ft</div>
+    </div>
+    <div class="cta">View Details<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+  </div>
+</div>
+<script>Promise.all([document.fonts.ready,new Promise(r=>{const i=new Image();i.onload=r;i.src='bg.png'})]).then(()=>setTimeout(()=>window.ready=true,300))</script>
+</body></html>

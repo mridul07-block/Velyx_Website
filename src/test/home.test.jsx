@@ -7,7 +7,7 @@ describe("Home", () => {
   it("renders Kargul's sections in the user's order, closing in the footer", () => {
     const { container } = renderWithProviders(<Home />);
     const ids = [...container.querySelectorAll("main section[id]")].map((s) => s.id);
-    expect(ids).toEqual(["hero", "trusted", "services", "statement", "numbers", "projects", "compare", "process", "team", "testimonials", "trial", "tools"]);
+    expect(ids).toEqual(["hero", "trusted", "services", "design-wall", "statement", "numbers", "projects", "compare", "process", "team", "testimonials", "trial", "tools"]);
     expect(container.querySelector("#faq")).toBeNull();
     expect(container.querySelector("footer section#closing")).not.toBeNull();
   });
